@@ -94,63 +94,77 @@ const AnalisisComerciosApp = () => {
   // Cargar datos automáticamente al iniciar
   useEffect(() => {
     cargarDatosAutomaticamente();
-    cargarMLResultados();
   }, []);
 
-  const cargarMLResultados = async () => {
-    try {
-      const response = await fetch('ml_results.json');
-      if (response.ok) {
-        const data = await response.json();
+  // Cargar resultados de ML
+  useEffect(() => {
+    fetch('ml_results.json')
+      .then(res => res.json())
+      .then(data => {
         console.log('📊 Resultados ML cargados:', data);
         setMlResultados(data);
-      }
-    } catch (err) {
-      console.log('ℹ️ No se encontró ml_results.json');
-    }
-  };
+      })
+      .catch(err => console.log('ℹ️ No se encontró ml_results.json'));
+  }, []);
 
   const cargarDatosAutomaticamente = async () => {
     try {
       setCargando(true);
       setError(null);
       
-      const rutaArchivo = 'datos_comercio.csv';
-      console.log('🔍 Cargando datos desde:', rutaArchivo);
+      // Intentar cargar desde diferentes ubicaciones
+      const posiblesRutas = [
+        'base_de_datos.csv',
+        'datos_comercios.csv', 
+        'comercios.csv',
+        'data.csv'
+      ];
+
+      let archivoEncontrado = false;
       
-      const response = await fetch(rutaArchivo);
-      
-      if (!response.ok) {
-        throw new Error(`Error HTTP: ${response.status}`);
+      for (const ruta of posiblesRutas) {
+        try {
+          const response = await fetch(ruta);
+          if (response.ok) {
+            const texto = await response.text();
+            procesarCSVTexto(texto);
+            archivoEncontrado = true;
+            console.log(`✅ Archivo cargado desde: ${ruta}`);
+            break;
+          }
+        } catch (e) {
+          continue;
+        }
+      }
+
+      if (!archivoEncontrado) {
+        throw new Error('No se encontró el archivo CSV');
       }
       
-      const texto = await response.text();
-      console.log('✅ CSV cargado, tamaño:', texto.length, 'caracteres');
-      
-      Papa.parse(texto, {
-        header: true,
-        dynamicTyping: true,
-        skipEmptyLines: true,
-        complete: (resultado) => {
-          console.log('✅ CSV parseado:', resultado.data.length, 'filas');
-          const datos = resultado.data;
-          const analisisGenerado = generarAnalisis(datos);
-          setDatos(datos);
-          setAnalisis(analisisGenerado);
-          setCargando(false);
-        },
-        error: (error) => {
-          console.error('❌ Error parseando CSV:', error);
-          setError('Error al procesar el archivo: ' + error.message);
-          setCargando(false);
-        }
-      });
-      
     } catch (err) {
-      console.error('❌ Error cargando archivo:', err);
-      setError(`No se pudo cargar datos_comercio.csv: ${err.message}`);
+      console.error('Error cargando datos:', err);
+      setError(err.message);
       setCargando(false);
     }
+  };
+
+  const procesarCSVTexto = (textoCSV) => {
+    Papa.parse(textoCSV, {
+      header: true,
+      dynamicTyping: true,
+      skipEmptyLines: true,
+      complete: (resultado) => {
+        const datos = resultado.data;
+        const analisisGenerado = generarAnalisis(datos);
+        setDatos(datos);
+        setAnalisis(analisisGenerado);
+        setCargando(false);
+      },
+      error: (error) => {
+        setError('Error al procesar el archivo: ' + error.message);
+        setCargando(false);
+      }
+    });
   };
 
   const procesarCSV = (archivo) => {
@@ -390,20 +404,40 @@ const AnalisisComerciosApp = () => {
       )}
 
       <div className="main-content">
-        {/* Pantalla de carga mientras se cargan los datos */}
-        {cargando && !analisis && (
+        {seccionActiva === 'carga' && !analisis && (
           <div className="upload-container">
             <div className="upload-content">
               <div className="upload-icon">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <path d="M12 6v6l4 2"></path>
-                </svg>
+                <UploadIcon />
               </div>
-              <h2 className="upload-title">Cargando datos...</h2>
+              <h2 className="upload-title">Carga tu Base de Datos</h2>
               <p className="upload-description">
-                Por favor espera mientras procesamos la información
+                Sube tu archivo CSV de comercios para generar el análisis automáticamente
               </p>
+              
+              <label className="upload-label">
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={manejarArchivo}
+                  className="upload-input"
+                  disabled={cargando}
+                />
+                <div className={`upload-button ${cargando ? 'disabled' : ''}`}>
+                  <FileTextIcon />
+                  <span>{cargando ? 'Procesando...' : 'Seleccionar archivo CSV'}</span>
+                </div>
+              </label>
+
+              <div className="upload-requirements">
+                <h3 className="requirements-title">Requisitos del archivo:</h3>
+                <ul className="requirements-list">
+                  <li>✓ Formato: CSV (separado por comas)</li>
+                  <li>✓ Debe incluir las columnas del dataset de comercios</li>
+                  <li>✓ Primera fila con nombres de columnas</li>
+                  <li>✓ Codificación: UTF-8</li>
+                </ul>
+              </div>
             </div>
           </div>
         )}
@@ -909,7 +943,7 @@ const AnalisisComerciosApp = () => {
                     <strong>✓ Aplicación práctica:</strong> Esta segmentación permite diseñar políticas diferenciadas de apoyo según el tamaño y características de cada grupo.
                   </p>
                   <p>
-                    <strong>✓ Comercios analizados:</strong> {mlResultados.metadata.comercios_analizados} de {mlResultados.metadata.total_comercios} comercios con datos completos.
+                    <strong>✓ Cobertura:</strong> {mlResultados.metadata.comercios_analizados} de {mlResultados.metadata.total_comercios} comercios analizados con datos completos.
                   </p>
                 </div>
               </div>
@@ -943,6 +977,8 @@ const AnalisisComerciosApp = () => {
             </div>
           </div>
         )}
+
+        {seccionActiva === 'ml' && mlResultados && (
           <div className="section-content">
             <div className="card">
               <h2 className="card-title">🤖 Análisis con Machine Learning</h2>
@@ -958,10 +994,10 @@ const AnalisisComerciosApp = () => {
                   <ChartComponent
                     type="bar"
                     data={{
-                      labels: analisis.mlData.clusters.map(c => c.label),
+                      labels: mlResultados.clustering.clusters.map(c => c.label),
                       datasets: [{
                         label: 'Cantidad de comercios',
-                        data: analisis.mlData.distribucion,
+                        data: mlResultados.clustering.distribucion,
                         backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981'],
                         borderWidth: 2,
                         borderColor: '#fff'
@@ -988,13 +1024,13 @@ const AnalisisComerciosApp = () => {
               </div>
 
               <div className="findings-grid" style={{ marginTop: '2rem' }}>
-                {analisis.mlData.clusters.map((cluster, idx) => (
-                  <div key={cluster.label} className="finding-item" style={{ 
+                {mlResultados.clustering.clusters.map((cluster, idx) => (
+                  <div key={cluster.cluster_id} className="finding-item" style={{ 
                     borderColor: ['#3b82f6', '#8b5cf6', '#10b981'][idx],
                     background: `linear-gradient(to right, ${['rgba(59, 130, 246, 0.08)', 'rgba(139, 92, 246, 0.08)', 'rgba(16, 185, 129, 0.08)'][idx]}, transparent)`
                   }}>
                     <h3 className="finding-title" style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>
-                      Cluster: {cluster.label}
+                      Cluster {cluster.cluster_id}: {cluster.label}
                     </h3>
                     <div style={{ display: 'grid', gap: '0.75rem' }}>
                       <div style={{ background: 'white', padding: '1rem', borderRadius: '0.5rem' }}>
@@ -1003,27 +1039,39 @@ const AnalisisComerciosApp = () => {
                           {cluster.count}
                         </p>
                         <p style={{ fontSize: '0.8rem', color: '#9ca3af' }}>
-                          {((cluster.count / analisis.mlData.totalAnalizados) * 100).toFixed(1)}% del total
+                          {cluster.porcentaje}% del total
                         </p>
                       </div>
-                      <div style={{ background: 'white', padding: '1rem', borderRadius: '0.5rem' }}>
-                        <p style={{ color: '#6b7280', fontSize: '0.85rem', marginBottom: '0.25rem' }}>Trabajadores promedio</p>
-                        <p style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1f2937' }}>
-                          {cluster.trabajadoresPromedio}
-                        </p>
-                      </div>
-                      <div style={{ background: 'white', padding: '1rem', borderRadius: '0.5rem' }}>
-                        <p style={{ color: '#6b7280', fontSize: '0.85rem', marginBottom: '0.25rem' }}>Horas de operación</p>
-                        <p style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1f2937' }}>
-                          {cluster.horasPromedio}h
-                        </p>
-                      </div>
-                      <div style={{ background: 'white', padding: '1rem', borderRadius: '0.5rem' }}>
-                        <p style={{ color: '#6b7280', fontSize: '0.85rem', marginBottom: '0.25rem' }}>Con acceso a crédito</p>
-                        <p style={{ fontSize: '1.5rem', fontWeight: '700', color: '#10b981' }}>
-                          {cluster.porcentajeCredito}%
-                        </p>
-                      </div>
+                      {cluster.trabajadores_promedio && (
+                        <div style={{ background: 'white', padding: '1rem', borderRadius: '0.5rem' }}>
+                          <p style={{ color: '#6b7280', fontSize: '0.85rem', marginBottom: '0.25rem' }}>Trabajadores</p>
+                          <p style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1f2937' }}>
+                            {cluster.trabajadores_promedio} <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>(promedio)</span>
+                          </p>
+                          <p style={{ fontSize: '0.85rem', color: '#6b7280' }}>
+                            Mediana: {cluster.trabajadores_mediana}
+                          </p>
+                        </div>
+                      )}
+                      {cluster.horas_promedio && (
+                        <div style={{ background: 'white', padding: '1rem', borderRadius: '0.5rem' }}>
+                          <p style={{ color: '#6b7280', fontSize: '0.85rem', marginBottom: '0.25rem' }}>Horas de operación</p>
+                          <p style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1f2937' }}>
+                            {cluster.horas_promedio}h <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>(promedio)</span>
+                          </p>
+                          <p style={{ fontSize: '0.85rem', color: '#6b7280' }}>
+                            Mediana: {cluster.horas_mediana}h
+                          </p>
+                        </div>
+                      )}
+                      {cluster.porcentaje_credito !== undefined && (
+                        <div style={{ background: 'white', padding: '1rem', borderRadius: '0.5rem' }}>
+                          <p style={{ color: '#6b7280', fontSize: '0.85rem', marginBottom: '0.25rem' }}>Con acceso a crédito</p>
+                          <p style={{ fontSize: '1.5rem', fontWeight: '700', color: '#10b981' }}>
+                            {cluster.porcentaje_credito}%
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -1035,16 +1083,19 @@ const AnalisisComerciosApp = () => {
                 </h3>
                 <div style={{ color: '#1f2937', fontSize: '0.95rem', lineHeight: '1.7' }}>
                   <p style={{ marginBottom: '0.75rem' }}>
-                    <strong>✓ Segmentación automática:</strong> El algoritmo K-Means identificó {analisis.mlData.clusters.length} grupos distintos de comercios con características similares.
+                    <strong>✓ Algoritmo utilizado:</strong> K-Means Clustering con normalización StandardScaler y reducción dimensional PCA.
                   </p>
                   <p style={{ marginBottom: '0.75rem' }}>
-                    <strong>✓ Variables consideradas:</strong> Cantidad de trabajadores, horas de operación diaria y acceso a crédito formal.
+                    <strong>✓ Calidad del modelo:</strong> Inercia de {mlResultados.clustering.inercia.toFixed(2)}, indicando la cohesión de los clusters.
+                  </p>
+                  <p style={{ marginBottom: '0.75rem' }}>
+                    <strong>✓ Variables consideradas:</strong> {mlResultados.metadata.features_utilizadas.join(', ')}.
                   </p>
                   <p style={{ marginBottom: '0.75rem' }}>
                     <strong>✓ Aplicación práctica:</strong> Esta segmentación permite diseñar políticas diferenciadas de apoyo según el tamaño y características de cada grupo.
                   </p>
                   <p>
-                    <strong>✓ Comercios analizados:</strong> {analisis.mlData.totalAnalizados} de {analisis.estadisticas.totalComercios} comercios con datos completos.
+                    <strong>✓ Cobertura:</strong> {mlResultados.metadata.comercios_analizados} de {mlResultados.metadata.total_comercios} comercios analizados con datos completos.
                   </p>
                 </div>
               </div>
