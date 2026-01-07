@@ -94,64 +94,63 @@ const AnalisisComerciosApp = () => {
   // Cargar datos automáticamente al iniciar
   useEffect(() => {
     cargarDatosAutomaticamente();
+    cargarMLResultados();
   }, []);
 
-  // Cargar resultados de ML
-  useEffect(() => {
-    fetch('ml_results.json')
-      .then(res => res.json())
-      .then(data => {
+  const cargarMLResultados = async () => {
+    try {
+      const response = await fetch('ml_results.json');
+      if (response.ok) {
+        const data = await response.json();
         console.log('📊 Resultados ML cargados:', data);
         setMlResultados(data);
-      })
-      .catch(err => console.log('ℹ️ No se encontró ml_results.json'));
-  }, []);
+      }
+    } catch (err) {
+      console.log('ℹ️ No se encontró ml_results.json');
+    }
+  };
 
   const cargarDatosAutomaticamente = async () => {
     try {
       setCargando(true);
       setError(null);
       
-      // Intentar cargar el archivo CSV
-      const rutaArchivo = 'datos_comercio.csv'; // Nombre exacto de tu archivo
-      
-      console.log('🔍 Intentando cargar:', rutaArchivo);
+      const rutaArchivo = 'datos_comercio.csv';
+      console.log('🔍 Cargando datos desde:', rutaArchivo);
       
       const response = await fetch(rutaArchivo);
       
       if (!response.ok) {
-        throw new Error(`No se pudo cargar el archivo (HTTP ${response.status})`);
+        throw new Error(`Error HTTP: ${response.status}`);
       }
       
       const texto = await response.text();
-      console.log('✅ Archivo cargado, procesando...');
+      console.log('✅ CSV cargado, tamaño:', texto.length, 'caracteres');
       
-      procesarCSVTexto(texto);
+      Papa.parse(texto, {
+        header: true,
+        dynamicTyping: true,
+        skipEmptyLines: true,
+        complete: (resultado) => {
+          console.log('✅ CSV parseado:', resultado.data.length, 'filas');
+          const datos = resultado.data;
+          const analisisGenerado = generarAnalisis(datos);
+          setDatos(datos);
+          setAnalisis(analisisGenerado);
+          setCargando(false);
+        },
+        error: (error) => {
+          console.error('❌ Error parseando CSV:', error);
+          setError('Error al procesar el archivo: ' + error.message);
+          setCargando(false);
+        }
+      });
       
     } catch (err) {
-      console.error('❌ Error cargando datos:', err);
-      setError(`No se pudo cargar el archivo: ${err.message}`);
+      console.error('❌ Error cargando archivo:', err);
+      setError(`No se pudo cargar datos_comercio.csv: ${err.message}`);
       setCargando(false);
     }
-  };
-
-  const procesarCSVTexto = (textoCSV) => {
-    Papa.parse(textoCSV, {
-      header: true,
-      dynamicTyping: true,
-      skipEmptyLines: true,
-      complete: (resultado) => {
-        const datos = resultado.data;
-        const analisisGenerado = generarAnalisis(datos);
-        setDatos(datos);
-        setAnalisis(analisisGenerado);
-        setCargando(false);
-      },
-      error: (error) => {
-        setError('Error al procesar el archivo: ' + error.message);
-        setCargando(false);
-      }
-    });
   };
 
   const procesarCSV = (archivo) => {
