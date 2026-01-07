@@ -110,71 +110,68 @@ const AnalisisComerciosApp = () => {
     }
   };
 
-
   const cargarDatosAutomaticamente = async () => {
     try {
       setCargando(true);
       setError(null);
       
-      console.log('📊 Intentando cargar datos...');
+      // Cargar desde GitHub Raw directamente
+      const githubRawUrl = 'https://raw.githubusercontent.com/Datso653/MIT-PROYECT/main/datos_comercios.csv';
       
-      // Primero intentar JSON (más rápido y confiable)
-      try {
-        const jsonResponse = await fetch('datos_comercios.json', {
-          cache: 'no-store'
-        });
-        
-        if (jsonResponse.ok) {
-          const datos = await jsonResponse.json();
-          console.log('✅ Datos JSON cargados:', datos.length, 'registros');
-          procesarDatosJSON(datos);
-          return;
-        }
-      } catch (jsonErr) {
-        console.log('ℹ️ JSON no disponible, intentando CSV...');
-      }
+      console.log('ðŸ” Cargando desde GitHub Raw:', githubRawUrl);
       
-      // Fallback a CSV
-      const csvResponse = await fetch('datos_comercios.csv', {
+      const response = await fetch(githubRawUrl, {
         cache: 'no-store'
       });
       
-      if (!csvResponse.ok) {
-        throw new Error(`HTTP ${csvResponse.status}`);
+      console.log('ðŸ“¡ Status:', response.status);
+      
+      if (!response.ok) {
+        // Si GitHub Raw falla, intentar con la URL local
+        console.log('âš ï¸ GitHub Raw fallÃ³, intentando URL local...');
+        return cargarDesdeLocal();
       }
       
-      const texto = await csvResponse.text();
-      console.log('✅ CSV cargado:', texto.split('\n').length, 'líneas');
+      const texto = await response.text();
+      console.log('âœ… CSV cargado desde GitHub Raw');
+      console.log('ðŸ“Š TamaÃ±o:', texto.length, 'caracteres');
+      console.log('ðŸ“Š LÃ­neas:', texto.split('\n').length);
+      
       procesarCSVTexto(texto);
       
     } catch (err) {
-      console.error('❌ Error cargando datos:', err);
-      setError('No se pudieron cargar los datos. Verifica que datos_comercios.json o datos_comercios.csv estén en el repositorio.');
+      console.error('âŒ Error con GitHub Raw:', err);
+      // Fallback a URL local
+      cargarDesdeLocal();
+    }
+  };
+
+  const cargarDesdeLocal = async () => {
+    try {
+      console.log('ðŸ” Intentando carga local...');
+      
+      const response = await fetch(`datos_comercios.csv?v=${Date.now()}`, {
+        cache: 'no-store'
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      
+      const texto = await response.text();
+      console.log('âœ… CSV cargado localmente');
+      console.log('ðŸ“Š TamaÃ±o:', texto.length, 'caracteres');
+      console.log('ðŸ“Š LÃ­neas:', texto.split('\n').length);
+      
+      procesarCSVTexto(texto);
+      
+    } catch (err) {
+      console.error('âŒ Error carga local:', err);
+      setError('No se pudo cargar el archivo CSV. Verifica que datos_comercios.csv esté en el repositorio.');
       setCargando(false);
     }
   };
 
-  const procesarDatosJSON = (datos) => {
-    console.log('🔄 Procesando datos JSON...');
-    
-    const datosValidos = datos.filter(row => {
-      return row && (row.tipo_comercio || row.fecha);
-    });
-    
-    console.log('✅ Datos válidos:', datosValidos.length);
-    
-    setDatos(datosValidos);
-    
-    // Generar análisis
-    const nuevoAnalisis = generarAnalisis(datosValidos);
-    setAnalisis(nuevoAnalisis);
-    setCargando(false);
-    
-    console.log('🎉 Datos procesados exitosamente');
-  };
-
-  const procesarCSVTexto = (texto) => {
-    console.log('ðŸ”„ Procesando con PapaParse...');
   const procesarCSVTexto = (texto) => {
     console.log('ðŸ”„ Procesando con PapaParse...');
     
