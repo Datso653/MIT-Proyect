@@ -126,13 +126,33 @@ const AnalisisComerciosApp = () => {
       
       const texto = await response.text();
       console.log('✅ CSV cargado, tamaño:', texto.length, 'caracteres');
+      console.log('📄 Primeras 500 caracteres:', texto.substring(0, 500));
+      console.log('📄 Últimas 200 caracteres:', texto.substring(texto.length - 200));
+      
+      // Contar líneas manualmente
+      const lineas = texto.split('\n').length;
+      console.log('📊 Líneas detectadas en el texto:', lineas);
       
       Papa.parse(texto, {
         header: true,
         dynamicTyping: true,
-        skipEmptyLines: true,
+        skipEmptyLines: 'greedy', // Más agresivo con líneas vacías
+        newline: '', // Auto-detectar saltos de línea
+        delimiter: ',', // Forzar coma como delimitador
+        quoteChar: '"',
+        escapeChar: '"',
         complete: (resultado) => {
           console.log('✅ CSV parseado:', resultado.data.length, 'filas');
+          console.log('⚠️ Errores de parsing:', resultado.errors.length);
+          
+          if (resultado.errors.length > 0) {
+            console.log('❌ Primeros 5 errores:', resultado.errors.slice(0, 5));
+          }
+          
+          console.log('📋 Columnas encontradas:', Object.keys(resultado.data[0] || {}));
+          console.log('📊 Primera fila:', resultado.data[0]);
+          console.log('📊 Última fila:', resultado.data[resultado.data.length - 1]);
+          
           const datos = resultado.data;
           const analisisGenerado = generarAnalisis(datos);
           setDatos(datos);
@@ -964,8 +984,6 @@ const AnalisisComerciosApp = () => {
             </div>
           </div>
         )}
-
-        {seccionActiva === 'ml' && mlResultados && (
           <div className="section-content">
             <div className="card">
               <h2 className="card-title">🤖 Análisis con Machine Learning</h2>
