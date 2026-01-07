@@ -115,88 +115,118 @@ const AnalisisComerciosApp = () => {
       setCargando(true);
       setError(null);
       
-      const rutaArchivo = 'datos_comercio.csv';
-      console.log('🔍 Cargando datos desde:', rutaArchivo);
+      // Cargar desde GitHub Raw directamente
+      const githubRawUrl = 'https://raw.githubusercontent.com/Datso653/MIT-PROYECT/main/datos_comercio.csv';
       
-      // Agregar timestamp para evitar caché
-      const url = `${rutaArchivo}?t=${Date.now()}`;
-      console.log('🌐 URL completa:', url);
+      console.log('🔍 Cargando desde GitHub Raw:', githubRawUrl);
       
-      const response = await fetch(url, {
-        cache: 'no-store', // Forzar no usar caché
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
-        }
+      const response = await fetch(githubRawUrl, {
+        cache: 'no-store'
       });
       
-      console.log('📡 Headers de respuesta:', {
-        contentType: response.headers.get('content-type'),
-        contentLength: response.headers.get('content-length'),
-        status: response.status
-      });
+      console.log('📡 Status:', response.status);
       
       if (!response.ok) {
-        throw new Error(`Error HTTP: ${response.status}`);
+        // Si GitHub Raw falla, intentar con la URL local
+        console.log('⚠️ GitHub Raw falló, intentando URL local...');
+        return cargarDesdeLocal();
       }
       
       const texto = await response.text();
-      console.log('✅ CSV cargado, tamaño:', texto.length, 'caracteres');
-      console.log('📊 Líneas detectadas en el texto:', texto.split('\n').length);
-      console.log('📄 Primeras 500 caracteres:', texto.substring(0, 500));
-      console.log('📄 Últimas 200 caracteres:', texto.substring(texto.length - 200));
+      console.log('✅ CSV cargado desde GitHub Raw');
+      console.log('📊 Tamaño:', texto.length, 'caracteres');
+      console.log('📊 Líneas:', texto.split('\n').length);
       
-      Papa.parse(texto, {
-        header: true,
-        dynamicTyping: true,
-        skipEmptyLines: 'greedy',
-        delimiter: ',',
-        quoteChar: '"',
-        escapeChar: '"',
-        newline: '\n',
-        transformHeader: (header) => header.trim(), // Limpiar espacios en headers
-        complete: (resultado) => {
-          console.log('✅ CSV parseado:', resultado.data.length, 'filas');
-          console.log('⚠️ Errores de parsing:', resultado.errors.length);
-          
-          if (resultado.errors.length > 0) {
-            console.log('❌ Primeros 10 errores:', resultado.errors.slice(0, 10));
-          }
-          
-          // Filtrar filas vacías o inválidas
-          const datosValidos = resultado.data.filter(row => {
-            // Una fila es válida si tiene al menos tipo_comercio o fecha
-            return row && (row.tipo_comercio || row.fecha);
-          });
-          
-          console.log('📊 Filas válidas después de filtrar:', datosValidos.length);
-          console.log('📋 Columnas encontradas:', Object.keys(datosValidos[0] || {}));
-          console.log('📊 Primera fila:', datosValidos[0]);
-          console.log('📊 Última fila:', datosValidos[datosValidos.length - 1]);
-          
-          if (datosValidos.length === 0) {
-            setError('No se pudieron leer datos válidos del CSV');
-            setCargando(false);
-            return;
-          }
-          
+      procesarCSVTexto(texto);
+      
+    } catch (err) {
+      console.error('❌ Error con GitHub Raw:', err);
+      // Fallback a URL local
+      cargarDesdeLocal();
+    }
+  };
+
+  const cargarDesdeLocal = async () => {
+    try {
+      console.log('🔍 Intentando carga local...');
+      
+      const response = await fetch(`datos_comercio.csv?v=${Date.now()}`, {
+        cache: 'no-store'
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      
+      const texto = await response.text();
+      console.log('✅ CSV cargado localmente');
+      console.log('📊 Tamaño:', texto.length, 'caracteres');
+      console.log('📊 Líneas:', texto.split('\n').length);
+      
+      procesarCSVTexto(texto);
+      
+    } catch (err) {
+      console.error('❌ Error carga local:', err);
+      setError('No se pudo cargar el archivo CSV. Verifica que datos_comercio.csv esté en el repositorio.');
+      setCargando(false);
+    }
+  };
+
+  const procesarCSVTexto = (texto) => {
+    console.log('🔄 Procesando con PapaParse...');
+  const procesarCSVTexto = (texto) => {
+    console.log('🔄 Procesando con PapaParse...');
+    
+    Papa.parse(texto, {
+      header: true,
+      dynamicTyping: true,
+      skipEmptyLines: 'greedy',
+      delimiter: ',',
+      quoteChar: '"',
+      escapeChar: '"',
+      newline: '\n',
+      transformHeader: (header) => header.trim(),
+      complete: (resultado) => {
+        console.log('✅ CSV parseado:', resultado.data.length, 'filas');
+        console.log('⚠️ Errores:', resultado.errors.length);
+        
+        if (resultado.errors.length > 0) {
+          console.log('❌ Errores:', resultado.errors.slice(0, 5));
+        }
+        
+        const datosValidos = resultado.data.filter(row => {
+          return row && (row.tipo_comercio || row.fecha);
+        });
+        
+        console.log('📊 Filas válidas:', datosValidos.length);
+        
+        if (datosValidos.length === 0) {
+          setError('No se encontraron datos válidos en el CSV');
+          setCargando(false);
+          return;
+        }
+        
+        console.log('📋 Columnas:', Object.keys(datosValidos[0]));
+        console.log('📊 Primera fila:', datosValidos[0]);
+        
+        try {
           const analisisGenerado = generarAnalisis(datosValidos);
           setDatos(datosValidos);
           setAnalisis(analisisGenerado);
           setCargando(false);
-        },
-        error: (error) => {
-          console.error('❌ Error parseando CSV:', error);
-          setError('Error al procesar el archivo: ' + error.message);
+          console.log('✅ Análisis completado');
+        } catch (err) {
+          console.error('❌ Error generando análisis:', err);
+          setError('Error al analizar los datos: ' + err.message);
           setCargando(false);
         }
-      });
-      
-    } catch (err) {
-      console.error('❌ Error cargando archivo:', err);
-      setError(`No se pudo cargar datos_comercio.csv: ${err.message}`);
-      setCargando(false);
-    }
+      },
+      error: (error) => {
+        console.error('❌ Error en PapaParse:', error);
+        setError('Error al parsear CSV: ' + error.message);
+        setCargando(false);
+      }
+    });
   };
 
   const procesarCSV = (archivo) => {
