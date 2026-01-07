@@ -118,7 +118,23 @@ const AnalisisComerciosApp = () => {
       const rutaArchivo = 'datos_comercio.csv';
       console.log('🔍 Cargando datos desde:', rutaArchivo);
       
-      const response = await fetch(rutaArchivo);
+      // Agregar timestamp para evitar caché
+      const url = `${rutaArchivo}?t=${Date.now()}`;
+      console.log('🌐 URL completa:', url);
+      
+      const response = await fetch(url, {
+        cache: 'no-store', // Forzar no usar caché
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      });
+      
+      console.log('📡 Headers de respuesta:', {
+        contentType: response.headers.get('content-type'),
+        contentLength: response.headers.get('content-length'),
+        status: response.status
+      });
       
       if (!response.ok) {
         throw new Error(`Error HTTP: ${response.status}`);
@@ -126,12 +142,9 @@ const AnalisisComerciosApp = () => {
       
       const texto = await response.text();
       console.log('✅ CSV cargado, tamaño:', texto.length, 'caracteres');
+      console.log('📊 Líneas detectadas en el texto:', texto.split('\n').length);
       console.log('📄 Primeras 500 caracteres:', texto.substring(0, 500));
       console.log('📄 Últimas 200 caracteres:', texto.substring(texto.length - 200));
-      
-      // Contar líneas manualmente
-      const lineas = texto.split('\n').length;
-      console.log('📊 Líneas detectadas en el texto:', lineas);
       
       Papa.parse(texto, {
         header: true,
