@@ -7,29 +7,28 @@ const TEAM_DATA = {
     {
       name: "Gina Marrazzo",
       role: "Data Analyst & Developer",
-      university: "ITBA",
+      university: "UBA",
       linkedin: "https://www.linkedin.com/in/gina-marrazzo-15a8a523b",
       image: "gina.jpg"
     },
     {
       name: "Sofía Gálvez",
       role: "Research & Analysis",
-      university: "UBA",
+      university: "UNSAM",
       linkedin: "https://www.linkedin.com/in/sofiagalvez0910",
       image: "sofia.jpg"
     },
     {
       name: "Juan Da Torre",
       role: "ML Engineer & Developer",
-      university: "UNSAM",
+      university: "UBA",
       linkedin: "https://www.linkedin.com/in/juan-da-torre-a3b120262",
       image: "juan.jpg"
     }
   ],
   universities: [
     { name: "MIT", full: "Massachusetts Institute of Technology", role: "LIFT Lab Principal" },
-    { name: "ITBA", full: "Instituto Tecnológico de Buenos Aires", role: "Partner Principal" },
-    { name: "UBA", full: "Universidad de Buenos Aires", role: "Collaborator" },
+    { name: "UBA", full: "Universidad de Buenos Aires", role: "Partner Principal" },
     { name: "UNSAM", full: "Universidad Nacional de San Martín", role: "Research Partner" }
   ]
 };
@@ -96,7 +95,7 @@ const App = () => {
   const [seccion, setSeccion] = useState('inicio');
   const [datos, setDatos] = useState(null);
   const [cargando, setCargando] = useState(true);
-  const [promedios, setPromedios] = useState(null);
+  const [indicadores, setIndicadores] = useState(null);
 
   useEffect(() => {
     cargarDatos();
@@ -107,7 +106,7 @@ const App = () => {
       const response = await fetch('datos_comercios.json');
       const data = await response.json();
       setDatos(data);
-      calcularPromedios(data);
+      calcularIndicadores(data);
       setCargando(false);
     } catch (err) {
       console.error('Error cargando datos:', err);
@@ -115,16 +114,73 @@ const App = () => {
     }
   };
 
-  const calcularPromedios = (data) => {
-    const promTrabajadores = data.reduce((sum, c) => sum + (c.cantidad_trabajadores || 0), 0) / data.length;
-    const promHoras = data.filter(c => c.hs_apertura && c.hs_cierre)
-      .reduce((sum, c) => sum + ((c.hs_cierre || 0) - (c.hs_apertura || 0)), 0) / data.length;
+  const calcularIndicadores = (data) => {
+    // Total comercios
+    const total = data.length;
     
-    setPromedios({
-      trabajadores: promTrabajadores.toFixed(2),
-      horas: promHoras.toFixed(1),
-      total: data.length,
-      conCredito: data.filter(c => c.credits_bancos > 0).length
+    // Promedio trabajadores
+    const promTrabajadores = data.reduce((sum, c) => sum + (parseFloat(c.cantidad_trabajadores) || 0), 0) / total;
+    
+    // Tipos de comercio
+    const tipos = {};
+    data.forEach(c => {
+      const tipo = c.tipo_comercio || 'No especificado';
+      tipos[tipo] = (tipos[tipo] || 0) + 1;
+    });
+    const cantidadTipos = Object.keys(tipos).length;
+    
+    // Horas de operación
+    const conHorarios = data.filter(c => c.hs_apertura && c.hs_cierre);
+    const promHoras = conHorarios.reduce((sum, c) => 
+      sum + ((parseFloat(c.hs_cierre) || 0) - (parseFloat(c.hs_apertura) || 0)), 0
+    ) / conHorarios.length;
+    
+    // Acceso a crédito
+    const conCredito = data.filter(c => 
+      (c.credits_bancos && parseFloat(c.credits_bancos) > 0) ||
+      (c.credits_proveedor && parseFloat(c.credits_proveedor) > 0) ||
+      (c.credits_familia && parseFloat(c.credits_familia) > 0)
+    ).length;
+    
+    // Expectativas positivas
+    let expectativasPositivas = 0;
+    data.forEach(row => {
+      const expVentas = String(row.exp_ventas_3mes || '').toLowerCase();
+      if (expVentas.includes('aument') || expVentas.includes('crec') || 
+          expVentas.includes('mejor') || expVentas.includes('más')) {
+        expectativasPositivas++;
+      }
+    });
+    
+    // Con tecnología (POS/sistema)
+    const conTecnologia = data.filter(c => c.tecnologia === 'Sí' || c.tecnologia === 'Si').length;
+    
+    // Años promedio de operación
+    const añoActual = new Date().getFullYear();
+    const conAño = data.filter(c => c.año_apertura && parseFloat(c.año_apertura) > 1900);
+    const promAñosOperacion = conAño.reduce((sum, c) => 
+      sum + (añoActual - parseFloat(c.año_apertura)), 0
+    ) / conAño.length;
+    
+    // Con local propio
+    const conLocalPropio = data.filter(c => 
+      String(c.local || '').toLowerCase().includes('propio')
+    ).length;
+    
+    setIndicadores({
+      total,
+      promTrabajadores: promTrabajadores.toFixed(2),
+      cantidadTipos,
+      promHoras: promHoras.toFixed(1),
+      conCredito,
+      pctCredito: ((conCredito/total)*100).toFixed(1),
+      expectativasPositivas,
+      pctExpectativas: ((expectativasPositivas/total)*100).toFixed(1),
+      conTecnologia,
+      pctTecnologia: ((conTecnologia/total)*100).toFixed(1),
+      promAñosOperacion: promAñosOperacion.toFixed(1),
+      conLocalPropio,
+      pctLocalPropio: ((conLocalPropio/total)*100).toFixed(1)
     });
   };
 
@@ -202,12 +258,21 @@ const App = () => {
 
       {/* Contenido */}
       <main style={{ maxWidth: '1400px', margin: '0 auto', padding: '2rem' }}>
-        {seccion === 'inicio' && <SeccionInicio />}
-        {seccion === 'equipo' && <SeccionEquipo />}
-        {seccion === 'indicadores' && promedios && <SeccionIndicadores datos={datos} promedios={promedios} />}
-        {seccion === 'mapa' && datos && <SeccionMapa datos={datos} />}
-        {seccion === 'analisis' && datos && <SeccionAnalisis datos={datos} />}
-        {seccion === 'ml' && <SeccionML />}
+        {cargando && (
+          <div style={{ background: 'white', borderRadius: '1.5rem', padding: '3rem', textAlign: 'center' }}>
+            <p style={{ fontSize: '1.2rem', color: '#6b7280' }}>Cargando datos...</p>
+          </div>
+        )}
+        {!cargando && (
+          <>
+            {seccion === 'inicio' && <SeccionInicio />}
+            {seccion === 'equipo' && <SeccionEquipo />}
+            {seccion === 'indicadores' && indicadores && <SeccionIndicadores indicadores={indicadores} />}
+            {seccion === 'mapa' && datos && <SeccionMapa datos={datos} />}
+            {seccion === 'analisis' && datos && <SeccionAnalisis datos={datos} />}
+            {seccion === 'ml' && <SeccionML />}
+          </>
+        )}
       </main>
     </div>
   );
@@ -274,7 +339,7 @@ const SeccionEquipo = () => (
       Equipo {TEAM_DATA.name} ⚡
     </h2>
     <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: '3rem', fontSize: '1.1rem' }}>
-      Estudiantes de ITBA, UBA y UNSAM trabajando en colaboración con MIT LIFT Lab
+      Estudiantes de UBA y UNSAM trabajando en colaboración con MIT LIFT Lab
     </p>
 
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
@@ -362,55 +427,128 @@ const SeccionEquipo = () => (
   </div>
 );
 
-const SeccionIndicadores = ({ datos, promedios }) => (
+const SeccionIndicadores = ({ indicadores }) => (
   <div style={{ background: 'white', borderRadius: '1.5rem', padding: '3rem', boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}>
     <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#1e3a8a', marginBottom: '2rem', textAlign: 'center' }}>
-      📊 Indicadores Clave
+      📊 Indicadores Clave del Relevamiento
     </h2>
 
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
       <IndicadorCard 
-        titulo="Total Comercios"
-        valor={promedios.total}
+        titulo="Total Comercios Relevados"
+        valor={indicadores.total}
         subtitulo="Encuestas completadas"
         color="#3b82f6"
+        icono="🏪"
+      />
+      <IndicadorCard 
+        titulo="Tipos de Comercio"
+        valor={indicadores.cantidadTipos}
+        subtitulo="Categorías diferentes"
+        color="#8b5cf6"
+        icono="📋"
       />
       <IndicadorCard 
         titulo="Promedio Trabajadores"
-        valor={promedios.trabajadores}
+        valor={indicadores.promTrabajadores}
         subtitulo="Por comercio"
-        color="#8b5cf6"
+        color="#ec4899"
+        icono="👥"
       />
       <IndicadorCard 
-        titulo="Horas Operación"
-        valor={`${promedios.horas}h`}
-        subtitulo="Promedio diario"
-        color="#ec4899"
+        titulo="Horas Operación Diaria"
+        valor={`${indicadores.promHoras}h`}
+        subtitulo="Promedio"
+        color="#10b981"
+        icono="⏰"
+      />
+      <IndicadorCard 
+        titulo="Años en Operación"
+        valor={indicadores.promAñosOperacion}
+        subtitulo="Promedio de antigüedad"
+        color="#f59e0b"
+        icono="📅"
       />
       <IndicadorCard 
         titulo="Con Acceso a Crédito"
-        valor={promedios.conCredito}
-        subtitulo={`${((promedios.conCredito/promedios.total)*100).toFixed(1)}% del total`}
-        color="#10b981"
+        valor={indicadores.conCredito}
+        subtitulo={`${indicadores.pctCredito}% del total`}
+        color="#06b6d4"
+        icono="💳"
       />
+      <IndicadorCard 
+        titulo="Expectativas Positivas"
+        valor={indicadores.expectativasPositivas}
+        subtitulo={`${indicadores.pctExpectativas}% esperan crecer`}
+        color="#84cc16"
+        icono="📈"
+      />
+      <IndicadorCard 
+        titulo="Usan Tecnología (POS)"
+        valor={indicadores.conTecnologia}
+        subtitulo={`${indicadores.pctTecnologia}% del total`}
+        color="#a855f7"
+        icono="💻"
+      />
+      <IndicadorCard 
+        titulo="Local Propio"
+        valor={indicadores.conLocalPropio}
+        subtitulo={`${indicadores.pctLocalPropio}% del total`}
+        color="#ef4444"
+        icono="🏠"
+      />
+    </div>
+
+    <div style={{ marginTop: '3rem', background: '#f0f9ff', padding: '2rem', borderRadius: '1rem', border: '2px solid #3b82f6' }}>
+      <h3 style={{ fontSize: '1.3rem', fontWeight: '700', color: '#1e3a8a', marginBottom: '1rem' }}>
+        💡 Insights Principales
+      </h3>
+      <ul style={{ listStyle: 'none', padding: 0, color: '#1f2937' }}>
+        <li style={{ padding: '0.5rem 0' }}>
+          <strong>• Digitalización:</strong> Solo {indicadores.pctTecnologia}% usa sistemas tecnológicos, evidenciando una gran oportunidad de mejora
+        </li>
+        <li style={{ padding: '0.5rem 0' }}>
+          <strong>• Acceso financiero:</strong> {indicadores.pctCredito}% tiene acceso a crédito, limitando capacidad de inversión
+        </li>
+        <li style={{ padding: '0.5rem 0' }}>
+          <strong>• Optimismo:</strong> {indicadores.pctExpectativas}% tiene expectativas positivas de crecimiento
+        </li>
+        <li style={{ padding: '0.5rem 0' }}>
+          <strong>• Diversidad:</strong> {indicadores.cantidadTipos} tipos diferentes de comercio relevados
+        </li>
+      </ul>
     </div>
   </div>
 );
 
-const IndicadorCard = ({ titulo, valor, subtitulo, color }) => (
+const IndicadorCard = ({ titulo, valor, subtitulo, color, icono }) => (
   <div style={{
     background: `linear-gradient(135deg, ${color}15 0%, ${color}08 100%)`,
     border: `2px solid ${color}40`,
     borderRadius: '1rem',
-    padding: '2rem'
-  }}>
-    <h3 style={{ fontSize: '0.95rem', color: '#6b7280', fontWeight: '600', marginBottom: '1rem' }}>
-      {titulo}
-    </h3>
-    <div style={{ fontSize: '3rem', fontWeight: '900', color, marginBottom: '0.5rem' }}>
+    padding: '1.5rem',
+    transition: 'transform 0.3s, box-shadow 0.3s',
+    cursor: 'pointer'
+  }}
+  onMouseEnter={e => {
+    e.currentTarget.style.transform = 'translateY(-5px)';
+    e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
+  }}
+  onMouseLeave={e => {
+    e.currentTarget.style.transform = 'translateY(0)';
+    e.currentTarget.style.boxShadow = 'none';
+  }}
+  >
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+      <h3 style={{ fontSize: '0.9rem', color: '#6b7280', fontWeight: '600', margin: 0, flex: 1 }}>
+        {titulo}
+      </h3>
+      <span style={{ fontSize: '1.5rem' }}>{icono}</span>
+    </div>
+    <div style={{ fontSize: '2.5rem', fontWeight: '900', color, marginBottom: '0.5rem' }}>
       {valor}
     </div>
-    <p style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+    <p style={{ fontSize: '0.85rem', color: '#6b7280', margin: 0 }}>
       {subtitulo}
     </p>
   </div>
@@ -418,31 +556,79 @@ const IndicadorCard = ({ titulo, valor, subtitulo, color }) => (
 
 const SeccionMapa = ({ datos }) => {
   const mapRef = useRef(null);
+  const mapInstance = useRef(null);
   
   useEffect(() => {
-    if (!mapRef.current) return;
+    if (!mapRef.current || mapInstance.current) return;
     
+    // Crear mapa centrado en Buenos Aires
     const map = L.map(mapRef.current).setView([-34.6037, -58.3816], 11);
+    mapInstance.current = map;
     
+    // Agregar capa de mapa
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 18
     }).addTo(map);
     
-    datos.filter(d => d.lat && d.long).forEach(comercio => {
-      L.marker([comercio.lat, comercio.long])
-        .bindPopup(`<b>${comercio.comercio || 'Comercio'}</b><br/>${comercio.tipo_comercio || 'N/A'}`)
-        .addTo(map);
+    // Filtrar datos con coordenadas válidas
+    const comerciosConCoordenadas = datos.filter(d => 
+      d.lat && d.long && 
+      !isNaN(parseFloat(d.lat)) && !isNaN(parseFloat(d.long)) &&
+      parseFloat(d.lat) !== 0 && parseFloat(d.long) !== 0
+    );
+    
+    console.log(`📍 Comercios con coordenadas: ${comerciosConCoordenadas.length} de ${datos.length}`);
+    
+    // Agregar marcadores
+    comerciosConCoordenadas.forEach((comercio, index) => {
+      const lat = parseFloat(comercio.lat);
+      const long = parseFloat(comercio.long);
+      
+      // Verificar que las coordenadas estén en Buenos Aires (rangos aproximados)
+      if (lat < -35.0 && lat > -34.0 && long < -58.0 && long > -59.0) {
+        const marker = L.marker([lat, long])
+          .bindPopup(`
+            <div style="font-family: system-ui; padding: 0.5rem;">
+              <strong style="color: #1e3a8a; font-size: 1.1rem;">${comercio.comercio || 'Comercio #' + (index + 1)}</strong><br/>
+              <span style="color: #3b82f6; font-weight: 600;">${comercio.tipo_comercio || 'N/A'}</span><br/>
+              <span style="color: #6b7280; font-size: 0.85rem;">Trabajadores: ${comercio.cantidad_trabajadores || 'N/A'}</span>
+            </div>
+          `)
+          .addTo(map);
+      }
     });
     
-    return () => map.remove();
+    return () => {
+      if (mapInstance.current) {
+        mapInstance.current.remove();
+        mapInstance.current = null;
+      }
+    };
   }, [datos]);
   
   return (
     <div style={{ background: 'white', borderRadius: '1.5rem', padding: '3rem', boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}>
-      <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#1e3a8a', marginBottom: '2rem', textAlign: 'center' }}>
+      <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#1e3a8a', marginBottom: '1rem', textAlign: 'center' }}>
         🗺️ Mapa de Comercios - Buenos Aires
       </h2>
-      <div ref={mapRef} style={{ height: '600px', borderRadius: '1rem' }}></div>
+      <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: '2rem', fontSize: '1.1rem' }}>
+        Visualización geográfica de los {datos.filter(d => d.lat && d.long).length} comercios relevados con coordenadas
+      </p>
+      <div 
+        ref={mapRef} 
+        style={{ 
+          height: '600px', 
+          borderRadius: '1rem',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+          border: '2px solid #e5e7eb'
+        }}
+      ></div>
+      <div style={{ marginTop: '2rem', padding: '1.5rem', background: '#f3f4f6', borderRadius: '1rem' }}>
+        <p style={{ color: '#4b5563', fontSize: '0.95rem', textAlign: 'center' }}>
+          <strong>💡 Tip:</strong> Haz clic en cualquier marcador para ver detalles del comercio
+        </p>
+      </div>
     </div>
   );
 };
@@ -464,7 +650,7 @@ const SeccionML = () => (
       🤖 Machine Learning
     </h2>
     <p style={{ textAlign: 'center', color: '#6b7280', fontSize: '1.1rem' }}>
-      Sección en pausa - Se retomará próximamente
+      Sección en pausa - Se retomará próximamente con modelos predictivos
     </p>
   </div>
 );
