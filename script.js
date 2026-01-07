@@ -9,21 +9,21 @@ const TEAM_DATA = {
       role: "Data Analyst & Developer",
       university: "UBA",
       linkedin: "https://www.linkedin.com/in/gina-marrazzo-15a8a523b",
-      image: "gina.jpg"
+      image: "./gina.jpg"
     },
     {
       name: "Sofía Gálvez",
       role: "Research & Analysis",
       university: "UNSAM",
       linkedin: "https://www.linkedin.com/in/sofiagalvez0910",
-      image: "sofia.jpg"
+      image: "./sofia.jpg"
     },
     {
       name: "Juan Da Torre",
       role: "ML Engineer & Developer",
       university: "UBA",
       linkedin: "https://www.linkedin.com/in/juan-da-torre-a3b120262",
-      image: "juan.jpg"
+      image: "./juan.jpg"
     }
   ],
   universities: [
@@ -96,6 +96,7 @@ const App = () => {
   const [datos, setDatos] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [indicadores, setIndicadores] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     cargarDatos();
@@ -103,85 +104,118 @@ const App = () => {
 
   const cargarDatos = async () => {
     try {
+      setCargando(true);
+      console.log('🔄 Cargando datos...');
+      
       const response = await fetch('datos_comercios.json');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
+      console.log('✅ Datos cargados:', data.length, 'registros');
+      
       setDatos(data);
       calcularIndicadores(data);
       setCargando(false);
     } catch (err) {
-      console.error('Error cargando datos:', err);
+      console.error('❌ Error cargando datos:', err);
+      setError(err.message);
       setCargando(false);
     }
   };
 
   const calcularIndicadores = (data) => {
-    // Total comercios
-    const total = data.length;
-    
-    // Promedio trabajadores
-    const promTrabajadores = data.reduce((sum, c) => sum + (parseFloat(c.cantidad_trabajadores) || 0), 0) / total;
-    
-    // Tipos de comercio
-    const tipos = {};
-    data.forEach(c => {
-      const tipo = c.tipo_comercio || 'No especificado';
-      tipos[tipo] = (tipos[tipo] || 0) + 1;
-    });
-    const cantidadTipos = Object.keys(tipos).length;
-    
-    // Horas de operación
-    const conHorarios = data.filter(c => c.hs_apertura && c.hs_cierre);
-    const promHoras = conHorarios.reduce((sum, c) => 
-      sum + ((parseFloat(c.hs_cierre) || 0) - (parseFloat(c.hs_apertura) || 0)), 0
-    ) / conHorarios.length;
-    
-    // Acceso a crédito
-    const conCredito = data.filter(c => 
-      (c.credits_bancos && parseFloat(c.credits_bancos) > 0) ||
-      (c.credits_proveedor && parseFloat(c.credits_proveedor) > 0) ||
-      (c.credits_familia && parseFloat(c.credits_familia) > 0)
-    ).length;
-    
-    // Expectativas positivas
-    let expectativasPositivas = 0;
-    data.forEach(row => {
-      const expVentas = String(row.exp_ventas_3mes || '').toLowerCase();
-      if (expVentas.includes('aument') || expVentas.includes('crec') || 
-          expVentas.includes('mejor') || expVentas.includes('más')) {
-        expectativasPositivas++;
-      }
-    });
-    
-    // Con tecnología (POS/sistema)
-    const conTecnologia = data.filter(c => c.tecnologia === 'Sí' || c.tecnologia === 'Si').length;
-    
-    // Años promedio de operación
-    const añoActual = new Date().getFullYear();
-    const conAño = data.filter(c => c.año_apertura && parseFloat(c.año_apertura) > 1900);
-    const promAñosOperacion = conAño.reduce((sum, c) => 
-      sum + (añoActual - parseFloat(c.año_apertura)), 0
-    ) / conAño.length;
-    
-    // Con local propio
-    const conLocalPropio = data.filter(c => 
-      String(c.local || '').toLowerCase().includes('propio')
-    ).length;
-    
-    setIndicadores({
-      total,
-      promTrabajadores: promTrabajadores.toFixed(2),
-      cantidadTipos,
-      promHoras: promHoras.toFixed(1),
-      conCredito,
-      pctCredito: ((conCredito/total)*100).toFixed(1),
-      expectativasPositivas,
-      pctExpectativas: ((expectativasPositivas/total)*100).toFixed(1),
-      conTecnologia,
-      pctTecnologia: ((conTecnologia/total)*100).toFixed(1),
-      promAñosOperacion: promAñosOperacion.toFixed(1),
-      conLocalPropio,
-      pctLocalPropio: ((conLocalPropio/total)*100).toFixed(1)
-    });
+    try {
+      console.log('📊 Calculando indicadores...');
+      
+      // Total comercios
+      const total = data.length;
+      
+      // Promedio trabajadores
+      const trabajadoresData = data.filter(c => c.cantidad_trabajadores && !isNaN(parseFloat(c.cantidad_trabajadores)));
+      const promTrabajadores = trabajadoresData.length > 0 
+        ? trabajadoresData.reduce((sum, c) => sum + parseFloat(c.cantidad_trabajadores), 0) / trabajadoresData.length
+        : 0;
+      
+      // Tipos de comercio
+      const tipos = {};
+      data.forEach(c => {
+        const tipo = c.tipo_comercio || 'No especificado';
+        tipos[tipo] = (tipos[tipo] || 0) + 1;
+      });
+      const cantidadTipos = Object.keys(tipos).length;
+      
+      // Horas de operación
+      const conHorarios = data.filter(c => c.hs_apertura && c.hs_cierre && 
+        !isNaN(parseFloat(c.hs_apertura)) && !isNaN(parseFloat(c.hs_cierre)));
+      const promHoras = conHorarios.length > 0
+        ? conHorarios.reduce((sum, c) => 
+            sum + (parseFloat(c.hs_cierre) - parseFloat(c.hs_apertura)), 0
+          ) / conHorarios.length
+        : 0;
+      
+      // Acceso a crédito
+      const conCredito = data.filter(c => 
+        (c.credits_bancos && parseFloat(c.credits_bancos) > 0) ||
+        (c.credits_proveedor && parseFloat(c.credits_proveedor) > 0) ||
+        (c.credits_familia && parseFloat(c.credits_familia) > 0)
+      ).length;
+      
+      // Expectativas positivas
+      let expectativasPositivas = 0;
+      data.forEach(row => {
+        const expVentas = String(row.exp_ventas_3mes || '').toLowerCase();
+        if (expVentas.includes('aument') || expVentas.includes('crec') || 
+            expVentas.includes('mejor') || expVentas.includes('más') ||
+            expVentas.includes('mas')) {
+          expectativasPositivas++;
+        }
+      });
+      
+      // Con tecnología
+      const conTecnologia = data.filter(c => {
+        const tec = String(c.tecnologia || '').toLowerCase();
+        return tec === 'sí' || tec === 'si' || tec === 'yes';
+      }).length;
+      
+      // Años promedio de operación
+      const añoActual = new Date().getFullYear();
+      const conAño = data.filter(c => c.año_apertura && 
+        parseFloat(c.año_apertura) > 1900 && 
+        parseFloat(c.año_apertura) <= añoActual);
+      const promAñosOperacion = conAño.length > 0
+        ? conAño.reduce((sum, c) => 
+            sum + (añoActual - parseFloat(c.año_apertura)), 0
+          ) / conAño.length
+        : 0;
+      
+      // Con local propio
+      const conLocalPropio = data.filter(c => 
+        String(c.local || '').toLowerCase().includes('propio')
+      ).length;
+      
+      const indicadoresCalculados = {
+        total,
+        promTrabajadores: promTrabajadores.toFixed(2),
+        cantidadTipos,
+        promHoras: promHoras.toFixed(1),
+        conCredito,
+        pctCredito: ((conCredito/total)*100).toFixed(1),
+        expectativasPositivas,
+        pctExpectativas: ((expectativasPositivas/total)*100).toFixed(1),
+        conTecnologia,
+        pctTecnologia: ((conTecnologia/total)*100).toFixed(1),
+        promAñosOperacion: promAñosOperacion.toFixed(1),
+        conLocalPropio,
+        pctLocalPropio: ((conLocalPropio/total)*100).toFixed(1)
+      };
+      
+      console.log('✅ Indicadores calculados:', indicadoresCalculados);
+      setIndicadores(indicadoresCalculados);
+    } catch (err) {
+      console.error('❌ Error calculando indicadores:', err);
+    }
   };
 
   const nav = [
@@ -258,12 +292,19 @@ const App = () => {
 
       {/* Contenido */}
       <main style={{ maxWidth: '1400px', margin: '0 auto', padding: '2rem' }}>
-        {cargando && (
-          <div style={{ background: 'white', borderRadius: '1.5rem', padding: '3rem', textAlign: 'center' }}>
-            <p style={{ fontSize: '1.2rem', color: '#6b7280' }}>Cargando datos...</p>
+        {error && (
+          <div style={{ background: '#fee', color: '#c00', padding: '2rem', borderRadius: '1rem', marginBottom: '2rem' }}>
+            <strong>Error:</strong> {error}
           </div>
         )}
-        {!cargando && (
+        
+        {cargando && (
+          <div style={{ background: 'white', borderRadius: '1.5rem', padding: '3rem', textAlign: 'center' }}>
+            <p style={{ fontSize: '1.2rem', color: '#6b7280' }}>⏳ Cargando datos...</p>
+          </div>
+        )}
+        
+        {!cargando && !error && (
           <>
             {seccion === 'inicio' && <SeccionInicio />}
             {seccion === 'equipo' && <SeccionEquipo />}
@@ -359,6 +400,10 @@ const SeccionEquipo = () => (
           <img
             src={member.image}
             alt={member.name}
+            onError={(e) => {
+              console.error('Error cargando imagen:', member.image);
+              e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="150"><rect width="150" height="150" fill="%233b82f6"/><text x="50%" y="50%" font-size="60" fill="white" text-anchor="middle" dy=".3em">' + member.name.charAt(0) + '</text></svg>';
+            }}
             style={{
               width: '150px',
               height: '150px',
@@ -559,48 +604,70 @@ const SeccionMapa = ({ datos }) => {
   const mapInstance = useRef(null);
   
   useEffect(() => {
-    if (!mapRef.current || mapInstance.current) return;
+    console.log('🗺️ Iniciando componente de mapa...');
+    console.log('Leaflet disponible:', typeof L !== 'undefined');
     
-    // Crear mapa centrado en Buenos Aires
-    const map = L.map(mapRef.current).setView([-34.6037, -58.3816], 11);
-    mapInstance.current = map;
+    if (!mapRef.current) {
+      console.error('❌ mapRef.current no está disponible');
+      return;
+    }
     
-    // Agregar capa de mapa
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
-      maxZoom: 18
-    }).addTo(map);
+    if (mapInstance.current) {
+      console.log('⚠️ Mapa ya existe, saltando inicialización');
+      return;
+    }
     
-    // Filtrar datos con coordenadas válidas
-    const comerciosConCoordenadas = datos.filter(d => 
-      d.lat && d.long && 
-      !isNaN(parseFloat(d.lat)) && !isNaN(parseFloat(d.long)) &&
-      parseFloat(d.lat) !== 0 && parseFloat(d.long) !== 0
-    );
+    if (typeof L === 'undefined') {
+      console.error('❌ Leaflet no está cargado');
+      return;
+    }
     
-    console.log(`📍 Comercios con coordenadas: ${comerciosConCoordenadas.length} de ${datos.length}`);
-    
-    // Agregar marcadores
-    comerciosConCoordenadas.forEach((comercio, index) => {
-      const lat = parseFloat(comercio.lat);
-      const long = parseFloat(comercio.long);
+    try {
+      console.log('📍 Creando mapa...');
+      const map = L.map(mapRef.current).setView([-34.6037, -58.3816], 11);
+      mapInstance.current = map;
       
-      // Verificar que las coordenadas estén en Buenos Aires (rangos aproximados)
-      if (lat < -35.0 && lat > -34.0 && long < -58.0 && long > -59.0) {
-        const marker = L.marker([lat, long])
-          .bindPopup(`
-            <div style="font-family: system-ui; padding: 0.5rem;">
-              <strong style="color: #1e3a8a; font-size: 1.1rem;">${comercio.comercio || 'Comercio #' + (index + 1)}</strong><br/>
-              <span style="color: #3b82f6; font-weight: 600;">${comercio.tipo_comercio || 'N/A'}</span><br/>
-              <span style="color: #6b7280; font-size: 0.85rem;">Trabajadores: ${comercio.cantidad_trabajadores || 'N/A'}</span>
-            </div>
-          `)
-          .addTo(map);
-      }
-    });
+      console.log('🗺️ Agregando capa de tiles...');
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18
+      }).addTo(map);
+      
+      const comerciosConCoordenadas = datos.filter(d => 
+        d.lat && d.long && 
+        !isNaN(parseFloat(d.lat)) && !isNaN(parseFloat(d.long)) &&
+        parseFloat(d.lat) !== 0 && parseFloat(d.long) !== 0
+      );
+      
+      console.log(`📍 Comercios con coordenadas válidas: ${comerciosConCoordenadas.length} de ${datos.length}`);
+      
+      let marcadoresAgregados = 0;
+      comerciosConCoordenadas.forEach((comercio, index) => {
+        const lat = parseFloat(comercio.lat);
+        const long = parseFloat(comercio.long);
+        
+        if (lat < -35.0 && lat > -34.0 && long < -58.0 && long > -59.0) {
+          L.marker([lat, long])
+            .bindPopup(`
+              <div style="font-family: system-ui; padding: 0.5rem;">
+                <strong style="color: #1e3a8a; font-size: 1.1rem;">${comercio.comercio || 'Comercio #' + (index + 1)}</strong><br/>
+                <span style="color: #3b82f6; font-weight: 600;">${comercio.tipo_comercio || 'N/A'}</span><br/>
+                <span style="color: #6b7280; font-size: 0.85rem;">Trabajadores: ${comercio.cantidad_trabajadores || 'N/A'}</span>
+              </div>
+            `)
+            .addTo(map);
+          marcadoresAgregados++;
+        }
+      });
+      
+      console.log(`✅ ${marcadoresAgregados} marcadores agregados al mapa`);
+    } catch (err) {
+      console.error('❌ Error creando mapa:', err);
+    }
     
     return () => {
       if (mapInstance.current) {
+        console.log('🧹 Limpiando mapa');
         mapInstance.current.remove();
         mapInstance.current = null;
       }
@@ -613,7 +680,7 @@ const SeccionMapa = ({ datos }) => {
         🗺️ Mapa de Comercios - Buenos Aires
       </h2>
       <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: '2rem', fontSize: '1.1rem' }}>
-        Visualización geográfica de los {datos.filter(d => d.lat && d.long).length} comercios relevados con coordenadas
+        Visualización geográfica de los comercios relevados en Buenos Aires
       </p>
       <div 
         ref={mapRef} 
