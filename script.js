@@ -1168,4 +1168,5 @@ const AnalisisComerciosApp = () => {
   );
 };
 
-ReactDOM.render(<AnalisisComerciosApp />, document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<AnalisisComerciosApp />)}
