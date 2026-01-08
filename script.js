@@ -1,9 +1,9 @@
-
 const { useState, useEffect, useRef } = React;
 
 // === DATOS DEL PROYECTO ===
 const TEAM_DATA = {
   name: "GreenThunder",
+  tagline: "Data-driven insights for local business transformation",
   members: [
     {
       name: "Gina Marrazzo",
@@ -34,13 +34,13 @@ const TEAM_DATA = {
   ]
 };
 
-
 const COLORS = {
   background: '#0a0a0a',
   surface: '#1a1a1a',
   surfaceHover: '#242424',
-  primary: '#d4af37',
-  primaryDark: '#b8963c',
+  primary: '#4FC3F7',      // Celeste brillante
+  primaryDark: '#29B6F6',  // Celeste más oscuro
+  primaryLight: '#81D4FA', // Celeste más claro
   text: '#f5f5f5',
   textSecondary: '#a8a8a8',
   border: '#2a2a2a'
@@ -237,7 +237,7 @@ function Hero({ scrollY }) {
           Análisis de Comercios
           <br />
           <span style={{ fontWeight: '600', fontStyle: 'italic' }}>
-            Valle de Uco
+            Buenos Aires
           </span>
         </h1>
         
@@ -363,17 +363,65 @@ function ProjectIntro() {
   );
 }
 
-// === INDICADORES ===
+// === INDICADORES CON GRÁFICOS ===
 function Indicadores({ data }) {
   const indicadores = [
-    { label: 'Comercios Analizados', value: data.total, suffix: '' },
-    { label: 'Trabajadores Promedio', value: data.promTrabajadores, suffix: '' },
-    { label: 'Horas de Operación', value: data.promHoras, suffix: 'hs' },
-    { label: 'Acceso a Crédito', value: data.pctCredito, suffix: '%' },
-    { label: 'Expectativas Positivas', value: data.pctExpectativas, suffix: '%' },
-    { label: 'Adopción Tecnológica', value: data.pctTecnologia, suffix: '%' },
-    { label: 'Local Propio', value: data.pctLocalPropio, suffix: '%' },
-    { label: 'Años en Operación', value: data.promAñosOperacion, suffix: '' }
+    { 
+      label: 'Comercios Analizados', 
+      value: data.total, 
+      max: data.total,
+      suffix: '',
+      description: 'Total de comercios relevados'
+    },
+    { 
+      label: 'Trabajadores Promedio', 
+      value: parseFloat(data.promTrabajadores), 
+      max: 10,
+      suffix: '',
+      description: 'Por establecimiento'
+    },
+    { 
+      label: 'Horas de Operación', 
+      value: parseFloat(data.promHoras), 
+      max: 24,
+      suffix: 'hs',
+      description: 'Promedio diario'
+    },
+    { 
+      label: 'Acceso a Crédito', 
+      value: parseFloat(data.pctCredito), 
+      max: 100,
+      suffix: '%',
+      description: 'Comercios con financiamiento'
+    },
+    { 
+      label: 'Expectativas Positivas', 
+      value: parseFloat(data.pctExpectativas), 
+      max: 100,
+      suffix: '%',
+      description: 'Proyecciones de crecimiento'
+    },
+    { 
+      label: 'Adopción Tecnológica', 
+      value: parseFloat(data.pctTecnologia), 
+      max: 100,
+      suffix: '%',
+      description: 'Uso de tecnología digital'
+    },
+    { 
+      label: 'Local Propio', 
+      value: parseFloat(data.pctLocalPropio), 
+      max: 100,
+      suffix: '%',
+      description: 'Propiedad del establecimiento'
+    },
+    { 
+      label: 'Años en Operación', 
+      value: parseFloat(data.promAñosOperacion), 
+      max: 50,
+      suffix: '',
+      description: 'Antigüedad promedio'
+    }
   ];
 
   return (
@@ -410,12 +458,11 @@ function Indicadores({ data }) {
         
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '1px',
-          background: COLORS.border
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '30px'
         }}>
           {indicadores.map((ind, index) => (
-            <IndicadorCard key={index} {...ind} index={index} />
+            <IndicadorCardConGrafico key={index} {...ind} index={index} />
           ))}
         </div>
       </div>
@@ -423,25 +470,69 @@ function Indicadores({ data }) {
   );
 }
 
-function IndicadorCard({ label, value, suffix, index }) {
+function IndicadorCardConGrafico({ label, value, max, suffix, description, index }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [animatedValue, setAnimatedValue] = useState(0);
+  const cardRef = useRef(null);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Animar el valor
+            const duration = 1500;
+            const steps = 60;
+            const increment = value / steps;
+            let current = 0;
+            
+            const timer = setInterval(() => {
+              current += increment;
+              if (current >= value) {
+                setAnimatedValue(value);
+                clearInterval(timer);
+              } else {
+                setAnimatedValue(current);
+              }
+            }, duration / steps);
+            
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+    
+    return () => observer.disconnect();
+  }, [value]);
+  
+  const percentage = (value / max) * 100;
   
   return (
     <div
+      ref={cardRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
-        backgroundColor: COLORS.surface,
-        padding: '50px 30px',
-        textAlign: 'center',
+        backgroundColor: COLORS.background,
+        padding: '40px 30px',
+        borderRadius: '4px',
+        border: `1px solid ${COLORS.border}`,
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
+        boxShadow: isHovered 
+          ? `0 20px 40px rgba(79, 195, 247, 0.15)` 
+          : '0 4px 8px rgba(0,0,0,0.2)',
         cursor: 'default',
         position: 'relative',
         overflow: 'hidden'
       }}
     >
-      {/* Hover gradient */}
+      {/* Top accent line */}
       <div style={{
         position: 'absolute',
         top: 0,
@@ -453,25 +544,99 @@ function IndicadorCard({ label, value, suffix, index }) {
         transition: 'opacity 0.4s'
       }} />
       
+      {/* Circular progress chart */}
       <div style={{
-        fontFamily: '"Crimson Pro", serif',
-        fontSize: 'clamp(42px, 5vw, 56px)',
-        fontWeight: '300',
-        color: COLORS.text,
-        marginBottom: '12px',
-        letterSpacing: '-0.02em'
+        width: '120px',
+        height: '120px',
+        margin: '0 auto 20px',
+        position: 'relative'
       }}>
-        {value}<span style={{ fontSize: '0.6em', color: COLORS.primary }}>{suffix}</span>
+        <svg width="120" height="120" style={{ transform: 'rotate(-90deg)' }}>
+          {/* Background circle */}
+          <circle
+            cx="60"
+            cy="60"
+            r="50"
+            fill="none"
+            stroke={COLORS.border}
+            strokeWidth="8"
+          />
+          {/* Progress circle */}
+          <circle
+            cx="60"
+            cy="60"
+            r="50"
+            fill="none"
+            stroke={COLORS.primary}
+            strokeWidth="8"
+            strokeDasharray={`${2 * Math.PI * 50}`}
+            strokeDashoffset={`${2 * Math.PI * 50 * (1 - (animatedValue / max))}`}
+            strokeLinecap="round"
+            style={{
+              transition: 'stroke-dashoffset 0.6s ease-out',
+              filter: `drop-shadow(0 0 8px ${COLORS.primary}60)`
+            }}
+          />
+        </svg>
+        
+        {/* Center value */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: '28px',
+            fontWeight: '600',
+            color: COLORS.text,
+            lineHeight: '1'
+          }}>
+            {animatedValue.toFixed(suffix === '%' || suffix === 'hs' ? 1 : 0)}
+            <span style={{ fontSize: '16px', color: COLORS.primary }}>{suffix}</span>
+          </div>
+        </div>
       </div>
       
-      <div style={{
-        fontSize: '13px',
-        letterSpacing: '0.1em',
+      {/* Label and description */}
+      <h3 style={{
+        fontSize: '16px',
+        letterSpacing: '0.05em',
         textTransform: 'uppercase',
-        color: COLORS.textSecondary,
-        fontWeight: '500'
+        color: COLORS.text,
+        fontWeight: '600',
+        marginBottom: '8px',
+        textAlign: 'center'
       }}>
         {label}
+      </h3>
+      
+      <p style={{
+        fontSize: '13px',
+        color: COLORS.textSecondary,
+        textAlign: 'center',
+        lineHeight: '1.6'
+      }}>
+        {description}
+      </p>
+      
+      {/* Progress bar at bottom */}
+      <div style={{
+        marginTop: '20px',
+        height: '3px',
+        backgroundColor: COLORS.border,
+        borderRadius: '2px',
+        overflow: 'hidden'
+      }}>
+        <div style={{
+          height: '100%',
+          width: `${percentage}%`,
+          background: `linear-gradient(90deg, ${COLORS.primaryDark}, ${COLORS.primary})`,
+          transition: 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+          boxShadow: `0 0 10px ${COLORS.primary}80`
+        }} />
       </div>
     </div>
   );
@@ -825,17 +990,17 @@ function Footer() {
             marginBottom: '20px',
             fontWeight: '500'
           }}>
-            Contacto
+            Instituciones
           </h4>
-          <div style={{
-            fontSize: '14px',
-            color: COLORS.textSecondary,
-            lineHeight: '2'
-          }}>
-            Buenos Aires, Argentina
-            <br />
-            2024
-          </div>
+          {TEAM_DATA.universities.map((uni, index) => (
+            <div key={index} style={{
+              fontSize: '14px',
+              color: COLORS.textSecondary,
+              marginBottom: '8px'
+            }}>
+              {uni.name}
+            </div>
+          ))}
         </div>
       </div>
       
