@@ -44,7 +44,7 @@ const COLORS = {
   text: '#f5f5f5',
   textSecondary: '#a8a8a8',
   border: '#2a2a2a',
-  chartColors: ['#4FC3F7', '#29B6F6', '#81D4FA', '#0288D1', '#03A9F4', '#00BCD4', '#26C6DA', '#00ACC1']
+  chartColors: ['#4FC3F7', '#00E676', '#FFB74D', '#FF6B6B', '#9C27B0', '#FFC107', '#00BCD4', '#F06292']
 };
 
 // === COMPONENTE PRINCIPAL ===
@@ -130,7 +130,8 @@ function App() {
       fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
       color: COLORS.text,
       backgroundColor: COLORS.background,
-      minHeight: '100vh'
+      minHeight: '100vh',
+      width: '100%'
     }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap');
@@ -141,8 +142,15 @@ function App() {
           box-sizing: border-box;
         }
         
-        body {
+        html, body {
           overflow-x: hidden;
+          background-color: #0a0a0a;
+          width: 100%;
+        }
+        
+        #root {
+          background-color: #0a0a0a;
+          width: 100%;
         }
         
         .fade-in {
@@ -271,7 +279,7 @@ function Hero({ scrollY }) {
         }}>
           <span>Equipo {TEAM_DATA.name}</span>
           <span style={{ color: COLORS.primary }}>•</span>
-          <span>2025/2026</span>
+          <span>2024</span>
         </div>
       </div>
       
@@ -915,7 +923,7 @@ function GraficoBarras({ data }) {
           {/* Bars */}
           {data.map((item, idx) => {
             const barHeight = (item.promedio / maxValue) * height;
-            const x = idx * (barWidth + gap);
+            const x = idx * (barWidth + gap) + 30; // Agregado margen izquierdo de 30px
             const isHovered = hoveredIndex === idx;
             
             return (
@@ -1865,6 +1873,38 @@ function SeccionAnalisis() {
 
 // === SECCIÓN MACHINE LEARNING ===
 function SeccionMachineLearning() {
+  const [resultadosML, setResultadosML] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('ml_results.json')
+      .then(res => res.json())
+      .then(data => {
+        setResultadosML(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error cargando resultados ML:', err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <section style={{
+        padding: '120px 60px',
+        backgroundColor: COLORS.surface,
+        textAlign: 'center'
+      }}>
+        <div style={{ color: COLORS.primary }}>Cargando modelos predictivos...</div>
+      </section>
+    );
+  }
+
+  if (!resultadosML) {
+    return null;
+  }
+
   return (
     <section style={{
       padding: '120px 60px',
@@ -1960,30 +2000,13 @@ function SeccionMachineLearning() {
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))',
-        gap: '40px'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))',
+        gap: '60px'
       }}>
-        {/* Placeholder para modelos ML */}
-        <ModeloPlaceholder 
-          titulo="Probabilidad de Supervivencia"
-          descripcion="Modelo predictivo de permanencia en el mercado a 12 meses"
-          icon="📊"
-        />
-        <ModeloPlaceholder 
-          titulo="Predicción de Crecimiento"
-          descripcion="Estimación de expansión comercial basada en variables estructurales"
-          icon="📈"
-        />
-        <ModeloPlaceholder 
-          titulo="Riesgo Crediticio"
-          descripcion="Score de solvencia para acceso a financiamiento"
-          icon="💳"
-        />
-        <ModeloPlaceholder 
-          titulo="Adopción Digital"
-          descripcion="Probabilidad de migración a niveles tecnológicos superiores"
-          icon="💻"
-        />
+        <ModeloCrecimiento data={resultadosML.modelos.modelo_1_crecimiento} />
+        <ModeloSalario data={resultadosML.modelos.modelo_2_salario} />
+        <ModeloFactoresExternos data={resultadosML.modelos.modelo_3_factores_externos} />
+        <ModeloViabilidad data={resultadosML.modelos.modelo_4_viabilidad} />
       </div>
 
       <div style={{
@@ -2002,91 +2025,925 @@ function SeccionMachineLearning() {
           margin: '0 auto'
         }}>
           <strong style={{ color: COLORS.text }}>Metodología:</strong> Los modelos implementados 
-          utilizan técnicas de machine learning supervisado (Random Forest, Gradient Boosting, Regresión Logística) 
+          utilizan técnicas de machine learning supervisado (Random Forest, Gradient Boosting, K-Means) 
           entrenados sobre el conjunto de datos relevado. Las métricas de performance incluyen accuracy, 
-          precision, recall y AUC-ROC, con validación cruzada k-fold para asegurar robustez. 
-          Los intervalos de confianza se calculan mediante bootstrapping.
+          precision, recall, AUC-ROC, R² y RMSE con validación mediante train/test split (75%/25%).
         </div>
       </div>
     </section>
   );
 }
 
-// Placeholder para modelos ML (a desarrollar)
-function ModeloPlaceholder({ titulo, descripcion, icon }) {
-  const [isHovered, setIsHovered] = useState(false);
+// Modelo 1: Crecimiento
+function ModeloCrecimiento({ data }) {
+  const [expanded, setExpanded] = useState(false);
   
   return (
-    <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      style={{
-        backgroundColor: COLORS.background,
-        padding: '40px',
-        borderRadius: '8px',
-        border: `1px solid ${isHovered ? COLORS.primary : COLORS.border}`,
-        transition: 'all 0.3s',
-        cursor: 'pointer',
-        position: 'relative',
-        overflow: 'hidden'
-      }}
-    >
+    <div style={{
+      backgroundColor: COLORS.background,
+      padding: '40px',
+      borderRadius: '8px',
+      border: `1px solid ${COLORS.border}`,
+      position: 'relative'
+    }}>
       <div style={{
         position: 'absolute',
         top: 0,
         left: 0,
         width: '4px',
         height: '100%',
-        backgroundColor: COLORS.primary,
-        transform: isHovered ? 'scaleY(1)' : 'scaleY(0)',
-        transformOrigin: 'top',
-        transition: 'transform 0.3s'
+        backgroundColor: '#00E676'
       }} />
       
-      <div style={{
-        fontSize: '48px',
-        marginBottom: '20px',
-        textAlign: 'center'
-      }}>
-        {icon}
-      </div>
+      <div style={{ fontSize: '48px', marginBottom: '20px', textAlign: 'center' }}>📈</div>
       
       <h3 style={{
         fontFamily: '"Crimson Pro", serif',
-        fontSize: '22px',
+        fontSize: '24px',
         fontWeight: '600',
         color: COLORS.text,
         marginBottom: '12px',
         textAlign: 'center'
       }}>
-        {titulo}
+        Predicción de Crecimiento Comercial
       </h3>
       
       <p style={{
         fontSize: '14px',
         color: COLORS.textSecondary,
         textAlign: 'center',
-        lineHeight: '1.6',
-        marginBottom: '24px'
+        marginBottom: '30px'
       }}>
-        {descripcion}
+        ¿Qué comercios tienen intención de expandirse?
       </p>
-      
+
+      {/* Métricas principales */}
       <div style={{
-        padding: '16px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gap: '16px',
+        marginBottom: '30px'
+      }}>
+        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color="#00E676" />
+        <MetricaCard label="AUC-ROC" value={data.metricas.auc_roc.toFixed(3)} color="#4FC3F7" />
+        <MetricaCard label="Precision" value={`${(data.metricas.precision * 100).toFixed(1)}%`} color="#FFB74D" />
+        <MetricaCard label="Recall" value={`${(data.metricas.recall * 100).toFixed(1)}%`} color="#FF6B6B" />
+      </div>
+
+      {/* Top 3 Features */}
+      <div style={{
+        marginBottom: '20px',
+        padding: '20px',
         backgroundColor: COLORS.surface,
-        borderRadius: '4px',
+        borderRadius: '6px'
+      }}>
+        <div style={{
+          fontSize: '13px',
+          fontWeight: '600',
+          color: COLORS.primary,
+          marginBottom: '16px',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase'
+        }}>
+          Variables más importantes
+        </div>
+        {data.feature_importance.slice(0, 3).map((f, idx) => (
+          <div key={idx} style={{ marginBottom: '12px' }}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              fontSize: '12px',
+              marginBottom: '4px'
+            }}>
+              <span style={{ color: COLORS.text }}>{f.feature}</span>
+              <span style={{ color: COLORS.primary, fontWeight: '600' }}>
+                {(f.importance * 100).toFixed(1)}%
+              </span>
+            </div>
+            <div style={{
+              height: '6px',
+              backgroundColor: COLORS.border,
+              borderRadius: '3px',
+              overflow: 'hidden'
+            }}>
+              <div style={{
+                height: '100%',
+                width: `${f.importance * 100}%`,
+                backgroundColor: '#00E676',
+                transition: 'width 1s ease-out'
+              }} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button
+        onClick={() => setExpanded(!expanded)}
+        style={{
+          width: '100%',
+          padding: '12px',
+          backgroundColor: COLORS.surface,
+          color: COLORS.primary,
+          border: `1px solid ${COLORS.border}`,
+          borderRadius: '6px',
+          cursor: 'pointer',
+          fontSize: '13px',
+          fontWeight: '600',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          transition: 'all 0.3s'
+        }}
+        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
+        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
+      >
+        {expanded ? '▲ Ver menos' : '▼ Ver explicación'}
+      </button>
+
+      {expanded && (
+        <div style={{
+          marginTop: '20px',
+          padding: '24px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          borderLeft: `3px solid #00E676`
+        }}>
+          <div style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            color: COLORS.text,
+            marginBottom: '12px'
+          }}>
+            🎓 Explicación Académica
+          </div>
+          <p style={{
+            fontSize: '13px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7',
+            marginBottom: '20px'
+          }}>
+            Este modelo de clasificación binaria utiliza <strong style={{ color: COLORS.text }}>Random Forest</strong> para 
+            predecir la probabilidad de que un comercio desee expandirse. Con un accuracy de {(data.metricas.accuracy * 100).toFixed(1)}% 
+            y un recall de {(data.metricas.recall * 100).toFixed(1)}%, el modelo identifica correctamente la mayoría de los comercios 
+            con intención de crecimiento. Las variables más predictivas son la antigüedad del negocio ({(data.feature_importance[0].importance * 100).toFixed(1)}% 
+            de importancia) y la cantidad de trabajadores, sugiriendo que comercios más establecidos y con mayor personal tienden a buscar expansión.
+          </p>
+
+          <div style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            color: COLORS.text,
+            marginBottom: '12px'
+          }}>
+            💬 En Términos Simples
+          </div>
+          <p style={{
+            fontSize: '13px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7'
+          }}>
+            <strong style={{ color: COLORS.text }}>¿Qué significa esto para tu comercio?</strong><br/>
+            Si tu negocio tiene varios años funcionando y un equipo de trabajo estable, es más probable que estés pensando 
+            en crecer. El modelo nos dice que {(data.metricas.accuracy * 100).toFixed(0)}% de las veces acierta quién quiere expandirse. 
+            Las claves son: <strong style={{ color: COLORS.primary }}>experiencia en el rubro, equipo consolidado y expectativas positivas de ventas</strong>.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Modelo 2: Salario
+function ModeloSalario({ data }) {
+  const [expanded, setExpanded] = useState(false);
+  
+  return (
+    <div style={{
+      backgroundColor: COLORS.background,
+      padding: '40px',
+      borderRadius: '8px',
+      border: `1px solid ${COLORS.border}`,
+      position: 'relative'
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '4px',
+        height: '100%',
+        backgroundColor: '#4FC3F7'
+      }} />
+      
+      <div style={{ fontSize: '48px', marginBottom: '20px', textAlign: 'center' }}>💰</div>
+      
+      <h3 style={{
+        fontFamily: '"Crimson Pro", serif',
+        fontSize: '24px',
+        fontWeight: '600',
+        color: COLORS.text,
+        marginBottom: '12px',
+        textAlign: 'center'
+      }}>
+        Predicción de Salario Ofrecido
+      </h3>
+      
+      <p style={{
+        fontSize: '14px',
+        color: COLORS.textSecondary,
+        textAlign: 'center',
+        marginBottom: '30px'
+      }}>
+        Estimación del salario mínimo según características del comercio
+      </p>
+
+      {/* Estadísticas de salario */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '12px',
+        marginBottom: '30px'
+      }}>
+        <div style={{
+          padding: '16px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '11px',
+            color: COLORS.textSecondary,
+            marginBottom: '6px',
+            textTransform: 'uppercase'
+          }}>
+            Promedio
+          </div>
+          <div style={{
+            fontSize: '18px',
+            fontWeight: '700',
+            color: COLORS.primary,
+            fontFamily: '"Crimson Pro", serif'
+          }}>
+            ${(data.estadisticas_salario.promedio / 1000000).toFixed(1)}M
+          </div>
+        </div>
+        <div style={{
+          padding: '16px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '11px',
+            color: COLORS.textSecondary,
+            marginBottom: '6px',
+            textTransform: 'uppercase'
+          }}>
+            Mínimo
+          </div>
+          <div style={{
+            fontSize: '18px',
+            fontWeight: '700',
+            color: COLORS.text,
+            fontFamily: '"Crimson Pro", serif'
+          }}>
+            ${(data.estadisticas_salario.min / 1000).toFixed(0)}k
+          </div>
+        </div>
+        <div style={{
+          padding: '16px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '11px',
+            color: COLORS.textSecondary,
+            marginBottom: '6px',
+            textTransform: 'uppercase'
+          }}>
+            Máximo
+          </div>
+          <div style={{
+            fontSize: '18px',
+            fontWeight: '700',
+            color: COLORS.text,
+            fontFamily: '"Crimson Pro", serif'
+          }}>
+            ${(data.estadisticas_salario.max / 1000000).toFixed(0)}M
+          </div>
+        </div>
+      </div>
+
+      {/* Métrica R² */}
+      <div style={{
+        padding: '20px',
+        backgroundColor: COLORS.surface,
+        borderRadius: '6px',
+        marginBottom: '20px',
         textAlign: 'center'
       }}>
         <div style={{
-          fontSize: '12px',
-          color: COLORS.primary,
+          fontSize: '13px',
+          color: COLORS.textSecondary,
+          marginBottom: '8px'
+        }}>
+          Error Promedio Absoluto (MAE)
+        </div>
+        <div style={{
+          fontSize: '28px',
+          fontWeight: '700',
+          color: '#FFB74D',
+          fontFamily: '"Crimson Pro", serif'
+        }}>
+          ${(data.metricas.mae / 1000000).toFixed(2)}M ARS
+        </div>
+      </div>
+
+      {/* Top 3 Features */}
+      <div style={{
+        marginBottom: '20px',
+        padding: '20px',
+        backgroundColor: COLORS.surface,
+        borderRadius: '6px'
+      }}>
+        <div style={{
+          fontSize: '13px',
           fontWeight: '600',
-          letterSpacing: '0.1em',
+          color: COLORS.primary,
+          marginBottom: '16px',
+          letterSpacing: '0.05em',
           textTransform: 'uppercase'
         }}>
-          Próximamente
+          Factores que más influyen
         </div>
+        {data.feature_importance.slice(0, 3).map((f, idx) => (
+          <div key={idx} style={{ marginBottom: '12px' }}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              fontSize: '12px',
+              marginBottom: '4px'
+            }}>
+              <span style={{ color: COLORS.text }}>{f.feature}</span>
+              <span style={{ color: COLORS.primary, fontWeight: '600' }}>
+                {(f.importance * 100).toFixed(1)}%
+              </span>
+            </div>
+            <div style={{
+              height: '6px',
+              backgroundColor: COLORS.border,
+              borderRadius: '3px',
+              overflow: 'hidden'
+            }}>
+              <div style={{
+                height: '100%',
+                width: `${f.importance * 100}%`,
+                backgroundColor: '#4FC3F7',
+                transition: 'width 1s ease-out'
+              }} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button
+        onClick={() => setExpanded(!expanded)}
+        style={{
+          width: '100%',
+          padding: '12px',
+          backgroundColor: COLORS.surface,
+          color: COLORS.primary,
+          border: `1px solid ${COLORS.border}`,
+          borderRadius: '6px',
+          cursor: 'pointer',
+          fontSize: '13px',
+          fontWeight: '600',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          transition: 'all 0.3s'
+        }}
+        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
+        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
+      >
+        {expanded ? '▲ Ver menos' : '▼ Ver explicación'}
+      </button>
+
+      {expanded && (
+        <div style={{
+          marginTop: '20px',
+          padding: '24px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          borderLeft: `3px solid #4FC3F7`
+        }}>
+          <div style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            color: COLORS.text,
+            marginBottom: '12px'
+          }}>
+            🎓 Explicación Académica
+          </div>
+          <p style={{
+            fontSize: '13px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7',
+            marginBottom: '20px'
+          }}>
+            Modelo de regresión mediante <strong style={{ color: COLORS.text }}>Gradient Boosting</strong> que predice 
+            el salario mínimo ofrecido por los comercios. Con un error promedio de ${(data.metricas.mae / 1000000).toFixed(2)}M ARS, 
+            el modelo captura la relación entre características del comercio y compensación salarial. La antigüedad del negocio 
+            ({(data.feature_importance[0].importance * 100).toFixed(1)}%) y cantidad de trabajadores son los predictores más fuertes, 
+            indicando que comercios más establecidos y con mayor plantilla tienden a ofrecer mejores salarios.
+          </p>
+
+          <div style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            color: COLORS.text,
+            marginBottom: '12px'
+          }}>
+            💬 En Términos Simples
+          </div>
+          <p style={{
+            fontSize: '13px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7'
+          }}>
+            <strong style={{ color: COLORS.text }}>¿Cuánto deberías estar pagando?</strong><br/>
+            El salario promedio del mercado es de ${(data.estadisticas_salario.promedio / 1000000).toFixed(1)} millones de pesos. 
+            Si tu comercio tiene antigüedad y varios empleados, probablemente estés pagando más que el promedio. Los comercios 
+            más nuevos o pequeños suelen pagar alrededor de ${(data.estadisticas_salario.min / 1000).toFixed(0)}k. 
+            <strong style={{ color: COLORS.primary }}> El tipo de comercio también importa</strong>: gastronómicos y dietéticas tienden a pagar más.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Modelo 3: Factores Externos
+function ModeloFactoresExternos({ data }) {
+  const [expanded, setExpanded] = useState(false);
+  
+  return (
+    <div style={{
+      backgroundColor: COLORS.background,
+      padding: '40px',
+      borderRadius: '8px',
+      border: `1px solid ${COLORS.border}`,
+      position: 'relative'
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '4px',
+        height: '100%',
+        backgroundColor: '#FFB74D'
+      }} />
+      
+      <div style={{ fontSize: '48px', marginBottom: '20px', textAlign: 'center' }}>🌪️</div>
+      
+      <h3 style={{
+        fontFamily: '"Crimson Pro", serif',
+        fontSize: '24px',
+        fontWeight: '600',
+        color: COLORS.text,
+        marginBottom: '12px',
+        textAlign: 'center'
+      }}>
+        Impacto de Factores Externos
+      </h3>
+      
+      <p style={{
+        fontSize: '14px',
+        color: COLORS.textSecondary,
+        textAlign: 'center',
+        marginBottom: '30px'
+      }}>
+        ¿Qué afecta más las ventas: crimen, precios, competencia o crédito?
+      </p>
+
+      {/* Métricas */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gap: '16px',
+        marginBottom: '30px'
+      }}>
+        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color="#FFB74D" />
+        <MetricaCard label="F1-Score" value={`${(data.metricas.f1_weighted * 100).toFixed(1)}%`} color="#4FC3F7" />
+      </div>
+
+      {/* Factores de afectación */}
+      <div style={{
+        marginBottom: '20px',
+        padding: '20px',
+        backgroundColor: COLORS.surface,
+        borderRadius: '6px'
+      }}>
+        <div style={{
+          fontSize: '13px',
+          fontWeight: '600',
+          color: COLORS.primary,
+          marginBottom: '16px',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase'
+        }}>
+          Factores de impacto (por importancia)
+        </div>
+        {data.feature_importance.slice(0, 4).filter(f => f.feature.includes('afect')).map((f, idx) => {
+          const labelMap = {
+            'afect_precios_num': 'Precios',
+            'afect_compe_num': 'Competencia',
+            'afect_credito_num': 'Crédito',
+            'afect_crimen_num': 'Crimen'
+          };
+          return (
+            <div key={idx} style={{ marginBottom: '12px' }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                fontSize: '12px',
+                marginBottom: '4px'
+              }}>
+                <span style={{ color: COLORS.text }}>{labelMap[f.feature] || f.feature}</span>
+                <span style={{ color: COLORS.primary, fontWeight: '600' }}>
+                  {(f.importance * 100).toFixed(1)}%
+                </span>
+              </div>
+              <div style={{
+                height: '6px',
+                backgroundColor: COLORS.border,
+                borderRadius: '3px',
+                overflow: 'hidden'
+              }}>
+                <div style={{
+                  height: '100%',
+                  width: `${f.importance * 100}%`,
+                  backgroundColor: '#FFB74D',
+                  transition: 'width 1s ease-out'
+                }} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <button
+        onClick={() => setExpanded(!expanded)}
+        style={{
+          width: '100%',
+          padding: '12px',
+          backgroundColor: COLORS.surface,
+          color: COLORS.primary,
+          border: `1px solid ${COLORS.border}`,
+          borderRadius: '6px',
+          cursor: 'pointer',
+          fontSize: '13px',
+          fontWeight: '600',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          transition: 'all 0.3s'
+        }}
+        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
+        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
+      >
+        {expanded ? '▲ Ver menos' : '▼ Ver explicación'}
+      </button>
+
+      {expanded && (
+        <div style={{
+          marginTop: '20px',
+          padding: '24px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          borderLeft: `3px solid #FFB74D`
+        }}>
+          <div style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            color: COLORS.text,
+            marginBottom: '12px'
+          }}>
+            🎓 Explicación Académica
+          </div>
+          <p style={{
+            fontSize: '13px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7',
+            marginBottom: '20px'
+          }}>
+            Clasificador multiclase <strong style={{ color: COLORS.text }}>Random Forest</strong> que predice si las ventas 
+            empeorarán, se mantendrán o mejorarán según factores externos. Con {(data.metricas.accuracy * 100).toFixed(1)}% de accuracy, 
+            el modelo identifica que <strong style={{ color: COLORS.text }}>los precios</strong> son el factor más determinante, 
+            seguido por la competencia. Interesantemente, la antigüedad del negocio también es altamente predictiva, sugiriendo 
+            que comercios más establecidos manejan mejor las adversidades externas.
+          </p>
+
+          <div style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            color: COLORS.text,
+            marginBottom: '12px'
+          }}>
+            💬 En Términos Simples
+          </div>
+          <p style={{
+            fontSize: '13px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7'
+          }}>
+            <strong style={{ color: COLORS.text }}>¿Qué está afectando tus ventas?</strong><br/>
+            El factor #1 que impacta las ventas son <strong style={{ color: COLORS.primary }}>los precios y la inflación</strong>. 
+            Luego viene la competencia en tu zona. El crimen y el acceso a crédito también importan, pero menos. 
+            Si tu negocio tiene varios años, probablemente ya sepas cómo adaptarte a estos cambios. Los comercios nuevos 
+            sufren más con factores externos porque aún no tienen la experiencia ni la base de clientes fiel.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Modelo 4: Viabilidad
+function ModeloViabilidad({ data }) {
+  const [expanded, setExpanded] = useState(false);
+  
+  return (
+    <div style={{
+      backgroundColor: COLORS.background,
+      padding: '40px',
+      borderRadius: '8px',
+      border: `1px solid ${COLORS.border}`,
+      position: 'relative'
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '4px',
+        height: '100%',
+        backgroundColor: '#9C27B0'
+      }} />
+      
+      <div style={{ fontSize: '48px', marginBottom: '20px', textAlign: 'center' }}>🏪</div>
+      
+      <h3 style={{
+        fontFamily: '"Crimson Pro", serif',
+        fontSize: '24px',
+        fontWeight: '600',
+        color: COLORS.text,
+        marginBottom: '12px',
+        textAlign: 'center'
+      }}>
+        Score de Viabilidad Comercial
+      </h3>
+      
+      <p style={{
+        fontSize: '14px',
+        color: COLORS.textSecondary,
+        textAlign: 'center',
+        marginBottom: '30px'
+      }}>
+        Clasificación de comercios según su salud y potencial
+      </p>
+
+      {/* Distribución de clusters */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '12px',
+        marginBottom: '30px'
+      }}>
+        <div style={{
+          padding: '16px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          border: `2px solid #00E676`,
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '11px',
+            color: '#00E676',
+            marginBottom: '6px',
+            textTransform: 'uppercase',
+            fontWeight: '600'
+          }}>
+            Alto
+          </div>
+          <div style={{
+            fontSize: '24px',
+            fontWeight: '700',
+            color: COLORS.text,
+            fontFamily: '"Crimson Pro", serif'
+          }}>
+            {data.distribucion_clusters.Alto}
+          </div>
+          <div style={{
+            fontSize: '10px',
+            color: COLORS.textSecondary,
+            marginTop: '4px'
+          }}>
+            Score: {data.score_promedio_por_nivel.Alto.toFixed(1)}
+          </div>
+        </div>
+        
+        <div style={{
+          padding: '16px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          border: `2px solid #4FC3F7`,
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '11px',
+            color: '#4FC3F7',
+            marginBottom: '6px',
+            textTransform: 'uppercase',
+            fontWeight: '600'
+          }}>
+            Medio
+          </div>
+          <div style={{
+            fontSize: '24px',
+            fontWeight: '700',
+            color: COLORS.text,
+            fontFamily: '"Crimson Pro", serif'
+          }}>
+            {data.distribucion_clusters.Medio}
+          </div>
+          <div style={{
+            fontSize: '10px',
+            color: COLORS.textSecondary,
+            marginTop: '4px'
+          }}>
+            Score: {data.score_promedio_por_nivel.Medio.toFixed(1)}
+          </div>
+        </div>
+        
+        <div style={{
+          padding: '16px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          border: `2px solid #FF6B6B`,
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '11px',
+            color: '#FF6B6B',
+            marginBottom: '6px',
+            textTransform: 'uppercase',
+            fontWeight: '600'
+          }}>
+            Bajo
+          </div>
+          <div style={{
+            fontSize: '24px',
+            fontWeight: '700',
+            color: COLORS.text,
+            fontFamily: '"Crimson Pro", serif'
+          }}>
+            {data.distribucion_clusters.Bajo}
+          </div>
+          <div style={{
+            fontSize: '10px',
+            color: COLORS.textSecondary,
+            marginTop: '4px'
+          }}>
+            Score: {data.score_promedio_por_nivel.Bajo.toFixed(1)}
+          </div>
+        </div>
+      </div>
+
+      {/* Score promedio */}
+      <div style={{
+        padding: '20px',
+        backgroundColor: COLORS.surface,
+        borderRadius: '6px',
+        marginBottom: '20px',
+        textAlign: 'center'
+      }}>
+        <div style={{
+          fontSize: '13px',
+          color: COLORS.textSecondary,
+          marginBottom: '8px'
+        }}>
+          Score Promedio General
+        </div>
+        <div style={{
+          fontSize: '36px',
+          fontWeight: '700',
+          color: '#9C27B0',
+          fontFamily: '"Crimson Pro", serif'
+        }}>
+          {data.estadisticas_score.mean.toFixed(1)}<span style={{ fontSize: '20px' }}>/100</span>
+        </div>
+      </div>
+
+      <button
+        onClick={() => setExpanded(!expanded)}
+        style={{
+          width: '100%',
+          padding: '12px',
+          backgroundColor: COLORS.surface,
+          color: COLORS.primary,
+          border: `1px solid ${COLORS.border}`,
+          borderRadius: '6px',
+          cursor: 'pointer',
+          fontSize: '13px',
+          fontWeight: '600',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          transition: 'all 0.3s'
+        }}
+        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
+        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
+      >
+        {expanded ? '▲ Ver menos' : '▼ Ver explicación'}
+      </button>
+
+      {expanded && (
+        <div style={{
+          marginTop: '20px',
+          padding: '24px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          borderLeft: `3px solid #9C27B0`
+        }}>
+          <div style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            color: COLORS.text,
+            marginBottom: '12px'
+          }}>
+            🎓 Explicación Académica
+          </div>
+          <p style={{
+            fontSize: '13px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7',
+            marginBottom: '20px'
+          }}>
+            Clustering no supervisado mediante <strong style={{ color: COLORS.text }}>K-Means (k=3)</strong> que agrupa comercios 
+            según múltiples dimensiones de viabilidad. El score compuesto (0-100) pondera: expectativas de ventas (30%), 
+            acceso a crédito (20%), nivel tecnológico (20%), antigüedad (15%), tamaño de plantilla (10%) y propiedad del local (5%). 
+            Los {data.distribucion_clusters.Alto} comercios en el cluster "Alto" (score promedio {data.score_promedio_por_nivel.Alto.toFixed(1)}) 
+            muestran mayor resiliencia y potencial de crecimiento.
+          </p>
+
+          <div style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            color: COLORS.text,
+            marginBottom: '12px'
+          }}>
+            💬 En Términos Simples
+          </div>
+          <p style={{
+            fontSize: '13px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7'
+          }}>
+            <strong style={{ color: COLORS.text }}>¿Qué tan viable es tu comercio?</strong><br/>
+            Este es como un "estado de salud" de tu negocio. <strong style={{ color: '#00E676' }}>Nivel Alto</strong> = 
+            negocio sólido con buenas expectativas, acceso a crédito y tecnología. <strong style={{ color: '#4FC3F7' }}>Nivel Medio</strong> = 
+            estás bien pero hay margen de mejora. <strong style={{ color: '#FF6B6B' }}>Nivel Bajo</strong> = necesitás reforzar 
+            aspectos clave (digitalización, acceso a financiamiento, proyecciones). El score promedio del mercado es {data.estadisticas_score.mean.toFixed(0)} puntos. 
+            <strong style={{ color: COLORS.primary }}> ¿Cómo mejorarlo?</strong> Invertí en tecnología, buscá crédito formal y consolidá tu equipo.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Componente auxiliar para métricas
+function MetricaCard({ label, value, color }) {
+  return (
+    <div style={{
+      padding: '16px',
+      backgroundColor: COLORS.surface,
+      borderRadius: '6px',
+      textAlign: 'center',
+      border: `1px solid ${color}40`
+    }}>
+      <div style={{
+        fontSize: '11px',
+        color: COLORS.textSecondary,
+        marginBottom: '8px',
+        textTransform: 'uppercase',
+        letterSpacing: '0.05em'
+      }}>
+        {label}
+      </div>
+      <div style={{
+        fontSize: '22px',
+        fontWeight: '700',
+        color: color,
+        fontFamily: '"Crimson Pro", serif'
+      }}>
+        {value}
       </div>
     </div>
   );
@@ -2463,7 +3320,7 @@ function Footer() {
         color: COLORS.textSecondary
       }}>
         <div>
-          © 2025/2026 MIT LIFT Lab · Equipo {TEAM_DATA.name}
+          © 2024 MIT LIFT Lab · Equipo {TEAM_DATA.name}
         </div>
         <div style={{
           display: 'flex',
@@ -2642,9 +3499,9 @@ function procesarDatosGraficos(datos) {
       // Remover símbolos y espacios
       const cleaned = sal.toString().replace(/\$/g, "").replace(/\./g, "").replace(/,/g, "").replace(/ /g, "");
       const num = parseFloat(cleaned);
-
-      // Filtrar solo valores numéricos en rango razonable (100k - 5M ARS)
-      if (isNaN(num) || num < 100000 || num > 5000000) return null;
+      
+      // Filtrar solo valores numéricos en rango razonable (100k - 15M ARS)
+      if (isNaN(num) || num < 100000 || num > 15000000) return null;
       
       return { valor: num, tipo: c.tipo_comercio || 'Sin categoría' };
     })
