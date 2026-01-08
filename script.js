@@ -1079,6 +1079,7 @@ function GraficoBarrasHorizontales({ data }) {
 // Gráfico tierlist - Adopción tecnológica
 function GraficoTierlist({ data }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [expandedIndex, setExpandedIndex] = useState(null);
   
   const tierColors = {
     'Alto': '#00E676',      // Verde brillante
@@ -1090,6 +1091,42 @@ function GraficoTierlist({ data }) {
     'Alto': 'S Tier',
     'Moderado': 'A Tier',
     'Básico': 'B Tier'
+  };
+  
+  const tierDetails = {
+    'Alto': {
+      titulo: 'Nivel Alto - Digitalización Avanzada',
+      items: [
+        { icon: '📱', texto: 'Presencia activa en redes sociales (Instagram, Facebook, TikTok)' },
+        { icon: '🛒', texto: 'E-commerce funcional con catálogo online y pagos digitales' },
+        { icon: '📊', texto: 'Software de gestión de stock y inventario' },
+        { icon: '💳', texto: 'Sistema POS integrado con múltiples métodos de pago' },
+        { icon: '📈', texto: 'Analytics y métricas de ventas digitales' },
+        { icon: '🤖', texto: 'Automatización de procesos (facturación, recordatorios)' }
+      ]
+    },
+    'Moderado': {
+      titulo: 'Nivel Moderado - Digitalización Intermedia',
+      items: [
+        { icon: '📱', texto: 'WhatsApp Business para atención al cliente' },
+        { icon: '💬', texto: 'Apps de mensajería para pedidos y consultas' },
+        { icon: '🔲', texto: 'Códigos QR para pagos (Mercado Pago, modo, etc.)' },
+        { icon: '💳', texto: 'Aceptación de transferencias bancarias' },
+        { icon: '📋', texto: 'Catálogo digital básico (PDF o fotos)' },
+        { icon: '📧', texto: 'Email para comunicación con clientes' }
+      ]
+    },
+    'Básico': {
+      titulo: 'Nivel Básico - Digitalización Inicial',
+      items: [
+        { icon: '📱', texto: 'Teléfono celular para contacto' },
+        { icon: '💳', texto: 'Tarjeta de débito/crédito física' },
+        { icon: '📝', texto: 'Registro manual o digital simple de ventas' },
+        { icon: '🔢', texto: 'Calculadora para operaciones básicas' },
+        { icon: '📞', texto: 'Línea telefónica fija o móvil' },
+        { icon: '✍️', texto: 'Facturación tradicional sin sistema integrado' }
+      ]
+    }
   };
   
   const orderedData = ['Alto', 'Moderado', 'Básico'].map(nivel => {
@@ -1116,26 +1153,37 @@ function GraficoTierlist({ data }) {
       <p style={{
         fontSize: '13px',
         color: COLORS.textSecondary,
-        marginBottom: '40px'
+        marginBottom: '10px'
       }}>
         Clasificación de comercios según nivel de digitalización
+      </p>
+      <p style={{
+        fontSize: '12px',
+        color: COLORS.primary,
+        marginBottom: '30px',
+        fontStyle: 'italic'
+      }}>
+        💡 Haz click en cada nivel para ver qué implica
       </p>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {orderedData.map((item, idx) => {
           const isHovered = hoveredIndex === idx;
+          const isExpanded = expandedIndex === idx;
           const tierColor = tierColors[item.nivel];
+          const details = tierDetails[item.nivel];
           
           return (
             <div
               key={idx}
               onMouseEnter={() => setHoveredIndex(idx)}
               onMouseLeave={() => setHoveredIndex(null)}
+              onClick={() => setExpandedIndex(isExpanded ? null : idx)}
               style={{
                 position: 'relative',
                 padding: '30px',
                 backgroundColor: COLORS.background,
-                border: `2px solid ${isHovered ? tierColor : COLORS.border}`,
+                border: `2px solid ${isHovered || isExpanded ? tierColor : COLORS.border}`,
                 borderRadius: '8px',
                 transition: 'all 0.3s',
                 transform: isHovered ? 'translateX(10px)' : 'translateX(0)',
@@ -1182,13 +1230,23 @@ function GraficoTierlist({ data }) {
                   </div>
                 </div>
                 
-                <div style={{
-                  fontSize: '32px',
-                  fontWeight: '700',
-                  fontFamily: '"Crimson Pro", serif',
-                  color: tierColor
-                }}>
-                  {item.porcentaje}%
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                  <div style={{
+                    fontSize: '32px',
+                    fontWeight: '700',
+                    fontFamily: '"Crimson Pro", serif',
+                    color: tierColor
+                  }}>
+                    {item.porcentaje}%
+                  </div>
+                  
+                  <div style={{
+                    fontSize: '20px',
+                    transition: 'transform 0.3s',
+                    transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
+                  }}>
+                    ▼
+                  </div>
                 </div>
               </div>
               
@@ -1208,6 +1266,98 @@ function GraficoTierlist({ data }) {
                   boxShadow: `0 0 10px ${tierColor}80`
                 }} />
               </div>
+              
+              {/* Contenido expandible */}
+              {isExpanded && (
+                <div style={{
+                  marginTop: '30px',
+                  paddingTop: '30px',
+                  borderTop: `1px solid ${COLORS.border}`,
+                  animation: 'slideDown 0.3s ease-out'
+                }}>
+                  <style>{`
+                    @keyframes slideDown {
+                      from {
+                        opacity: 0;
+                        transform: translateY(-10px);
+                      }
+                      to {
+                        opacity: 1;
+                        transform: translateY(0);
+                      }
+                    }
+                  `}</style>
+                  
+                  <h4 style={{
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: tierColor,
+                    marginBottom: '20px',
+                    letterSpacing: '0.05em'
+                  }}>
+                    {details.titulo}
+                  </h4>
+                  
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                    gap: '16px'
+                  }}>
+                    {details.items.map((detalle, detIdx) => (
+                      <div
+                        key={detIdx}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          gap: '12px',
+                          padding: '12px',
+                          backgroundColor: COLORS.surface,
+                          borderRadius: '6px',
+                          border: `1px solid ${COLORS.border}`,
+                          transition: 'all 0.2s'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = COLORS.surfaceHover;
+                          e.currentTarget.style.borderColor = tierColor + '40';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = COLORS.surface;
+                          e.currentTarget.style.borderColor = COLORS.border;
+                        }}
+                      >
+                        <div style={{
+                          fontSize: '24px',
+                          flexShrink: 0
+                        }}>
+                          {detalle.icon}
+                        </div>
+                        <div style={{
+                          fontSize: '13px',
+                          color: COLORS.textSecondary,
+                          lineHeight: '1.5'
+                        }}>
+                          {detalle.texto}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div style={{
+                    marginTop: '20px',
+                    padding: '16px',
+                    backgroundColor: COLORS.surface,
+                    borderRadius: '6px',
+                    borderLeft: `3px solid ${tierColor}`,
+                    fontSize: '12px',
+                    color: COLORS.textSecondary,
+                    fontStyle: 'italic'
+                  }}>
+                    💡 <strong style={{ color: COLORS.text }}>Tip:</strong> La implementación 
+                    progresiva de estas herramientas puede aumentar significativamente la 
+                    competitividad y alcance del comercio.
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}
@@ -1219,6 +1369,7 @@ function GraficoTierlist({ data }) {
 // Gráfico de salarios
 function GraficoSalarios({ data }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [viewMode, setViewMode] = useState('general'); // 'general' o 'porComercio'
   
   const formatCurrency = (num) => {
     return new Intl.NumberFormat('es-AR', {
@@ -1236,161 +1387,355 @@ function GraficoSalarios({ data }) {
       borderRadius: '4px',
       border: `1px solid ${COLORS.border}`
     }}>
-      <h3 style={{
-        fontFamily: '"Crimson Pro", serif',
-        fontSize: '28px',
-        fontWeight: '400',
-        color: COLORS.text,
-        marginBottom: '10px'
-      }}>
-        Salario mínimo dispuesto a pagar
-      </h3>
-      <p style={{
-        fontSize: '13px',
-        color: COLORS.textSecondary,
-        marginBottom: '30px'
-      }}>
-        Rango salarial que los comerciantes están dispuestos a ofrecer
-      </p>
-      
-      {/* Estadísticas principales */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '20px',
-        marginBottom: '40px'
-      }}>
-        <div style={{
-          padding: '20px',
-          backgroundColor: COLORS.background,
-          borderRadius: '4px',
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '12px',
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+        <div>
+          <h3 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: '28px',
+            fontWeight: '400',
+            color: COLORS.text,
+            marginBottom: '10px'
+          }}>
+            Salario mínimo dispuesto a pagar
+          </h3>
+          <p style={{
+            fontSize: '13px',
             color: COLORS.textSecondary,
-            marginBottom: '8px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em'
+            marginBottom: '0'
           }}>
-            Promedio
-          </div>
-          <div style={{
-            fontSize: '24px',
-            fontWeight: '600',
-            color: COLORS.primary,
-            fontFamily: '"Crimson Pro", serif'
-          }}>
-            {formatCurrency(data.promedio)}
-          </div>
+            Rango salarial que los comerciantes están dispuestos a ofrecer
+          </p>
         </div>
         
+        {/* Toggle de vista */}
         <div style={{
-          padding: '20px',
+          display: 'flex',
+          gap: '8px',
           backgroundColor: COLORS.background,
-          borderRadius: '4px',
-          textAlign: 'center'
+          padding: '4px',
+          borderRadius: '6px',
+          border: `1px solid ${COLORS.border}`
         }}>
-          <div style={{
-            fontSize: '12px',
-            color: COLORS.textSecondary,
-            marginBottom: '8px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em'
-          }}>
-            Mínimo
-          </div>
-          <div style={{
-            fontSize: '24px',
-            fontWeight: '600',
-            color: COLORS.text,
-            fontFamily: '"Crimson Pro", serif'
-          }}>
-            {formatCurrency(data.minimo)}
-          </div>
-        </div>
-        
-        <div style={{
-          padding: '20px',
-          backgroundColor: COLORS.background,
-          borderRadius: '4px',
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '12px',
-            color: COLORS.textSecondary,
-            marginBottom: '8px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em'
-          }}>
-            Máximo
-          </div>
-          <div style={{
-            fontSize: '24px',
-            fontWeight: '600',
-            color: COLORS.text,
-            fontFamily: '"Crimson Pro", serif'
-          }}>
-            {formatCurrency(data.maximo)}
-          </div>
+          <button
+            onClick={() => setViewMode('general')}
+            style={{
+              padding: '8px 16px',
+              fontSize: '12px',
+              fontWeight: '600',
+              backgroundColor: viewMode === 'general' ? COLORS.primary : 'transparent',
+              color: viewMode === 'general' ? COLORS.background : COLORS.textSecondary,
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              letterSpacing: '0.05em'
+            }}
+          >
+            GENERAL
+          </button>
+          <button
+            onClick={() => setViewMode('porComercio')}
+            style={{
+              padding: '8px 16px',
+              fontSize: '12px',
+              fontWeight: '600',
+              backgroundColor: viewMode === 'porComercio' ? COLORS.primary : 'transparent',
+              color: viewMode === 'porComercio' ? COLORS.background : COLORS.textSecondary,
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              letterSpacing: '0.05em'
+            }}
+          >
+            POR TIPO
+          </button>
         </div>
       </div>
       
-      {/* Distribución por rangos */}
-      <div style={{ marginTop: '30px' }}>
-        <div style={{
-          fontSize: '14px',
-          fontWeight: '600',
-          color: COLORS.text,
-          marginBottom: '20px'
-        }}>
-          Distribución por rango salarial
-        </div>
-        
-        {data.distribucion.map((item, idx) => {
-          const isHovered = hoveredIndex === idx;
-          
-          return (
-            <div
-              key={idx}
-              onMouseEnter={() => setHoveredIndex(idx)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              style={{
-                marginBottom: '16px',
-                cursor: 'pointer'
-              }}
-            >
+      {viewMode === 'general' ? (
+        <>
+          {/* Estadísticas principales */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '20px',
+            marginBottom: '40px'
+          }}>
+            <div style={{
+              padding: '20px',
+              backgroundColor: COLORS.background,
+              borderRadius: '4px',
+              textAlign: 'center'
+            }}>
               <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginBottom: '6px',
-                fontSize: '13px'
+                fontSize: '12px',
+                color: COLORS.textSecondary,
+                marginBottom: '8px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em'
               }}>
-                <span style={{ color: COLORS.text }}>{item.rango}</span>
-                <span style={{ color: COLORS.primary, fontWeight: '600' }}>
-                  {item.cantidad} ({item.porcentaje}%)
-                </span>
+                Promedio
               </div>
-              
               <div style={{
-                height: '8px',
-                backgroundColor: COLORS.border,
-                borderRadius: '4px',
-                overflow: 'hidden'
+                fontSize: '24px',
+                fontWeight: '600',
+                color: COLORS.primary,
+                fontFamily: '"Crimson Pro", serif'
               }}>
-                <div style={{
-                  height: '100%',
-                  width: `${item.porcentaje}%`,
-                  background: `linear-gradient(90deg, ${COLORS.primaryDark}, ${COLORS.primary})`,
-                  transition: 'all 0.5s ease-out',
-                  transform: isHovered ? 'scaleY(1.2)' : 'scaleY(1)',
-                  boxShadow: isHovered ? `0 0 10px ${COLORS.primary}80` : 'none'
-                }} />
+                {formatCurrency(data.promedio)}
               </div>
             </div>
-          );
-        })}
-      </div>
+            
+            <div style={{
+              padding: '20px',
+              backgroundColor: COLORS.background,
+              borderRadius: '4px',
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '12px',
+                color: COLORS.textSecondary,
+                marginBottom: '8px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em'
+              }}>
+                Mínimo
+              </div>
+              <div style={{
+                fontSize: '24px',
+                fontWeight: '600',
+                color: COLORS.text,
+                fontFamily: '"Crimson Pro", serif'
+              }}>
+                {formatCurrency(data.minimo)}
+              </div>
+            </div>
+            
+            <div style={{
+              padding: '20px',
+              backgroundColor: COLORS.background,
+              borderRadius: '4px',
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '12px',
+                color: COLORS.textSecondary,
+                marginBottom: '8px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em'
+              }}>
+                Máximo
+              </div>
+              <div style={{
+                fontSize: '24px',
+                fontWeight: '600',
+                color: COLORS.text,
+                fontFamily: '"Crimson Pro", serif'
+              }}>
+                {formatCurrency(data.maximo)}
+              </div>
+            </div>
+          </div>
+          
+          {/* Distribución por rangos */}
+          <div style={{ marginTop: '30px' }}>
+            <div style={{
+              fontSize: '14px',
+              fontWeight: '600',
+              color: COLORS.text,
+              marginBottom: '20px'
+            }}>
+              Distribución por rango salarial
+            </div>
+            
+            {data.distribucion.map((item, idx) => {
+              const isHovered = hoveredIndex === idx;
+              
+              return (
+                <div
+                  key={idx}
+                  onMouseEnter={() => setHoveredIndex(idx)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  style={{
+                    marginBottom: '16px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: '6px',
+                    fontSize: '13px'
+                  }}>
+                    <span style={{ color: COLORS.text }}>{item.rango}</span>
+                    <span style={{ color: COLORS.primary, fontWeight: '600' }}>
+                      {item.cantidad} ({item.porcentaje}%)
+                    </span>
+                  </div>
+                  
+                  <div style={{
+                    height: '8px',
+                    backgroundColor: COLORS.border,
+                    borderRadius: '4px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      height: '100%',
+                      width: `${item.porcentaje}%`,
+                      background: `linear-gradient(90deg, ${COLORS.primaryDark}, ${COLORS.primary})`,
+                      transition: 'all 0.5s ease-out',
+                      transform: isHovered ? 'scaleY(1.2)' : 'scaleY(1)',
+                      boxShadow: isHovered ? `0 0 10px ${COLORS.primary}80` : 'none'
+                    }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Vista por tipo de comercio */}
+          <div style={{
+            marginTop: '30px',
+            padding: '20px',
+            backgroundColor: COLORS.background,
+            borderRadius: '6px',
+            marginBottom: '30px'
+          }}>
+            <div style={{
+              fontSize: '13px',
+              color: COLORS.textSecondary,
+              lineHeight: '1.6'
+            }}>
+              📊 <strong style={{ color: COLORS.text }}>Top 10 tipos de comercio</strong> según 
+              salario promedio ofrecido. Solo se incluyen categorías con al menos 3 comercios relevados.
+            </div>
+          </div>
+
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px'
+          }}>
+            {data.porComercio.map((item, idx) => {
+              const isHovered = hoveredIndex === idx;
+              const maxSalario = Math.max(...data.porComercio.map(c => c.promedio));
+              const widthPercentage = (item.promedio / maxSalario) * 100;
+              
+              return (
+                <div
+                  key={idx}
+                  onMouseEnter={() => setHoveredIndex(idx)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  style={{
+                    padding: '20px',
+                    backgroundColor: COLORS.background,
+                    borderRadius: '6px',
+                    border: `1px solid ${isHovered ? COLORS.primary : COLORS.border}`,
+                    transition: 'all 0.3s',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '12px'
+                  }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{
+                        fontSize: '15px',
+                        fontWeight: '600',
+                        color: COLORS.text,
+                        marginBottom: '4px'
+                      }}>
+                        {idx + 1}. {item.tipo}
+                      </div>
+                      <div style={{
+                        fontSize: '12px',
+                        color: COLORS.textSecondary
+                      }}>
+                        {item.cantidad} comercio{item.cantidad > 1 ? 's' : ''} relevado{item.cantidad > 1 ? 's' : ''}
+                      </div>
+                    </div>
+                    
+                    <div style={{
+                      fontSize: '22px',
+                      fontWeight: '700',
+                      color: COLORS.primary,
+                      fontFamily: '"Crimson Pro", serif',
+                      textAlign: 'right'
+                    }}>
+                      {formatCurrency(item.promedio)}
+                    </div>
+                  </div>
+                  
+                  {/* Barra visual */}
+                  <div style={{
+                    height: '10px',
+                    backgroundColor: COLORS.surface,
+                    borderRadius: '5px',
+                    overflow: 'hidden',
+                    position: 'relative'
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      height: '100%',
+                      width: `${widthPercentage}%`,
+                      background: `linear-gradient(90deg, ${COLORS.primaryDark}, ${COLORS.primary})`,
+                      borderRadius: '5px',
+                      transition: 'width 1s ease-out',
+                      boxShadow: isHovered ? `0 0 15px ${COLORS.primary}80` : 'none'
+                    }} />
+                    
+                    {/* Marcador de promedio general */}
+                    <div style={{
+                      position: 'absolute',
+                      left: `${(data.promedio / maxSalario) * 100}%`,
+                      top: '-8px',
+                      bottom: '-8px',
+                      width: '2px',
+                      backgroundColor: '#FFB74D',
+                      opacity: 0.6
+                    }}>
+                      <div style={{
+                        position: 'absolute',
+                        top: '-20px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        fontSize: '10px',
+                        color: '#FFB74D',
+                        whiteSpace: 'nowrap',
+                        fontWeight: '600'
+                      }}>
+                        PROM
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          
+          <div style={{
+            marginTop: '30px',
+            padding: '16px',
+            backgroundColor: COLORS.background,
+            borderRadius: '6px',
+            borderLeft: `3px solid ${COLORS.primary}`,
+            fontSize: '12px',
+            color: COLORS.textSecondary
+          }}>
+            💡 <strong style={{ color: COLORS.text }}>Nota:</strong> La línea naranja (PROM) 
+            indica el salario promedio general ({formatCurrency(data.promedio)}). Los comercios 
+            por encima de esta línea ofrecen salarios superiores al promedio del mercado.
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -2287,17 +2632,30 @@ function procesarDatosGraficos(datos) {
     porcentaje: parseFloat(((cantidad / datos.length) * 100).toFixed(1))
   }));
 
-  // Salario mínimo dispuesto a pagar
+  // Salario mínimo dispuesto a pagar (con limpieza de datos)
   const salarios = datos
-    .map(c => parseFloat(c.min_salario))
-    .filter(s => !isNaN(s) && s > 0);
+    .map(c => {
+      const sal = c.min_salario;
+      // Intentar parsear diferentes formatos
+      if (!sal) return null;
+      
+      // Remover símbolos y espacios
+      const cleaned = sal.toString().replace(/[$.\s]/g, '').replace(/,/g, '');
+      const num = parseFloat(cleaned);
+      
+      // Filtrar solo valores numéricos en rango razonable (100k - 15M ARS)
+      if (isNaN(num) || num < 100000 || num > 15000000) return null;
+      
+      return { valor: num, tipo: c.tipo_comercio || 'Sin categoría' };
+    })
+    .filter(s => s !== null);
   
   const promedioSalario = salarios.length > 0 
-    ? salarios.reduce((acc, s) => acc + s, 0) / salarios.length 
+    ? salarios.reduce((acc, s) => acc + s.valor, 0) / salarios.length 
     : 0;
 
-  const minSalario = salarios.length > 0 ? Math.min(...salarios) : 0;
-  const maxSalario = salarios.length > 0 ? Math.max(...salarios) : 0;
+  const minSalario = salarios.length > 0 ? Math.min(...salarios.map(s => s.valor)) : 0;
+  const maxSalario = salarios.length > 0 ? Math.max(...salarios.map(s => s.valor)) : 0;
   
   // Distribución de salarios en rangos
   const rangos = [
@@ -2309,13 +2667,36 @@ function procesarDatosGraficos(datos) {
   ];
 
   const distribucionSalarios = rangos.map(rango => {
-    const cantidad = salarios.filter(s => s >= rango.min && s < rango.max).length;
+    const cantidad = salarios.filter(s => s.valor >= rango.min && s.valor < rango.max).length;
     return {
       rango: rango.label,
       cantidad,
       porcentaje: parseFloat(((cantidad / salarios.length) * 100).toFixed(1))
     };
   });
+
+  // Salario promedio por tipo de comercio (top 10)
+  const salariosPorTipo = {};
+  const countPorTipo = {};
+  
+  salarios.forEach(s => {
+    if (!salariosPorTipo[s.tipo]) {
+      salariosPorTipo[s.tipo] = 0;
+      countPorTipo[s.tipo] = 0;
+    }
+    salariosPorTipo[s.tipo] += s.valor;
+    countPorTipo[s.tipo]++;
+  });
+
+  const salariosPorComercio = Object.entries(salariosPorTipo)
+    .map(([tipo, suma]) => ({
+      tipo,
+      promedio: Math.round(suma / countPorTipo[tipo]),
+      cantidad: countPorTipo[tipo]
+    }))
+    .filter(item => item.cantidad >= 3) // Solo tipos con al menos 3 comercios
+    .sort((a, b) => b.promedio - a.promedio)
+    .slice(0, 10);
 
   return {
     distribucionComercios,
@@ -2326,7 +2707,8 @@ function procesarDatosGraficos(datos) {
       promedio: parseFloat(promedioSalario.toFixed(0)),
       minimo: minSalario,
       maximo: maxSalario,
-      distribucion: distribucionSalarios
+      distribucion: distribucionSalarios,
+      porComercio: salariosPorComercio
     }
   };
 }
