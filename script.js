@@ -279,7 +279,7 @@ function Hero({ scrollY }) {
         }}>
           <span>Equipo {TEAM_DATA.name}</span>
           <span style={{ color: COLORS.primary }}>•</span>
-          <span>2025/2026</span>
+          <span>2025-2026</span>
         </div>
       </div>
       
@@ -1107,9 +1107,9 @@ function GraficoTierlist({ data }) {
       items: [
         { icon: '📱', texto: 'Presencia activa en redes sociales (Instagram, Facebook, TikTok)' },
         { icon: '🛒', texto: 'E-commerce funcional con catálogo online y pagos digitales' },
-        { icon: '📊', texto: 'Software de gestión de stock y inventario' },
+        { icon: '', texto: 'Software de gestión de stock y inventario' },
         { icon: '💳', texto: 'Sistema POS integrado con múltiples métodos de pago' },
-        { icon: '📈', texto: 'Analytics y métricas de ventas digitales' },
+        { icon: '', texto: 'Analytics y métricas de ventas digitales' },
         { icon: '🤖', texto: 'Automatización de procesos (facturación, recordatorios)' }
       ]
     },
@@ -1171,7 +1171,7 @@ function GraficoTierlist({ data }) {
         marginBottom: '30px',
         fontStyle: 'italic'
       }}>
-        💡 Haz click en cada nivel para ver qué implica
+         Haz click en cada nivel para ver qué implica
       </p>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -1360,7 +1360,7 @@ function GraficoTierlist({ data }) {
                     color: COLORS.textSecondary,
                     fontStyle: 'italic'
                   }}>
-                    💡 <strong style={{ color: COLORS.text }}>Tip:</strong> La implementación 
+                     <strong style={{ color: COLORS.text }}>Tip:</strong> La implementación 
                     progresiva de estas herramientas puede aumentar significativamente la 
                     competitividad y alcance del comercio.
                   </div>
@@ -1617,7 +1617,7 @@ function GraficoSalarios({ data }) {
               color: COLORS.textSecondary,
               lineHeight: '1.6'
             }}>
-              📊 <strong style={{ color: COLORS.text }}>Top 10 tipos de comercio</strong> según 
+               <strong style={{ color: COLORS.text }}>Top 10 tipos de comercio</strong> según 
               salario promedio ofrecido. Solo se incluyen categorías con al menos 3 comercios relevados.
             </div>
           </div>
@@ -1738,7 +1738,7 @@ function GraficoSalarios({ data }) {
             fontSize: '12px',
             color: COLORS.textSecondary
           }}>
-            💡 <strong style={{ color: COLORS.text }}>Nota:</strong> La línea naranja (PROM) 
+             <strong style={{ color: COLORS.text }}>Nota:</strong> La línea naranja (PROM) 
             indica el salario promedio general ({formatCurrency(data.promedio)}). Los comercios 
             por encima de esta línea ofrecen salarios superiores al promedio del mercado.
           </div>
@@ -1958,41 +1958,29 @@ function SeccionMachineLearning() {
             background: `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.primaryDark})`
           }} />
           
-          <div style={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            gap: '16px'
-          }}>
+          <div style={{ textAlign: 'left', paddingLeft: '20px' }}>
             <div style={{
-              fontSize: '32px',
-              flexShrink: 0,
-              marginTop: '-4px'
+              fontSize: '13px',
+              fontWeight: '600',
+              color: COLORS.primary,
+              marginBottom: '12px',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase'
             }}>
-              ⚠️
+              Disclaimer — Análisis Predictivo
             </div>
-            <div style={{ textAlign: 'left' }}>
-              <div style={{
-                fontSize: '14px',
-                fontWeight: '600',
-                color: COLORS.primary,
-                marginBottom: '12px',
-                letterSpacing: '0.05em'
-              }}>
-                DISCLAIMER - ANÁLISIS PREDICTIVO
-              </div>
-              <div style={{
-                fontSize: '14px',
-                lineHeight: '1.7',
-                color: COLORS.textSecondary
-              }}>
-                Los siguientes modelos representan <strong style={{ color: COLORS.text }}>análisis 
-                estadísticos predictivos</strong> basados en patrones históricos identificados en los datos. 
-                Estas proyecciones <strong style={{ color: COLORS.text }}>no constituyen garantías</strong> de 
-                comportamiento futuro y deben interpretarse como estimaciones probabilísticas sujetas a variabilidad 
-                contextual, cambios macroeconómicos y factores externos no capturados en el modelo. 
-                <strong style={{ color: COLORS.primary }}> Los resultados no aseguran que los eventos 
-                proyectados ocurrirán en la realidad.</strong>
-              </div>
+            <div style={{
+              fontSize: '14px',
+              lineHeight: '1.7',
+              color: COLORS.textSecondary
+            }}>
+              Los siguientes modelos representan <strong style={{ color: COLORS.text }}>análisis 
+              estadísticos predictivos</strong> basados en patrones históricos identificados en los datos. 
+              Estas proyecciones <strong style={{ color: COLORS.text }}>no constituyen garantías</strong> de 
+              comportamiento futuro y deben interpretarse como estimaciones probabilísticas sujetas a variabilidad 
+              contextual, cambios macroeconómicos y factores externos no capturados en el modelo. 
+              <strong style={{ color: COLORS.primary }}> Los resultados no aseguran que los eventos 
+              proyectados ocurrirán en la realidad.</strong>
             </div>
           </div>
         </div>
@@ -2059,8 +2047,6 @@ function ModeloCrecimiento({ data }) {
         height: '100%',
         backgroundColor: '#00E676'
       }} />
-      
-      <div style={{ fontSize: '48px', marginBottom: '20px', textAlign: 'center' }}>📈</div>
       
       <h3 style={{
         fontFamily: '"Crimson Pro", serif',
@@ -2226,7 +2212,7 @@ function ModeloCrecimiento({ data }) {
             color: COLORS.text,
             marginBottom: '12px'
           }}>
-            🎓 Explicación Académica
+            Explicación Académica
           </div>
           <p style={{
             fontSize: '13px',
@@ -2247,7 +2233,7 @@ function ModeloCrecimiento({ data }) {
             color: COLORS.text,
             marginBottom: '12px'
           }}>
-            💬 En Términos Simples
+            En Términos Simples
           </div>
           <p style={{
             fontSize: '13px',
@@ -2290,8 +2276,6 @@ function ModeloSalario({ data }) {
         height: '100%',
         backgroundColor: '#4FC3F7'
       }} />
-      
-      <div style={{ fontSize: '48px', marginBottom: '20px', textAlign: 'center' }}>💰</div>
       
       <h3 style={{
         fontFamily: '"Crimson Pro", serif',
@@ -2675,7 +2659,7 @@ function ModeloSalario({ data }) {
             color: COLORS.text,
             marginBottom: '12px'
           }}>
-            🎓 Explicación Académica
+            Explicación Académica
           </div>
           <p style={{
             fontSize: '13px',
@@ -2696,7 +2680,7 @@ function ModeloSalario({ data }) {
             color: COLORS.text,
             marginBottom: '12px'
           }}>
-            💬 En Términos Simples
+            En Términos Simples
           </div>
           <p style={{
             fontSize: '13px',
@@ -2740,8 +2724,6 @@ function ModeloFactoresExternos({ data }) {
         height: '100%',
         backgroundColor: '#FFB74D'
       }} />
-      
-      <div style={{ fontSize: '48px', marginBottom: '20px', textAlign: 'center' }}>🌪️</div>
       
       <h3 style={{
         fontFamily: '"Crimson Pro", serif',
@@ -2868,6 +2850,10 @@ function ModeloFactoresExternos({ data }) {
           
           <div style={{ height: '40px' }} />
           
+          <AfectacionesChart />
+          
+          <div style={{ height: '40px' }} />
+          
           <DistribucionPredicciones
             distribucion={data.distribucion_clases}
             labels={['Peor', 'Igual', 'Mejor']}
@@ -2920,7 +2906,7 @@ function ModeloFactoresExternos({ data }) {
             color: COLORS.text,
             marginBottom: '12px'
           }}>
-            🎓 Explicación Académica
+            Explicación Académica
           </div>
           <p style={{
             fontSize: '13px',
@@ -2941,7 +2927,7 @@ function ModeloFactoresExternos({ data }) {
             color: COLORS.text,
             marginBottom: '12px'
           }}>
-            💬 En Términos Simples
+            En Términos Simples
           </div>
           <p style={{
             fontSize: '13px',
@@ -2984,8 +2970,6 @@ function ModeloViabilidad({ data }) {
         height: '100%',
         backgroundColor: '#9C27B0'
       }} />
-      
-      <div style={{ fontSize: '48px', marginBottom: '20px', textAlign: 'center' }}>🏪</div>
       
       <h3 style={{
         fontFamily: '"Crimson Pro", serif',
@@ -3175,7 +3159,7 @@ function ModeloViabilidad({ data }) {
             color: COLORS.text,
             marginBottom: '12px'
           }}>
-            🎓 Explicación Académica
+            Explicación Académica
           </div>
           <p style={{
             fontSize: '13px',
@@ -3196,7 +3180,7 @@ function ModeloViabilidad({ data }) {
             color: COLORS.text,
             marginBottom: '12px'
           }}>
-            💬 En Términos Simples
+            En Términos Simples
           </div>
           <p style={{
             fontSize: '13px',
@@ -3766,6 +3750,162 @@ function DistribucionPredicciones({ distribucion, labels, colors }) {
   );
 }
 
+// Componente Afectaciones por Tendencia (Grouped Bar Chart)
+function AfectacionesChart() {
+  // Datos simulados basados en la imagen
+  const data = [
+    { factor: 'Crimen', Peor: 0.7, Igual: 0.55, Mejor: 0.5 },
+    { factor: 'Crédito', Peor: 0.57, Igual: 0.48, Mejor: 0.5 },
+    { factor: 'Precios', Peor: 1.75, Igual: 1.35, Mejor: 1.3 },
+    { factor: 'Competencia', Peor: 1.3, Igual: 1.05, Mejor: 0.97 }
+  ];
+  
+  const width = 450;
+  const height = 280;
+  const padding = { top: 40, right: 120, bottom: 50, left: 60 };
+  const groupWidth = (width - padding.left - padding.right) / data.length;
+  const barWidth = groupWidth / 4;
+  const maxValue = 2.0;
+  
+  const colors = {
+    Peor: '#FF6B6B',
+    Igual: '#FFB74D',
+    Mejor: '#00E676'
+  };
+  
+  return (
+    <div>
+      <h4 style={{
+        fontSize: '14px',
+        fontWeight: '600',
+        color: COLORS.primary,
+        marginBottom: '20px',
+        letterSpacing: '0.05em',
+        textTransform: 'uppercase'
+      }}>
+        Afectaciones por Tendencia de Ventas
+      </h4>
+      
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <svg width={width} height={height} style={{ backgroundColor: COLORS.surface, borderRadius: '8px' }}>
+          {/* Grid lines */}
+          {[0, 0.5, 1.0, 1.5, 2.0].map((val, idx) => {
+            const y = height - padding.bottom - (val / maxValue) * (height - padding.top - padding.bottom);
+            return (
+              <g key={idx}>
+                <line
+                  x1={padding.left}
+                  y1={y}
+                  x2={width - padding.right}
+                  y2={y}
+                  stroke={COLORS.border}
+                  strokeDasharray="2 2"
+                />
+                <text
+                  x={padding.left - 10}
+                  y={y + 4}
+                  fill={COLORS.textSecondary}
+                  fontSize="10"
+                  textAnchor="end"
+                >
+                  {val.toFixed(1)}
+                </text>
+              </g>
+            );
+          })}
+          
+          {/* Bars */}
+          {data.map((item, groupIdx) => {
+            const groupX = padding.left + groupIdx * groupWidth;
+            
+            return (
+              <g key={item.factor}>
+                {/* Peor */}
+                <rect
+                  x={groupX + barWidth * 0.5}
+                  y={height - padding.bottom - (item.Peor / maxValue) * (height - padding.top - padding.bottom)}
+                  width={barWidth}
+                  height={(item.Peor / maxValue) * (height - padding.top - padding.bottom)}
+                  fill={colors.Peor}
+                  rx="3"
+                  opacity="0.85"
+                />
+                
+                {/* Igual */}
+                <rect
+                  x={groupX + barWidth * 1.5}
+                  y={height - padding.bottom - (item.Igual / maxValue) * (height - padding.top - padding.bottom)}
+                  width={barWidth}
+                  height={(item.Igual / maxValue) * (height - padding.top - padding.bottom)}
+                  fill={colors.Igual}
+                  rx="3"
+                  opacity="0.85"
+                />
+                
+                {/* Mejor */}
+                <rect
+                  x={groupX + barWidth * 2.5}
+                  y={height - padding.bottom - (item.Mejor / maxValue) * (height - padding.top - padding.bottom)}
+                  width={barWidth}
+                  height={(item.Mejor / maxValue) * (height - padding.top - padding.bottom)}
+                  fill={colors.Mejor}
+                  rx="3"
+                  opacity="0.85"
+                />
+                
+                {/* Label */}
+                <text
+                  x={groupX + groupWidth / 2}
+                  y={height - padding.bottom + 20}
+                  fill={COLORS.textSecondary}
+                  fontSize="11"
+                  textAnchor="middle"
+                >
+                  {item.factor}
+                </text>
+              </g>
+            );
+          })}
+          
+          {/* Legend */}
+          {Object.entries(colors).map(([label, color], idx) => (
+            <g key={label} transform={`translate(${width - padding.right + 10}, ${padding.top + idx * 25})`}>
+              <rect x="0" y="0" width="15" height="15" fill={color} rx="2" />
+              <text x="20" y="12" fill={COLORS.text} fontSize="11">
+                {label}
+              </text>
+            </g>
+          ))}
+          
+          {/* Y-axis label */}
+          <text
+            x={15}
+            y={height / 2}
+            fill={COLORS.text}
+            fontSize="11"
+            textAnchor="middle"
+            transform={`rotate(-90 15 ${height / 2})`}
+          >
+            Nivel de Afectación (0-3)
+          </text>
+        </svg>
+      </div>
+      
+      <div style={{
+        marginTop: '16px',
+        padding: '12px',
+        backgroundColor: COLORS.background,
+        borderRadius: '4px',
+        fontSize: '11px',
+        color: COLORS.textSecondary,
+        textAlign: 'center'
+      }}>
+        Los comercios con peores ventas reportan mayor impacto de precios y competencia
+      </div>
+    </div>
+  );
+}
+
 // === TEAM ===
 function Team() {
   return (
@@ -4055,7 +4195,7 @@ function Footer() {
         maxWidth: '1400px',
         margin: '0 auto',
         display: 'grid',
-        gridTemplateColumns: '2fr 1fr 1fr',
+        gridTemplateColumns: '2fr 1fr 1fr 1fr',
         gap: '60px'
       }}>
         <div>
@@ -4123,6 +4263,67 @@ function Footer() {
             </div>
           ))}
         </div>
+        
+        <div>
+          <h4 style={{
+            fontSize: '12px',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: COLORS.primary,
+            marginBottom: '20px',
+            fontWeight: '500'
+          }}>
+            Contacto
+          </h4>
+          <div style={{
+            fontSize: '13px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.8'
+          }}>
+            <div style={{ marginBottom: '12px' }}>
+              <a 
+                href="mailto:cguastavino@econ.uba.ar"
+                style={{
+                  color: COLORS.primary,
+                  textDecoration: 'none',
+                  transition: 'opacity 0.2s'
+                }}
+                onMouseEnter={(e) => e.target.style.opacity = '0.7'}
+                onMouseLeave={(e) => e.target.style.opacity = '1'}
+              >
+                cguastavino@econ.uba.ar
+              </a>
+            </div>
+            <div style={{ marginBottom: '12px' }}>
+              <a 
+                href="mailto:mdominguez@econ.uba.ar"
+                style={{
+                  color: COLORS.primary,
+                  textDecoration: 'none',
+                  transition: 'opacity 0.2s'
+                }}
+                onMouseEnter={(e) => e.target.style.opacity = '0.7'}
+                onMouseLeave={(e) => e.target.style.opacity = '1'}
+              >
+                mdominguez@econ.uba.ar
+              </a>
+            </div>
+            <div>
+              <a 
+                href="mailto:lguerrero@econ.uba.ar"
+                style={{
+                  color: COLORS.primary,
+                  textDecoration: 'none',
+                  transition: 'opacity 0.2s'
+                }}
+                onMouseEnter={(e) => e.target.style.opacity = '0.7'}
+                onMouseLeave={(e) => e.target.style.opacity = '1'}
+              >
+                lguerrero@econ.uba.ar
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
       
       <div style={{
@@ -4137,7 +4338,7 @@ function Footer() {
         color: COLORS.textSecondary
       }}>
         <div>
-          © 2025/2026 MIT LIFT Lab · Equipo {TEAM_DATA.name}
+          © 2025-2026 MIT LIFT Lab · Equipo {TEAM_DATA.name}
         </div>
         <div style={{
           display: 'flex',
