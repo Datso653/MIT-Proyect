@@ -1,5 +1,4 @@
 const { useState, useEffect, useRef } = React;
-const { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
 
 // === DATOS DEL PROYECTO ===
 const TEAM_DATA = {
@@ -639,7 +638,7 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
   );
 }
 
-// === ANÁLISIS VISUAL CON GRÁFICOS ===
+// === ANÁLISIS VISUAL CON GRÁFICOS SVG ===
 function AnalisisVisual({ data }) {
   return (
     <section style={{
@@ -680,115 +679,273 @@ function AnalisisVisual({ data }) {
         </p>
       </div>
 
-      {/* Distribución de comercios */}
       <div style={{
-        backgroundColor: COLORS.surface,
-        padding: '50px',
-        borderRadius: '4px',
-        border: `1px solid ${COLORS.border}`,
-        marginBottom: '40px'
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+        gap: '40px'
       }}>
-        <h3 style={{
-          fontFamily: '"Crimson Pro", serif',
-          fontSize: '28px',
-          fontWeight: '400',
-          color: COLORS.text,
-          marginBottom: '10px'
-        }}>
-          Distribución por tipo de comercio
-        </h3>
-        <p style={{
-          fontSize: '14px',
-          color: COLORS.textSecondary,
-          marginBottom: '40px'
-        }}>
-          Composición del universo de {data.distribucionComercios.reduce((acc, d) => acc + d.cantidad, 0)} comercios relevados
-        </p>
-        <ResponsiveContainer width="100%" height={400}>
-          <PieChart>
-            <Pie
-              data={data.distribucionComercios}
-              cx="50%"
-              cy="50%"
-              labelLine={false}
-              label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
-              outerRadius={140}
-              fill="#8884d8"
-              dataKey="cantidad"
-            >
-              {data.distribucionComercios.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS.chartColors[index % COLORS.chartColors.length]} />
-              ))}
-            </Pie>
-            <Tooltip 
-              contentStyle={{
-                backgroundColor: COLORS.surface,
-                border: `1px solid ${COLORS.border}`,
-                borderRadius: '4px',
-                color: COLORS.text
-              }}
-            />
-          </PieChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* Trabajadores por tipo de comercio */}
-      <div style={{
-        backgroundColor: COLORS.surface,
-        padding: '50px',
-        borderRadius: '4px',
-        border: `1px solid ${COLORS.border}`
-      }}>
-        <h3 style={{
-          fontFamily: '"Crimson Pro", serif',
-          fontSize: '28px',
-          fontWeight: '400',
-          color: COLORS.text,
-          marginBottom: '10px'
-        }}>
-          Promedio de trabajadores por tipo
-        </h3>
-        <p style={{
-          fontSize: '14px',
-          color: COLORS.textSecondary,
-          marginBottom: '40px'
-        }}>
-          Estructura laboral promedio según categoría de establecimiento
-        </p>
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={data.trabajadoresPorTipo}>
-            <CartesianGrid strokeDasharray="3 3" stroke={COLORS.border} />
-            <XAxis 
-              dataKey="tipo" 
-              stroke={COLORS.textSecondary}
-              tick={{ fill: COLORS.textSecondary, fontSize: 12 }}
-              angle={-45}
-              textAnchor="end"
-              height={100}
-            />
-            <YAxis 
-              stroke={COLORS.textSecondary}
-              tick={{ fill: COLORS.textSecondary, fontSize: 12 }}
-              label={{ value: 'Trabajadores', angle: -90, position: 'insideLeft', fill: COLORS.textSecondary }}
-            />
-            <Tooltip 
-              contentStyle={{
-                backgroundColor: COLORS.surface,
-                border: `1px solid ${COLORS.border}`,
-                borderRadius: '4px',
-                color: COLORS.text
-              }}
-              labelStyle={{ color: COLORS.text }}
-            />
-            <Bar 
-              dataKey="promedio" 
-              fill={COLORS.primary}
-              radius={[4, 4, 0, 0]}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+        <GraficoDistribucion data={data.distribucionComercios} />
+        <GraficoBarras data={data.trabajadoresPorTipo} />
       </div>
     </section>
+  );
+}
+
+// Gráfico de distribución (Donut)
+function GraficoDistribucion({ data }) {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  
+  const total = data.reduce((acc, d) => acc + d.cantidad, 0);
+  let currentAngle = 0;
+  
+  const segments = data.map((item, index) => {
+    const percentage = (item.cantidad / total) * 100;
+    const angle = (item.cantidad / total) * 360;
+    const startAngle = currentAngle;
+    const endAngle = currentAngle + angle;
+    currentAngle = endAngle;
+    
+    return {
+      ...item,
+      percentage,
+      startAngle,
+      endAngle,
+      color: COLORS.chartColors[index % COLORS.chartColors.length]
+    };
+  });
+
+  return (
+    <div style={{
+      backgroundColor: COLORS.surface,
+      padding: '40px',
+      borderRadius: '4px',
+      border: `1px solid ${COLORS.border}`
+    }}>
+      <h3 style={{
+        fontFamily: '"Crimson Pro", serif',
+        fontSize: '24px',
+        fontWeight: '400',
+        color: COLORS.text,
+        marginBottom: '10px'
+      }}>
+        Distribución por tipo
+      </h3>
+      <p style={{
+        fontSize: '13px',
+        color: COLORS.textSecondary,
+        marginBottom: '30px'
+      }}>
+        {total} comercios relevados
+      </p>
+      
+      <div style={{ display: 'flex', gap: '40px', alignItems: 'center', flexWrap: 'wrap' }}>
+        {/* SVG Donut Chart */}
+        <svg width="200" height="200" viewBox="0 0 200 200">
+          {segments.map((seg, idx) => {
+            const isHovered = hoveredIndex === idx;
+            const radius = isHovered ? 75 : 70;
+            const innerRadius = 40;
+            
+            const x1 = 100 + radius * Math.cos((seg.startAngle - 90) * Math.PI / 180);
+            const y1 = 100 + radius * Math.sin((seg.startAngle - 90) * Math.PI / 180);
+            const x2 = 100 + radius * Math.cos((seg.endAngle - 90) * Math.PI / 180);
+            const y2 = 100 + radius * Math.sin((seg.endAngle - 90) * Math.PI / 180);
+            
+            const x3 = 100 + innerRadius * Math.cos((seg.endAngle - 90) * Math.PI / 180);
+            const y3 = 100 + innerRadius * Math.sin((seg.endAngle - 90) * Math.PI / 180);
+            const x4 = 100 + innerRadius * Math.cos((seg.startAngle - 90) * Math.PI / 180);
+            const y4 = 100 + innerRadius * Math.sin((seg.startAngle - 90) * Math.PI / 180);
+            
+            const largeArc = seg.endAngle - seg.startAngle > 180 ? 1 : 0;
+            
+            const pathData = [
+              `M ${x1} ${y1}`,
+              `A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}`,
+              `L ${x3} ${y3}`,
+              `A ${innerRadius} ${innerRadius} 0 ${largeArc} 0 ${x4} ${y4}`,
+              'Z'
+            ].join(' ');
+            
+            return (
+              <path
+                key={idx}
+                d={pathData}
+                fill={seg.color}
+                stroke={COLORS.background}
+                strokeWidth="2"
+                style={{
+                  cursor: 'pointer',
+                  transition: 'all 0.3s',
+                  opacity: hoveredIndex !== null && hoveredIndex !== idx ? 0.5 : 1
+                }}
+                onMouseEnter={() => setHoveredIndex(idx)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              />
+            );
+          })}
+        </svg>
+        
+        {/* Legend */}
+        <div style={{ flex: 1, minWidth: '200px' }}>
+          {segments.map((seg, idx) => (
+            <div
+              key={idx}
+              onMouseEnter={() => setHoveredIndex(idx)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '12px',
+                cursor: 'pointer',
+                opacity: hoveredIndex !== null && hoveredIndex !== idx ? 0.5 : 1,
+                transition: 'opacity 0.3s'
+              }}
+            >
+              <div style={{
+                width: '12px',
+                height: '12px',
+                backgroundColor: seg.color,
+                marginRight: '10px',
+                borderRadius: '2px'
+              }} />
+              <div style={{ flex: 1 }}>
+                <div style={{
+                  fontSize: '13px',
+                  color: COLORS.text,
+                  marginBottom: '2px'
+                }}>
+                  {seg.tipo}
+                </div>
+                <div style={{
+                  fontSize: '11px',
+                  color: COLORS.textSecondary
+                }}>
+                  {seg.cantidad} ({seg.percentage.toFixed(1)}%)
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Gráfico de barras
+function GraficoBarras({ data }) {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  
+  const maxValue = Math.max(...data.map(d => d.promedio));
+  const height = 300;
+  const barWidth = 40;
+  const gap = 20;
+  const chartWidth = data.length * (barWidth + gap);
+  
+  return (
+    <div style={{
+      backgroundColor: COLORS.surface,
+      padding: '40px',
+      borderRadius: '4px',
+      border: `1px solid ${COLORS.border}`
+    }}>
+      <h3 style={{
+        fontFamily: '"Crimson Pro", serif',
+        fontSize: '24px',
+        fontWeight: '400',
+        color: COLORS.text,
+        marginBottom: '10px'
+      }}>
+        Trabajadores por tipo
+      </h3>
+      <p style={{
+        fontSize: '13px',
+        color: COLORS.textSecondary,
+        marginBottom: '30px'
+      }}>
+        Promedio de empleados por categoría
+      </p>
+      
+      <div style={{ overflowX: 'auto', overflowY: 'visible' }}>
+        <svg width={Math.max(chartWidth, 400)} height={height + 100} style={{ minWidth: '100%' }}>
+          {/* Grid lines */}
+          {[0, 25, 50, 75, 100].map((percent, idx) => {
+            const y = height - (height * percent / 100);
+            return (
+              <g key={idx}>
+                <line
+                  x1="0"
+                  y1={y}
+                  x2={chartWidth}
+                  y2={y}
+                  stroke={COLORS.border}
+                  strokeDasharray="4 4"
+                />
+                <text
+                  x="-10"
+                  y={y + 4}
+                  fill={COLORS.textSecondary}
+                  fontSize="10"
+                  textAnchor="end"
+                >
+                  {(maxValue * percent / 100).toFixed(1)}
+                </text>
+              </g>
+            );
+          })}
+          
+          {/* Bars */}
+          {data.map((item, idx) => {
+            const barHeight = (item.promedio / maxValue) * height;
+            const x = idx * (barWidth + gap);
+            const isHovered = hoveredIndex === idx;
+            
+            return (
+              <g
+                key={idx}
+                onMouseEnter={() => setHoveredIndex(idx)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                style={{ cursor: 'pointer' }}
+              >
+                <rect
+                  x={x}
+                  y={height - barHeight}
+                  width={barWidth}
+                  height={barHeight}
+                  fill={COLORS.primary}
+                  opacity={isHovered ? 1 : 0.8}
+                  rx="4"
+                  style={{ transition: 'all 0.3s' }}
+                />
+                
+                {/* Value on top */}
+                <text
+                  x={x + barWidth / 2}
+                  y={height - barHeight - 8}
+                  fill={COLORS.text}
+                  fontSize="12"
+                  textAnchor="middle"
+                  fontWeight="600"
+                >
+                  {item.promedio.toFixed(1)}
+                </text>
+                
+                {/* Label */}
+                <text
+                  x={x + barWidth / 2}
+                  y={height + 20}
+                  fill={COLORS.textSecondary}
+                  fontSize="10"
+                  textAnchor="end"
+                  transform={`rotate(-45 ${x + barWidth / 2} ${height + 20})`}
+                >
+                  {item.tipo.length > 20 ? item.tipo.substring(0, 20) + '...' : item.tipo}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+    </div>
   );
 }
 
@@ -1265,7 +1422,7 @@ function procesarDatosGraficos(datos) {
   const distribucionComercios = Object.entries(tiposCount)
     .map(([tipo, cantidad]) => ({ tipo, cantidad }))
     .sort((a, b) => b.cantidad - a.cantidad)
-    .slice(0, 8); // Top 8
+    .slice(0, 8);
 
   // Promedio de trabajadores por tipo
   const trabajadoresPorTipo = {};
@@ -1287,7 +1444,7 @@ function procesarDatosGraficos(datos) {
       promedio: parseFloat((suma / countPorTipo[tipo]).toFixed(1))
     }))
     .sort((a, b) => b.promedio - a.promedio)
-    .slice(0, 10); // Top 10
+    .slice(0, 10);
 
   return {
     distribucionComercios,
