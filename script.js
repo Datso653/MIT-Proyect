@@ -2642,9 +2642,9 @@ function procesarDatosGraficos(datos) {
       // Remover símbolos y espacios
       const cleaned = sal.toString().replace(/\$/g, "").replace(/\./g, "").replace(/,/g, "").replace(/ /g, "");
       const num = parseFloat(cleaned);
-      
-      // Filtrar solo valores numéricos en rango razonable (100k - 15M ARS)
-      if (isNaN(num) || num < 100000 || num > 15000000) return null;
+
+      // Filtrar solo valores numéricos en rango razonable (100k - 5M ARS)
+      if (isNaN(num) || num < 100000 || num > 5000000) return null;
       
       return { valor: num, tipo: c.tipo_comercio || 'Sin categoría' };
     })
