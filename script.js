@@ -9,21 +9,21 @@ const TEAM_DATA = {
       role: "Data Analyst & Developer",
       university: "UBA",
       linkedin: "https://www.linkedin.com/in/gina-marrazzo-15a8a523b",
-      image: "./gina.jpg"
+      image: "./Gina.jpg"
     },
     {
       name: "Sofía Gálvez",
       role: "Research & Analysis",
       university: "UNSAM",
       linkedin: "https://www.linkedin.com/in/sofiagalvez0910",
-      image: "./sofia.jpg"
+      image: "./Sofia.jpg"
     },
     {
       name: "Juan Da Torre",
       role: "ML Engineer & Developer",
       university: "UBA",
       linkedin: "https://www.linkedin.com/in/juan-da-torre-a3b120262",
-      image: "./juan.jpg"
+      image: "./Juan.jpg"
     }
   ],
   universities: [
