@@ -153,6 +153,109 @@ function App() {
           width: 100%;
         }
         
+        /* RESPONSIVE STYLES */
+        @media (max-width: 768px) {
+          /* Hero section */
+          section[data-section="hero"] {
+            padding: 80px 24px !important;
+            min-height: 70vh !important;
+          }
+          
+          section[data-section="hero"] h1 {
+            font-size: 36px !important;
+          }
+          
+          section[data-section="hero"] p {
+            font-size: 16px !important;
+          }
+          
+          /* General sections */
+          section {
+            padding: 60px 24px !important;
+          }
+          
+          /* Grids - force single column */
+          [style*="gridTemplateColumns: repeat(auto-fit"] {
+            grid-template-columns: 1fr !important;
+          }
+          
+          [style*="gridTemplateColumns: '2fr 1fr 1fr'"] {
+            grid-template-columns: 1fr !important;
+          }
+          
+          /* ML Cards */
+          [style*="padding: '40px'"][style*="borderRadius: '8px'"] {
+            padding: 24px !important;
+          }
+          
+          /* Footer */
+          footer > div:first-child {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+          
+          /* SVG Charts - make responsive */
+          svg {
+            max-width: 100% !important;
+            height: auto !important;
+          }
+          
+          /* Confusion Matrix */
+          svg[width="400"] {
+            width: 100% !important;
+            height: auto !important;
+          }
+          
+          /* Campus cards */
+          [style*="minmax(400px"] {
+            grid-template-columns: 1fr !important;
+          }
+          
+          /* Navbar */
+          nav {
+            padding: 20px 24px !important;
+          }
+          
+          /* Buttons */
+          button {
+            font-size: 12px !important;
+            padding: 10px 16px !important;
+          }
+          
+          /* Titles */
+          h2 {
+            font-size: 32px !important;
+          }
+          
+          h3 {
+            font-size: 20px !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          section[data-section="hero"] h1 {
+            font-size: 28px !important;
+          }
+          
+          section {
+            padding: 40px 20px !important;
+          }
+          
+          h2 {
+            font-size: 28px !important;
+          }
+          
+          /* Cards */
+          [style*="padding: '24px'"] {
+            padding: 16px !important;
+          }
+          
+          /* Campus images */
+          [style*="height: '280px'"] {
+            height: 200px !important;
+          }
+        }
+        
         .fade-in {
           animation: fadeIn 0.8s ease-out forwards;
           opacity: 0;
@@ -191,15 +294,18 @@ function Hero({ scrollY }) {
   const parallaxOffset = scrollY * 0.5;
   
   return (
-    <section style={{
-      height: '100vh',
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      overflow: 'hidden',
-      background: `linear-gradient(135deg, ${COLORS.background} 0%, #1a1a1a 100%)`
-    }}>
+    <section 
+      data-section="hero"
+      style={{
+        minHeight: '100vh',
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        padding: '120px 60px',
+        background: `linear-gradient(135deg, ${COLORS.background} 0%, #1a1a1a 100%)`
+      }}>
       <div style={{
         position: 'absolute',
         top: '20%',
@@ -226,7 +332,7 @@ function Hero({ scrollY }) {
 
       <div style={{
         maxWidth: '1400px',
-        padding: '0 60px',
+        width: '100%',
         zIndex: 1,
         textAlign: 'center'
       }}>
@@ -1753,34 +1859,66 @@ function SeccionAnalisis() {
   return (
     <section style={{
       padding: '120px 60px',
-      maxWidth: '1200px',
       margin: '0 auto',
-      backgroundColor: COLORS.background
+      position: 'relative',
+      overflow: 'hidden'
     }}>
+      {/* Imagen de fondo de comercios */}
       <div style={{
-        marginBottom: '60px',
-        textAlign: 'center'
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: 'url(https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1600&q=85&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.08,
+        filter: 'grayscale(30%)',
+        zIndex: 0
+      }} />
+      
+      {/* Overlay gradient */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `linear-gradient(135deg, ${COLORS.background}f5 0%, ${COLORS.background}e8 50%, ${COLORS.background}f5 100%)`,
+        zIndex: 1
+      }} />
+      
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        position: 'relative',
+        zIndex: 2
       }}>
         <div style={{
-          fontSize: '12px',
-          letterSpacing: '0.15em',
-          textTransform: 'uppercase',
-          color: COLORS.primary,
-          marginBottom: '20px',
-          fontWeight: '500'
+          marginBottom: '60px',
+          textAlign: 'center'
         }}>
-          Insights del equipo
+          <div style={{
+            fontSize: '12px',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: COLORS.primary,
+            marginBottom: '20px',
+            fontWeight: '500'
+          }}>
+            Insights del equipo
+          </div>
+          <h2 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: 'clamp(36px, 4vw, 52px)',
+            fontWeight: '400',
+            color: COLORS.text,
+            marginBottom: '20px'
+          }}>
+            Análisis y conclusiones
+          </h2>
         </div>
-        <h2 style={{
-          fontFamily: '"Crimson Pro", serif',
-          fontSize: 'clamp(36px, 4vw, 52px)',
-          fontWeight: '400',
-          color: COLORS.text,
-          marginBottom: '20px'
-        }}>
-          Análisis y conclusiones
-        </h2>
-      </div>
 
       <div style={{
         backgroundColor: COLORS.surface,
@@ -1866,6 +2004,7 @@ function SeccionAnalisis() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );
@@ -3460,9 +3599,18 @@ function ROCCurve({ data, auc }) {
       
       <div style={{
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        width: '100%'
       }}>
-        <svg width={width} height={height} style={{ backgroundColor: COLORS.surface, borderRadius: '8px' }}>
+        <svg 
+          viewBox="0 0 400 300" 
+          style={{ 
+            backgroundColor: COLORS.surface, 
+            borderRadius: '8px',
+            width: '100%',
+            maxWidth: '400px',
+            height: 'auto'
+          }}>
           {/* Grid lines */}
           {[0, 0.25, 0.5, 0.75, 1].map((val, idx) => {
             const x = padding + val * (width - 2 * padding);
@@ -3595,7 +3743,15 @@ function ScatterPlot({ realValues, predictions, title }) {
       </h4>
       
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <svg width={width} height={height} style={{ backgroundColor: COLORS.surface, borderRadius: '8px' }}>
+        <svg 
+          viewBox={`0 0 ${width} ${height}`}
+          style={{ 
+            backgroundColor: COLORS.surface, 
+            borderRadius: '8px',
+            width: '100%',
+            maxWidth: `${width}px`,
+            height: 'auto'
+          }}>
           {/* Grid */}
           {[0, 0.25, 0.5, 0.75, 1].map((val, idx) => {
             const scaledVal = minVal + val * (maxVal - minVal);
@@ -3677,7 +3833,15 @@ function DistribucionPredicciones({ distribucion, labels, colors }) {
       </h4>
       
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <svg width={width} height={height} style={{ backgroundColor: COLORS.surface, borderRadius: '8px' }}>
+        <svg 
+          viewBox={`0 0 ${width} ${height}`}
+          style={{ 
+            backgroundColor: COLORS.surface, 
+            borderRadius: '8px',
+            width: '100%',
+            maxWidth: `${width}px`,
+            height: 'auto'
+          }}>
           {/* Grid lines */}
           {[0, 0.25, 0.5, 0.75, 1].map((val, idx) => {
             const y = height - padding - val * (height - 2 * padding);
@@ -3787,7 +3951,15 @@ function AfectacionesChart() {
       </h4>
       
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <svg width={width} height={height} style={{ backgroundColor: COLORS.surface, borderRadius: '8px' }}>
+        <svg 
+          viewBox={`0 0 ${width} ${height}`}
+          style={{ 
+            backgroundColor: COLORS.surface, 
+            borderRadius: '8px',
+            width: '100%',
+            maxWidth: `${width}px`,
+            height: 'auto'
+          }}>
           {/* Grid lines */}
           {[0, 0.5, 1.0, 1.5, 2.0].map((val, idx) => {
             const y = height - padding.bottom - (val / maxValue) * (height - padding.top - padding.bottom);
@@ -3911,41 +4083,75 @@ function Team() {
   return (
     <section style={{
       padding: '120px 60px',
-      maxWidth: '1400px',
-      margin: '0 auto'
+      margin: '0 auto',
+      position: 'relative',
+      overflow: 'hidden'
     }}>
+      {/* Imagen de fondo MIT */}
       <div style={{
-        marginBottom: '80px',
-        textAlign: 'center'
-      }}>
-        <div style={{
-          fontSize: '12px',
-          letterSpacing: '0.15em',
-          textTransform: 'uppercase',
-          color: COLORS.primary,
-          marginBottom: '20px',
-          fontWeight: '500'
-        }}>
-          El equipo
-        </div>
-        <h2 style={{
-          fontFamily: '"Crimson Pro", serif',
-          fontSize: 'clamp(36px, 4vw, 52px)',
-          fontWeight: '400',
-          color: COLORS.text
-        }}>
-          Investigadores
-        </h2>
-      </div>
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: 'url(https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=1600&q=85&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.06,
+        filter: 'grayscale(50%)',
+        zIndex: 0
+      }} />
+      
+      {/* Overlay */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `radial-gradient(circle at 50% 50%, ${COLORS.background}f0 0%, ${COLORS.background} 100%)`,
+        zIndex: 1
+      }} />
       
       <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-        gap: '40px'
+        maxWidth: '1400px',
+        margin: '0 auto',
+        position: 'relative',
+        zIndex: 2
       }}>
-        {TEAM_DATA.members.map((member, index) => (
-          <TeamMember key={index} member={member} index={index} />
-        ))}
+        <div style={{
+          marginBottom: '80px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '12px',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: COLORS.primary,
+            marginBottom: '20px',
+            fontWeight: '500'
+          }}>
+            El equipo
+          </div>
+          <h2 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: 'clamp(36px, 4vw, 52px)',
+            fontWeight: '400',
+            color: COLORS.text
+          }}>
+            Investigadores
+          </h2>
+        </div>
+        
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+          gap: '40px'
+        }}>
+          {TEAM_DATA.members.map((member, index) => (
+            <TeamMember key={index} member={member} index={index} />
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -4189,15 +4395,46 @@ function Footer() {
     <footer style={{
       borderTop: `1px solid ${COLORS.border}`,
       padding: '80px 60px',
-      backgroundColor: COLORS.surface
+      position: 'relative',
+      overflow: 'hidden'
     }}>
+      {/* Imagen de fondo Buenos Aires */}
       <div style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-        display: 'grid',
-        gridTemplateColumns: '2fr 1fr 1fr 1fr',
-        gap: '60px'
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: 'url(https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1600&q=85&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.04,
+        filter: 'grayscale(60%)',
+        zIndex: 0
+      }} />
+      
+      {/* Overlay gradient */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `linear-gradient(to bottom, ${COLORS.surface}f8 0%, ${COLORS.surface} 40%, ${COLORS.surface} 100%)`,
+        zIndex: 1
+      }} />
+      
+      <div style={{
+        position: 'relative',
+        zIndex: 2
       }}>
+        <div style={{
+          maxWidth: '1400px',
+          margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: '2fr 1fr 1fr 1fr',
+          gap: '60px'
+        }}>
         <div>
           <h3 style={{
             fontFamily: '"Crimson Pro", serif',
@@ -4344,9 +4581,10 @@ function Footer() {
           display: 'flex',
           gap: '30px'
         }}>
-          <span>Proyecto académico y Social </span>
+          <span>Proyecto académico</span>
           <span>Universidad de Buenos Aires</span>
         </div>
+      </div>
       </div>
     </footer>
   );
