@@ -862,7 +862,7 @@ function GraficoDistribucion({ data }) {
 function GraficoBarras({ data }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   
-  const maxValue = Math.max(...data.map(d => d.promedio));
+  const maxValue = Math.ceil(Math.max(...data.map(d => d.promedio)) * 1.15); // +15% padding superior
   const height = 300;
   const barWidth = 40;
   const gap = 20;
@@ -2037,6 +2037,7 @@ function SeccionMachineLearning() {
 // Modelo 1: Crecimiento
 function ModeloCrecimiento({ data }) {
   const [expanded, setExpanded] = useState(false);
+  const [showCharts, setShowCharts] = useState(false);
   
   return (
     <div style={{
@@ -2137,6 +2138,50 @@ function ModeloCrecimiento({ data }) {
         ))}
       </div>
 
+      {/* Botón para mostrar gráficos */}
+      <button
+        onClick={() => setShowCharts(!showCharts)}
+        style={{
+          width: '100%',
+          padding: '12px',
+          backgroundColor: COLORS.surface,
+          color: COLORS.primary,
+          border: `1px solid ${COLORS.border}`,
+          borderRadius: '6px',
+          cursor: 'pointer',
+          fontSize: '13px',
+          fontWeight: '600',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          transition: 'all 0.3s',
+          marginBottom: '12px'
+        }}
+        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
+        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
+      >
+        {showCharts ? '▲ Ocultar gráficos' : '▼ Ver gráficos del modelo'}
+      </button>
+
+      {showCharts && (
+        <div style={{
+          marginTop: '20px',
+          padding: '24px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          border: `1px solid ${COLORS.border}`
+        }}>
+          <ConfusionMatrix data={data.confusion_matrix} labels={['No crece', 'Sí crece']} />
+          
+          <div style={{ height: '40px' }} />
+          
+          <FeatureImportanceChart 
+            features={data.feature_importance.slice(0, 5)} 
+            color="#00E676"
+            title="Top 5 Variables Predictivas"
+          />
+        </div>
+      )}
+
       <button
         onClick={() => setExpanded(!expanded)}
         style={{
@@ -2215,6 +2260,312 @@ function ModeloCrecimiento({ data }) {
 // Modelo 2: Salario
 function ModeloSalario({ data }) {
   const [expanded, setExpanded] = useState(false);
+  const [showCharts, setShowCharts] = useState(false);
+  
+  return (
+    <div style={{
+      backgroundColor: COLORS.background,
+      padding: '40px',
+      borderRadius: '8px',
+      border: `1px solid ${COLORS.border}`,
+      position: 'relative'
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '4px',
+        height: '100%',
+        backgroundColor: '#4FC3F7'
+      }} />
+      
+      <div style={{ fontSize: '48px', marginBottom: '20px', textAlign: 'center' }}>💰</div>
+      
+      <h3 style={{
+        fontFamily: '"Crimson Pro", serif',
+        fontSize: '24px',
+        fontWeight: '600',
+        color: COLORS.text,
+        marginBottom: '12px',
+        textAlign: 'center'
+      }}>
+        Predicción de Salario Ofrecido
+      </h3>
+      
+      <p style={{
+        fontSize: '14px',
+        color: COLORS.textSecondary,
+        textAlign: 'center',
+        marginBottom: '30px'
+      }}>
+        Estimación del salario mínimo según características del comercio
+      </p>
+
+      {/* Estadísticas de salario */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '12px',
+        marginBottom: '30px'
+      }}>
+        <div style={{
+          padding: '16px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '11px',
+            color: COLORS.textSecondary,
+            marginBottom: '6px',
+            textTransform: 'uppercase'
+          }}>
+            Promedio
+          </div>
+          <div style={{
+            fontSize: '18px',
+            fontWeight: '700',
+            color: COLORS.primary,
+            fontFamily: '"Crimson Pro", serif'
+          }}>
+            ${(data.estadisticas_salario.promedio / 1000000).toFixed(1)}M
+          </div>
+        </div>
+        <div style={{
+          padding: '16px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '11px',
+            color: COLORS.textSecondary,
+            marginBottom: '6px',
+            textTransform: 'uppercase'
+          }}>
+            Mínimo
+          </div>
+          <div style={{
+            fontSize: '18px',
+            fontWeight: '700',
+            color: COLORS.text,
+            fontFamily: '"Crimson Pro", serif'
+          }}>
+            ${(data.estadisticas_salario.min / 1000).toFixed(0)}k
+          </div>
+        </div>
+        <div style={{
+          padding: '16px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '11px',
+            color: COLORS.textSecondary,
+            marginBottom: '6px',
+            textTransform: 'uppercase'
+          }}>
+            Máximo
+          </div>
+          <div style={{
+            fontSize: '18px',
+            fontWeight: '700',
+            color: COLORS.text,
+            fontFamily: '"Crimson Pro", serif'
+          }}>
+            ${(data.estadisticas_salario.max / 1000000).toFixed(0)}M
+          </div>
+        </div>
+      </div>
+
+      {/* Métrica R² */}
+      <div style={{
+        padding: '20px',
+        backgroundColor: COLORS.surface,
+        borderRadius: '6px',
+        marginBottom: '20px',
+        textAlign: 'center'
+      }}>
+        <div style={{
+          fontSize: '13px',
+          color: COLORS.textSecondary,
+          marginBottom: '8px'
+        }}>
+          Error Promedio Absoluto (MAE)
+        </div>
+        <div style={{
+          fontSize: '28px',
+          fontWeight: '700',
+          color: '#FFB74D',
+          fontFamily: '"Crimson Pro", serif'
+        }}>
+          ${(data.metricas.mae / 1000000).toFixed(2)}M ARS
+        </div>
+      </div>
+
+      {/* Top 3 Features */}
+      <div style={{
+        marginBottom: '20px',
+        padding: '20px',
+        backgroundColor: COLORS.surface,
+        borderRadius: '6px'
+      }}>
+        <div style={{
+          fontSize: '13px',
+          fontWeight: '600',
+          color: COLORS.primary,
+          marginBottom: '16px',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase'
+        }}>
+          Factores que más influyen
+        </div>
+        {data.feature_importance.slice(0, 3).map((f, idx) => (
+          <div key={idx} style={{ marginBottom: '12px' }}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              fontSize: '12px',
+              marginBottom: '4px'
+            }}>
+              <span style={{ color: COLORS.text }}>{f.feature}</span>
+              <span style={{ color: COLORS.primary, fontWeight: '600' }}>
+                {(f.importance * 100).toFixed(1)}%
+              </span>
+            </div>
+            <div style={{
+              height: '6px',
+              backgroundColor: COLORS.border,
+              borderRadius: '3px',
+              overflow: 'hidden'
+            }}>
+              <div style={{
+                height: '100%',
+                width: `${f.importance * 100}%`,
+                backgroundColor: '#4FC3F7',
+                transition: 'width 1s ease-out'
+              }} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Botón para mostrar gráficos */}
+      <button
+        onClick={() => setShowCharts(!showCharts)}
+        style={{
+          width: '100%',
+          padding: '12px',
+          backgroundColor: COLORS.surface,
+          color: COLORS.primary,
+          border: `1px solid ${COLORS.border}`,
+          borderRadius: '6px',
+          cursor: 'pointer',
+          fontSize: '13px',
+          fontWeight: '600',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          transition: 'all 0.3s',
+          marginBottom: '12px'
+        }}
+        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
+        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
+      >
+        {showCharts ? '▲ Ocultar gráficos' : '▼ Ver gráficos del modelo'}
+      </button>
+
+      {showCharts && (
+        <div style={{
+          marginTop: '20px',
+          padding: '24px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          border: `1px solid ${COLORS.border}`
+        }}>
+          <FeatureImportanceChart 
+            features={data.feature_importance.slice(0, 8)} 
+            color="#4FC3F7"
+            title="Top 8 Variables Predictivas"
+          />
+        </div>
+      )}
+
+      <button
+        onClick={() => setExpanded(!expanded)}
+        style={{
+          width: '100%',
+          padding: '12px',
+          backgroundColor: COLORS.surface,
+          color: COLORS.primary,
+          border: `1px solid ${COLORS.border}`,
+          borderRadius: '6px',
+          cursor: 'pointer',
+          fontSize: '13px',
+          fontWeight: '600',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          transition: 'all 0.3s'
+        }}
+        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
+        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
+      >
+        {expanded ? '▲ Ver menos' : '▼ Ver explicación'}
+      </button>
+
+      {expanded && (
+        <div style={{
+          marginTop: '20px',
+          padding: '24px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          borderLeft: `3px solid #4FC3F7`
+        }}>
+          <div style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            color: COLORS.text,
+            marginBottom: '12px'
+          }}>
+            🎓 Explicación Académica
+          </div>
+          <p style={{
+            fontSize: '13px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7',
+            marginBottom: '20px'
+          }}>
+            Modelo de regresión mediante <strong style={{ color: COLORS.text }}>Gradient Boosting</strong> que predice 
+            el salario mínimo ofrecido por los comercios. Con un error promedio de ${(data.metricas.mae / 1000000).toFixed(2)}M ARS, 
+            el modelo captura la relación entre características del comercio y compensación salarial. La antigüedad del negocio 
+            ({(data.feature_importance[0].importance * 100).toFixed(1)}%) y cantidad de trabajadores son los predictores más fuertes, 
+            indicando que comercios más establecidos y con mayor plantilla tienden a ofrecer mejores salarios.
+          </p>
+
+          <div style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            color: COLORS.text,
+            marginBottom: '12px'
+          }}>
+            💬 En Términos Simples
+          </div>
+          <p style={{
+            fontSize: '13px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7'
+          }}>
+            <strong style={{ color: COLORS.text }}>¿Cuánto deberías estar pagando?</strong><br/>
+            El salario promedio del mercado es de ${(data.estadisticas_salario.promedio / 1000000).toFixed(1)} millones de pesos. 
+            Si tu comercio tiene antigüedad y varios empleados, probablemente estés pagando más que el promedio. Los comercios 
+            más nuevos o pequeños suelen pagar alrededor de ${(data.estadisticas_salario.min / 1000).toFixed(0)}k. 
+            <strong style={{ color: COLORS.primary }}> El tipo de comercio también importa</strong>: gastronómicos y dietéticas tienden a pagar más.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
   
   return (
     <div style={{
@@ -2484,6 +2835,7 @@ function ModeloSalario({ data }) {
 // Modelo 3: Factores Externos
 function ModeloFactoresExternos({ data }) {
   const [expanded, setExpanded] = useState(false);
+  const [showCharts, setShowCharts] = useState(false);
   
   return (
     <div style={{
@@ -2589,6 +2941,53 @@ function ModeloFactoresExternos({ data }) {
           );
         })}
       </div>
+
+      {/* Botón para mostrar gráficos */}
+      <button
+        onClick={() => setShowCharts(!showCharts)}
+        style={{
+          width: '100%',
+          padding: '12px',
+          backgroundColor: COLORS.surface,
+          color: COLORS.primary,
+          border: `1px solid ${COLORS.border}`,
+          borderRadius: '6px',
+          cursor: 'pointer',
+          fontSize: '13px',
+          fontWeight: '600',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          transition: 'all 0.3s',
+          marginBottom: '12px'
+        }}
+        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
+        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
+      >
+        {showCharts ? '▲ Ocultar gráficos' : '▼ Ver gráficos del modelo'}
+      </button>
+
+      {showCharts && (
+        <div style={{
+          marginTop: '20px',
+          padding: '24px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '6px',
+          border: `1px solid ${COLORS.border}`
+        }}>
+          <ConfusionMatrix 
+            data={data.confusion_matrix} 
+            labels={['Peor', 'Igual', 'Mejor']} 
+          />
+          
+          <div style={{ height: '40px' }} />
+          
+          <FeatureImportanceChart 
+            features={data.feature_importance.slice(0, 6)} 
+            color="#FFB74D"
+            title="Top 6 Variables Predictivas"
+          />
+        </div>
+      )}
 
       <button
         onClick={() => setExpanded(!expanded)}
@@ -2944,6 +3343,185 @@ function MetricaCard({ label, value, color }) {
         fontFamily: '"Crimson Pro", serif'
       }}>
         {value}
+      </div>
+    </div>
+  );
+}
+
+// Componente Confusion Matrix
+function ConfusionMatrix({ data, labels }) {
+  const maxValue = Math.max(...data.flat());
+  
+  return (
+    <div>
+      <h4 style={{
+        fontSize: '14px',
+        fontWeight: '600',
+        color: COLORS.primary,
+        marginBottom: '20px',
+        letterSpacing: '0.05em',
+        textTransform: 'uppercase'
+      }}>
+        Matriz de Confusión
+      </h4>
+      
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: `80px repeat(${data[0].length}, 1fr)`,
+        gap: '8px',
+        maxWidth: '400px',
+        margin: '0 auto'
+      }}>
+        {/* Empty corner */}
+        <div />
+        
+        {/* Column headers */}
+        {labels.map((label, idx) => (
+          <div key={`col-${idx}`} style={{
+            fontSize: '11px',
+            color: COLORS.textSecondary,
+            textAlign: 'center',
+            fontWeight: '600'
+          }}>
+            {label}
+          </div>
+        ))}
+        
+        {/* Rows */}
+        {data.map((row, i) => (
+          <React.Fragment key={`row-${i}`}>
+            {/* Row label */}
+            <div style={{
+              fontSize: '11px',
+              color: COLORS.textSecondary,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              paddingRight: '8px',
+              fontWeight: '600'
+            }}>
+              {labels[i]}
+            </div>
+            
+            {/* Cells */}
+            {row.map((value, j) => {
+              const intensity = value / maxValue;
+              const isCorrect = i === j;
+              
+              return (
+                <div key={`cell-${i}-${j}`} style={{
+                  backgroundColor: isCorrect 
+                    ? `rgba(0, 230, 118, ${0.2 + intensity * 0.6})`
+                    : `rgba(76, 195, 247, ${0.1 + intensity * 0.4})`,
+                  padding: '20px 10px',
+                  borderRadius: '6px',
+                  textAlign: 'center',
+                  fontSize: '18px',
+                  fontWeight: '700',
+                  color: COLORS.text,
+                  border: isCorrect ? '2px solid #00E676' : '1px solid ' + COLORS.border
+                }}>
+                  {value}
+                </div>
+              );
+            })}
+          </React.Fragment>
+        ))}
+      </div>
+      
+      <div style={{
+        marginTop: '20px',
+        fontSize: '12px',
+        color: COLORS.textSecondary,
+        textAlign: 'center',
+        lineHeight: '1.6'
+      }}>
+        La diagonal (verde) representa las predicciones correctas.<br/>
+        Valores fuera de la diagonal son errores del modelo.
+      </div>
+    </div>
+  );
+}
+
+// Componente Feature Importance Chart
+function FeatureImportanceChart({ features, color, title }) {
+  const maxImportance = Math.max(...features.map(f => f.importance));
+  
+  return (
+    <div>
+      <h4 style={{
+        fontSize: '14px',
+        fontWeight: '600',
+        color: COLORS.primary,
+        marginBottom: '20px',
+        letterSpacing: '0.05em',
+        textTransform: 'uppercase'
+      }}>
+        {title}
+      </h4>
+      
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px'
+      }}>
+        {features.map((f, idx) => {
+          const percentage = (f.importance / maxImportance) * 100;
+          
+          return (
+            <div key={idx}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '8px'
+              }}>
+                <span style={{
+                  fontSize: '13px',
+                  color: COLORS.text,
+                  fontWeight: '500'
+                }}>
+                  {f.feature}
+                </span>
+                <span style={{
+                  fontSize: '13px',
+                  color: color,
+                  fontWeight: '700',
+                  fontFamily: '"Crimson Pro", serif'
+                }}>
+                  {(f.importance * 100).toFixed(1)}%
+                </span>
+              </div>
+              
+              <div style={{
+                height: '10px',
+                backgroundColor: COLORS.border,
+                borderRadius: '5px',
+                overflow: 'hidden',
+                position: 'relative'
+              }}>
+                <div style={{
+                  height: '100%',
+                  width: `${percentage}%`,
+                  backgroundColor: color,
+                  borderRadius: '5px',
+                  transition: 'width 1s ease-out',
+                  position: 'relative'
+                }}>
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    width: '30%',
+                    background: `linear-gradient(90deg, transparent, rgba(255,255,255,0.2))`,
+                    borderRadius: '5px'
+                  }} />
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
