@@ -1,3 +1,4 @@
+
 const { useState, useEffect, useRef } = React;
 
 // === DATOS DEL PROYECTO ===
@@ -33,609 +34,914 @@ const TEAM_DATA = {
   ]
 };
 
-const PROJECT_INFO = {
-  title: "Transformación Digital de Nanostores",
-  subtitle: "Análisis del Ecosistema de Micro-Retail en Buenos Aires",
-  mission: "El MIT LIFT Lab busca transformar el ecosistema de micro-retail y aliviar la pobreza en América Latina mediante investigación aplicada, tecnología innovadora y análisis de datos para empoderar a comerciantes de bajos ingresos.",
-  objectives: [
-    "Analizar factores que impulsan crecimiento y supervivencia de nanostores",
-    "Implementar LIFT Digitization and Performance Index",
-    "Evaluar adopción tecnológica y su impacto en rendimiento",
-    "Mapear 300+ comercios en 5 zonas económicas de Buenos Aires"
-  ]
-};
 
-// === ICONOS SVG ===
-const HomeIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-  </svg>
-);
-
-const TeamIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-    <circle cx="9" cy="7" r="4"></circle>
-    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-  </svg>
-);
-
-const ChartIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <line x1="12" y1="20" x2="12" y2="10"></line>
-    <line x1="18" y1="20" x2="18" y2="4"></line>
-    <line x1="6" y1="20" x2="6" y2="16"></line>
-  </svg>
-);
-
-const MapIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
-    <line x1="8" y1="2" x2="8" y2="18"></line>
-    <line x1="16" y1="6" x2="16" y2="22"></line>
-  </svg>
-);
-
-const AnalysisIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-  </svg>
-);
-
-const BrainIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
-    <path d="M19 10a7 7 0 0 1-14 0"></path>
-  </svg>
-);
-
-// Función helper para formatear números de forma segura
-const formatearNumero = (num) => {
-  if (num === null || num === undefined || isNaN(num)) return '0';
-  return Number(num).toFixed(num % 1 === 0 ? 0 : 1);
+const COLORS = {
+  background: '#0a0a0a',
+  surface: '#1a1a1a',
+  surfaceHover: '#242424',
+  primary: '#d4af37',
+  primaryDark: '#b8963c',
+  text: '#f5f5f5',
+  textSecondary: '#a8a8a8',
+  border: '#2a2a2a'
 };
 
 // === COMPONENTE PRINCIPAL ===
-const App = () => {
-  const [seccion, setSeccion] = useState('inicio');
-  const [datos, setDatos] = useState(null);
-  const [cargando, setCargando] = useState(true);
+function App() {
+  const [datos, setDatos] = useState([]);
   const [indicadores, setIndicadores] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    cargarDatos();
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const cargarDatos = async () => {
-    try {
-      setCargando(true);
-      console.log('🔄 Cargando datos...');
-      
-      const response = await fetch('datos_comercios.json');
-      if (!response.ok) {
-        throw new Error('Error cargando archivo: ' + response.status);
-      }
-      
-      const data = await response.json();
-      console.log('✅ Datos cargados:', data.length, 'registros');
-      
-      setDatos(data);
-      calcularIndicadores(data);
-      setCargando(false);
-    } catch (err) {
-      console.error('❌ Error:', err);
-      setError(err.message);
-      setCargando(false);
-    }
-  };
+  useEffect(() => {
+    const timestamp = new Date().getTime();
+    fetch(`datos_comercios.json?v=${timestamp}`)
+      .then(response => {
+        if (!response.ok) throw new Error('Error al cargar datos');
+        return response.json();
+      })
+      .then(data => {
+        setDatos(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
 
-  const calcularIndicadores = (data) => {
-    try {
-      console.log('📊 Calculando indicadores...');
-      
-      const total = data.length;
-      
-      // Promedio trabajadores
-      const trabajadoresData = data.filter(c => {
-        const val = parseFloat(c.cantidad_trabajadores);
-        return !isNaN(val) && val > 0;
-      });
-      const promTrabajadores = trabajadoresData.length > 0 
-        ? trabajadoresData.reduce((sum, c) => sum + parseFloat(c.cantidad_trabajadores), 0) / trabajadoresData.length
-        : 0;
-      
-      // Tipos de comercio
-      const tipos = {};
-      data.forEach(c => {
-        const tipo = c.tipo_comercio || 'No especificado';
-        tipos[tipo] = (tipos[tipo] || 0) + 1;
-      });
-      const cantidadTipos = Object.keys(tipos).length;
-      
-      // Horas de operación
-      const conHorarios = data.filter(c => {
-        const apertura = parseFloat(c.hs_apertura);
-        const cierre = parseFloat(c.hs_cierre);
-        return !isNaN(apertura) && !isNaN(cierre) && cierre > apertura;
-      });
-      const promHoras = conHorarios.length > 0
-        ? conHorarios.reduce((sum, c) => 
-            sum + (parseFloat(c.hs_cierre) - parseFloat(c.hs_apertura)), 0
-          ) / conHorarios.length
-        : 0;
-      
-      // Acceso a crédito
-      const conCredito = data.filter(c => {
-        const bancos = parseFloat(c.credits_bancos) || 0;
-        const proveedor = parseFloat(c.credits_proveedor) || 0;
-        const familia = parseFloat(c.credits_familia) || 0;
-        return bancos > 0 || proveedor > 0 || familia > 0;
-      }).length;
-      
-      // Expectativas positivas
-      let expectativasPositivas = 0;
-      data.forEach(row => {
-        const expVentas = String(row.exp_ventas_3mes || '').toLowerCase();
-        if (expVentas.includes('aument') || expVentas.includes('crec') || 
-            expVentas.includes('mejor') || expVentas.includes('más') ||
-            expVentas.includes('mas')) {
-          expectativasPositivas++;
+  useEffect(() => {
+    if (datos.length > 0) {
+      const inds = calcularIndicadores(datos);
+      setIndicadores(inds);
+    }
+  }, [datos]);
+
+  if (loading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: COLORS.background,
+        color: COLORS.primary,
+        fontSize: '18px',
+        fontFamily: '"Crimson Pro", serif',
+        letterSpacing: '0.05em'
+      }}>
+        Cargando análisis...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: COLORS.background,
+        color: '#ff6b6b',
+        fontSize: '16px',
+        padding: '40px',
+        textAlign: 'center'
+      }}>
+        Error al cargar datos: {error}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
+      color: COLORS.text,
+      backgroundColor: COLORS.background,
+      minHeight: '100vh'
+    }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
         }
-      });
-      
-      // Con tecnología
-      const conTecnologia = data.filter(c => {
-        const tec = String(c.tecnologia || '').toLowerCase();
-        return tec === 'sí' || tec === 'si' || tec === 'yes';
-      }).length;
-      
-      // Años promedio de operación
-      const añoActual = new Date().getFullYear();
-      const conAño = data.filter(c => {
-        const año = parseFloat(c.año_apertura);
-        return !isNaN(año) && año > 1900 && año <= añoActual;
-      });
-      const promAñosOperacion = conAño.length > 0
-        ? conAño.reduce((sum, c) => 
-            sum + (añoActual - parseFloat(c.año_apertura)), 0
-          ) / conAño.length
-        : 0;
-      
-      // Con local propio
-      const conLocalPropio = data.filter(c => 
-        String(c.local || '').toLowerCase().includes('propio')
-      ).length;
-      
-      const indicadoresCalculados = {
-        total: total,
-        promTrabajadores: formatearNumero(promTrabajadores),
-        cantidadTipos: cantidadTipos,
-        promHoras: formatearNumero(promHoras),
-        conCredito: conCredito,
-        pctCredito: formatearNumero((conCredito/total)*100),
-        expectativasPositivas: expectativasPositivas,
-        pctExpectativas: formatearNumero((expectativasPositivas/total)*100),
-        conTecnologia: conTecnologia,
-        pctTecnologia: formatearNumero((conTecnologia/total)*100),
-        promAñosOperacion: formatearNumero(promAñosOperacion),
-        conLocalPropio: conLocalPropio,
-        pctLocalPropio: formatearNumero((conLocalPropio/total)*100)
-      };
-      
-      console.log('✅ Indicadores:', indicadoresCalculados);
-      setIndicadores(indicadoresCalculados);
-    } catch (err) {
-      console.error('❌ Error calculando:', err);
-      setError('Error calculando indicadores: ' + err.message);
-    }
-  };
+        
+        body {
+          overflow-x: hidden;
+        }
+        
+        .fade-in {
+          animation: fadeIn 0.8s ease-out forwards;
+          opacity: 0;
+        }
+        
+        .fade-in-delay-1 { animation-delay: 0.2s; }
+        .fade-in-delay-2 { animation-delay: 0.4s; }
+        .fade-in-delay-3 { animation-delay: 0.6s; }
+        
+        @keyframes fadeIn {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .fade-in {
+          transform: translateY(20px);
+        }
+      `}</style>
+      <Hero scrollY={scrollY} />
+      <ProjectIntro />
+      {indicadores && <Indicadores data={indicadores} />}
+      <Team />
+      {datos.length > 0 && <Mapa datos={datos} />}
+      <Footer />
+    </div>
+  );
+}
 
-  const nav = [
-    { id: 'inicio', label: 'Inicio', icon: HomeIcon },
-    { id: 'equipo', label: 'Equipo', icon: TeamIcon },
-    { id: 'indicadores', label: 'Indicadores', icon: ChartIcon },
-    { id: 'mapa', label: 'Mapa', icon: MapIcon },
-    { id: 'analisis', label: 'Análisis', icon: AnalysisIcon },
-    { id: 'ml', label: 'Machine Learning', icon: BrainIcon }
+// === HERO SECTION ===
+function Hero({ scrollY }) {
+  const parallaxOffset = scrollY * 0.5;
+  
+  return (
+    <section style={{
+      height: '100vh',
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+      background: `linear-gradient(135deg, ${COLORS.background} 0%, #1a1a1a 100%)`
+    }}>
+      {/* Decorative elements */}
+      <div style={{
+        position: 'absolute',
+        top: '20%',
+        right: '10%',
+        width: '400px',
+        height: '400px',
+        background: `radial-gradient(circle, ${COLORS.primary}15 0%, transparent 70%)`,
+        borderRadius: '50%',
+        transform: `translateY(${parallaxOffset}px)`,
+        pointerEvents: 'none'
+      }} />
+      
+      <div style={{
+        position: 'absolute',
+        bottom: '10%',
+        left: '5%',
+        width: '300px',
+        height: '300px',
+        background: `radial-gradient(circle, ${COLORS.primary}10 0%, transparent 70%)`,
+        borderRadius: '50%',
+        transform: `translateY(${-parallaxOffset * 0.3}px)`,
+        pointerEvents: 'none'
+      }} />
+
+      <div style={{
+        maxWidth: '1400px',
+        padding: '0 60px',
+        zIndex: 1,
+        textAlign: 'center'
+      }}>
+        <div className="fade-in" style={{
+          fontSize: '14px',
+          letterSpacing: '0.2em',
+          textTransform: 'uppercase',
+          color: COLORS.primary,
+          marginBottom: '30px',
+          fontWeight: '500'
+        }}>
+          MIT LIFT Lab × Buenos Aires
+        </div>
+        
+        <h1 className="fade-in fade-in-delay-1" style={{
+          fontFamily: '"Crimson Pro", serif',
+          fontSize: 'clamp(48px, 7vw, 96px)',
+          fontWeight: '300',
+          lineHeight: '1.1',
+          marginBottom: '30px',
+          color: COLORS.text
+        }}>
+          Análisis de Comercios
+          <br />
+          <span style={{ fontWeight: '600', fontStyle: 'italic' }}>
+            Valle de Uco
+          </span>
+        </h1>
+        
+        <p className="fade-in fade-in-delay-2" style={{
+          fontSize: '18px',
+          lineHeight: '1.8',
+          color: COLORS.textSecondary,
+          maxWidth: '600px',
+          margin: '0 auto 50px',
+          fontWeight: '300'
+        }}>
+          {TEAM_DATA.tagline}
+        </p>
+        
+        <div className="fade-in fade-in-delay-3" style={{
+          fontSize: '13px',
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+          color: COLORS.textSecondary,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '20px'
+        }}>
+          <span>Equipo {TEAM_DATA.name}</span>
+          <span style={{ color: COLORS.primary }}>•</span>
+          <span>2024</span>
+        </div>
+      </div>
+      
+      {/* Scroll indicator */}
+      <div style={{
+        position: 'absolute',
+        bottom: '40px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        animation: 'bounce 2s infinite',
+        opacity: scrollY > 100 ? 0 : 1,
+        transition: 'opacity 0.3s'
+      }}>
+        <style>{`
+          @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+          }
+        `}</style>
+        <div style={{
+          width: '1px',
+          height: '60px',
+          background: `linear-gradient(to bottom, transparent, ${COLORS.primary})`,
+          margin: '0 auto'
+        }} />
+      </div>
+    </section>
+  );
+}
+
+// === PROJECT INTRO ===
+function ProjectIntro() {
+  return (
+    <section style={{
+      padding: '120px 60px',
+      maxWidth: '1400px',
+      margin: '0 auto'
+    }}>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: '80px',
+        alignItems: 'center'
+      }}>
+        <div>
+          <div style={{
+            fontSize: '12px',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: COLORS.primary,
+            marginBottom: '20px',
+            fontWeight: '500'
+          }}>
+            Sobre el proyecto
+          </div>
+          <h2 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: 'clamp(36px, 4vw, 52px)',
+            fontWeight: '400',
+            lineHeight: '1.2',
+            marginBottom: '30px',
+            color: COLORS.text
+          }}>
+            Mapeo integral del
+            <br />
+            <span style={{ fontStyle: 'italic', fontWeight: '600' }}>
+              ecosistema comercial
+            </span>
+          </h2>
+        </div>
+        
+        <div>
+          <p style={{
+            fontSize: '16px',
+            lineHeight: '1.8',
+            color: COLORS.textSecondary,
+            marginBottom: '20px'
+          }}>
+            Análisis exhaustivo de comercios locales en Buenos Aires, 
+            combinando metodologías de campo del MIT LIFT Lab con 
+            machine learning para identificar patrones de crecimiento 
+            y oportunidades de desarrollo.
+          </p>
+          <p style={{
+            fontSize: '16px',
+            lineHeight: '1.8',
+            color: COLORS.textSecondary
+          }}>
+            Este proyecto forma parte de una iniciativa más amplia 
+            para comprender y potenciar el emprendedorismo en 
+            mercados emergentes.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// === INDICADORES ===
+function Indicadores({ data }) {
+  const indicadores = [
+    { label: 'Comercios Analizados', value: data.total, suffix: '' },
+    { label: 'Trabajadores Promedio', value: data.promTrabajadores, suffix: '' },
+    { label: 'Horas de Operación', value: data.promHoras, suffix: 'hs' },
+    { label: 'Acceso a Crédito', value: data.pctCredito, suffix: '%' },
+    { label: 'Expectativas Positivas', value: data.pctExpectativas, suffix: '%' },
+    { label: 'Adopción Tecnológica', value: data.pctTecnologia, suffix: '%' },
+    { label: 'Local Propio', value: data.pctLocalPropio, suffix: '%' },
+    { label: 'Años en Operación', value: data.promAñosOperacion, suffix: '' }
   ];
 
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
-      <header style={{
-        background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
-        color: 'white',
-        padding: '3rem 2rem',
-        boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
-      }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.5rem' }}>
-            MIT LIFT Lab | GreenThunder
-          </h1>
-          <p style={{ fontSize: '1.2rem', opacity: 0.9 }}>
-            {PROJECT_INFO.title}
-          </p>
-        </div>
-      </header>
-
-      <nav style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-        padding: '1.5rem 2rem 0'
-      }}>
+    <section style={{
+      padding: '120px 60px',
+      backgroundColor: COLORS.surface,
+      borderTop: `1px solid ${COLORS.border}`,
+      borderBottom: `1px solid ${COLORS.border}`
+    }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         <div style={{
-          background: 'rgba(255,255,255,0.95)',
-          backdropFilter: 'blur(10px)',
-          borderRadius: '1rem',
-          padding: '0.75rem',
-          display: 'flex',
-          gap: '0.5rem',
-          flexWrap: 'wrap',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.15)'
+          marginBottom: '80px',
+          textAlign: 'center'
         }}>
-          {nav.map(item => {
-            const Icon = item.icon;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setSeccion(item.id)}
-                style={{
-                  padding: '0.75rem 1.5rem',
-                  borderRadius: '0.75rem',
-                  border: 'none',
-                  background: seccion === item.id ? 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)' : 'transparent',
-                  color: seccion === item.id ? 'white' : '#4b5563',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem'
-                }}
-              >
-                <Icon />
-                {item.label}
-              </button>
-            );
-          })}
+          <div style={{
+            fontSize: '12px',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: COLORS.primary,
+            marginBottom: '20px',
+            fontWeight: '500'
+          }}>
+            Indicadores clave
+          </div>
+          <h2 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: 'clamp(36px, 4vw, 52px)',
+            fontWeight: '400',
+            color: COLORS.text
+          }}>
+            Datos del relevamiento
+          </h2>
         </div>
-      </nav>
+        
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '1px',
+          background: COLORS.border
+        }}>
+          {indicadores.map((ind, index) => (
+            <IndicadorCard key={index} {...ind} index={index} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
-      <main style={{ maxWidth: '1400px', margin: '0 auto', padding: '2rem' }}>
-        {error && (
-          <div style={{ background: '#fee2e2', color: '#991b1b', padding: '1.5rem', borderRadius: '1rem', marginBottom: '2rem', border: '2px solid #fca5a5' }}>
-            <strong>Error:</strong> {error}
-          </div>
-        )}
-        
-        {cargando && (
-          <div style={{ background: 'white', borderRadius: '1.5rem', padding: '3rem', textAlign: 'center' }}>
-            <p style={{ fontSize: '1.2rem', color: '#6b7280' }}>⏳ Cargando datos...</p>
-          </div>
-        )}
-        
-        {!cargando && !error && datos && (
-          <>
-            {seccion === 'inicio' && <SeccionInicio />}
-            {seccion === 'equipo' && <SeccionEquipo />}
-            {seccion === 'indicadores' && indicadores && <SeccionIndicadores indicadores={indicadores} />}
-            {seccion === 'mapa' && <SeccionMapa datos={datos} />}
-            {seccion === 'analisis' && <SeccionAnalisis datos={datos} />}
-            {seccion === 'ml' && <SeccionML />}
-          </>
-        )}
-      </main>
+function IndicadorCard({ label, value, suffix, index }) {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        backgroundColor: COLORS.surface,
+        padding: '50px 30px',
+        textAlign: 'center',
+        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        transform: isHovered ? 'translateY(-8px)' : 'translateY(0)',
+        cursor: 'default',
+        position: 'relative',
+        overflow: 'hidden'
+      }}
+    >
+      {/* Hover gradient */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '2px',
+        background: `linear-gradient(90deg, transparent, ${COLORS.primary}, transparent)`,
+        opacity: isHovered ? 1 : 0,
+        transition: 'opacity 0.4s'
+      }} />
+      
+      <div style={{
+        fontFamily: '"Crimson Pro", serif',
+        fontSize: 'clamp(42px, 5vw, 56px)',
+        fontWeight: '300',
+        color: COLORS.text,
+        marginBottom: '12px',
+        letterSpacing: '-0.02em'
+      }}>
+        {value}<span style={{ fontSize: '0.6em', color: COLORS.primary }}>{suffix}</span>
+      </div>
+      
+      <div style={{
+        fontSize: '13px',
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        color: COLORS.textSecondary,
+        fontWeight: '500'
+      }}>
+        {label}
+      </div>
     </div>
   );
-};
+}
 
-// === SECCIONES ===
-const SeccionInicio = () => (
-  <div style={{ background: 'white', borderRadius: '1.5rem', padding: '3rem', boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}>
-    <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-      <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#1e3a8a', marginBottom: '1rem' }}>
-        {PROJECT_INFO.title}
-      </h2>
-      <p style={{ fontSize: '1.3rem', color: '#3b82f6', fontWeight: '600', marginBottom: '2rem' }}>
-        {PROJECT_INFO.subtitle}
-      </p>
-      <p style={{ fontSize: '1.1rem', color: '#4b5563', lineHeight: '1.8', maxWidth: '800px', margin: '0 auto' }}>
-        {PROJECT_INFO.mission}
-      </p>
-    </div>
-
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
-      <StatCard number="923" label="Comercios Encuestados" color="#3b82f6" />
-      <StatCard number="95%" label="MiPyMEs en LATAM" color="#8b5cf6" />
-      <StatCard number="72%" label="Usan papel" color="#ec4899" />
-      <StatCard number="5" label="Zonas Económicas" color="#10b981" />
-    </div>
-
-    <div style={{ background: '#f3f4f6', padding: '2rem', borderRadius: '1rem' }}>
-      <h3 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem', color: '#1e3a8a' }}>
-        🎯 Objetivos del Proyecto
-      </h3>
-      <ul style={{ listStyle: 'none', padding: 0 }}>
-        {PROJECT_INFO.objectives.map((obj, i) => (
-          <li key={i} style={{ padding: '0.75rem 0', borderBottom: i < PROJECT_INFO.objectives.length - 1 ? '1px solid #d1d5db' : 'none' }}>
-            <span style={{ color: '#3b82f6', fontWeight: '700', marginRight: '0.5rem' }}>✓</span>
-            {obj}
-          </li>
+// === TEAM ===
+function Team() {
+  return (
+    <section style={{
+      padding: '120px 60px',
+      maxWidth: '1400px',
+      margin: '0 auto'
+    }}>
+      <div style={{
+        marginBottom: '80px',
+        textAlign: 'center'
+      }}>
+        <div style={{
+          fontSize: '12px',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: COLORS.primary,
+          marginBottom: '20px',
+          fontWeight: '500'
+        }}>
+          El equipo
+        </div>
+        <h2 style={{
+          fontFamily: '"Crimson Pro", serif',
+          fontSize: 'clamp(36px, 4vw, 52px)',
+          fontWeight: '400',
+          color: COLORS.text
+        }}>
+          Investigadores
+        </h2>
+      </div>
+      
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+        gap: '40px'
+      }}>
+        {TEAM_DATA.members.map((member, index) => (
+          <TeamMember key={index} member={member} index={index} />
         ))}
-      </ul>
-    </div>
-  </div>
-);
+      </div>
+    </section>
+  );
+}
 
-const StatCard = ({ number, label, color }) => (
-  <div style={{
-    background: `linear-gradient(135deg, ${color}15 0%, ${color}08 100%)`,
-    border: `2px solid ${color}40`,
-    borderRadius: '1rem',
-    padding: '2rem',
-    textAlign: 'center'
-  }}>
-    <div style={{ fontSize: '3rem', fontWeight: '900', color, marginBottom: '0.5rem' }}>
-      {number}
-    </div>
-    <div style={{ fontSize: '1rem', color: '#6b7280', fontWeight: '600' }}>
-      {label}
-    </div>
-  </div>
-);
+function TeamMember({ member, index }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
-const SeccionEquipo = () => (
-  <div style={{ background: 'white', borderRadius: '1.5rem', padding: '3rem', boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}>
-    <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#1e3a8a', marginBottom: '1rem', textAlign: 'center' }}>
-      Equipo {TEAM_DATA.name} ⚡
-    </h2>
-    <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: '3rem', fontSize: '1.1rem' }}>
-      Estudiantes de UBA y UNSAM trabajando en colaboración con MIT LIFT Lab
-    </p>
-
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
-      {TEAM_DATA.members.map((member, i) => (
-        <div key={i} style={{
-          background: 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
-          borderRadius: '1rem',
-          padding: '2rem',
-          textAlign: 'center',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-          transition: 'transform 0.3s',
-          cursor: 'pointer'
-        }}
-        onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'}
-        onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
-        >
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        position: 'relative',
+        cursor: 'pointer',
+        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+      }}
+    >
+      {/* Image container */}
+      <div style={{
+        position: 'relative',
+        aspectRatio: '3/4',
+        marginBottom: '24px',
+        overflow: 'hidden',
+        backgroundColor: COLORS.surface,
+        borderRadius: '2px'
+      }}>
+        {!imgError ? (
           <img
             src={member.image}
             alt={member.name}
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.nextSibling.style.display = 'flex';
-            }}
+            onError={() => setImgError(true)}
             style={{
-              width: '150px',
-              height: '150px',
-              borderRadius: '50%',
+              width: '100%',
+              height: '100%',
               objectFit: 'cover',
-              marginBottom: '1.5rem',
-              border: '4px solid white',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+              filter: isHovered ? 'grayscale(0%)' : 'grayscale(100%)',
+              transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+              transform: isHovered ? 'scale(1.05)' : 'scale(1)'
             }}
           />
+        ) : (
           <div style={{
-            display: 'none',
-            width: '150px',
-            height: '150px',
-            borderRadius: '50%',
-            background: '#3b82f6',
-            color: 'white',
-            fontSize: '4rem',
-            fontWeight: '700',
+            width: '100%',
+            height: '100%',
+            display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 1.5rem',
-            border: '4px solid white',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+            backgroundColor: COLORS.surface,
+            fontSize: '72px',
+            fontFamily: '"Crimson Pro", serif',
+            color: COLORS.primary,
+            fontWeight: '300'
           }}>
             {member.name.charAt(0)}
           </div>
-          <h3 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1f2937', marginBottom: '0.5rem' }}>
-            {member.name}
-          </h3>
-          <p style={{ color: '#3b82f6', fontWeight: '600', marginBottom: '0.5rem' }}>
-            {member.role}
-          </p>
-          <p style={{ color: '#6b7280', marginBottom: '1rem' }}>
-            {member.university}
-          </p>
-          <a
-            href={member.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-block',
-              padding: '0.5rem 1.5rem',
-              background: '#0077b5',
-              color: 'white',
-              borderRadius: '0.5rem',
-              textDecoration: 'none',
-              fontWeight: '600',
-              transition: 'background 0.3s'
-            }}
-          >
-            LinkedIn →
-          </a>
-        </div>
-      ))}
-    </div>
-
-    <div style={{ background: '#f3f4f6', padding: '2rem', borderRadius: '1rem' }}>
-      <h3 style={{ fontSize: '1.8rem', fontWeight: '700', marginBottom: '2rem', color: '#1e3a8a', textAlign: 'center' }}>
-        🎓 Instituciones Colaboradoras
-      </h3>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
-        {TEAM_DATA.universities.map((uni, i) => (
-          <div key={i} style={{
-            background: 'white',
-            padding: '1.5rem',
-            borderRadius: '0.75rem',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-          }}>
-            <h4 style={{ fontSize: '1.5rem', fontWeight: '800', color: '#3b82f6', marginBottom: '0.5rem' }}>
-              {uni.name}
-            </h4>
-            <p style={{ fontSize: '0.95rem', color: '#1f2937', fontWeight: '600', marginBottom: '0.25rem' }}>
-              {uni.full}
-            </p>
-            <p style={{ fontSize: '0.85rem', color: '#6b7280' }}>
-              {uni.role}
-            </p>
-          </div>
-        ))}
+        )}
+        
+        {/* Overlay gradient */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '50%',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
+          opacity: isHovered ? 0 : 1,
+          transition: 'opacity 0.4s'
+        }} />
       </div>
-    </div>
-  </div>
-);
-
-const SeccionIndicadores = ({ indicadores }) => (
-  <div style={{ background: 'white', borderRadius: '1.5rem', padding: '3rem', boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}>
-    <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#1e3a8a', marginBottom: '2rem', textAlign: 'center' }}>
-      📊 Indicadores Clave del Relevamiento
-    </h2>
-
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-      <IndicadorCard titulo="Total Comercios" valor={indicadores.total} subtitulo="Encuestas completadas" color="#3b82f6" icono="🏪" />
-      <IndicadorCard titulo="Tipos de Comercio" valor={indicadores.cantidadTipos} subtitulo="Categorías diferentes" color="#8b5cf6" icono="📋" />
-      <IndicadorCard titulo="Promedio Trabajadores" valor={indicadores.promTrabajadores} subtitulo="Por comercio" color="#ec4899" icono="👥" />
-      <IndicadorCard titulo="Horas Operación" valor={indicadores.promHoras + 'h'} subtitulo="Promedio diario" color="#10b981" icono="⏰" />
-      <IndicadorCard titulo="Años en Operación" valor={indicadores.promAñosOperacion} subtitulo="Antigüedad promedio" color="#f59e0b" icono="📅" />
-      <IndicadorCard titulo="Con Acceso a Crédito" valor={indicadores.conCredito} subtitulo={indicadores.pctCredito + '% del total'} color="#06b6d4" icono="💳" />
-      <IndicadorCard titulo="Expectativas Positivas" valor={indicadores.expectativasPositivas} subtitulo={indicadores.pctExpectativas + '% esperan crecer'} color="#84cc16" icono="📈" />
-      <IndicadorCard titulo="Usan Tecnología" valor={indicadores.conTecnologia} subtitulo={indicadores.pctTecnologia + '% del total'} color="#a855f7" icono="💻" />
-      <IndicadorCard titulo="Local Propio" valor={indicadores.conLocalPropio} subtitulo={indicadores.pctLocalPropio + '% del total'} color="#ef4444" icono="🏠" />
-    </div>
-
-    <div style={{ marginTop: '3rem', background: '#f0f9ff', padding: '2rem', borderRadius: '1rem', border: '2px solid #3b82f6' }}>
-      <h3 style={{ fontSize: '1.3rem', fontWeight: '700', color: '#1e3a8a', marginBottom: '1rem' }}>
-        💡 Insights Principales
+      
+      {/* Info */}
+      <h3 style={{
+        fontFamily: '"Crimson Pro", serif',
+        fontSize: '24px',
+        fontWeight: '400',
+        color: COLORS.text,
+        marginBottom: '8px',
+        letterSpacing: '-0.01em'
+      }}>
+        {member.name}
       </h3>
-      <ul style={{ listStyle: 'none', padding: 0, color: '#1f2937' }}>
-        <li style={{ padding: '0.5rem 0' }}>
-          <strong>• Digitalización:</strong> Solo {indicadores.pctTecnologia}% usa sistemas tecnológicos
-        </li>
-        <li style={{ padding: '0.5rem 0' }}>
-          <strong>• Acceso financiero:</strong> {indicadores.pctCredito}% tiene acceso a crédito
-        </li>
-        <li style={{ padding: '0.5rem 0' }}>
-          <strong>• Optimismo:</strong> {indicadores.pctExpectativas}% tiene expectativas positivas
-        </li>
-        <li style={{ padding: '0.5rem 0' }}>
-          <strong>• Diversidad:</strong> {indicadores.cantidadTipos} tipos diferentes de comercio
-        </li>
-      </ul>
+      
+      <p style={{
+        fontSize: '14px',
+        color: COLORS.primary,
+        marginBottom: '4px',
+        letterSpacing: '0.05em'
+      }}>
+        {member.role}
+      </p>
+      
+      <p style={{
+        fontSize: '13px',
+        color: COLORS.textSecondary,
+        marginBottom: '16px'
+      }}>
+        {member.university}
+      </p>
+      
+      <a
+        href={member.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          display: 'inline-block',
+          fontSize: '12px',
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase',
+          color: COLORS.text,
+          textDecoration: 'none',
+          borderBottom: `1px solid ${isHovered ? COLORS.primary : 'transparent'}`,
+          paddingBottom: '2px',
+          transition: 'border-color 0.3s',
+          fontWeight: '500'
+        }}
+      >
+        LinkedIn →
+      </a>
     </div>
-  </div>
-);
+  );
+}
 
-const IndicadorCard = ({ titulo, valor, subtitulo, color, icono }) => (
-  <div style={{
-    background: `linear-gradient(135deg, ${color}15 0%, ${color}08 100%)`,
-    border: `2px solid ${color}40`,
-    borderRadius: '1rem',
-    padding: '1.5rem',
-    transition: 'transform 0.3s',
-    cursor: 'pointer'
-  }}
-  onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'}
-  onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
-  >
-    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-      <h3 style={{ fontSize: '0.9rem', color: '#6b7280', fontWeight: '600', margin: 0, flex: 1 }}>
-        {titulo}
-      </h3>
-      <span style={{ fontSize: '1.5rem' }}>{icono}</span>
-    </div>
-    <div style={{ fontSize: '2.5rem', fontWeight: '900', color, marginBottom: '0.5rem' }}>
-      {valor}
-    </div>
-    <p style={{ fontSize: '0.85rem', color: '#6b7280', margin: 0 }}>
-      {subtitulo}
-    </p>
-  </div>
-);
-
-const SeccionMapa = ({ datos }) => {
+// === MAPA ===
+function Mapa({ datos }) {
   const mapRef = useRef(null);
-  const mapInstance = useRef(null);
-  
+  const mapInstanceRef = useRef(null);
+
   useEffect(() => {
-    if (!mapRef.current || mapInstance.current || typeof L === 'undefined') return;
-    
-    try {
-      const map = L.map(mapRef.current).setView([-34.6037, -58.3816], 11);
-      mapInstance.current = map;
-      
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap',
-        maxZoom: 18
-      }).addTo(map);
-      
-      const comerciosValidos = datos.filter(d => {
-        const lat = parseFloat(d.lat);
-        const long = parseFloat(d.long);
-        return !isNaN(lat) && !isNaN(long) && lat !== 0 && long !== 0 &&
-               lat < -34.0 && lat > -35.0 && long < -58.0 && long > -59.0;
-      });
-      
-      console.log('📍 Marcadores:', comerciosValidos.length);
-      
-      comerciosValidos.forEach((c, i) => {
-        L.marker([parseFloat(c.lat), parseFloat(c.long)])
-          .bindPopup('<strong>' + (c.comercio || 'Comercio ' + (i+1)) + '</strong><br/>' + (c.tipo_comercio || 'N/A'))
-          .addTo(map);
-      });
-    } catch (err) {
-      console.error('Error mapa:', err);
-    }
-    
+    if (!window.L || mapInstanceRef.current) return;
+
+    const comerciosConCoords = datos.filter(c => 
+      c.lat && c.long && 
+      !isNaN(c.lat) && !isNaN(c.long) &&
+      c.lat !== 0 && c.long !== 0
+    );
+
+    if (comerciosConCoords.length === 0) return;
+
+    const map = window.L.map(mapRef.current).setView([-34.6037, -58.3816], 12);
+
+    window.L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© OpenStreetMap, © CartoDB',
+      maxZoom: 19
+    }).addTo(map);
+
+    const icon = window.L.divIcon({
+      className: 'custom-marker',
+      html: `<div style="
+        width: 12px;
+        height: 12px;
+        background: ${COLORS.primary};
+        border: 2px solid ${COLORS.background};
+        border-radius: 50%;
+        box-shadow: 0 0 10px ${COLORS.primary}80;
+      "></div>`,
+      iconSize: [12, 12]
+    });
+
+    comerciosConCoords.forEach(comercio => {
+      try {
+        const marker = window.L.marker([comercio.lat, comercio.long], { icon }).addTo(map);
+        marker.bindPopup(`
+          <div style="
+            font-family: 'Inter', sans-serif;
+            background: ${COLORS.surface};
+            color: ${COLORS.text};
+            padding: 12px;
+            border-radius: 4px;
+          ">
+            <strong style="color: ${COLORS.primary}; display: block; margin-bottom: 8px;">
+              ${comercio.comercio || 'Sin nombre'}
+            </strong>
+            <div style="font-size: 13px; color: ${COLORS.textSecondary};">
+              Tipo: ${comercio.tipo_comercio || 'N/A'}<br>
+              Trabajadores: ${comercio.cantidad_trabajadores || 'N/A'}
+            </div>
+          </div>
+        `);
+      } catch (error) {
+        console.error('Error al agregar marcador:', error);
+      }
+    });
+
+    mapInstanceRef.current = map;
+
     return () => {
-      if (mapInstance.current) {
-        mapInstance.current.remove();
-        mapInstance.current = null;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
       }
     };
   }, [datos]);
-  
+
   return (
-    <div style={{ background: 'white', borderRadius: '1.5rem', padding: '3rem', boxShadow: '0 20px 60px rgba(0,0,0,0.15)' }}>
-      <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#1e3a8a', marginBottom: '1rem', textAlign: 'center' }}>
-        🗺️ Mapa de Comercios - Buenos Aires
-      </h2>
-      <div ref={mapRef} style={{ height: '600px', borderRadius: '1rem', border: '2px solid #e5e7eb' }}></div>
-    </div>
+    <section style={{
+      padding: '120px 60px',
+      maxWidth: '1400px',
+      margin: '0 auto'
+    }}>
+      <div style={{
+        marginBottom: '60px',
+        textAlign: 'center'
+      }}>
+        <div style={{
+          fontSize: '12px',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: COLORS.primary,
+          marginBottom: '20px',
+          fontWeight: '500'
+        }}>
+          Distribución geográfica
+        </div>
+        <h2 style={{
+          fontFamily: '"Crimson Pro", serif',
+          fontSize: 'clamp(36px, 4vw, 52px)',
+          fontWeight: '400',
+          color: COLORS.text
+        }}>
+          Ubicación de comercios
+        </h2>
+      </div>
+      
+      <div
+        ref={mapRef}
+        style={{
+          height: '600px',
+          width: '100%',
+          borderRadius: '2px',
+          border: `1px solid ${COLORS.border}`,
+          overflow: 'hidden',
+          boxShadow: `0 20px 60px rgba(0,0,0,0.4)`
+        }}
+      />
+    </section>
   );
-};
+}
 
-const SeccionAnalisis = () => (
-  <div style={{ background: 'white', borderRadius: '1.5rem', padding: '3rem', textAlign: 'center' }}>
-    <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#1e3a8a', marginBottom: '1rem' }}>
-      📈 Análisis de Datos
-    </h2>
-    <p style={{ color: '#6b7280', fontSize: '1.1rem' }}>Próximamente gráficos avanzados</p>
-  </div>
-);
+// === FOOTER ===
+function Footer() {
+  return (
+    <footer style={{
+      borderTop: `1px solid ${COLORS.border}`,
+      padding: '80px 60px',
+      backgroundColor: COLORS.surface
+    }}>
+      <div style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        display: 'grid',
+        gridTemplateColumns: '2fr 1fr 1fr',
+        gap: '60px'
+      }}>
+        <div>
+          <h3 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: '24px',
+            fontWeight: '400',
+            color: COLORS.text,
+            marginBottom: '16px'
+          }}>
+            MIT LIFT Lab
+          </h3>
+          <p style={{
+            fontSize: '14px',
+            lineHeight: '1.8',
+            color: COLORS.textSecondary,
+            maxWidth: '400px'
+          }}>
+            Laboratory for Innovation Science and Policy. 
+            Investigación aplicada para el desarrollo de ecosistemas 
+            emprendedores en mercados emergentes.
+          </p>
+        </div>
+        
+        <div>
+          <h4 style={{
+            fontSize: '12px',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: COLORS.primary,
+            marginBottom: '20px',
+            fontWeight: '500'
+          }}>
+            Equipo
+          </h4>
+          {TEAM_DATA.members.map((member, index) => (
+            <div key={index} style={{
+              fontSize: '14px',
+              color: COLORS.textSecondary,
+              marginBottom: '8px'
+            }}>
+              {member.name}
+            </div>
+          ))}
+        </div>
+        
+        <div>
+          <h4 style={{
+            fontSize: '12px',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: COLORS.primary,
+            marginBottom: '20px',
+            fontWeight: '500'
+          }}>
+            Contacto
+          </h4>
+          <div style={{
+            fontSize: '14px',
+            color: COLORS.textSecondary,
+            lineHeight: '2'
+          }}>
+            Buenos Aires, Argentina
+            <br />
+            2024
+          </div>
+        </div>
+      </div>
+      
+      <div style={{
+        maxWidth: '1400px',
+        margin: '60px auto 0',
+        paddingTop: '40px',
+        borderTop: `1px solid ${COLORS.border}`,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        fontSize: '12px',
+        color: COLORS.textSecondary
+      }}>
+        <div>
+          © 2024 MIT LIFT Lab · Equipo {TEAM_DATA.name}
+        </div>
+        <div style={{
+          display: 'flex',
+          gap: '30px'
+        }}>
+          <span>Proyecto académico</span>
+          <span>Universidad de Buenos Aires</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
 
-const SeccionML = () => (
-  <div style={{ background: 'white', borderRadius: '1.5rem', padding: '3rem', textAlign: 'center' }}>
-    <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#1e3a8a', marginBottom: '1rem' }}>
-      🤖 Machine Learning
-    </h2>
-    <p style={{ color: '#6b7280', fontSize: '1.1rem' }}>Sección en pausa</p>
-  </div>
-);
+// === FUNCIONES AUXILIARES ===
+function calcularIndicadores(datos) {
+  const formatearNumero = (num) => {
+    if (num === null || num === undefined || isNaN(num)) return '0';
+    return Number(num).toFixed(num % 1 === 0 ? 0 : 1);
+  };
 
+  const total = datos.length;
+  
+  const sumaHoras = datos.reduce((acc, c) => {
+    if (!c.hs_apertura || !c.hs_cierre) return acc;
+    const apertura = parseInt(c.hs_apertura);
+    const cierre = parseInt(c.hs_cierre);
+    if (isNaN(apertura) || isNaN(cierre)) return acc;
+    let horas = cierre - apertura;
+    if (horas < 0) horas += 24;
+    return acc + horas;
+  }, 0);
+  
+  const conteoHoras = datos.filter(c => c.hs_apertura && c.hs_cierre).length;
+  const promHoras = conteoHoras > 0 ? sumaHoras / conteoHoras : 0;
+
+  const sumaTrabajadores = datos.reduce((acc, c) => {
+    const cant = parseFloat(c.cantidad_trabajadores);
+    return acc + (isNaN(cant) ? 0 : cant);
+  }, 0);
+  const promTrabajadores = total > 0 ? sumaTrabajadores / total : 0;
+
+  const conCredito = datos.filter(c => 
+    (parseFloat(c.credits_bancos) > 0) ||
+    (parseFloat(c.credits_proveedor) > 0) ||
+    (parseFloat(c.credits_familia) > 0) ||
+    (parseFloat(c.credits_gobierno) > 0) ||
+    (parseFloat(c.credits_privado) > 0)
+  ).length;
+  const pctCredito = total > 0 ? (conCredito / total) * 100 : 0;
+
+  const expPositivas = datos.filter(c => 
+    c.exp_ventas_3mes === 'Aumentarán' || 
+    c.exp_ventas_3mes === 'aumentarán'
+  ).length;
+  const pctExpectativas = total > 0 ? (expPositivas / total) * 100 : 0;
+
+  const usanTecnologia = datos.filter(c => 
+    c.tecnologia === 'Sí' || c.tecnologia === 'sí'
+  ).length;
+  const pctTecnologia = total > 0 ? (usanTecnologia / total) * 100 : 0;
+
+  const localPropio = datos.filter(c => 
+    c.local === 'Propio' || c.local === 'propio'
+  ).length;
+  const pctLocalPropio = total > 0 ? (localPropio / total) * 100 : 0;
+
+  const añoActual = new Date().getFullYear();
+  const sumaAños = datos.reduce((acc, c) => {
+    const añoApertura = parseFloat(c.año_apertura);
+    if (isNaN(añoApertura) || añoApertura > añoActual) return acc;
+    return acc + (añoActual - añoApertura);
+  }, 0);
+  const conteoAños = datos.filter(c => {
+    const año = parseFloat(c.año_apertura);
+    return !isNaN(año) && año <= añoActual;
+  }).length;
+  const promAñosOperacion = conteoAños > 0 ? sumaAños / conteoAños : 0;
+
+  return {
+    total,
+    promTrabajadores: formatearNumero(promTrabajadores),
+    promHoras: formatearNumero(promHoras),
+    pctCredito: formatearNumero(pctCredito),
+    pctExpectativas: formatearNumero(pctExpectativas),
+    pctTecnologia: formatearNumero(pctTecnologia),
+    pctLocalPropio: formatearNumero(pctLocalPropio),
+    promAñosOperacion: formatearNumero(promAñosOperacion)
+  };
+}
+
+// === RENDERIZAR ===
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
