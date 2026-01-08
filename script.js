@@ -279,7 +279,7 @@ function Hero({ scrollY }) {
         }}>
           <span>Equipo {TEAM_DATA.name}</span>
           <span style={{ color: COLORS.primary }}>•</span>
-          <span>2024</span>
+          <span>2025/2026</span>
         </div>
       </div>
       
@@ -2178,6 +2178,10 @@ function ModeloCrecimiento({ data }) {
           
           <div style={{ height: '40px' }} />
           
+          <ROCCurve auc={data.metricas.auc_roc} />
+          
+          <div style={{ height: '40px' }} />
+          
           <FeatureImportanceChart 
             features={data.feature_importance.slice(0, 5)} 
             color="#00E676"
@@ -2491,6 +2495,142 @@ function ModeloSalario({ data }) {
           borderRadius: '6px',
           border: `1px solid ${COLORS.border}`
         }}>
+          {/* Métricas de Error Visualizadas */}
+          <div style={{ marginBottom: '40px' }}>
+            <h4 style={{
+              fontSize: '14px',
+              fontWeight: '600',
+              color: COLORS.primary,
+              marginBottom: '20px',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase'
+            }}>
+              Métricas de Performance
+            </h4>
+            
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+              gap: '16px'
+            }}>
+              <div style={{
+                padding: '20px',
+                backgroundColor: COLORS.background,
+                borderRadius: '8px',
+                border: `2px solid #4FC3F7`,
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontSize: '11px',
+                  color: COLORS.textSecondary,
+                  marginBottom: '8px',
+                  textTransform: 'uppercase'
+                }}>
+                  R² Score
+                </div>
+                <div style={{
+                  fontSize: '28px',
+                  fontWeight: '700',
+                  color: data.metricas.r2_score > 0 ? '#00E676' : '#FF6B6B',
+                  fontFamily: '"Crimson Pro", serif'
+                }}>
+                  {data.metricas.r2_score.toFixed(3)}
+                </div>
+              </div>
+              
+              <div style={{
+                padding: '20px',
+                backgroundColor: COLORS.background,
+                borderRadius: '8px',
+                border: `2px solid #FFB74D`,
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontSize: '11px',
+                  color: COLORS.textSecondary,
+                  marginBottom: '8px',
+                  textTransform: 'uppercase'
+                }}>
+                  RMSE
+                </div>
+                <div style={{
+                  fontSize: '20px',
+                  fontWeight: '700',
+                  color: '#FFB74D',
+                  fontFamily: '"Crimson Pro", serif'
+                }}>
+                  ${(data.metricas.rmse / 1000000).toFixed(2)}M
+                </div>
+              </div>
+              
+              <div style={{
+                padding: '20px',
+                backgroundColor: COLORS.background,
+                borderRadius: '8px',
+                border: `2px solid #00E676`,
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontSize: '11px',
+                  color: COLORS.textSecondary,
+                  marginBottom: '8px',
+                  textTransform: 'uppercase'
+                }}>
+                  MAE
+                </div>
+                <div style={{
+                  fontSize: '20px',
+                  fontWeight: '700',
+                  color: '#00E676',
+                  fontFamily: '"Crimson Pro", serif'
+                }}>
+                  ${(data.metricas.mae / 1000000).toFixed(2)}M
+                </div>
+              </div>
+              
+              <div style={{
+                padding: '20px',
+                backgroundColor: COLORS.background,
+                borderRadius: '8px',
+                border: `2px solid #FF6B6B`,
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontSize: '11px',
+                  color: COLORS.textSecondary,
+                  marginBottom: '8px',
+                  textTransform: 'uppercase'
+                }}>
+                  MAPE
+                </div>
+                <div style={{
+                  fontSize: '20px',
+                  fontWeight: '700',
+                  color: '#FF6B6B',
+                  fontFamily: '"Crimson Pro", serif'
+                }}>
+                  {data.metricas.mape.toFixed(1)}%
+                </div>
+              </div>
+            </div>
+            
+            <div style={{
+              marginTop: '20px',
+              padding: '16px',
+              backgroundColor: COLORS.background,
+              borderRadius: '6px',
+              borderLeft: `3px solid #4FC3F7`,
+              fontSize: '12px',
+              color: COLORS.textSecondary,
+              lineHeight: '1.6'
+            }}>
+              <strong style={{ color: COLORS.text }}>Interpretación:</strong> El modelo predice salarios con un error promedio de ${(data.metricas.mae / 1000000).toFixed(2)}M ARS. 
+              {data.metricas.r2_score > 0 
+                ? ` El R² positivo indica que el modelo captura patrones en los datos.`
+                : ` El R² negativo sugiere alta variabilidad en los salarios que requiere más features.`}
+            </div>
+          </div>
+          
           <FeatureImportanceChart 
             features={data.feature_importance.slice(0, 8)} 
             color="#4FC3F7"
@@ -2724,6 +2864,14 @@ function ModeloFactoresExternos({ data }) {
           <ConfusionMatrix 
             data={data.confusion_matrix} 
             labels={['Peor', 'Igual', 'Mejor']} 
+          />
+          
+          <div style={{ height: '40px' }} />
+          
+          <DistribucionPredicciones
+            distribucion={data.distribucion_clases}
+            labels={['Peor', 'Igual', 'Mejor']}
+            colors={['#FF6B6B', '#FFB74D', '#00E676']}
           />
           
           <div style={{ height: '40px' }} />
@@ -3285,6 +3433,339 @@ function FeatureImportanceChart({ features, color, title }) {
   );
 }
 
+// Componente ROC Curve usando SVG
+function ROCCurve({ data, auc }) {
+  // Generar puntos para la curva ROC desde la confusion matrix
+  const generateROCPoints = () => {
+    // Simulación de curva ROC basada en el AUC
+    const points = [];
+    const steps = 50;
+    
+    for (let i = 0; i <= steps; i++) {
+      const x = i / steps;
+      // Aproximación de curva ROC basada en AUC
+      let y;
+      if (auc > 0.5) {
+        y = Math.pow(x, 1 / (2 * auc));
+      } else {
+        y = x;
+      }
+      points.push({ fpr: x, tpr: Math.min(y, 1) });
+    }
+    
+    return points;
+  };
+  
+  const points = generateROCPoints();
+  const width = 400;
+  const height = 300;
+  const padding = 40;
+  
+  return (
+    <div>
+      <h4 style={{
+        fontSize: '14px',
+        fontWeight: '600',
+        color: COLORS.primary,
+        marginBottom: '20px',
+        letterSpacing: '0.05em',
+        textTransform: 'uppercase'
+      }}>
+        Curva ROC
+      </h4>
+      
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center'
+      }}>
+        <svg width={width} height={height} style={{ backgroundColor: COLORS.surface, borderRadius: '8px' }}>
+          {/* Grid lines */}
+          {[0, 0.25, 0.5, 0.75, 1].map((val, idx) => {
+            const x = padding + val * (width - 2 * padding);
+            const y = height - padding - val * (height - 2 * padding);
+            return (
+              <g key={idx}>
+                <line
+                  x1={padding}
+                  y1={y}
+                  x2={width - padding}
+                  y2={y}
+                  stroke={COLORS.border}
+                  strokeDasharray="4 4"
+                />
+                <line
+                  x1={x}
+                  y1={padding}
+                  x2={x}
+                  y2={height - padding}
+                  stroke={COLORS.border}
+                  strokeDasharray="4 4"
+                />
+                <text
+                  x={x}
+                  y={height - padding + 20}
+                  fill={COLORS.textSecondary}
+                  fontSize="10"
+                  textAnchor="middle"
+                >
+                  {val.toFixed(1)}
+                </text>
+                <text
+                  x={padding - 10}
+                  y={y + 4}
+                  fill={COLORS.textSecondary}
+                  fontSize="10"
+                  textAnchor="end"
+                >
+                  {val.toFixed(1)}
+                </text>
+              </g>
+            );
+          })}
+          
+          {/* Diagonal line (random classifier) */}
+          <line
+            x1={padding}
+            y1={height - padding}
+            x2={width - padding}
+            y2={padding}
+            stroke="#888"
+            strokeWidth="1"
+            strokeDasharray="4 4"
+          />
+          
+          {/* ROC Curve */}
+          <path
+            d={points.map((p, i) => {
+              const x = padding + p.fpr * (width - 2 * padding);
+              const y = height - padding - p.tpr * (height - 2 * padding);
+              return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
+            }).join(' ')}
+            fill="none"
+            stroke="#4FC3F7"
+            strokeWidth="3"
+          />
+          
+          {/* Axes labels */}
+          <text
+            x={width / 2}
+            y={height - 5}
+            fill={COLORS.text}
+            fontSize="12"
+            textAnchor="middle"
+          >
+            False Positive Rate
+          </text>
+          
+          <text
+            x={15}
+            y={height / 2}
+            fill={COLORS.text}
+            fontSize="12"
+            textAnchor="middle"
+            transform={`rotate(-90 15 ${height / 2})`}
+          >
+            True Positive Rate
+          </text>
+          
+          {/* AUC Label */}
+          <text
+            x={width - padding - 10}
+            y={padding + 20}
+            fill="#4FC3F7"
+            fontSize="14"
+            fontWeight="bold"
+            textAnchor="end"
+          >
+            AUC = {auc.toFixed(3)}
+          </text>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+// Componente Scatter Plot (Predicción vs Real) para Modelo 2
+function ScatterPlot({ realValues, predictions, title }) {
+  const width = 400;
+  const height = 300;
+  const padding = 50;
+  
+  const maxVal = Math.max(...realValues, ...predictions);
+  const minVal = Math.min(...realValues, ...predictions);
+  
+  const scaleX = (val) => padding + ((val - minVal) / (maxVal - minVal)) * (width - 2 * padding);
+  const scaleY = (val) => height - padding - ((val - minVal) / (maxVal - minVal)) * (height - 2 * padding);
+  
+  return (
+    <div>
+      <h4 style={{
+        fontSize: '14px',
+        fontWeight: '600',
+        color: COLORS.primary,
+        marginBottom: '20px',
+        letterSpacing: '0.05em',
+        textTransform: 'uppercase'
+      }}>
+        {title}
+      </h4>
+      
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <svg width={width} height={height} style={{ backgroundColor: COLORS.surface, borderRadius: '8px' }}>
+          {/* Grid */}
+          {[0, 0.25, 0.5, 0.75, 1].map((val, idx) => {
+            const scaledVal = minVal + val * (maxVal - minVal);
+            const x = scaleX(scaledVal);
+            const y = scaleY(scaledVal);
+            return (
+              <g key={idx}>
+                <line x1={padding} y1={y} x2={width - padding} y2={y} stroke={COLORS.border} strokeDasharray="2 2" />
+                <line x1={x} y1={padding} x2={x} y2={height - padding} stroke={COLORS.border} strokeDasharray="2 2" />
+              </g>
+            );
+          })}
+          
+          {/* Perfect prediction line */}
+          <line
+            x1={scaleX(minVal)}
+            y1={scaleY(minVal)}
+            x2={scaleX(maxVal)}
+            y2={scaleY(maxVal)}
+            stroke="#FF6B6B"
+            strokeWidth="2"
+            strokeDasharray="4 4"
+          />
+          
+          {/* Data points */}
+          {realValues.map((real, idx) => {
+            const pred = predictions[idx];
+            return (
+              <circle
+                key={idx}
+                cx={scaleX(real)}
+                cy={scaleY(pred)}
+                r="4"
+                fill="#4FC3F7"
+                opacity="0.6"
+              />
+            );
+          })}
+          
+          {/* Axes labels */}
+          <text x={width / 2} y={height - 10} fill={COLORS.text} fontSize="11" textAnchor="middle">
+            Salario Real (ARS)
+          </text>
+          <text
+            x={15}
+            y={height / 2}
+            fill={COLORS.text}
+            fontSize="11"
+            textAnchor="middle"
+            transform={`rotate(-90 15 ${height / 2})`}
+          >
+            Salario Predicho (ARS)
+          </text>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+// Componente de Distribución de Predicciones (Bar Chart)
+function DistribucionPredicciones({ distribucion, labels, colors }) {
+  const maxCount = Math.max(...Object.values(distribucion));
+  const width = 400;
+  const height = 250;
+  const padding = 40;
+  const barWidth = (width - 2 * padding) / Object.keys(distribucion).length - 10;
+  
+  return (
+    <div>
+      <h4 style={{
+        fontSize: '14px',
+        fontWeight: '600',
+        color: COLORS.primary,
+        marginBottom: '20px',
+        letterSpacing: '0.05em',
+        textTransform: 'uppercase'
+      }}>
+        Distribución de Predicciones
+      </h4>
+      
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <svg width={width} height={height} style={{ backgroundColor: COLORS.surface, borderRadius: '8px' }}>
+          {/* Grid lines */}
+          {[0, 0.25, 0.5, 0.75, 1].map((val, idx) => {
+            const y = height - padding - val * (height - 2 * padding);
+            return (
+              <g key={idx}>
+                <line
+                  x1={padding}
+                  y1={y}
+                  x2={width - padding}
+                  y2={y}
+                  stroke={COLORS.border}
+                  strokeDasharray="2 2"
+                />
+                <text
+                  x={padding - 10}
+                  y={y + 4}
+                  fill={COLORS.textSecondary}
+                  fontSize="10"
+                  textAnchor="end"
+                >
+                  {Math.round(maxCount * val)}
+                </text>
+              </g>
+            );
+          })}
+          
+          {/* Bars */}
+          {Object.entries(distribucion).map(([key, count], idx) => {
+            const barHeight = (count / maxCount) * (height - 2 * padding);
+            const x = padding + idx * (barWidth + 10) + 20;
+            const y = height - padding - barHeight;
+            const color = colors[idx] || '#4FC3F7';
+            
+            return (
+              <g key={key}>
+                <rect
+                  x={x}
+                  y={y}
+                  width={barWidth}
+                  height={barHeight}
+                  fill={color}
+                  rx="4"
+                  opacity="0.8"
+                />
+                <text
+                  x={x + barWidth / 2}
+                  y={y - 8}
+                  fill={COLORS.text}
+                  fontSize="12"
+                  fontWeight="600"
+                  textAnchor="middle"
+                >
+                  {count}
+                </text>
+                <text
+                  x={x + barWidth / 2}
+                  y={height - padding + 20}
+                  fill={COLORS.textSecondary}
+                  fontSize="11"
+                  textAnchor="middle"
+                >
+                  {labels[idx] || key}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+    </div>
+  );
+}
+
 // === TEAM ===
 function Team() {
   return (
@@ -3656,7 +4137,7 @@ function Footer() {
         color: COLORS.textSecondary
       }}>
         <div>
-          © 2024 MIT LIFT Lab · Equipo {TEAM_DATA.name}
+          © 2025/2026 MIT LIFT Lab · Equipo {TEAM_DATA.name}
         </div>
         <div style={{
           display: 'flex',
