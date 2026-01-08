@@ -113,7 +113,7 @@ const App = () => {
       setCargando(true);
       console.log('🔄 Cargando datos...');
       
-      const response = await fetch('datos_comercios.json?v=1767825372');
+      const response = await fetch('datos_comercios.json');
       if (!response.ok) {
         throw new Error('Error cargando archivo: ' + response.status);
       }
