@@ -3352,6 +3352,67 @@ function MetricaCard({ label, value, color }) {
 function ConfusionMatrix({ data, labels }) {
   const maxValue = Math.max(...data.flat());
   
+  // Aplanar los datos en un solo array para el grid
+  const gridItems = [];
+  
+  // Empty corner
+  gridItems.push(<div key="corner" />);
+  
+  // Column headers
+  labels.forEach((label, idx) => {
+    gridItems.push(
+      <div key={`col-${idx}`} style={{
+        fontSize: '11px',
+        color: COLORS.textSecondary,
+        textAlign: 'center',
+        fontWeight: '600'
+      }}>
+        {label}
+      </div>
+    );
+  });
+  
+  // Rows with cells
+  data.forEach((row, i) => {
+    // Row label
+    gridItems.push(
+      <div key={`row-label-${i}`} style={{
+        fontSize: '11px',
+        color: COLORS.textSecondary,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        paddingRight: '8px',
+        fontWeight: '600'
+      }}>
+        {labels[i]}
+      </div>
+    );
+    
+    // Cells
+    row.forEach((value, j) => {
+      const intensity = value / maxValue;
+      const isCorrect = i === j;
+      
+      gridItems.push(
+        <div key={`cell-${i}-${j}`} style={{
+          backgroundColor: isCorrect 
+            ? `rgba(0, 230, 118, ${0.2 + intensity * 0.6})`
+            : `rgba(76, 195, 247, ${0.1 + intensity * 0.4})`,
+          padding: '20px 10px',
+          borderRadius: '6px',
+          textAlign: 'center',
+          fontSize: '18px',
+          fontWeight: '700',
+          color: COLORS.text,
+          border: isCorrect ? '2px solid #00E676' : '1px solid ' + COLORS.border
+        }}>
+          {value}
+        </div>
+      );
+    });
+  });
+  
   return (
     <div>
       <h4 style={{
@@ -3372,61 +3433,7 @@ function ConfusionMatrix({ data, labels }) {
         maxWidth: '400px',
         margin: '0 auto'
       }}>
-        {/* Empty corner */}
-        <div />
-        
-        {/* Column headers */}
-        {labels.map((label, idx) => (
-          <div key={`col-${idx}`} style={{
-            fontSize: '11px',
-            color: COLORS.textSecondary,
-            textAlign: 'center',
-            fontWeight: '600'
-          }}>
-            {label}
-          </div>
-        ))}
-        
-        {/* Rows */}
-        {data.map((row, i) => (
-          <React.Fragment key={`row-${i}`}>
-            {/* Row label */}
-            <div style={{
-              fontSize: '11px',
-              color: COLORS.textSecondary,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              paddingRight: '8px',
-              fontWeight: '600'
-            }}>
-              {labels[i]}
-            </div>
-            
-            {/* Cells */}
-            {row.map((value, j) => {
-              const intensity = value / maxValue;
-              const isCorrect = i === j;
-              
-              return (
-                <div key={`cell-${i}-${j}`} style={{
-                  backgroundColor: isCorrect 
-                    ? `rgba(0, 230, 118, ${0.2 + intensity * 0.6})`
-                    : `rgba(76, 195, 247, ${0.1 + intensity * 0.4})`,
-                  padding: '20px 10px',
-                  borderRadius: '6px',
-                  textAlign: 'center',
-                  fontSize: '18px',
-                  fontWeight: '700',
-                  color: COLORS.text,
-                  border: isCorrect ? '2px solid #00E676' : '1px solid ' + COLORS.border
-                }}>
-                  {value}
-                </div>
-              );
-            })}
-          </React.Fragment>
-        ))}
+        {gridItems}
       </div>
       
       <div style={{
