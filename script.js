@@ -2640,7 +2640,7 @@ function procesarDatosGraficos(datos) {
       if (!sal) return null;
       
       // Remover símbolos y espacios
-      const cleaned = sal.toString().replace(/[$.\s]/g, '').replace(/,/g, '');
+      const cleaned = sal.toString().replace(/\$/g, "").replace(/\./g, "").replace(/,/g, "").replace(/ /g, "");
       const num = parseFloat(cleaned);
       
       // Filtrar solo valores numéricos en rango razonable (100k - 15M ARS)
@@ -2677,22 +2677,22 @@ function procesarDatosGraficos(datos) {
 
   // Salario promedio por tipo de comercio (top 10)
   const salariosPorTipo = {};
-  const countPorTipo = {};
+  const countSalariosPorTipo = {};
   
   salarios.forEach(s => {
     if (!salariosPorTipo[s.tipo]) {
       salariosPorTipo[s.tipo] = 0;
-      countPorTipo[s.tipo] = 0;
+      countSalariosPorTipo[s.tipo] = 0;
     }
     salariosPorTipo[s.tipo] += s.valor;
-    countPorTipo[s.tipo]++;
+    countSalariosPorTipo[s.tipo]++;
   });
 
   const salariosPorComercio = Object.entries(salariosPorTipo)
     .map(([tipo, suma]) => ({
       tipo,
-      promedio: Math.round(suma / countPorTipo[tipo]),
-      cantidad: countPorTipo[tipo]
+      promedio: Math.round(suma / countSalariosPorTipo[tipo]),
+      cantidad: countSalariosPorTipo[tipo]
     }))
     .filter(item => item.cantidad >= 3) // Solo tipos con al menos 3 comercios
     .sort((a, b) => b.promedio - a.promedio)
