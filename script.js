@@ -1,4 +1,5 @@
 const { useState, useEffect, useRef } = React;
+const { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
 
 // === DATOS DEL PROYECTO ===
 const TEAM_DATA = {
@@ -38,18 +39,20 @@ const COLORS = {
   background: '#0a0a0a',
   surface: '#1a1a1a',
   surfaceHover: '#242424',
-  primary: '#4FC3F7',      // Celeste brillante
-  primaryDark: '#29B6F6',  // Celeste más oscuro
-  primaryLight: '#81D4FA', // Celeste más claro
+  primary: '#4FC3F7',
+  primaryDark: '#29B6F6',
+  primaryLight: '#81D4FA',
   text: '#f5f5f5',
   textSecondary: '#a8a8a8',
-  border: '#2a2a2a'
+  border: '#2a2a2a',
+  chartColors: ['#4FC3F7', '#29B6F6', '#81D4FA', '#0288D1', '#03A9F4', '#00BCD4', '#26C6DA', '#00ACC1']
 };
 
 // === COMPONENTE PRINCIPAL ===
 function App() {
   const [datos, setDatos] = useState([]);
   const [indicadores, setIndicadores] = useState(null);
+  const [datosGraficos, setDatosGraficos] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [scrollY, setScrollY] = useState(0);
@@ -81,6 +84,9 @@ function App() {
     if (datos.length > 0) {
       const inds = calcularIndicadores(datos);
       setIndicadores(inds);
+      
+      const graficos = procesarDatosGraficos(datos);
+      setDatosGraficos(graficos);
     }
   }, [datos]);
 
@@ -163,6 +169,7 @@ function App() {
       <Hero scrollY={scrollY} />
       <ProjectIntro />
       {indicadores && <Indicadores data={indicadores} />}
+      {datosGraficos && <AnalisisVisual data={datosGraficos} />}
       <Team />
       {datos.length > 0 && <Mapa datos={datos} />}
       <Footer />
@@ -184,7 +191,6 @@ function Hero({ scrollY }) {
       overflow: 'hidden',
       background: `linear-gradient(135deg, ${COLORS.background} 0%, #1a1a1a 100%)`
     }}>
-      {/* Decorative elements */}
       <div style={{
         position: 'absolute',
         top: '20%',
@@ -268,7 +274,6 @@ function Hero({ scrollY }) {
         </div>
       </div>
       
-      {/* Scroll indicator */}
       <div style={{
         position: 'absolute',
         bottom: '40px',
@@ -363,7 +368,7 @@ function ProjectIntro() {
   );
 }
 
-// === INDICADORES CON GRÁFICOS ===
+// === INDICADORES CON GRÁFICOS CIRCULARES ===
 function Indicadores({ data }) {
   const indicadores = [
     { 
@@ -458,7 +463,7 @@ function Indicadores({ data }) {
         
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
           gap: '30px'
         }}>
           {indicadores.map((ind, index) => (
@@ -480,7 +485,6 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Animar el valor
             const duration = 1500;
             const steps = 60;
             const increment = value / steps;
@@ -532,7 +536,6 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
         overflow: 'hidden'
       }}
     >
-      {/* Top accent line */}
       <div style={{
         position: 'absolute',
         top: 0,
@@ -544,7 +547,6 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
         transition: 'opacity 0.4s'
       }} />
       
-      {/* Circular progress chart */}
       <div style={{
         width: '120px',
         height: '120px',
@@ -552,7 +554,6 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
         position: 'relative'
       }}>
         <svg width="120" height="120" style={{ transform: 'rotate(-90deg)' }}>
-          {/* Background circle */}
           <circle
             cx="60"
             cy="60"
@@ -561,7 +562,6 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
             stroke={COLORS.border}
             strokeWidth="8"
           />
-          {/* Progress circle */}
           <circle
             cx="60"
             cy="60"
@@ -579,7 +579,6 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
           />
         </svg>
         
-        {/* Center value */}
         <div style={{
           position: 'absolute',
           top: '50%',
@@ -600,9 +599,8 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
         </div>
       </div>
       
-      {/* Label and description */}
       <h3 style={{
-        fontSize: '16px',
+        fontSize: '15px',
         letterSpacing: '0.05em',
         textTransform: 'uppercase',
         color: COLORS.text,
@@ -622,7 +620,6 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
         {description}
       </p>
       
-      {/* Progress bar at bottom */}
       <div style={{
         marginTop: '20px',
         height: '3px',
@@ -639,6 +636,159 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
         }} />
       </div>
     </div>
+  );
+}
+
+// === ANÁLISIS VISUAL CON GRÁFICOS ===
+function AnalisisVisual({ data }) {
+  return (
+    <section style={{
+      padding: '120px 60px',
+      maxWidth: '1400px',
+      margin: '0 auto'
+    }}>
+      <div style={{
+        marginBottom: '80px',
+        textAlign: 'center'
+      }}>
+        <div style={{
+          fontSize: '12px',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: COLORS.primary,
+          marginBottom: '20px',
+          fontWeight: '500'
+        }}>
+          Análisis detallado
+        </div>
+        <h2 style={{
+          fontFamily: '"Crimson Pro", serif',
+          fontSize: 'clamp(36px, 4vw, 52px)',
+          fontWeight: '400',
+          color: COLORS.text,
+          marginBottom: '20px'
+        }}>
+          Distribución y composición
+        </h2>
+        <p style={{
+          fontSize: '16px',
+          color: COLORS.textSecondary,
+          maxWidth: '700px',
+          margin: '0 auto'
+        }}>
+          Desglose visual de tipos de comercio y estructura laboral del ecosistema relevado
+        </p>
+      </div>
+
+      {/* Distribución de comercios */}
+      <div style={{
+        backgroundColor: COLORS.surface,
+        padding: '50px',
+        borderRadius: '4px',
+        border: `1px solid ${COLORS.border}`,
+        marginBottom: '40px'
+      }}>
+        <h3 style={{
+          fontFamily: '"Crimson Pro", serif',
+          fontSize: '28px',
+          fontWeight: '400',
+          color: COLORS.text,
+          marginBottom: '10px'
+        }}>
+          Distribución por tipo de comercio
+        </h3>
+        <p style={{
+          fontSize: '14px',
+          color: COLORS.textSecondary,
+          marginBottom: '40px'
+        }}>
+          Composición del universo de {data.distribucionComercios.reduce((acc, d) => acc + d.cantidad, 0)} comercios relevados
+        </p>
+        <ResponsiveContainer width="100%" height={400}>
+          <PieChart>
+            <Pie
+              data={data.distribucionComercios}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
+              outerRadius={140}
+              fill="#8884d8"
+              dataKey="cantidad"
+            >
+              {data.distribucionComercios.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS.chartColors[index % COLORS.chartColors.length]} />
+              ))}
+            </Pie>
+            <Tooltip 
+              contentStyle={{
+                backgroundColor: COLORS.surface,
+                border: `1px solid ${COLORS.border}`,
+                borderRadius: '4px',
+                color: COLORS.text
+              }}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Trabajadores por tipo de comercio */}
+      <div style={{
+        backgroundColor: COLORS.surface,
+        padding: '50px',
+        borderRadius: '4px',
+        border: `1px solid ${COLORS.border}`
+      }}>
+        <h3 style={{
+          fontFamily: '"Crimson Pro", serif',
+          fontSize: '28px',
+          fontWeight: '400',
+          color: COLORS.text,
+          marginBottom: '10px'
+        }}>
+          Promedio de trabajadores por tipo
+        </h3>
+        <p style={{
+          fontSize: '14px',
+          color: COLORS.textSecondary,
+          marginBottom: '40px'
+        }}>
+          Estructura laboral promedio según categoría de establecimiento
+        </p>
+        <ResponsiveContainer width="100%" height={400}>
+          <BarChart data={data.trabajadoresPorTipo}>
+            <CartesianGrid strokeDasharray="3 3" stroke={COLORS.border} />
+            <XAxis 
+              dataKey="tipo" 
+              stroke={COLORS.textSecondary}
+              tick={{ fill: COLORS.textSecondary, fontSize: 12 }}
+              angle={-45}
+              textAnchor="end"
+              height={100}
+            />
+            <YAxis 
+              stroke={COLORS.textSecondary}
+              tick={{ fill: COLORS.textSecondary, fontSize: 12 }}
+              label={{ value: 'Trabajadores', angle: -90, position: 'insideLeft', fill: COLORS.textSecondary }}
+            />
+            <Tooltip 
+              contentStyle={{
+                backgroundColor: COLORS.surface,
+                border: `1px solid ${COLORS.border}`,
+                borderRadius: '4px',
+                color: COLORS.text
+              }}
+              labelStyle={{ color: COLORS.text }}
+            />
+            <Bar 
+              dataKey="promedio" 
+              fill={COLORS.primary}
+              radius={[4, 4, 0, 0]}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </section>
   );
 }
 
@@ -701,7 +851,6 @@ function TeamMember({ member, index }) {
         transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
       }}
     >
-      {/* Image container */}
       <div style={{
         position: 'relative',
         aspectRatio: '3/4',
@@ -741,7 +890,6 @@ function TeamMember({ member, index }) {
           </div>
         )}
         
-        {/* Overlay gradient */}
         <div style={{
           position: 'absolute',
           bottom: 0,
@@ -754,7 +902,6 @@ function TeamMember({ member, index }) {
         }} />
       </div>
       
-      {/* Info */}
       <h3 style={{
         fontFamily: '"Crimson Pro", serif',
         fontSize: '24px',
@@ -1104,6 +1251,47 @@ function calcularIndicadores(datos) {
     pctTecnologia: formatearNumero(pctTecnologia),
     pctLocalPropio: formatearNumero(pctLocalPropio),
     promAñosOperacion: formatearNumero(promAñosOperacion)
+  };
+}
+
+function procesarDatosGraficos(datos) {
+  // Distribución por tipo de comercio
+  const tiposCount = {};
+  datos.forEach(c => {
+    const tipo = c.tipo_comercio || 'Sin categoría';
+    tiposCount[tipo] = (tiposCount[tipo] || 0) + 1;
+  });
+  
+  const distribucionComercios = Object.entries(tiposCount)
+    .map(([tipo, cantidad]) => ({ tipo, cantidad }))
+    .sort((a, b) => b.cantidad - a.cantidad)
+    .slice(0, 8); // Top 8
+
+  // Promedio de trabajadores por tipo
+  const trabajadoresPorTipo = {};
+  const countPorTipo = {};
+  
+  datos.forEach(c => {
+    const tipo = c.tipo_comercio || 'Sin categoría';
+    const trabajadores = parseFloat(c.cantidad_trabajadores);
+    
+    if (!isNaN(trabajadores)) {
+      trabajadoresPorTipo[tipo] = (trabajadoresPorTipo[tipo] || 0) + trabajadores;
+      countPorTipo[tipo] = (countPorTipo[tipo] || 0) + 1;
+    }
+  });
+
+  const trabajadoresData = Object.entries(trabajadoresPorTipo)
+    .map(([tipo, suma]) => ({
+      tipo,
+      promedio: parseFloat((suma / countPorTipo[tipo]).toFixed(1))
+    }))
+    .sort((a, b) => b.promedio - a.promedio)
+    .slice(0, 10); // Top 10
+
+  return {
+    distribucionComercios,
+    trabajadoresPorTipo: trabajadoresData
   };
 }
 
