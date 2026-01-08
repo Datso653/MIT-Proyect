@@ -1901,7 +1901,7 @@ function SeccionMachineLearning() {
     );
   }
 
-  if (!resultadosML) {
+  if (!resultadosML || !resultadosML.modelos) {
     return null;
   }
 
@@ -2038,6 +2038,10 @@ function SeccionMachineLearning() {
 function ModeloCrecimiento({ data }) {
   const [expanded, setExpanded] = useState(false);
   const [showCharts, setShowCharts] = useState(false);
+  
+  if (!data || !data.metricas || !data.feature_importance) {
+    return null;
+  }
   
   return (
     <div style={{
@@ -2261,6 +2265,10 @@ function ModeloCrecimiento({ data }) {
 function ModeloSalario({ data }) {
   const [expanded, setExpanded] = useState(false);
   const [showCharts, setShowCharts] = useState(false);
+  
+  if (!data || !data.metricas || !data.estadisticas_salario || !data.feature_importance) {
+    return null;
+  }
   
   return (
     <div style={{
@@ -2566,276 +2574,15 @@ function ModeloSalario({ data }) {
     </div>
   );
 }
-  
-  return (
-    <div style={{
-      backgroundColor: COLORS.background,
-      padding: '40px',
-      borderRadius: '8px',
-      border: `1px solid ${COLORS.border}`,
-      position: 'relative'
-    }}>
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '4px',
-        height: '100%',
-        backgroundColor: '#4FC3F7'
-      }} />
-      
-      <div style={{ fontSize: '48px', marginBottom: '20px', textAlign: 'center' }}>💰</div>
-      
-      <h3 style={{
-        fontFamily: '"Crimson Pro", serif',
-        fontSize: '24px',
-        fontWeight: '600',
-        color: COLORS.text,
-        marginBottom: '12px',
-        textAlign: 'center'
-      }}>
-        Predicción de Salario Ofrecido
-      </h3>
-      
-      <p style={{
-        fontSize: '14px',
-        color: COLORS.textSecondary,
-        textAlign: 'center',
-        marginBottom: '30px'
-      }}>
-        Estimación del salario mínimo según características del comercio
-      </p>
-
-      {/* Estadísticas de salario */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '12px',
-        marginBottom: '30px'
-      }}>
-        <div style={{
-          padding: '16px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '11px',
-            color: COLORS.textSecondary,
-            marginBottom: '6px',
-            textTransform: 'uppercase'
-          }}>
-            Promedio
-          </div>
-          <div style={{
-            fontSize: '18px',
-            fontWeight: '700',
-            color: COLORS.primary,
-            fontFamily: '"Crimson Pro", serif'
-          }}>
-            ${(data.estadisticas_salario.promedio / 1000000).toFixed(1)}M
-          </div>
-        </div>
-        <div style={{
-          padding: '16px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '11px',
-            color: COLORS.textSecondary,
-            marginBottom: '6px',
-            textTransform: 'uppercase'
-          }}>
-            Mínimo
-          </div>
-          <div style={{
-            fontSize: '18px',
-            fontWeight: '700',
-            color: COLORS.text,
-            fontFamily: '"Crimson Pro", serif'
-          }}>
-            ${(data.estadisticas_salario.min / 1000).toFixed(0)}k
-          </div>
-        </div>
-        <div style={{
-          padding: '16px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '11px',
-            color: COLORS.textSecondary,
-            marginBottom: '6px',
-            textTransform: 'uppercase'
-          }}>
-            Máximo
-          </div>
-          <div style={{
-            fontSize: '18px',
-            fontWeight: '700',
-            color: COLORS.text,
-            fontFamily: '"Crimson Pro", serif'
-          }}>
-            ${(data.estadisticas_salario.max / 1000000).toFixed(0)}M
-          </div>
-        </div>
-      </div>
-
-      {/* Métrica R² */}
-      <div style={{
-        padding: '20px',
-        backgroundColor: COLORS.surface,
-        borderRadius: '6px',
-        marginBottom: '20px',
-        textAlign: 'center'
-      }}>
-        <div style={{
-          fontSize: '13px',
-          color: COLORS.textSecondary,
-          marginBottom: '8px'
-        }}>
-          Error Promedio Absoluto (MAE)
-        </div>
-        <div style={{
-          fontSize: '28px',
-          fontWeight: '700',
-          color: '#FFB74D',
-          fontFamily: '"Crimson Pro", serif'
-        }}>
-          ${(data.metricas.mae / 1000000).toFixed(2)}M ARS
-        </div>
-      </div>
-
-      {/* Top 3 Features */}
-      <div style={{
-        marginBottom: '20px',
-        padding: '20px',
-        backgroundColor: COLORS.surface,
-        borderRadius: '6px'
-      }}>
-        <div style={{
-          fontSize: '13px',
-          fontWeight: '600',
-          color: COLORS.primary,
-          marginBottom: '16px',
-          letterSpacing: '0.05em',
-          textTransform: 'uppercase'
-        }}>
-          Factores que más influyen
-        </div>
-        {data.feature_importance.slice(0, 3).map((f, idx) => (
-          <div key={idx} style={{ marginBottom: '12px' }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '12px',
-              marginBottom: '4px'
-            }}>
-              <span style={{ color: COLORS.text }}>{f.feature}</span>
-              <span style={{ color: COLORS.primary, fontWeight: '600' }}>
-                {(f.importance * 100).toFixed(1)}%
-              </span>
-            </div>
-            <div style={{
-              height: '6px',
-              backgroundColor: COLORS.border,
-              borderRadius: '3px',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                height: '100%',
-                width: `${f.importance * 100}%`,
-                backgroundColor: '#4FC3F7',
-                transition: 'width 1s ease-out'
-              }} />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <button
-        onClick={() => setExpanded(!expanded)}
-        style={{
-          width: '100%',
-          padding: '12px',
-          backgroundColor: COLORS.surface,
-          color: COLORS.primary,
-          border: `1px solid ${COLORS.border}`,
-          borderRadius: '6px',
-          cursor: 'pointer',
-          fontSize: '13px',
-          fontWeight: '600',
-          letterSpacing: '0.05em',
-          textTransform: 'uppercase',
-          transition: 'all 0.3s'
-        }}
-        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
-        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
-      >
-        {expanded ? '▲ Ver menos' : '▼ Ver explicación'}
-      </button>
-
-      {expanded && (
-        <div style={{
-          marginTop: '20px',
-          padding: '24px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          borderLeft: `3px solid #4FC3F7`
-        }}>
-          <div style={{
-            fontSize: '14px',
-            fontWeight: '600',
-            color: COLORS.text,
-            marginBottom: '12px'
-          }}>
-            🎓 Explicación Académica
-          </div>
-          <p style={{
-            fontSize: '13px',
-            color: COLORS.textSecondary,
-            lineHeight: '1.7',
-            marginBottom: '20px'
-          }}>
-            Modelo de regresión mediante <strong style={{ color: COLORS.text }}>Gradient Boosting</strong> que predice 
-            el salario mínimo ofrecido por los comercios. Con un error promedio de ${(data.metricas.mae / 1000000).toFixed(2)}M ARS, 
-            el modelo captura la relación entre características del comercio y compensación salarial. La antigüedad del negocio 
-            ({(data.feature_importance[0].importance * 100).toFixed(1)}%) y cantidad de trabajadores son los predictores más fuertes, 
-            indicando que comercios más establecidos y con mayor plantilla tienden a ofrecer mejores salarios.
-          </p>
-
-          <div style={{
-            fontSize: '14px',
-            fontWeight: '600',
-            color: COLORS.text,
-            marginBottom: '12px'
-          }}>
-            💬 En Términos Simples
-          </div>
-          <p style={{
-            fontSize: '13px',
-            color: COLORS.textSecondary,
-            lineHeight: '1.7'
-          }}>
-            <strong style={{ color: COLORS.text }}>¿Cuánto deberías estar pagando?</strong><br/>
-            El salario promedio del mercado es de ${(data.estadisticas_salario.promedio / 1000000).toFixed(1)} millones de pesos. 
-            Si tu comercio tiene antigüedad y varios empleados, probablemente estés pagando más que el promedio. Los comercios 
-            más nuevos o pequeños suelen pagar alrededor de ${(data.estadisticas_salario.min / 1000).toFixed(0)}k. 
-            <strong style={{ color: COLORS.primary }}> El tipo de comercio también importa</strong>: gastronómicos y dietéticas tienden a pagar más.
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
 
 // Modelo 3: Factores Externos
 function ModeloFactoresExternos({ data }) {
   const [expanded, setExpanded] = useState(false);
   const [showCharts, setShowCharts] = useState(false);
+  
+  if (!data || !data.metricas || !data.feature_importance || !data.confusion_matrix) {
+    return null;
+  }
   
   return (
     <div style={{
@@ -3068,6 +2815,10 @@ function ModeloFactoresExternos({ data }) {
 // Modelo 4: Viabilidad
 function ModeloViabilidad({ data }) {
   const [expanded, setExpanded] = useState(false);
+  
+  if (!data || !data.distribucion_clusters || !data.score_promedio_por_nivel || !data.estadisticas_score) {
+    return null;
+  }
   
   return (
     <div style={{
