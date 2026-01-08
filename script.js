@@ -6,21 +6,21 @@ const TEAM_DATA = {
   members: [
     {
       name: "Gina Marrazzo",
-      role: "Data Analyst & Developer",
+      role: "Lic. en Economía",
       university: "UBA",
       linkedin: "https://www.linkedin.com/in/gina-marrazzo-15a8a523b",
       image: "./Gina.jpg"
     },
     {
       name: "Sofía Gálvez",
-      role: "Research & Analysis",
+      role: "Lic. en Administración de Empresas",
       university: "UNSAM",
       linkedin: "https://www.linkedin.com/in/sofiagalvez0910",
       image: "./Sofia.jpg"
     },
     {
       name: "Juan Da Torre",
-      role: "ML Engineer & Developer",
+      role: "Lic. en Economía",
       university: "UBA",
       linkedin: "https://www.linkedin.com/in/juan-da-torre-a3b120262",
       image: "./Juan.jpg"
