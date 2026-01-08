@@ -1873,8 +1873,8 @@ function SeccionAnalisis() {
         backgroundImage: 'url(https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1600&q=85&auto=format&fit=crop)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        opacity: 0.08,
-        filter: 'grayscale(30%)',
+        opacity: 0.15,
+        filter: 'grayscale(20%)',
         zIndex: 0
       }} />
       
@@ -1885,7 +1885,7 @@ function SeccionAnalisis() {
         left: 0,
         right: 0,
         bottom: 0,
-        background: `linear-gradient(135deg, ${COLORS.background}f5 0%, ${COLORS.background}e8 50%, ${COLORS.background}f5 100%)`,
+        background: `linear-gradient(135deg, ${COLORS.background}e0 0%, ${COLORS.background}c8 50%, ${COLORS.background}e0 100%)`,
         zIndex: 1
       }} />
       
@@ -4097,8 +4097,8 @@ function Team() {
         backgroundImage: 'url(https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=1600&q=85&auto=format&fit=crop)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        opacity: 0.06,
-        filter: 'grayscale(50%)',
+        opacity: 0.12,
+        filter: 'grayscale(40%)',
         zIndex: 0
       }} />
       
@@ -4109,7 +4109,7 @@ function Team() {
         left: 0,
         right: 0,
         bottom: 0,
-        background: `radial-gradient(circle at 50% 50%, ${COLORS.background}f0 0%, ${COLORS.background} 100%)`,
+        background: `radial-gradient(circle at 50% 50%, ${COLORS.background}d0 0%, ${COLORS.background}f0 100%)`,
         zIndex: 1
       }} />
       
@@ -4408,8 +4408,8 @@ function Footer() {
         backgroundImage: 'url(https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1600&q=85&auto=format&fit=crop)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        opacity: 0.04,
-        filter: 'grayscale(60%)',
+        opacity: 0.10,
+        filter: 'grayscale(50%)',
         zIndex: 0
       }} />
       
@@ -4420,7 +4420,7 @@ function Footer() {
         left: 0,
         right: 0,
         bottom: 0,
-        background: `linear-gradient(to bottom, ${COLORS.surface}f8 0%, ${COLORS.surface} 40%, ${COLORS.surface} 100%)`,
+        background: `linear-gradient(to bottom, ${COLORS.surface}e8 0%, ${COLORS.surface}f0 40%, ${COLORS.surface} 100%)`,
         zIndex: 1
       }} />
       
