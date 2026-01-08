@@ -271,7 +271,7 @@ function Hero({ scrollY }) {
         }}>
           <span>Equipo {TEAM_DATA.name}</span>
           <span style={{ color: COLORS.primary }}>•</span>
-          <span>2024</span>
+          <span>2025/2026</span>
         </div>
       </div>
       
@@ -2463,7 +2463,7 @@ function Footer() {
         color: COLORS.textSecondary
       }}>
         <div>
-          © 2024 MIT LIFT Lab · Equipo {TEAM_DATA.name}
+          © 2025/2026 MIT LIFT Lab · Equipo {TEAM_DATA.name}
         </div>
         <div style={{
           display: 'flex',
