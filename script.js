@@ -4282,7 +4282,7 @@ function Footer() {
           }}>
             <div style={{ marginBottom: '12px' }}>
               <a 
-                href="mailto:cguastavino@econ.uba.ar"
+                href="mailto:Juandatorre.eco@gmail.com"
                 style={{
                   color: COLORS.primary,
                   textDecoration: 'none',
@@ -4291,12 +4291,12 @@ function Footer() {
                 onMouseEnter={(e) => e.target.style.opacity = '0.7'}
                 onMouseLeave={(e) => e.target.style.opacity = '1'}
               >
-                cguastavino@econ.uba.ar
+                Juandatorre.eco@gmail.com
               </a>
             </div>
             <div style={{ marginBottom: '12px' }}>
               <a 
-                href="mailto:mdominguez@econ.uba.ar"
+                href="mailto:sofialg9194@gmail.com"
                 style={{
                   color: COLORS.primary,
                   textDecoration: 'none',
@@ -4305,12 +4305,12 @@ function Footer() {
                 onMouseEnter={(e) => e.target.style.opacity = '0.7'}
                 onMouseLeave={(e) => e.target.style.opacity = '1'}
               >
-                mdominguez@econ.uba.ar
+                sofialg9194@gmail.com
               </a>
             </div>
             <div>
               <a 
-                href="mailto:lguerrero@econ.uba.ar"
+                href="mailto:ginamarrazzo20@gmail.com"
                 style={{
                   color: COLORS.primary,
                   textDecoration: 'none',
@@ -4319,7 +4319,7 @@ function Footer() {
                 onMouseEnter={(e) => e.target.style.opacity = '0.7'}
                 onMouseLeave={(e) => e.target.style.opacity = '1'}
               >
-                lguerrero@econ.uba.ar
+                ginamarrazzo20@gmail.com
               </a>
             </div>
           </div>
@@ -4344,7 +4344,7 @@ function Footer() {
           display: 'flex',
           gap: '30px'
         }}>
-          <span>Proyecto académico</span>
+          <span>Proyecto académico y Social </span>
           <span>Universidad de Buenos Aires</span>
         </div>
       </div>
