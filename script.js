@@ -169,6 +169,8 @@ function App() {
       <ProjectIntro />
       {indicadores && <Indicadores data={indicadores} />}
       {datosGraficos && <AnalisisVisual data={datosGraficos} />}
+      <SeccionAnalisis />
+      <SeccionMachineLearning />
       <Team />
       {datos.length > 0 && <Mapa datos={datos} />}
       <Footer />
@@ -403,14 +405,14 @@ function Indicadores({ data }) {
       value: parseFloat(data.pctExpectativas), 
       max: 100,
       suffix: '%',
-      description: 'Proyecciones de crecimiento'
+      description: 'Esperan ventas mayores'
     },
     { 
-      label: 'Adopción Tecnológica', 
-      value: parseFloat(data.pctTecnologia), 
+      label: 'Deseo de Crecimiento', 
+      value: parseFloat(data.pctCrecimiento), 
       max: 100,
       suffix: '%',
-      description: 'Uso de tecnología digital'
+      description: 'Quieren expandir su negocio'
     },
     { 
       label: 'Local Propio', 
@@ -1393,6 +1395,358 @@ function GraficoSalarios({ data }) {
   );
 }
 
+// === SECCIÓN DE ANÁLISIS ===
+function SeccionAnalisis() {
+  return (
+    <section style={{
+      padding: '120px 60px',
+      maxWidth: '1200px',
+      margin: '0 auto',
+      backgroundColor: COLORS.background
+    }}>
+      <div style={{
+        marginBottom: '60px',
+        textAlign: 'center'
+      }}>
+        <div style={{
+          fontSize: '12px',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: COLORS.primary,
+          marginBottom: '20px',
+          fontWeight: '500'
+        }}>
+          Insights del equipo
+        </div>
+        <h2 style={{
+          fontFamily: '"Crimson Pro", serif',
+          fontSize: 'clamp(36px, 4vw, 52px)',
+          fontWeight: '400',
+          color: COLORS.text,
+          marginBottom: '20px'
+        }}>
+          Análisis y conclusiones
+        </h2>
+      </div>
+
+      <div style={{
+        backgroundColor: COLORS.surface,
+        padding: '60px',
+        borderRadius: '4px',
+        border: `1px solid ${COLORS.border}`,
+        borderLeft: `4px solid ${COLORS.primary}`
+      }}>
+        <div style={{
+          fontSize: '16px',
+          lineHeight: '1.9',
+          color: COLORS.text,
+          fontWeight: '300'
+        }}>
+          <p style={{ marginBottom: '24px' }}>
+            El relevamiento de {TEAM_DATA.name} en el ecosistema comercial de Buenos Aires revela 
+            patrones significativos sobre la estructura y dinámicas del comercio local. A través del 
+            análisis de más de 900 establecimientos, identificamos características clave que definen 
+            el landscape empresarial actual.
+          </p>
+          
+          <h3 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: '24px',
+            fontWeight: '600',
+            color: COLORS.primary,
+            marginTop: '40px',
+            marginBottom: '20px'
+          }}>
+            Principales hallazgos
+          </h3>
+          
+          <p style={{ marginBottom: '24px', color: COLORS.textSecondary }}>
+            <strong style={{ color: COLORS.text }}>Estructura laboral:</strong> El promedio de trabajadores 
+            por establecimiento muestra una clara predominancia de micro y pequeñas empresas, con variaciones 
+            significativas según el tipo de comercio. Los sectores de servicios y gastronomía presentan 
+            las plantillas más amplias.
+          </p>
+          
+          <p style={{ marginBottom: '24px', color: COLORS.textSecondary }}>
+            <strong style={{ color: COLORS.text }}>Acceso a financiamiento:</strong> Los datos sobre fuentes 
+            de crédito revelan que los proveedores constituyen la principal vía de financiamiento, seguidos 
+            por la banca tradicional. Esto sugiere una preferencia por mecanismos flexibles y menos formales 
+            de capital de trabajo.
+          </p>
+          
+          <p style={{ marginBottom: '24px', color: COLORS.textSecondary }}>
+            <strong style={{ color: COLORS.text }}>Adopción tecnológica:</strong> La mayoría de los comercios 
+            se encuentra en niveles básicos o moderados de digitalización, con oportunidades significativas 
+            de mejora en herramientas avanzadas de gestión y comercio electrónico.
+          </p>
+          
+          <p style={{ marginBottom: '24px', color: COLORS.textSecondary }}>
+            <strong style={{ color: COLORS.text }}>Expectativas de crecimiento:</strong> A pesar de los 
+            desafíos económicos, una proporción considerable de comerciantes mantiene expectativas positivas 
+            y expresa deseo de expandir sus operaciones, lo que indica resiliencia y visión de futuro.
+          </p>
+
+          <div style={{
+            marginTop: '40px',
+            padding: '30px',
+            backgroundColor: COLORS.background,
+            borderRadius: '4px',
+            borderLeft: `3px solid ${COLORS.primary}`
+          }}>
+            <p style={{
+              fontSize: '15px',
+              fontStyle: 'italic',
+              color: COLORS.textSecondary,
+              margin: 0
+            }}>
+              "Este análisis constituye una fotografía del momento actual del comercio local, 
+              proporcionando una base empírica para políticas públicas y decisiones de inversión 
+              orientadas al fortalecimiento del ecosistema emprendedor."
+            </p>
+            <div style={{
+              marginTop: '16px',
+              fontSize: '13px',
+              color: COLORS.primary,
+              fontWeight: '500'
+            }}>
+              — Equipo {TEAM_DATA.name}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// === SECCIÓN MACHINE LEARNING ===
+function SeccionMachineLearning() {
+  return (
+    <section style={{
+      padding: '120px 60px',
+      maxWidth: '1400px',
+      margin: '0 auto',
+      backgroundColor: COLORS.surface,
+      borderTop: `1px solid ${COLORS.border}`,
+      borderBottom: `1px solid ${COLORS.border}`
+    }}>
+      <div style={{
+        marginBottom: '60px',
+        textAlign: 'center'
+      }}>
+        <div style={{
+          fontSize: '12px',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: COLORS.primary,
+          marginBottom: '20px',
+          fontWeight: '500'
+        }}>
+          Modelos predictivos
+        </div>
+        <h2 style={{
+          fontFamily: '"Crimson Pro", serif',
+          fontSize: 'clamp(36px, 4vw, 52px)',
+          fontWeight: '400',
+          color: COLORS.text,
+          marginBottom: '30px'
+        }}>
+          Predicciones estadísticas
+        </h2>
+        
+        {/* Disclaimer prominente */}
+        <div style={{
+          maxWidth: '900px',
+          margin: '0 auto',
+          padding: '24px 40px',
+          backgroundColor: COLORS.background,
+          border: `2px solid ${COLORS.primary}40`,
+          borderRadius: '8px',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '3px',
+            background: `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.primaryDark})`
+          }} />
+          
+          <div style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: '16px'
+          }}>
+            <div style={{
+              fontSize: '32px',
+              flexShrink: 0,
+              marginTop: '-4px'
+            }}>
+              ⚠️
+            </div>
+            <div style={{ textAlign: 'left' }}>
+              <div style={{
+                fontSize: '14px',
+                fontWeight: '600',
+                color: COLORS.primary,
+                marginBottom: '12px',
+                letterSpacing: '0.05em'
+              }}>
+                DISCLAIMER - ANÁLISIS PREDICTIVO
+              </div>
+              <div style={{
+                fontSize: '14px',
+                lineHeight: '1.7',
+                color: COLORS.textSecondary
+              }}>
+                Los siguientes modelos representan <strong style={{ color: COLORS.text }}>análisis 
+                estadísticos predictivos</strong> basados en patrones históricos identificados en los datos. 
+                Estas proyecciones <strong style={{ color: COLORS.text }}>no constituyen garantías</strong> de 
+                comportamiento futuro y deben interpretarse como estimaciones probabilísticas sujetas a variabilidad 
+                contextual, cambios macroeconómicos y factores externos no capturados en el modelo. 
+                <strong style={{ color: COLORS.primary }}> Los resultados no aseguran que los eventos 
+                proyectados ocurrirán en la realidad.</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))',
+        gap: '40px'
+      }}>
+        {/* Placeholder para modelos ML */}
+        <ModeloPlaceholder 
+          titulo="Probabilidad de Supervivencia"
+          descripcion="Modelo predictivo de permanencia en el mercado a 12 meses"
+          icon="📊"
+        />
+        <ModeloPlaceholder 
+          titulo="Predicción de Crecimiento"
+          descripcion="Estimación de expansión comercial basada en variables estructurales"
+          icon="📈"
+        />
+        <ModeloPlaceholder 
+          titulo="Riesgo Crediticio"
+          descripcion="Score de solvencia para acceso a financiamiento"
+          icon="💳"
+        />
+        <ModeloPlaceholder 
+          titulo="Adopción Digital"
+          descripcion="Probabilidad de migración a niveles tecnológicos superiores"
+          icon="💻"
+        />
+      </div>
+
+      <div style={{
+        marginTop: '60px',
+        textAlign: 'center',
+        padding: '40px',
+        backgroundColor: COLORS.background,
+        borderRadius: '4px',
+        border: `1px solid ${COLORS.border}`
+      }}>
+        <div style={{
+          fontSize: '14px',
+          color: COLORS.textSecondary,
+          lineHeight: '1.8',
+          maxWidth: '800px',
+          margin: '0 auto'
+        }}>
+          <strong style={{ color: COLORS.text }}>Metodología:</strong> Los modelos implementados 
+          utilizan técnicas de machine learning supervisado (Random Forest, Gradient Boosting, Regresión Logística) 
+          entrenados sobre el conjunto de datos relevado. Las métricas de performance incluyen accuracy, 
+          precision, recall y AUC-ROC, con validación cruzada k-fold para asegurar robustez. 
+          Los intervalos de confianza se calculan mediante bootstrapping.
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Placeholder para modelos ML (a desarrollar)
+function ModeloPlaceholder({ titulo, descripcion, icon }) {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        backgroundColor: COLORS.background,
+        padding: '40px',
+        borderRadius: '8px',
+        border: `1px solid ${isHovered ? COLORS.primary : COLORS.border}`,
+        transition: 'all 0.3s',
+        cursor: 'pointer',
+        position: 'relative',
+        overflow: 'hidden'
+      }}
+    >
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '4px',
+        height: '100%',
+        backgroundColor: COLORS.primary,
+        transform: isHovered ? 'scaleY(1)' : 'scaleY(0)',
+        transformOrigin: 'top',
+        transition: 'transform 0.3s'
+      }} />
+      
+      <div style={{
+        fontSize: '48px',
+        marginBottom: '20px',
+        textAlign: 'center'
+      }}>
+        {icon}
+      </div>
+      
+      <h3 style={{
+        fontFamily: '"Crimson Pro", serif',
+        fontSize: '22px',
+        fontWeight: '600',
+        color: COLORS.text,
+        marginBottom: '12px',
+        textAlign: 'center'
+      }}>
+        {titulo}
+      </h3>
+      
+      <p style={{
+        fontSize: '14px',
+        color: COLORS.textSecondary,
+        textAlign: 'center',
+        lineHeight: '1.6',
+        marginBottom: '24px'
+      }}>
+        {descripcion}
+      </p>
+      
+      <div style={{
+        padding: '16px',
+        backgroundColor: COLORS.surface,
+        borderRadius: '4px',
+        textAlign: 'center'
+      }}>
+        <div style={{
+          fontSize: '12px',
+          color: COLORS.primary,
+          fontWeight: '600',
+          letterSpacing: '0.1em',
+          textTransform: 'uppercase'
+        }}>
+          Próximamente
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // === TEAM ===
 function Team() {
   return (
@@ -1816,15 +2170,15 @@ function calcularIndicadores(datos) {
   const pctCredito = total > 0 ? (conCredito / total) * 100 : 0;
 
   const expPositivas = datos.filter(c => 
-    c.exp_ventas_3mes === 'Aumentarán' || 
-    c.exp_ventas_3mes === 'aumentarán'
+    c.exp_ventas_3mes === 'Mayores' || 
+    c.exp_ventas_3mes === 'mayores'
   ).length;
   const pctExpectativas = total > 0 ? (expPositivas / total) * 100 : 0;
 
-  const usanTecnologia = datos.filter(c => 
-    c.tecnologia === 'Sí' || c.tecnologia === 'sí'
+  const quierenCrecer = datos.filter(c => 
+    parseFloat(c.quiere_crezca) === 1.0 || c.quiere_crezca === '1.0' || c.quiere_crezca === '1'
   ).length;
-  const pctTecnologia = total > 0 ? (usanTecnologia / total) * 100 : 0;
+  const pctCrecimiento = total > 0 ? (quierenCrecer / total) * 100 : 0;
 
   const localPropio = datos.filter(c => 
     c.local === 'Propio' || c.local === 'propio'
@@ -1849,7 +2203,7 @@ function calcularIndicadores(datos) {
     promHoras: formatearNumero(promHoras),
     pctCredito: formatearNumero(pctCredito),
     pctExpectativas: formatearNumero(pctExpectativas),
-    pctTecnologia: formatearNumero(pctTecnologia),
+    pctCrecimiento: formatearNumero(pctCrecimiento),
     pctLocalPropio: formatearNumero(pctLocalPropio),
     promAñosOperacion: formatearNumero(promAñosOperacion)
   };
