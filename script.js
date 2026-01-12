@@ -931,7 +931,6 @@ function Indicadores({ data }) {
           ))}
         </div>
       </div>
-      </div>
     </section>
   );
 }
