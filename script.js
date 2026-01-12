@@ -399,65 +399,63 @@ function Navbar() {
         maxWidth: '1400px',
         margin: '0 auto',
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center'
       }}>
-        {/* Logo/Título */}
-        <div 
-          onClick={() => scrollToSection('hero')}
-          style={{
-            fontFamily: '"Crimson Pro", serif',
-            fontSize: '20px',
-            fontWeight: '600',
-            color: COLORS.text,
-            cursor: 'pointer',
-            transition: 'color 0.3s ease'
-          }}
-          onMouseEnter={(e) => e.target.style.color = COLORS.primary}
-          onMouseLeave={(e) => e.target.style.color = COLORS.text}
-        >
-          MIT LIFT Lab
-        </div>
-
-        {/* Botón de menú desplegable */}
+        {/* Botón hamburguesa */}
         <div style={{ position: 'relative' }}>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             style={{
-              padding: '12px 24px',
-              backgroundColor: isMenuOpen ? COLORS.primary : 'transparent',
-              color: isMenuOpen ? COLORS.background : COLORS.text,
+              padding: '14px 16px',
+              backgroundColor: 'transparent',
+              color: COLORS.text,
               border: `2px solid ${COLORS.primary}`,
-              borderRadius: '6px',
-              fontSize: '14px',
-              fontWeight: '600',
+              borderRadius: '8px',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               display: 'flex',
+              flexDirection: 'column',
+              gap: '5px',
               alignItems: 'center',
-              gap: '8px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em'
+              justifyContent: 'center',
+              width: '50px',
+              height: '50px'
             }}
             onMouseEnter={(e) => {
-              if (!isMenuOpen) {
-                e.target.style.backgroundColor = `${COLORS.primary}20`;
-              }
+              e.currentTarget.style.backgroundColor = `${COLORS.primary}20`;
+              e.currentTarget.style.borderColor = COLORS.primaryLight;
             }}
             onMouseLeave={(e) => {
-              if (!isMenuOpen) {
-                e.target.style.backgroundColor = 'transparent';
-              }
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.borderColor = COLORS.primary;
             }}
           >
-            <span>Navegación</span>
-            <span style={{
-              transform: isMenuOpen ? 'rotate(180deg)' : 'rotate(0)',
-              transition: 'transform 0.3s ease',
-              display: 'inline-block'
-            }}>
-              ▾
-            </span>
+            {/* 3 líneas hamburguesa */}
+            <div style={{
+              width: '24px',
+              height: '2px',
+              backgroundColor: COLORS.primary,
+              borderRadius: '2px',
+              transition: 'all 0.3s ease',
+              transform: isMenuOpen ? 'rotate(45deg) translateY(9px)' : 'rotate(0)'
+            }} />
+            <div style={{
+              width: '24px',
+              height: '2px',
+              backgroundColor: COLORS.primary,
+              borderRadius: '2px',
+              transition: 'all 0.3s ease',
+              opacity: isMenuOpen ? 0 : 1
+            }} />
+            <div style={{
+              width: '24px',
+              height: '2px',
+              backgroundColor: COLORS.primary,
+              borderRadius: '2px',
+              transition: 'all 0.3s ease',
+              transform: isMenuOpen ? 'rotate(-45deg) translateY(-9px)' : 'rotate(0)'
+            }} />
           </button>
 
           {/* Menú desplegable */}
