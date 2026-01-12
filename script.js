@@ -751,9 +751,10 @@ function ResumenEjecutivo({ indicadores }) {
   
   return (
     <section id="resumen" style={{
-      padding: '120px 60px',
+      padding: '140px 60px',
       position: 'relative',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      backgroundColor: COLORS.background
     }}>
       {/* Imagen de fondo - Mercado argentino */}
       <div style={{
@@ -765,109 +766,144 @@ function ResumenEjecutivo({ indicadores }) {
         backgroundImage: 'url(https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?w=1600&q=85&auto=format&fit=crop)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        opacity: 0.50,
-        filter: 'grayscale(20%) brightness(0.65)',
+        opacity: 0.45,
+        filter: 'grayscale(30%) brightness(0.6)',
         zIndex: 0
       }} />
       
-      {/* Overlay con gradiente celeste-amarillo */}
+      {/* Overlay con gradiente */}
       <div style={{
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        background: `linear-gradient(135deg, ${COLORS.background}90 0%, ${COLORS.background}70 50%, ${COLORS.background}90 100%)`,
+        background: `linear-gradient(135deg, ${COLORS.background}95 0%, ${COLORS.background}75 50%, ${COLORS.background}95 100%)`,
         zIndex: 1
       }} />
       
       <div style={{
-        maxWidth: '1100px',
+        maxWidth: '1200px',
         margin: '0 auto',
         position: 'relative',
         zIndex: 2
       }}>
         <div style={{
           textAlign: 'center',
-          marginBottom: '60px'
+          marginBottom: '80px'
         }}>
           <div style={{
             fontSize: '13px',
-            letterSpacing: '0.15em',
+            letterSpacing: '0.2em',
             textTransform: 'uppercase',
             color: COLORS.accent,
-            marginBottom: '20px',
-            fontWeight: '600'
+            marginBottom: '24px',
+            fontWeight: '700'
           }}>
             Principales hallazgos
           </div>
           <h2 style={{
             fontFamily: '"Crimson Pro", serif',
-            fontSize: 'clamp(36px, 5vw, 56px)',
-            fontWeight: '400',
+            fontSize: 'clamp(42px, 5.5vw, 64px)',
+            fontWeight: '300',
             color: COLORS.text,
-            marginBottom: '24px',
-            lineHeight: '1.2'
+            marginBottom: '30px',
+            lineHeight: '1.15',
+            letterSpacing: '-0.02em'
           }}>
-            Lo que aprendimos de {indicadores.total} comercios
+            Lo que aprendimos de <span style={{ 
+              color: COLORS.primary,
+              fontWeight: '600'
+            }}>{indicadores.total}</span> comercios
           </h2>
           <p style={{
-            fontSize: '18px',
+            fontSize: '19px',
             color: COLORS.textSecondary,
-            lineHeight: '1.7',
-            maxWidth: '800px',
-            margin: '0 auto'
+            lineHeight: '1.8',
+            maxWidth: '750px',
+            margin: '0 auto',
+            fontWeight: '300'
           }}>
             Un análisis profundo del ecosistema comercial del Área Metropolitana de Buenos Aires
           </p>
         </div>
 
-        {/* Narrativa principal */}
+        {/* Cards con diseño moderno */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr',
-          gap: '30px'
+          gap: '40px',
+          marginBottom: '60px'
         }}>
           {/* Hallazgo 1 */}
           <div style={{
-            padding: '40px',
-            backgroundColor: `${COLORS.surface}f5`,
-            borderRadius: '12px',
-            border: `2px solid ${COLORS.primary}40`,
-            backdropFilter: 'blur(10px)'
+            padding: '50px',
+            background: `linear-gradient(135deg, ${COLORS.surface}f8 0%, ${COLORS.surface}e5 100%)`,
+            borderRadius: '20px',
+            border: `1px solid ${COLORS.primary}30`,
+            backdropFilter: 'blur(20px)',
+            boxShadow: `0 8px 32px ${COLORS.primary}15`,
+            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-8px)';
+            e.currentTarget.style.boxShadow = `0 20px 60px ${COLORS.primary}25`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = `0 8px 32px ${COLORS.primary}15`;
           }}>
+            {/* Barra de color superior */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.primaryLight})`
+            }} />
+            
             <div style={{
               display: 'flex',
               alignItems: 'flex-start',
-              gap: '20px'
+              gap: '30px'
             }}>
               <div style={{
-                width: '60px',
-                height: '60px',
-                borderRadius: '12px',
-                background: `linear-gradient(135deg, ${COLORS.primary}, ${COLORS.primaryDark})`,
+                minWidth: '80px',
+                height: '80px',
+                borderRadius: '16px',
+                background: `linear-gradient(135deg, ${COLORS.primary}25, ${COLORS.primaryDark}40)`,
+                border: `2px solid ${COLORS.primary}50`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '28px',
+                fontSize: '36px',
+                fontWeight: '700',
+                color: COLORS.primary,
+                fontFamily: '"Crimson Pro", serif',
                 flexShrink: 0
               }}>
+                1
               </div>
               <div style={{ flex: 1 }}>
                 <h3 style={{
                   fontFamily: '"Crimson Pro", serif',
-                  fontSize: '24px',
+                  fontSize: '28px',
                   fontWeight: '600',
                   color: COLORS.text,
-                  marginBottom: '12px'
+                  marginBottom: '16px',
+                  lineHeight: '1.3'
                 }}>
                   El comercio de cercanía mantiene su vitalidad
                 </h3>
                 <p style={{
-                  fontSize: '16px',
+                  fontSize: '17px',
                   lineHeight: '1.8',
                   color: COLORS.textSecondary,
-                  margin: 0
+                  margin: 0,
+                  fontWeight: '300'
                 }}>
                   A pesar de los desafíos económicos, los comercios del AMBA demuestran una notable resiliencia. 
                   La mayoría de los comerciantes mantiene expectativas positivas y deseo de crecimiento, 
@@ -879,44 +915,73 @@ function ResumenEjecutivo({ indicadores }) {
 
           {/* Hallazgo 2 */}
           <div style={{
-            padding: '40px',
-            backgroundColor: `${COLORS.surface}f5`,
-            borderRadius: '12px',
-            border: `2px solid ${COLORS.accent}40`,
-            backdropFilter: 'blur(10px)'
+            padding: '50px',
+            background: `linear-gradient(135deg, ${COLORS.surface}f8 0%, ${COLORS.surface}e5 100%)`,
+            borderRadius: '20px',
+            border: `1px solid ${COLORS.accent}30`,
+            backdropFilter: 'blur(20px)',
+            boxShadow: `0 8px 32px ${COLORS.accent}15`,
+            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-8px)';
+            e.currentTarget.style.boxShadow = `0 20px 60px ${COLORS.accent}25`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = `0 8px 32px ${COLORS.accent}15`;
           }}>
+            {/* Barra de color superior */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: `linear-gradient(90deg, ${COLORS.accent}, ${COLORS.accentLight})`
+            }} />
+            
             <div style={{
               display: 'flex',
               alignItems: 'flex-start',
-              gap: '20px'
+              gap: '30px'
             }}>
               <div style={{
-                width: '60px',
-                height: '60px',
-                borderRadius: '12px',
-                background: `linear-gradient(135deg, ${COLORS.accent}, ${COLORS.accentDark})`,
+                minWidth: '80px',
+                height: '80px',
+                borderRadius: '16px',
+                background: `linear-gradient(135deg, ${COLORS.accent}25, ${COLORS.accentDark}40)`,
+                border: `2px solid ${COLORS.accent}50`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '28px',
+                fontSize: '36px',
+                fontWeight: '700',
+                color: COLORS.accent,
+                fontFamily: '"Crimson Pro", serif',
                 flexShrink: 0
               }}>
+                2
               </div>
               <div style={{ flex: 1 }}>
                 <h3 style={{
                   fontFamily: '"Crimson Pro", serif',
-                  fontSize: '24px',
+                  fontSize: '28px',
                   fontWeight: '600',
                   color: COLORS.text,
-                  marginBottom: '12px'
+                  marginBottom: '16px',
+                  lineHeight: '1.3'
                 }}>
                   La digitalización es una oportunidad latente
                 </h3>
                 <p style={{
-                  fontSize: '16px',
+                  fontSize: '17px',
                   lineHeight: '1.8',
                   color: COLORS.textSecondary,
-                  margin: 0
+                  margin: 0,
+                  fontWeight: '300'
                 }}>
                   Existe una brecha significativa en la adopción de tecnología. Los comercios que implementan 
                   herramientas digitales muestran mejores indicadores de gestión, señalando un camino claro 
@@ -928,44 +993,73 @@ function ResumenEjecutivo({ indicadores }) {
 
           {/* Hallazgo 3 */}
           <div style={{
-            padding: '40px',
-            backgroundColor: `${COLORS.surface}f5`,
-            borderRadius: '12px',
-            border: `2px solid ${COLORS.primaryLight}40`,
-            backdropFilter: 'blur(10px)'
+            padding: '50px',
+            background: `linear-gradient(135deg, ${COLORS.surface}f8 0%, ${COLORS.surface}e5 100%)`,
+            borderRadius: '20px',
+            border: `1px solid ${COLORS.primaryLight}30`,
+            backdropFilter: 'blur(20px)',
+            boxShadow: `0 8px 32px ${COLORS.primaryLight}15`,
+            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-8px)';
+            e.currentTarget.style.boxShadow = `0 20px 60px ${COLORS.primaryLight}25`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = `0 8px 32px ${COLORS.primaryLight}15`;
           }}>
+            {/* Barra de color superior */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: `linear-gradient(90deg, ${COLORS.primaryLight}, ${COLORS.primary})`
+            }} />
+            
             <div style={{
               display: 'flex',
               alignItems: 'flex-start',
-              gap: '20px'
+              gap: '30px'
             }}>
               <div style={{
-                width: '60px',
-                height: '60px',
-                borderRadius: '12px',
-                background: `linear-gradient(135deg, ${COLORS.primaryLight}, ${COLORS.primary})`,
+                minWidth: '80px',
+                height: '80px',
+                borderRadius: '16px',
+                background: `linear-gradient(135deg, ${COLORS.primaryLight}25, ${COLORS.primary}40)`,
+                border: `2px solid ${COLORS.primaryLight}50`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '28px',
+                fontSize: '36px',
+                fontWeight: '700',
+                color: COLORS.primaryLight,
+                fontFamily: '"Crimson Pro", serif',
                 flexShrink: 0
               }}>
+                3
               </div>
               <div style={{ flex: 1 }}>
                 <h3 style={{
                   fontFamily: '"Crimson Pro", serif',
-                  fontSize: '24px',
+                  fontSize: '28px',
                   fontWeight: '600',
                   color: COLORS.text,
-                  marginBottom: '12px'
+                  marginBottom: '16px',
+                  lineHeight: '1.3'
                 }}>
                   El acceso a financiamiento sigue siendo un desafío
                 </h3>
                 <p style={{
-                  fontSize: '16px',
+                  fontSize: '17px',
                   lineHeight: '1.8',
                   color: COLORS.textSecondary,
-                  margin: 0
+                  margin: 0,
+                  fontWeight: '300'
                 }}>
                   La limitada disponibilidad de crédito formal impacta directamente en las posibilidades de 
                   expansión. Los comerciantes recurren principalmente a redes informales, destacando la 
@@ -976,22 +1070,27 @@ function ResumenEjecutivo({ indicadores }) {
           </div>
         </div>
 
-        {/* CTA */}
+        {/* CTA final */}
         <div style={{
-          marginTop: '50px',
           textAlign: 'center',
-          padding: '30px',
-          backgroundColor: `${COLORS.primary}15`,
-          borderRadius: '12px',
-          border: `2px solid ${COLORS.primary}30`
+          padding: '50px 60px',
+          background: `linear-gradient(135deg, ${COLORS.primary}12 0%, ${COLORS.accent}08 100%)`,
+          borderRadius: '20px',
+          border: `1px solid ${COLORS.primary}40`,
+          backdropFilter: 'blur(10px)',
+          boxShadow: `0 8px 32px rgba(0,0,0,0.3)`
         }}>
           <p style={{
-            fontSize: '17px',
+            fontSize: '19px',
             color: COLORS.text,
             margin: 0,
-            lineHeight: '1.7'
+            lineHeight: '1.8',
+            fontWeight: '300'
           }}>
-            <strong style={{ color: COLORS.accent }}>Para los comerciantes:</strong> Este estudio refleja 
+            <strong style={{ 
+              color: COLORS.accent,
+              fontWeight: '600' 
+            }}>Para los comerciantes:</strong> Este estudio refleja 
             la realidad de tu sector. Los datos completos y herramientas de análisis están disponibles 
             más abajo para ayudarte a tomar mejores decisiones.
           </p>
