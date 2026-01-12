@@ -357,9 +357,35 @@ function Hero({ scrollY }) {
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
-        padding: '120px 60px',
-        background: `linear-gradient(135deg, ${COLORS.background} 0%, #1a1a1a 100%)`
+        padding: '120px 60px'
       }}>
+      {/* Imagen de fondo - Obelisco Buenos Aires */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: 'url(https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1600&q=85&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.55,
+        filter: 'grayscale(20%) brightness(0.65)',
+        zIndex: 0
+      }} />
+      
+      {/* Overlay gradient oscuro */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `linear-gradient(135deg, ${COLORS.background}85 0%, ${COLORS.background}60 50%, ${COLORS.background}85 100%)`,
+        zIndex: 1
+      }} />
+      
+      {/* Elementos decorativos flotantes */}
       <div style={{
         position: 'absolute',
         top: '20%',
@@ -369,7 +395,8 @@ function Hero({ scrollY }) {
         background: `radial-gradient(circle, ${COLORS.primary}15 0%, transparent 70%)`,
         borderRadius: '50%',
         transform: `translateY(${parallaxOffset}px)`,
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        zIndex: 2
       }} />
       
       <div style={{
@@ -378,16 +405,17 @@ function Hero({ scrollY }) {
         left: '5%',
         width: '300px',
         height: '300px',
-        background: `radial-gradient(circle, ${COLORS.primary}10 0%, transparent 70%)`,
+        background: `radial-gradient(circle, ${COLORS.accent}15 0%, transparent 70%)`,
         borderRadius: '50%',
         transform: `translateY(${-parallaxOffset * 0.3}px)`,
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        zIndex: 2
       }} />
 
       <div style={{
         maxWidth: '1400px',
         width: '100%',
-        zIndex: 1,
+        zIndex: 3,
         textAlign: 'center'
       }}>
         <div className="fade-in" style={{
@@ -645,7 +673,6 @@ function ResumenEjecutivo({ indicadores }) {
                 fontSize: '28px',
                 flexShrink: 0
               }}>
-                🏪
               </div>
               <div style={{ flex: 1 }}>
                 <h3 style={{
@@ -695,7 +722,6 @@ function ResumenEjecutivo({ indicadores }) {
                 fontSize: '28px',
                 flexShrink: 0
               }}>
-                💡
               </div>
               <div style={{ flex: 1 }}>
                 <h3 style={{
@@ -745,7 +771,6 @@ function ResumenEjecutivo({ indicadores }) {
                 fontSize: '28px',
                 flexShrink: 0
               }}>
-                🤝
               </div>
               <div style={{ flex: 1 }}>
                 <h3 style={{
@@ -860,42 +885,13 @@ function Indicadores({ data }) {
   return (
     <section style={{
       padding: '120px 60px',
-      position: 'relative',
-      overflow: 'hidden',
+      backgroundColor: COLORS.surface,
       borderTop: `1px solid ${COLORS.border}`,
       borderBottom: `1px solid ${COLORS.border}`
     }}>
-      {/* Imagen de fondo - Datos y tecnología */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundImage: 'url(https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&q=85&auto=format&fit=crop)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        opacity: 0.45,
-        filter: 'grayscale(30%) brightness(0.6)',
-        zIndex: 0
-      }} />
-      
-      {/* Overlay */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: `linear-gradient(to bottom, ${COLORS.surface}80 0%, ${COLORS.surface}60 50%, ${COLORS.surface}80 100%)`,
-        zIndex: 1
-      }} />
-      
       <div style={{ 
         maxWidth: '1400px', 
-        margin: '0 auto',
-        position: 'relative',
-        zIndex: 2
+        margin: '0 auto'
       }}>
         <div style={{
           marginBottom: '80px',
@@ -1556,34 +1552,34 @@ function GraficoTierlist({ data }) {
     'Alto': {
       titulo: 'Nivel Alto - Digitalización Avanzada',
       items: [
-        { icon: '📱', texto: 'Presencia activa en redes sociales (Instagram, Facebook, TikTok)' },
-        { icon: '🛒', texto: 'E-commerce funcional con catálogo online y pagos digitales' },
-        { icon: '', texto: 'Software de gestión de stock y inventario' },
-        { icon: '💳', texto: 'Sistema POS integrado con múltiples métodos de pago' },
-        { icon: '', texto: 'Analytics y métricas de ventas digitales' },
-        { icon: '🤖', texto: 'Automatización de procesos (facturación, recordatorios)' }
+        { texto: 'Presencia activa en redes sociales (Instagram, Facebook, TikTok)' },
+        { texto: 'E-commerce funcional con catálogo online y pagos digitales' },
+        { texto: 'Software de gestión de stock y inventario' },
+        { texto: 'Sistema POS integrado con múltiples métodos de pago' },
+        { texto: 'Analytics y métricas de ventas digitales' },
+        { texto: 'Automatización de procesos (facturación, recordatorios)' }
       ]
     },
     'Moderado': {
       titulo: 'Nivel Moderado - Digitalización Intermedia',
       items: [
-        { icon: '📱', texto: 'WhatsApp Business para atención al cliente' },
-        { icon: '💬', texto: 'Apps de mensajería para pedidos y consultas' },
-        { icon: '🔲', texto: 'Códigos QR para pagos (Mercado Pago, modo, etc.)' },
-        { icon: '💳', texto: 'Aceptación de transferencias bancarias' },
-        { icon: '📋', texto: 'Catálogo digital básico (PDF o fotos)' },
-        { icon: '📧', texto: 'Email para comunicación con clientes' }
+        { texto: 'WhatsApp Business para atención al cliente' },
+        { texto: 'Apps de mensajería para pedidos y consultas' },
+        { texto: 'Códigos QR para pagos (Mercado Pago, modo, etc.)' },
+        { texto: 'Aceptación de transferencias bancarias' },
+        { texto: 'Catálogo digital básico (PDF o fotos)' },
+        { texto: 'Email para comunicación con clientes' }
       ]
     },
     'Básico': {
       titulo: 'Nivel Básico - Digitalización Inicial',
       items: [
-        { icon: '📱', texto: 'Teléfono celular para contacto' },
-        { icon: '💳', texto: 'Tarjeta de débito/crédito física' },
-        { icon: '📝', texto: 'Registro manual o digital simple de ventas' },
-        { icon: '🔢', texto: 'Calculadora para operaciones básicas' },
-        { icon: '📞', texto: 'Línea telefónica fija o móvil' },
-        { icon: '✍️', texto: 'Facturación tradicional sin sistema integrado' }
+        { texto: 'Teléfono celular para contacto' },
+        { texto: 'Tarjeta de débito/crédito física' },
+        { texto: 'Registro manual o digital simple de ventas' },
+        { texto: 'Calculadora para operaciones básicas' },
+        { texto: 'Línea telefónica fija o móvil' },
+        { texto: 'Facturación tradicional sin sistema integrado' }
       ]
     }
   };
@@ -2633,7 +2629,7 @@ function ModeloCrecimiento({ data }) {
         onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
         onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
       >
-        {showCharts ? '▲ Ocultar gráficos' : '▼ Ver gráficos del modelo'}
+        {showCharts ? 'Ocultar gráficos' : 'Ver gráficos del modelo'}
       </button>
 
       {showCharts && (
@@ -2679,7 +2675,7 @@ function ModeloCrecimiento({ data }) {
         onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
         onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
       >
-        {expanded ? '▲ Ver menos' : '▼ Ver explicación'}
+        {expanded ? 'Ver menos' : 'Ver explicación'}
       </button>
 
       {expanded && (
@@ -2952,7 +2948,7 @@ function ModeloSalario({ data }) {
         onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
         onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
       >
-        {showCharts ? '▲ Ocultar gráficos' : '▼ Ver gráficos del modelo'}
+        {showCharts ? 'Ocultar gráficos' : 'Ver gráficos del modelo'}
       </button>
 
       {showCharts && (
@@ -3126,7 +3122,7 @@ function ModeloSalario({ data }) {
         onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
         onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
       >
-        {expanded ? '▲ Ver menos' : '▼ Ver explicación'}
+        {expanded ? 'Ver menos' : 'Ver explicación'}
       </button>
 
       {expanded && (
@@ -3316,7 +3312,7 @@ function ModeloFactoresExternos({ data }) {
         onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
         onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
       >
-        {showCharts ? '▲ Ocultar gráficos' : '▼ Ver gráficos del modelo'}
+        {showCharts ? 'Ocultar gráficos' : 'Ver gráficos del modelo'}
       </button>
 
       {showCharts && (
@@ -3373,7 +3369,7 @@ function ModeloFactoresExternos({ data }) {
         onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
         onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
       >
-        {expanded ? '▲ Ver menos' : '▼ Ver explicación'}
+        {expanded ? 'Ver menos' : 'Ver explicación'}
       </button>
 
       {expanded && (
@@ -3626,7 +3622,7 @@ function ModeloViabilidad({ data }) {
         onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
         onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
       >
-        {expanded ? '▲ Ver menos' : '▼ Ver explicación'}
+        {expanded ? 'Ver menos' : 'Ver explicación'}
       </button>
 
       {expanded && (
@@ -4740,35 +4736,8 @@ function Footer() {
     <footer style={{
       borderTop: `1px solid ${COLORS.border}`,
       padding: '80px 60px',
-      position: 'relative',
-      overflow: 'hidden'
+      backgroundColor: COLORS.surface
     }}>
-      {/* Imagen de fondo Buenos Aires */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundImage: 'url(https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1600&q=85&auto=format&fit=crop)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        opacity: 0.55,
-        filter: 'grayscale(20%) brightness(0.65)',
-        zIndex: 0
-      }} />
-      
-      {/* Overlay gradient */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: `linear-gradient(to bottom, ${COLORS.surface}80 0%, ${COLORS.surface}90 40%, ${COLORS.surface}c0 100%)`,
-        zIndex: 1
-      }} />
-      
       <div style={{
         position: 'relative',
         zIndex: 2
