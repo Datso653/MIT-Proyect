@@ -59,7 +59,7 @@ const COLORS = {
   borderLight: '#37474F',  // Gris azulado
   
   // Chart colors usando la paleta
-  chartColors: ['#4FC3F7', '#81D4FA', '#FFD54F', '#FFA726', '#29B6F6', '#FFE082', '#0288D1', '#FFCA28']
+  chartColors: ['#4FC3F7', '#FFD54F', '#81D4FA', '#FFA726', '#29B6F6', '#FFE082', '#0288D1', '#FFCA28', '#00BCD4', '#FFB74D']
 };
 
 // === COMPONENTE PRINCIPAL ===
@@ -1586,6 +1586,7 @@ function GraficoDistribucion({ data }) {
 // Gráfico de barras
 function GraficoBarras({ data }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   
   const maxValue = Math.ceil(Math.max(...data.map(d => d.promedio)) * 1.15); // +15% padding superior
   const height = 300;
@@ -1598,7 +1599,8 @@ function GraficoBarras({ data }) {
       backgroundColor: COLORS.surface,
       padding: '40px',
       borderRadius: '4px',
-      border: `1px solid ${COLORS.border}`
+      border: `1px solid ${COLORS.border}`,
+      position: 'relative'
     }}>
       <h3 style={{
         fontFamily: '"Crimson Pro", serif',
@@ -1614,10 +1616,10 @@ function GraficoBarras({ data }) {
         color: COLORS.textSecondary,
         marginBottom: '30px'
       }}>
-        Promedio de empleados por categoría
+        Promedio de empleados por categoría • Pasa el mouse sobre las barras
       </p>
       
-      <div style={{ overflowX: 'auto', overflowY: 'visible' }}>
+      <div style={{ overflowX: 'auto', overflowY: 'visible', position: 'relative' }}>
         <svg width={Math.max(chartWidth, 400)} height={height + 100} style={{ minWidth: '100%' }}>
           {/* Grid lines */}
           {[0, 25, 50, 75, 100].map((percent, idx) => {
@@ -1648,54 +1650,116 @@ function GraficoBarras({ data }) {
           {/* Bars */}
           {data.map((item, idx) => {
             const barHeight = (item.promedio / maxValue) * height;
-            const x = idx * (barWidth + gap) + 30; // Agregado margen izquierdo de 30px
+            const x = idx * (barWidth + gap) + 30; // Margen izquierdo
             const isHovered = hoveredIndex === idx;
             
             return (
               <g
                 key={idx}
-                onMouseEnter={() => setHoveredIndex(idx)}
+                onMouseEnter={(e) => {
+                  setHoveredIndex(idx);
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  setTooltipPos({ x: rect.left + rect.width / 2, y: rect.top - 10 });
+                }}
                 onMouseLeave={() => setHoveredIndex(null)}
                 style={{ cursor: 'pointer' }}
               >
+                {/* Barra con gradiente en hover */}
+                <defs>
+                  <linearGradient id={`barGradient-${idx}`} x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor={COLORS.primary} stopOpacity="1" />
+                    <stop offset="100%" stopColor={COLORS.primaryDark} stopOpacity="0.8" />
+                  </linearGradient>
+                </defs>
+                
                 <rect
                   x={x}
                   y={height - barHeight}
                   width={barWidth}
                   height={barHeight}
-                  fill={COLORS.primary}
+                  fill={isHovered ? `url(#barGradient-${idx})` : COLORS.primary}
                   opacity={isHovered ? 1 : 0.8}
                   rx="4"
-                  style={{ transition: 'all 0.3s' }}
+                  style={{ 
+                    transition: 'all 0.3s',
+                    filter: isHovered ? 'drop-shadow(0 4px 8px rgba(79, 195, 247, 0.4))' : 'none'
+                  }}
                 />
                 
                 {/* Value on top */}
                 <text
                   x={x + barWidth / 2}
                   y={height - barHeight - 8}
-                  fill={COLORS.text}
-                  fontSize="12"
+                  fill={isHovered ? COLORS.accent : COLORS.text}
+                  fontSize="13"
+                  fontWeight="700"
                   textAnchor="middle"
-                  fontWeight="600"
+                  style={{ transition: 'all 0.3s' }}
                 >
                   {item.promedio.toFixed(1)}
                 </text>
                 
-                {/* Label */}
+                {/* Label abreviado */}
                 <text
                   x={x + barWidth / 2}
                   y={height + 20}
-                  fill={COLORS.textSecondary}
+                  fill={isHovered ? COLORS.primary : COLORS.textSecondary}
                   fontSize="10"
+                  fontWeight={isHovered ? "600" : "400"}
                   textAnchor="end"
                   transform={`rotate(-45 ${x + barWidth / 2} ${height + 20})`}
+                  style={{ transition: 'all 0.3s' }}
                 >
-                  {item.tipo.length > 20 ? item.tipo.substring(0, 20) + '...' : item.tipo}
+                  {item.tipo.length > 12 ? item.tipo.substring(0, 12) + '...' : item.tipo}
                 </text>
               </g>
             );
           })}
         </svg>
+        
+        {/* Tooltip flotante */}
+        {hoveredIndex !== null && (
+          <div style={{
+            position: 'fixed',
+            left: `${tooltipPos.x}px`,
+            top: `${tooltipPos.y}px`,
+            transform: 'translate(-50%, -100%)',
+            backgroundColor: COLORS.surface,
+            border: `2px solid ${COLORS.primary}`,
+            borderRadius: '8px',
+            padding: '12px 16px',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
+            zIndex: 1000,
+            pointerEvents: 'none',
+            minWidth: '200px',
+            animation: 'fadeIn 0.2s ease'
+          }}>
+            <style>{`
+              @keyframes fadeIn {
+                from { opacity: 0; transform: translate(-50%, -100%) scale(0.9); }
+                to { opacity: 1; transform: translate(-50%, -100%) scale(1); }
+              }
+            `}</style>
+            <div style={{
+              fontSize: '14px',
+              fontWeight: '600',
+              color: COLORS.text,
+              marginBottom: '6px'
+            }}>
+              {data[hoveredIndex].tipo}
+            </div>
+            <div style={{
+              fontSize: '13px',
+              color: COLORS.textSecondary
+            }}>
+              Promedio: <span style={{ 
+                color: COLORS.accent,
+                fontWeight: '700',
+                fontSize: '15px'
+              }}>{data[hoveredIndex].promedio.toFixed(1)}</span> empleados
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
