@@ -334,7 +334,7 @@ function App() {
       <ProjectIntro />
       {indicadores && <ResumenEjecutivo indicadores={indicadores} />}
       {indicadores && <Indicadores data={indicadores} />}
-      {datosGraficos && <AnalisisVisual data={datosGraficos} />}
+      {datosGraficos && indicadores && <AnalisisVisual data={datosGraficos} indicadores={indicadores} />}
       <SeccionAnalisis />
       <SeccionMachineLearning />
       <Team />
@@ -1374,7 +1374,7 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
 }
 
 // === ANÁLISIS VISUAL CON GRÁFICOS SVG ===
-function AnalisisVisual({ data }) {
+function AnalisisVisual({ data, indicadores }) {
   return (
     <section id="analisis-visual" style={{
       padding: '120px 60px',
@@ -1427,7 +1427,7 @@ function AnalisisVisual({ data }) {
 
       {/* Segunda fila: Fuentes de crédito (barras horizontales) */}
       <div style={{ marginBottom: '40px' }}>
-        <GraficoBarrasHorizontales data={data.creditoPorFuente} />
+        <GraficoBarrasHorizontales data={data.creditoPorFuente} pctCredito={indicadores?.pctCredito || 0} />
       </div>
 
       {/* Tercera fila: Adopción tecnológica y Salarios */}
@@ -1766,14 +1766,14 @@ function GraficoBarras({ data }) {
 }
 
 // Gráfico de barras horizontales - Fuentes de crédito
-function GraficoBarrasHorizontales({ data }) {
+function GraficoBarrasHorizontales({ data, pctCredito }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   
   const maxValue = Math.max(...data.map(d => d.cantidad));
-  const barHeight = 50;
-  const gap = 20;
-  const chartHeight = data.length * (barHeight + gap);
-  const chartWidth = 600;
+  const barHeight = 45;
+  const gap = 16;
+  const chartHeight = data.length * (barHeight + gap) + 20;
+  const maxBarWidth = 500;
   
   return (
     <div style={{
@@ -1789,85 +1789,163 @@ function GraficoBarrasHorizontales({ data }) {
         color: COLORS.text,
         marginBottom: '10px'
       }}>
-        Acceso a crédito por fuente
+        Fuentes de financiamiento
       </h3>
       <p style={{
-        fontSize: '13px',
+        fontSize: '14px',
         color: COLORS.textSecondary,
-        marginBottom: '40px'
+        marginBottom: '16px',
+        lineHeight: '1.6'
       }}>
-        Cantidad de comercios con financiamiento según tipo de fuente
+        Del <strong style={{ color: COLORS.accent, fontSize: '16px' }}>{pctCredito}%</strong> de comercios que acceden a crédito, 
+        estas son sus fuentes de financiamiento
       </p>
       
-      <div style={{ overflowX: 'auto' }}>
-        <svg width={chartWidth} height={chartHeight} style={{ minWidth: '100%' }}>
-          {data.map((item, idx) => {
-            const barWidth = (item.cantidad / maxValue) * (chartWidth - 200);
-            const y = idx * (barHeight + gap);
-            const isHovered = hoveredIndex === idx;
-            
-            return (
-              <g
-                key={idx}
-                onMouseEnter={() => setHoveredIndex(idx)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                style={{ cursor: 'pointer' }}
-              >
-                {/* Label */}
-                <text
-                  x="0"
-                  y={y + barHeight / 2 + 5}
-                  fill={COLORS.text}
-                  fontSize="14"
-                  fontWeight="500"
-                >
-                  {item.fuente}
-                </text>
+      {/* Aclaración destacada */}
+      <div style={{
+        marginBottom: '30px',
+        padding: '16px 20px',
+        backgroundColor: `${COLORS.accent}15`,
+        borderRadius: '8px',
+        border: `2px solid ${COLORS.accent}50`,
+        borderLeft: `4px solid ${COLORS.accent}`
+      }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '12px'
+        }}>
+          <div style={{
+            minWidth: '24px',
+            height: '24px',
+            borderRadius: '50%',
+            backgroundColor: COLORS.accent,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '14px',
+            fontWeight: '700',
+            color: COLORS.background,
+            marginTop: '2px'
+          }}>
+            i
+          </div>
+          <div>
+            <div style={{
+              fontSize: '13px',
+              fontWeight: '600',
+              color: COLORS.text,
+              marginBottom: '6px'
+            }}>
+              Múltiples fuentes simultáneas
+            </div>
+            <div style={{
+              fontSize: '13px',
+              color: COLORS.textSecondary,
+              lineHeight: '1.6'
+            }}>
+              Los porcentajes suman más de 100% porque <strong style={{ color: COLORS.text }}>un mismo comercio 
+              puede acceder a varias fuentes de crédito al mismo tiempo</strong>. Por ejemplo, un comercio puede 
+              tener crédito de proveedores y también préstamos familiares simultáneamente.
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div style={{ maxWidth: '700px' }}>
+        {data.map((item, idx) => {
+          const percentage = (item.cantidad / maxValue) * 100;
+          const barWidth = (percentage / 100) * maxBarWidth;
+          const isHovered = hoveredIndex === idx;
+          
+          return (
+            <div
+              key={idx}
+              onMouseEnter={() => setHoveredIndex(idx)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              style={{
+                marginBottom: gap,
+                transition: 'all 0.3s ease'
+              }}
+            >
+              {/* Label de la fuente */}
+              <div style={{
+                fontSize: '14px',
+                fontWeight: '600',
+                color: COLORS.text,
+                marginBottom: '8px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}>
+                <span>{item.fuente}</span>
+                <span style={{
+                  fontSize: '13px',
+                  color: COLORS.textSecondary,
+                  fontWeight: '400'
+                }}>
+                  {item.cantidad} comercios
+                </span>
+              </div>
+              
+              {/* Barra */}
+              <div style={{
+                position: 'relative',
+                width: '100%',
+                height: barHeight,
+                backgroundColor: `${COLORS.border}40`,
+                borderRadius: '8px',
+                overflow: 'hidden'
+              }}>
+                {/* Barra de progreso con gradiente */}
+                <div style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  height: '100%',
+                  width: `${percentage}%`,
+                  background: isHovered 
+                    ? `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.primaryLight})`
+                    : `linear-gradient(90deg, ${COLORS.primary}e0, ${COLORS.primary}a0)`,
+                  borderRadius: '8px',
+                  transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                  boxShadow: isHovered ? `0 4px 12px ${COLORS.primary}40` : 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  paddingRight: '12px'
+                }}>
+                  {/* Porcentaje dentro de la barra */}
+                  {percentage > 15 && (
+                    <span style={{
+                      fontSize: '13px',
+                      fontWeight: '700',
+                      color: COLORS.background,
+                      textShadow: '0 1px 2px rgba(0,0,0,0.2)'
+                    }}>
+                      {item.porcentaje}%
+                    </span>
+                  )}
+                </div>
                 
-                {/* Bar background */}
-                <rect
-                  x="150"
-                  y={y}
-                  width={chartWidth - 200}
-                  height={barHeight}
-                  fill={COLORS.border}
-                  rx="4"
-                />
-                
-                {/* Bar fill */}
-                <rect
-                  x="150"
-                  y={y}
-                  width={barWidth}
-                  height={barHeight}
-                  fill={COLORS.primary}
-                  opacity={isHovered ? 1 : 0.8}
-                  rx="4"
-                  style={{ transition: 'all 0.3s' }}
-                >
-                  <animate
-                    attributeName="width"
-                    from="0"
-                    to={barWidth}
-                    dur="1s"
-                    fill="freeze"
-                  />
-                </rect>
-                
-                {/* Value text */}
-                <text
-                  x={150 + barWidth + 10}
-                  y={y + barHeight / 2 + 5}
-                  fill={COLORS.text}
-                  fontSize="14"
-                  fontWeight="600"
-                >
-                  {item.cantidad} ({item.porcentaje}%)
-                </text>
-              </g>
-            );
-          })}
-        </svg>
+                {/* Porcentaje fuera de la barra si es muy pequeña */}
+                {percentage <= 15 && (
+                  <div style={{
+                    position: 'absolute',
+                    right: '-50px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontSize: '13px',
+                    fontWeight: '700',
+                    color: COLORS.primary
+                  }}>
+                    {item.porcentaje}%
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
@@ -5433,9 +5511,19 @@ function procesarDatosGraficos(datos) {
     { fuente: 'Privado', key: 'credits_privado' }
   ];
 
+  // Comercios con acceso a crédito
+  const comerciosConCredito = datos.filter(c => 
+    (parseFloat(c.credits_bancos) > 0) ||
+    (parseFloat(c.credits_proveedor) > 0) ||
+    (parseFloat(c.credits_familia) > 0) ||
+    (parseFloat(c.credits_gobierno) > 0) ||
+    (parseFloat(c.credits_privado) > 0)
+  ).length;
+
   const creditoPorFuente = fuentesCredito.map(({ fuente, key }) => {
     const cantidad = datos.filter(c => parseFloat(c[key]) > 0).length;
-    const porcentaje = (cantidad / datos.length) * 100;
+    // Porcentaje sobre el total de comercios CON crédito, no sobre el total general
+    const porcentaje = comerciosConCredito > 0 ? (cantidad / comerciosConCredito) * 100 : 0;
     return {
       fuente,
       cantidad,
