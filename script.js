@@ -367,7 +367,7 @@ function Navbar() {
     { id: 'analisis-visual', label: 'Análisis Visual' },
     { id: 'machine-learning', label: 'Machine Learning' },
     { id: 'analisis', label: 'Conclusiones' },
-    { id: 'equipo', label: 'Equipo' }
+    { id: 'equipo', label: '¿Quiénes somos?' }
   ];
 
   const scrollToSection = (sectionId) => {
@@ -4704,7 +4704,7 @@ function Team() {
             marginBottom: '20px',
             fontWeight: '500'
           }}>
-            El equipo
+            Sobre nosotros
           </div>
           <h2 style={{
             fontFamily: '"Crimson Pro", serif',
@@ -4712,7 +4712,7 @@ function Team() {
             fontWeight: '400',
             color: COLORS.text
           }}>
-            Investigadores
+            ¿Quiénes somos?
           </h2>
         </div>
         
@@ -4850,6 +4850,9 @@ function TeamMember({ member, index }) {
 function Mapa({ datos }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
+  const heatLayerRef = useRef(null);
+  const markersLayerRef = useRef(null);
+  const [viewMode, setViewMode] = useState('general'); // 'general' o 'crimen'
 
   useEffect(() => {
     if (!window.L || mapInstanceRef.current) return;
@@ -4862,50 +4865,13 @@ function Mapa({ datos }) {
 
     if (comerciosConCoords.length === 0) return;
 
+    // Crear mapa
     const map = window.L.map(mapRef.current).setView([-34.6037, -58.3816], 12);
 
     window.L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       attribution: '© OpenStreetMap, © CartoDB',
       maxZoom: 19
     }).addTo(map);
-
-    const icon = window.L.divIcon({
-      className: 'custom-marker',
-      html: `<div style="
-        width: 12px;
-        height: 12px;
-        background: ${COLORS.primary};
-        border: 2px solid ${COLORS.background};
-        border-radius: 50%;
-        box-shadow: 0 0 10px ${COLORS.primary}80;
-      "></div>`,
-      iconSize: [12, 12]
-    });
-
-    comerciosConCoords.forEach(comercio => {
-      try {
-        const marker = window.L.marker([comercio.lat, comercio.long], { icon }).addTo(map);
-        marker.bindPopup(`
-          <div style="
-            font-family: 'Inter', sans-serif;
-            background: ${COLORS.surface};
-            color: ${COLORS.text};
-            padding: 12px;
-            border-radius: 4px;
-          ">
-            <strong style="color: ${COLORS.primary}; display: block; margin-bottom: 8px;">
-              ${comercio.comercio || 'Sin nombre'}
-            </strong>
-            <div style="font-size: 13px; color: ${COLORS.textSecondary};">
-              Tipo: ${comercio.tipo_comercio || 'N/A'}<br>
-              Trabajadores: ${comercio.cantidad_trabajadores || 'N/A'}
-            </div>
-          </div>
-        `);
-      } catch (error) {
-        console.error('Error al agregar marcador:', error);
-      }
-    });
 
     mapInstanceRef.current = map;
 
@@ -4917,14 +4883,182 @@ function Mapa({ datos }) {
     };
   }, [datos]);
 
+  // Actualizar vista cuando cambia el modo
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+
+    const map = mapInstanceRef.current;
+    
+    // Limpiar capas anteriores
+    if (heatLayerRef.current) {
+      map.removeLayer(heatLayerRef.current);
+      heatLayerRef.current = null;
+    }
+    if (markersLayerRef.current) {
+      map.removeLayer(markersLayerRef.current);
+      markersLayerRef.current = null;
+    }
+
+    const comerciosConCoords = datos.filter(c => 
+      c.lat && c.long && 
+      !isNaN(c.lat) && !isNaN(c.long) &&
+      c.lat !== 0 && c.long !== 0
+    );
+
+    if (viewMode === 'general') {
+      // Vista general con marcadores
+      markersLayerRef.current = window.L.layerGroup().addTo(map);
+
+      const icon = window.L.divIcon({
+        className: 'custom-marker',
+        html: `<div style="
+          width: 12px;
+          height: 12px;
+          background: ${COLORS.primary};
+          border: 2px solid ${COLORS.background};
+          border-radius: 50%;
+          box-shadow: 0 0 10px ${COLORS.primary}80;
+        "></div>`,
+        iconSize: [12, 12]
+      });
+
+      comerciosConCoords.forEach(comercio => {
+        try {
+          const marker = window.L.marker([comercio.lat, comercio.long], { icon });
+          marker.bindPopup(`
+            <div style="
+              font-family: 'Inter', sans-serif;
+              background: ${COLORS.surface};
+              color: ${COLORS.text};
+              padding: 12px;
+              border-radius: 4px;
+            ">
+              <strong style="color: ${COLORS.primary}; display: block; margin-bottom: 8px;">
+                ${comercio.comercio || 'Sin nombre'}
+              </strong>
+              <div style="font-size: 13px; color: ${COLORS.textSecondary};">
+                Tipo: ${comercio.tipo_comercio || 'N/A'}<br>
+                Trabajadores: ${comercio.cantidad_trabajadores || 'N/A'}
+              </div>
+            </div>
+          `);
+          markersLayerRef.current.addLayer(marker);
+        } catch (error) {
+          console.error('Error al agregar marcador:', error);
+        }
+      });
+
+    } else if (viewMode === 'crimen') {
+      // Vista de calor de percepción de crimen
+      const crimenToIntensity = {
+        'Mucho': 1.0,
+        'Moderado': 0.7,
+        'Algo': 0.5,
+        'Poco': 0.25,
+        'Nada': 0.05
+      };
+
+      const heatPoints = comerciosConCoords
+        .filter(c => c.afect_crimen && crimenToIntensity[c.afect_crimen] !== undefined)
+        .map(c => [
+          parseFloat(c.lat),
+          parseFloat(c.long),
+          crimenToIntensity[c.afect_crimen]
+        ]);
+
+      if (window.L.heatLayer && heatPoints.length > 0) {
+        heatLayerRef.current = window.L.heatLayer(heatPoints, {
+          radius: 25,
+          blur: 20,
+          maxZoom: 17,
+          max: 1.0,
+          gradient: {
+            0.0: '#00ff00',
+            0.3: '#ffff00',
+            0.6: '#ff9900',
+            0.8: '#ff4400',
+            1.0: '#ff0000'
+          }
+        }).addTo(map);
+      }
+
+      // Agregar marcadores con color según percepción
+      markersLayerRef.current = window.L.layerGroup().addTo(map);
+
+      comerciosConCoords.forEach(comercio => {
+        if (!comercio.afect_crimen) return;
+
+        const intensityColor = {
+          'Mucho': '#ff0000',
+          'Moderado': '#ff9900',
+          'Algo': '#ffff00',
+          'Poco': '#90EE90',
+          'Nada': '#00ff00'
+        }[comercio.afect_crimen] || COLORS.primary;
+
+        const icon = window.L.divIcon({
+          className: 'custom-marker',
+          html: `<div style="
+            width: 10px;
+            height: 10px;
+            background: ${intensityColor};
+            border: 2px solid ${COLORS.background};
+            border-radius: 50%;
+            box-shadow: 0 0 8px ${intensityColor}80;
+          "></div>`,
+          iconSize: [10, 10]
+        });
+
+        const marker = window.L.marker([comercio.lat, comercio.long], { icon });
+        marker.bindPopup(`
+          <div style="
+            font-family: 'Inter', sans-serif;
+            background: ${COLORS.surface};
+            color: ${COLORS.text};
+            padding: 12px;
+            border-radius: 4px;
+          ">
+            <strong style="color: ${intensityColor}; display: block; margin-bottom: 8px;">
+              Percepción: ${comercio.afect_crimen}
+            </strong>
+            <div style="font-size: 13px; color: ${COLORS.textSecondary};">
+              Tipo: ${comercio.tipo_comercio || 'N/A'}<br>
+              ${comercio.reja ? '🔒 Con rejas de seguridad' : ''}
+            </div>
+          </div>
+        `);
+        markersLayerRef.current.addLayer(marker);
+      });
+    }
+  }, [viewMode, datos]);
+
+  // Calcular estadísticas de crimen
+  const statscrimen = React.useMemo(() => {
+    const comerciosConCrimen = datos.filter(c => c.afect_crimen);
+    const total = comerciosConCrimen.length;
+    
+    const distribucion = {
+      'Mucho': comerciosConCrimen.filter(c => c.afect_crimen === 'Mucho').length,
+      'Moderado': comerciosConCrimen.filter(c => c.afect_crimen === 'Moderado').length,
+      'Algo': comerciosConCrimen.filter(c => c.afect_crimen === 'Algo').length,
+      'Poco': comerciosConCrimen.filter(c => c.afect_crimen === 'Poco').length,
+      'Nada': comerciosConCrimen.filter(c => c.afect_crimen === 'Nada').length
+    };
+
+    const afectados = distribucion['Mucho'] + distribucion['Moderado'] + distribucion['Algo'];
+    const pctAfectados = total > 0 ? ((afectados / total) * 100).toFixed(1) : 0;
+
+    return { distribucion, total, pctAfectados };
+  }, [datos]);
+
   return (
-    <section style={{
+    <section id="mapa" style={{
       padding: '120px 60px',
       maxWidth: '1400px',
       margin: '0 auto'
     }}>
       <div style={{
-        marginBottom: '60px',
+        marginBottom: '40px',
         textAlign: 'center'
       }}>
         <div style={{
@@ -4941,11 +5075,128 @@ function Mapa({ datos }) {
           fontFamily: '"Crimson Pro", serif',
           fontSize: 'clamp(36px, 4vw, 52px)',
           fontWeight: '400',
-          color: COLORS.text
+          color: COLORS.text,
+          marginBottom: '20px'
         }}>
-          Ubicación de comercios
+          Mapa interactivo
         </h2>
+        <p style={{
+          fontSize: '16px',
+          color: COLORS.textSecondary,
+          maxWidth: '700px',
+          margin: '0 auto 30px',
+          lineHeight: '1.6'
+        }}>
+          Explora la ubicación de los comercios y la percepción de seguridad en el AMBA
+        </p>
+
+        {/* Toggle de vista */}
+        <div style={{
+          display: 'inline-flex',
+          gap: '8px',
+          backgroundColor: COLORS.surface,
+          padding: '6px',
+          borderRadius: '8px',
+          border: `1px solid ${COLORS.border}`
+        }}>
+          <button
+            onClick={() => setViewMode('general')}
+            style={{
+              padding: '12px 24px',
+              fontSize: '14px',
+              fontWeight: '600',
+              backgroundColor: viewMode === 'general' ? COLORS.primary : 'transparent',
+              color: viewMode === 'general' ? COLORS.background : COLORS.textSecondary,
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              transition: 'all 0.3s',
+              letterSpacing: '0.05em'
+            }}
+          >
+            UBICACIONES
+          </button>
+          <button
+            onClick={() => setViewMode('crimen')}
+            style={{
+              padding: '12px 24px',
+              fontSize: '14px',
+              fontWeight: '600',
+              backgroundColor: viewMode === 'crimen' ? COLORS.accent : 'transparent',
+              color: viewMode === 'crimen' ? COLORS.background : COLORS.textSecondary,
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              transition: 'all 0.3s',
+              letterSpacing: '0.05em'
+            }}
+          >
+            🔥 PERCEPCIÓN DE CRIMEN
+          </button>
+        </div>
       </div>
+
+      {/* Estadísticas de crimen cuando está en modo crimen */}
+      {viewMode === 'crimen' && (
+        <div style={{
+          marginBottom: '30px',
+          padding: '24px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '12px',
+          border: `1px solid ${COLORS.border}`
+        }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+            gap: '20px',
+            marginBottom: '20px'
+          }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '32px', fontWeight: '700', color: '#ff0000', fontFamily: '"Crimson Pro", serif' }}>
+                {statscrimen.distribucion['Mucho']}
+              </div>
+              <div style={{ fontSize: '12px', color: COLORS.textSecondary, marginTop: '4px' }}>Mucho</div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '32px', fontWeight: '700', color: '#ff9900', fontFamily: '"Crimson Pro", serif' }}>
+                {statscrimen.distribucion['Moderado']}
+              </div>
+              <div style={{ fontSize: '12px', color: COLORS.textSecondary, marginTop: '4px' }}>Moderado</div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '32px', fontWeight: '700', color: '#ffff00', fontFamily: '"Crimson Pro", serif' }}>
+                {statscrimen.distribucion['Algo']}
+              </div>
+              <div style={{ fontSize: '12px', color: COLORS.textSecondary, marginTop: '4px' }}>Algo</div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '32px', fontWeight: '700', color: '#90EE90', fontFamily: '"Crimson Pro", serif' }}>
+                {statscrimen.distribucion['Poco']}
+              </div>
+              <div style={{ fontSize: '12px', color: COLORS.textSecondary, marginTop: '4px' }}>Poco</div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '32px', fontWeight: '700', color: '#00ff00', fontFamily: '"Crimson Pro", serif' }}>
+                {statscrimen.distribucion['Nada']}
+              </div>
+              <div style={{ fontSize: '12px', color: COLORS.textSecondary, marginTop: '4px' }}>Nada</div>
+            </div>
+          </div>
+          
+          <div style={{
+            padding: '16px',
+            backgroundColor: `${COLORS.accent}15`,
+            borderRadius: '8px',
+            borderLeft: `4px solid ${COLORS.accent}`,
+            textAlign: 'center'
+          }}>
+            <div style={{ fontSize: '14px', color: COLORS.text }}>
+              <strong style={{ fontSize: '20px', color: COLORS.accent }}>{statscrimen.pctAfectados}%</strong> de los comercios 
+              reportan afectación significativa por crimen (Algo/Moderado/Mucho)
+            </div>
+          </div>
+        </div>
+      )}
       
       <div
         ref={mapRef}
@@ -4958,6 +5209,42 @@ function Mapa({ datos }) {
           boxShadow: `0 20px 60px rgba(0,0,0,0.4)`
         }}
       />
+
+      {/* Leyenda para mapa de calor */}
+      {viewMode === 'crimen' && (
+        <div style={{
+          marginTop: '20px',
+          padding: '16px 24px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '8px',
+          border: `1px solid ${COLORS.border}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '30px',
+          flexWrap: 'wrap'
+        }}>
+          <div style={{ fontSize: '13px', fontWeight: '600', color: COLORS.textSecondary }}>
+            INTENSIDAD DEL CALOR:
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '20px', height: '20px', background: '#00ff00', borderRadius: '4px' }} />
+            <span style={{ fontSize: '13px', color: COLORS.text }}>Nada</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '20px', height: '20px', background: '#ffff00', borderRadius: '4px' }} />
+            <span style={{ fontSize: '13px', color: COLORS.text }}>Poco/Algo</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '20px', height: '20px', background: '#ff9900', borderRadius: '4px' }} />
+            <span style={{ fontSize: '13px', color: COLORS.text }}>Moderado</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '20px', height: '20px', background: '#ff0000', borderRadius: '4px' }} />
+            <span style={{ fontSize: '13px', color: COLORS.text }}>Mucho</span>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
