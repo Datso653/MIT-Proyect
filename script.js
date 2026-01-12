@@ -35,16 +35,31 @@ const TEAM_DATA = {
 };
 
 const COLORS = {
-  background: '#0a0a0a',
-  surface: '#1a1a1a',
-  surfaceHover: '#242424',
-  primary: '#4FC3F7',
-  primaryDark: '#29B6F6',
-  primaryLight: '#81D4FA',
-  text: '#f5f5f5',
-  textSecondary: '#a8a8a8',
-  border: '#2a2a2a',
-  chartColors: ['#4FC3F7', '#00E676', '#FFB74D', '#FF6B6B', '#9C27B0', '#FFC107', '#00BCD4', '#F06292']
+  // Paleta principal: Celeste, Blanco, Amarillo
+  primary: '#4FC3F7',      // Celeste principal
+  primaryDark: '#0288D1',  // Celeste oscuro
+  primaryLight: '#81D4FA', // Celeste claro
+  
+  accent: '#FFD54F',       // Amarillo principal
+  accentDark: '#FFA726',   // Amarillo-naranja
+  accentLight: '#FFE082',  // Amarillo claro
+  
+  // Backgrounds
+  background: '#0a0a0a',   // Negro profundo
+  surface: '#141414',      // Gris muy oscuro
+  surfaceHover: '#1a1a1a', // Gris oscuro hover
+  
+  // Text
+  text: '#FFFFFF',         // Blanco puro
+  textSecondary: '#B0BEC5', // Gris azulado claro
+  textTertiary: '#78909C',  // Gris azulado medio
+  
+  // Borders
+  border: '#263238',       // Gris azulado oscuro
+  borderLight: '#37474F',  // Gris azulado
+  
+  // Chart colors usando la paleta
+  chartColors: ['#4FC3F7', '#81D4FA', '#FFD54F', '#FFA726', '#29B6F6', '#FFE082', '#0288D1', '#FFCA28']
 };
 
 // === COMPONENTE PRINCIPAL ===
@@ -529,186 +544,259 @@ function ResumenEjecutivo({ indicadores }) {
   
   return (
     <section style={{
-      padding: '100px 60px',
-      backgroundColor: COLORS.background,
+      padding: '120px 60px',
       position: 'relative',
       overflow: 'hidden'
     }}>
-      {/* Background decorativo */}
+      {/* Imagen de fondo - Mercado argentino */}
       <div style={{
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        background: `radial-gradient(circle at 20% 50%, ${COLORS.primary}08 0%, transparent 50%)`,
+        backgroundImage: 'url(https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?w=1600&q=85&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.50,
+        filter: 'grayscale(20%) brightness(0.65)',
         zIndex: 0
       }} />
       
+      {/* Overlay con gradiente celeste-amarillo */}
       <div style={{
-        maxWidth: '1000px',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `linear-gradient(135deg, ${COLORS.background}90 0%, ${COLORS.background}70 50%, ${COLORS.background}90 100%)`,
+        zIndex: 1
+      }} />
+      
+      <div style={{
+        maxWidth: '1100px',
         margin: '0 auto',
         position: 'relative',
-        zIndex: 1
+        zIndex: 2
       }}>
         <div style={{
           textAlign: 'center',
           marginBottom: '60px'
         }}>
           <div style={{
-            fontSize: '12px',
+            fontSize: '13px',
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
-            color: COLORS.primary,
+            color: COLORS.accent,
             marginBottom: '20px',
-            fontWeight: '500'
+            fontWeight: '600'
           }}>
-            Para los comerciantes
+            Principales hallazgos
           </div>
           <h2 style={{
             fontFamily: '"Crimson Pro", serif',
-            fontSize: 'clamp(32px, 4vw, 48px)',
+            fontSize: 'clamp(36px, 5vw, 56px)',
             fontWeight: '400',
             color: COLORS.text,
-            marginBottom: '20px'
+            marginBottom: '24px',
+            lineHeight: '1.2'
           }}>
-            Resumen Ejecutivo
+            Lo que aprendimos de {indicadores.total} comercios
           </h2>
           <p style={{
-            fontSize: '16px',
+            fontSize: '18px',
             color: COLORS.textSecondary,
             lineHeight: '1.7',
-            maxWidth: '700px',
+            maxWidth: '800px',
             margin: '0 auto'
           }}>
-            Principales hallazgos del relevamiento de {indicadores.total} comercios en el AMBA
+            Un análisis profundo del ecosistema comercial del Área Metropolitana de Buenos Aires
           </p>
         </div>
 
-        {/* Cards de hallazgos principales */}
+        {/* Narrativa principal */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '30px',
-          marginBottom: '50px'
+          gridTemplateColumns: '1fr',
+          gap: '30px'
         }}>
-          <HallazgoCard
-            title="Expectativas de ventas"
-            value={`${indicadores.pctExpectativas}%`}
-            description="de los comercios tiene expectativas positivas para los próximos 3 meses"
-            color="#00E676"
-          />
-          
-          <HallazgoCard
-            title="Deseo de crecimiento"
-            value={`${indicadores.pctCrecimiento}%`}
-            description="quiere que su negocio crezca y se expanda"
-            color="#4FC3F7"
-          />
-          
-          <HallazgoCard
-            title="Promedio de empleados"
-            value={indicadores.promTrabajadores}
-            description="trabajadores por comercio en promedio"
-            color="#FFB74D"
-          />
+          {/* Hallazgo 1 */}
+          <div style={{
+            padding: '40px',
+            backgroundColor: `${COLORS.surface}f5`,
+            borderRadius: '12px',
+            border: `2px solid ${COLORS.primary}40`,
+            backdropFilter: 'blur(10px)'
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '20px'
+            }}>
+              <div style={{
+                width: '60px',
+                height: '60px',
+                borderRadius: '12px',
+                background: `linear-gradient(135deg, ${COLORS.primary}, ${COLORS.primaryDark})`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '28px',
+                flexShrink: 0
+              }}>
+                🏪
+              </div>
+              <div style={{ flex: 1 }}>
+                <h3 style={{
+                  fontFamily: '"Crimson Pro", serif',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  color: COLORS.text,
+                  marginBottom: '12px'
+                }}>
+                  El comercio de cercanía mantiene su vitalidad
+                </h3>
+                <p style={{
+                  fontSize: '16px',
+                  lineHeight: '1.8',
+                  color: COLORS.textSecondary,
+                  margin: 0
+                }}>
+                  A pesar de los desafíos económicos, los comercios del AMBA demuestran una notable resiliencia. 
+                  La mayoría de los comerciantes mantiene expectativas positivas y deseo de crecimiento, 
+                  evidenciando el rol fundamental que juegan en la economía local.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Hallazgo 2 */}
+          <div style={{
+            padding: '40px',
+            backgroundColor: `${COLORS.surface}f5`,
+            borderRadius: '12px',
+            border: `2px solid ${COLORS.accent}40`,
+            backdropFilter: 'blur(10px)'
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '20px'
+            }}>
+              <div style={{
+                width: '60px',
+                height: '60px',
+                borderRadius: '12px',
+                background: `linear-gradient(135deg, ${COLORS.accent}, ${COLORS.accentDark})`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '28px',
+                flexShrink: 0
+              }}>
+                💡
+              </div>
+              <div style={{ flex: 1 }}>
+                <h3 style={{
+                  fontFamily: '"Crimson Pro", serif',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  color: COLORS.text,
+                  marginBottom: '12px'
+                }}>
+                  La digitalización es una oportunidad latente
+                </h3>
+                <p style={{
+                  fontSize: '16px',
+                  lineHeight: '1.8',
+                  color: COLORS.textSecondary,
+                  margin: 0
+                }}>
+                  Existe una brecha significativa en la adopción de tecnología. Los comercios que implementan 
+                  herramientas digitales muestran mejores indicadores de gestión, señalando un camino claro 
+                  para la modernización del sector.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Hallazgo 3 */}
+          <div style={{
+            padding: '40px',
+            backgroundColor: `${COLORS.surface}f5`,
+            borderRadius: '12px',
+            border: `2px solid ${COLORS.primaryLight}40`,
+            backdropFilter: 'blur(10px)'
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '20px'
+            }}>
+              <div style={{
+                width: '60px',
+                height: '60px',
+                borderRadius: '12px',
+                background: `linear-gradient(135deg, ${COLORS.primaryLight}, ${COLORS.primary})`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '28px',
+                flexShrink: 0
+              }}>
+                🤝
+              </div>
+              <div style={{ flex: 1 }}>
+                <h3 style={{
+                  fontFamily: '"Crimson Pro", serif',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  color: COLORS.text,
+                  marginBottom: '12px'
+                }}>
+                  El acceso a financiamiento sigue siendo un desafío
+                </h3>
+                <p style={{
+                  fontSize: '16px',
+                  lineHeight: '1.8',
+                  color: COLORS.textSecondary,
+                  margin: 0
+                }}>
+                  La limitada disponibilidad de crédito formal impacta directamente en las posibilidades de 
+                  expansión. Los comerciantes recurren principalmente a redes informales, destacando la 
+                  necesidad de políticas que faciliten el acceso a capital de trabajo.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Mensaje clave */}
+        {/* CTA */}
         <div style={{
-          padding: '40px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '8px',
-          border: `1px solid ${COLORS.border}`,
-          borderLeft: `4px solid ${COLORS.primary}`
+          marginTop: '50px',
+          textAlign: 'center',
+          padding: '30px',
+          backgroundColor: `${COLORS.primary}15`,
+          borderRadius: '12px',
+          border: `2px solid ${COLORS.primary}30`
         }}>
-          <h3 style={{
-            fontFamily: '"Crimson Pro", serif',
-            fontSize: '22px',
-            fontWeight: '600',
+          <p style={{
+            fontSize: '17px',
             color: COLORS.text,
-            marginBottom: '20px'
+            margin: 0,
+            lineHeight: '1.7'
           }}>
-            ¿Qué significa esto para tu comercio?
-          </h3>
-          <div style={{
-            fontSize: '15px',
-            lineHeight: '1.8',
-            color: COLORS.textSecondary
-          }}>
-            <p style={{ marginBottom: '16px' }}>
-              <strong style={{ color: COLORS.text }}>No estás solo:</strong> La mayoría de los comerciantes 
-              como vos enfrenta desafíos similares relacionados con la competencia, acceso a crédito, y 
-              fluctuaciones de precios.
-            </p>
-            <p style={{ marginBottom: '16px' }}>
-              <strong style={{ color: COLORS.text }}>Hay optimismo:</strong> A pesar de las dificultades, 
-              {indicadores.pctExpectativas}% de los comercios mantiene una visión positiva para los próximos meses.
-            </p>
-            <p style={{ marginBottom: '0' }}>
-              <strong style={{ color: COLORS.text }}>Oportunidades de mejora:</strong> Los datos muestran que 
-              la adopción de tecnología y la formalización laboral son áreas clave donde muchos comercios 
-              pueden fortalecerse.
-            </p>
-          </div>
+            <strong style={{ color: COLORS.accent }}>Para los comerciantes:</strong> Este estudio refleja 
+            la realidad de tu sector. Los datos completos y herramientas de análisis están disponibles 
+            más abajo para ayudarte a tomar mejores decisiones.
+          </p>
         </div>
       </div>
     </section>
   );
 }
 
-function HallazgoCard({ title, value, description, color }) {
-  return (
-    <div style={{
-      padding: '30px',
-      backgroundColor: COLORS.surface,
-      borderRadius: '8px',
-      border: `1px solid ${COLORS.border}`,
-      borderTop: `3px solid ${color}`,
-      transition: 'transform 0.3s ease, box-shadow 0.3s ease'
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.transform = 'translateY(-4px)';
-      e.currentTarget.style.boxShadow = `0 8px 20px rgba(79, 195, 247, 0.15)`;
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.transform = 'translateY(0)';
-      e.currentTarget.style.boxShadow = 'none';
-    }}>
-      <div style={{
-        fontSize: '13px',
-        textTransform: 'uppercase',
-        letterSpacing: '0.08em',
-        color: color,
-        marginBottom: '16px',
-        fontWeight: '600'
-      }}>
-        {title}
-      </div>
-      <div style={{
-        fontFamily: '"Crimson Pro", serif',
-        fontSize: '42px',
-        fontWeight: '700',
-        color: COLORS.text,
-        marginBottom: '12px',
-        lineHeight: '1'
-      }}>
-        {value}
-      </div>
-      <p style={{
-        fontSize: '14px',
-        color: COLORS.textSecondary,
-        margin: 0,
-        lineHeight: '1.6'
-      }}>
-        {description}
-      </p>
-    </div>
-  );
-}
-
-function Indicadores({ data }) {
-  const indicadores = [
     { 
       label: 'Comercios Analizados', 
       value: data.total, 
@@ -770,11 +858,43 @@ function Indicadores({ data }) {
   return (
     <section style={{
       padding: '120px 60px',
-      backgroundColor: COLORS.surface,
+      position: 'relative',
+      overflow: 'hidden',
       borderTop: `1px solid ${COLORS.border}`,
       borderBottom: `1px solid ${COLORS.border}`
     }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+      {/* Imagen de fondo - Datos y tecnología */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: 'url(https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&q=85&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.45,
+        filter: 'grayscale(30%) brightness(0.6)',
+        zIndex: 0
+      }} />
+      
+      {/* Overlay */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `linear-gradient(to bottom, ${COLORS.surface}80 0%, ${COLORS.surface}60 50%, ${COLORS.surface}80 100%)`,
+        zIndex: 1
+      }} />
+      
+      <div style={{ 
+        maxWidth: '1400px', 
+        margin: '0 auto',
+        position: 'relative',
+        zIndex: 2
+      }}>
         <div style={{
           marginBottom: '80px',
           textAlign: 'center'
@@ -808,6 +928,7 @@ function Indicadores({ data }) {
             <IndicadorCardConGrafico key={index} {...ind} index={index} />
           ))}
         </div>
+      </div>
       </div>
     </section>
   );
@@ -1419,9 +1540,9 @@ function GraficoTierlist({ data }) {
   const [expandedIndex, setExpandedIndex] = useState(null);
   
   const tierColors = {
-    'Alto': '#00E676',      // Verde brillante
+    'Alto': ''${COLORS.primary}'',      // Verde brillante
     'Moderado': COLORS.primary,  // Celeste
-    'Básico': '#FFB74D'     // Naranja
+    'Básico': ''${COLORS.accent}''     // Naranja
   };
   
   const tierLabels = {
@@ -2036,7 +2157,7 @@ function GraficoSalarios({ data }) {
                       top: '-8px',
                       bottom: '-8px',
                       width: '2px',
-                      backgroundColor: '#FFB74D',
+                      backgroundColor: ''${COLORS.accent}'',
                       opacity: 0.6
                     }}>
                       <div style={{
@@ -2045,7 +2166,7 @@ function GraficoSalarios({ data }) {
                         left: '50%',
                         transform: 'translateX(-50%)',
                         fontSize: '10px',
-                        color: '#FFB74D',
+                        color: ''${COLORS.accent}'',
                         whiteSpace: 'nowrap',
                         fontWeight: '600'
                       }}>
@@ -2407,7 +2528,7 @@ function ModeloCrecimiento({ data }) {
         left: 0,
         width: '4px',
         height: '100%',
-        backgroundColor: '#00E676'
+        backgroundColor: ''${COLORS.primary}''
       }} />
       
       <h3 style={{
@@ -2437,10 +2558,10 @@ function ModeloCrecimiento({ data }) {
         gap: '16px',
         marginBottom: '30px'
       }}>
-        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color="#00E676" />
+        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color="'${COLORS.primary}'" />
         <MetricaCard label="AUC-ROC" value={data.metricas.auc_roc.toFixed(3)} color="#4FC3F7" />
-        <MetricaCard label="Precision" value={`${(data.metricas.precision * 100).toFixed(1)}%`} color="#FFB74D" />
-        <MetricaCard label="Recall" value={`${(data.metricas.recall * 100).toFixed(1)}%`} color="#FF6B6B" />
+        <MetricaCard label="Precision" value={`${(data.metricas.precision * 100).toFixed(1)}%`} color="'${COLORS.accent}'" />
+        <MetricaCard label="Recall" value={`${(data.metricas.recall * 100).toFixed(1)}%`} color="'${COLORS.accentDark}'" />
       </div>
 
       {/* Top 3 Features */}
@@ -2482,7 +2603,7 @@ function ModeloCrecimiento({ data }) {
               <div style={{
                 height: '100%',
                 width: `${f.importance * 100}%`,
-                backgroundColor: '#00E676',
+                backgroundColor: ''${COLORS.primary}'',
                 transition: 'width 1s ease-out'
               }} />
             </div>
@@ -2532,7 +2653,7 @@ function ModeloCrecimiento({ data }) {
           
           <FeatureImportanceChart 
             features={data.feature_importance.slice(0, 5)} 
-            color="#00E676"
+            color="'${COLORS.primary}'"
             title="Top 5 Variables Predictivas"
           />
         </div>
@@ -2566,7 +2687,7 @@ function ModeloCrecimiento({ data }) {
           padding: '24px',
           backgroundColor: COLORS.surface,
           borderRadius: '6px',
-          borderLeft: `3px solid #00E676`
+          borderLeft: `3px solid '${COLORS.primary}'`
         }}>
           <div style={{
             fontSize: '14px',
@@ -2755,7 +2876,7 @@ function ModeloSalario({ data }) {
         <div style={{
           fontSize: '28px',
           fontWeight: '700',
-          color: '#FFB74D',
+          color: ''${COLORS.accent}'',
           fontFamily: '"Crimson Pro", serif'
         }}>
           ${(data.metricas.mae / 1000000).toFixed(2)}M ARS
@@ -2877,7 +2998,7 @@ function ModeloSalario({ data }) {
                 <div style={{
                   fontSize: '28px',
                   fontWeight: '700',
-                  color: data.metricas.r2_score > 0 ? '#00E676' : '#FF6B6B',
+                  color: data.metricas.r2_score > 0 ? ''${COLORS.primary}'' : ''${COLORS.accentDark}'',
                   fontFamily: '"Crimson Pro", serif'
                 }}>
                   {data.metricas.r2_score.toFixed(3)}
@@ -2888,7 +3009,7 @@ function ModeloSalario({ data }) {
                 padding: '20px',
                 backgroundColor: COLORS.background,
                 borderRadius: '8px',
-                border: `2px solid #FFB74D`,
+                border: `2px solid '${COLORS.accent}'`,
                 textAlign: 'center'
               }}>
                 <div style={{
@@ -2902,7 +3023,7 @@ function ModeloSalario({ data }) {
                 <div style={{
                   fontSize: '20px',
                   fontWeight: '700',
-                  color: '#FFB74D',
+                  color: ''${COLORS.accent}'',
                   fontFamily: '"Crimson Pro", serif'
                 }}>
                   ${(data.metricas.rmse / 1000000).toFixed(2)}M
@@ -2913,7 +3034,7 @@ function ModeloSalario({ data }) {
                 padding: '20px',
                 backgroundColor: COLORS.background,
                 borderRadius: '8px',
-                border: `2px solid #00E676`,
+                border: `2px solid '${COLORS.primary}'`,
                 textAlign: 'center'
               }}>
                 <div style={{
@@ -2927,7 +3048,7 @@ function ModeloSalario({ data }) {
                 <div style={{
                   fontSize: '20px',
                   fontWeight: '700',
-                  color: '#00E676',
+                  color: ''${COLORS.primary}'',
                   fontFamily: '"Crimson Pro", serif'
                 }}>
                   ${(data.metricas.mae / 1000000).toFixed(2)}M
@@ -2938,7 +3059,7 @@ function ModeloSalario({ data }) {
                 padding: '20px',
                 backgroundColor: COLORS.background,
                 borderRadius: '8px',
-                border: `2px solid #FF6B6B`,
+                border: `2px solid '${COLORS.accentDark}'`,
                 textAlign: 'center'
               }}>
                 <div style={{
@@ -2952,7 +3073,7 @@ function ModeloSalario({ data }) {
                 <div style={{
                   fontSize: '20px',
                   fontWeight: '700',
-                  color: '#FF6B6B',
+                  color: ''${COLORS.accentDark}'',
                   fontFamily: '"Crimson Pro", serif'
                 }}>
                   {data.metricas.mape.toFixed(1)}%
@@ -3084,7 +3205,7 @@ function ModeloFactoresExternos({ data }) {
         left: 0,
         width: '4px',
         height: '100%',
-        backgroundColor: '#FFB74D'
+        backgroundColor: ''${COLORS.accent}''
       }} />
       
       <h3 style={{
@@ -3114,7 +3235,7 @@ function ModeloFactoresExternos({ data }) {
         gap: '16px',
         marginBottom: '30px'
       }}>
-        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color="#FFB74D" />
+        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color="'${COLORS.accent}'" />
         <MetricaCard label="F1-Score" value={`${(data.metricas.f1_weighted * 100).toFixed(1)}%`} color="#4FC3F7" />
       </div>
 
@@ -3164,7 +3285,7 @@ function ModeloFactoresExternos({ data }) {
                 <div style={{
                   height: '100%',
                   width: `${f.importance * 100}%`,
-                  backgroundColor: '#FFB74D',
+                  backgroundColor: ''${COLORS.accent}'',
                   transition: 'width 1s ease-out'
                 }} />
               </div>
@@ -3219,14 +3340,14 @@ function ModeloFactoresExternos({ data }) {
           <DistribucionPredicciones
             distribucion={data.distribucion_clases}
             labels={['Peor', 'Igual', 'Mejor']}
-            colors={['#FF6B6B', '#FFB74D', '#00E676']}
+            colors={[''${COLORS.accentDark}'', ''${COLORS.accent}'', ''${COLORS.primary}'']}
           />
           
           <div style={{ height: '40px' }} />
           
           <FeatureImportanceChart 
             features={data.feature_importance.slice(0, 6)} 
-            color="#FFB74D"
+            color="'${COLORS.accent}'"
             title="Top 6 Variables Predictivas"
           />
         </div>
@@ -3260,7 +3381,7 @@ function ModeloFactoresExternos({ data }) {
           padding: '24px',
           backgroundColor: COLORS.surface,
           borderRadius: '6px',
-          borderLeft: `3px solid #FFB74D`
+          borderLeft: `3px solid '${COLORS.accent}'`
         }}>
           <div style={{
             fontSize: '14px',
@@ -3330,7 +3451,7 @@ function ModeloViabilidad({ data }) {
         left: 0,
         width: '4px',
         height: '100%',
-        backgroundColor: '#9C27B0'
+        backgroundColor: ''${COLORS.primaryDark}''
       }} />
       
       <h3 style={{
@@ -3364,12 +3485,12 @@ function ModeloViabilidad({ data }) {
           padding: '16px',
           backgroundColor: COLORS.surface,
           borderRadius: '6px',
-          border: `2px solid #00E676`,
+          border: `2px solid '${COLORS.primary}'`,
           textAlign: 'center'
         }}>
           <div style={{
             fontSize: '11px',
-            color: '#00E676',
+            color: ''${COLORS.primary}'',
             marginBottom: '6px',
             textTransform: 'uppercase',
             fontWeight: '600'
@@ -3430,12 +3551,12 @@ function ModeloViabilidad({ data }) {
           padding: '16px',
           backgroundColor: COLORS.surface,
           borderRadius: '6px',
-          border: `2px solid #FF6B6B`,
+          border: `2px solid '${COLORS.accentDark}'`,
           textAlign: 'center'
         }}>
           <div style={{
             fontSize: '11px',
-            color: '#FF6B6B',
+            color: ''${COLORS.accentDark}'',
             marginBottom: '6px',
             textTransform: 'uppercase',
             fontWeight: '600'
@@ -3478,7 +3599,7 @@ function ModeloViabilidad({ data }) {
         <div style={{
           fontSize: '36px',
           fontWeight: '700',
-          color: '#9C27B0',
+          color: ''${COLORS.primaryDark}'',
           fontFamily: '"Crimson Pro", serif'
         }}>
           {data.estadisticas_score.mean.toFixed(1)}<span style={{ fontSize: '20px' }}>/100</span>
@@ -3513,7 +3634,7 @@ function ModeloViabilidad({ data }) {
           padding: '24px',
           backgroundColor: COLORS.surface,
           borderRadius: '6px',
-          borderLeft: `3px solid #9C27B0`
+          borderLeft: `3px solid '${COLORS.primaryDark}'`
         }}>
           <div style={{
             fontSize: '14px',
@@ -3550,9 +3671,9 @@ function ModeloViabilidad({ data }) {
             lineHeight: '1.7'
           }}>
             <strong style={{ color: COLORS.text }}>¿Qué tan viable es tu comercio?</strong><br/>
-            Este es como un "estado de salud" de tu negocio. <strong style={{ color: '#00E676' }}>Nivel Alto</strong> = 
+            Este es como un "estado de salud" de tu negocio. <strong style={{ color: ''${COLORS.primary}'' }}>Nivel Alto</strong> = 
             negocio sólido con buenas expectativas, acceso a crédito y tecnología. <strong style={{ color: '#4FC3F7' }}>Nivel Medio</strong> = 
-            estás bien pero hay margen de mejora. <strong style={{ color: '#FF6B6B' }}>Nivel Bajo</strong> = necesitás reforzar 
+            estás bien pero hay margen de mejora. <strong style={{ color: ''${COLORS.accentDark}'' }}>Nivel Bajo</strong> = necesitás reforzar 
             aspectos clave (digitalización, acceso a financiamiento, proyecciones). El score promedio del mercado es {data.estadisticas_score.mean.toFixed(0)} puntos. 
             <strong style={{ color: COLORS.primary }}> ¿Cómo mejorarlo?</strong> Invertí en tecnología, buscá crédito formal y consolidá tu equipo.
           </p>
@@ -3650,7 +3771,7 @@ function ConfusionMatrix({ data, labels }) {
           fontSize: '18px',
           fontWeight: '700',
           color: COLORS.text,
-          border: isCorrect ? '2px solid #00E676' : '1px solid ' + COLORS.border
+          border: isCorrect ? '2px solid '${COLORS.primary}'' : '1px solid ' + COLORS.border
         }}>
           {value}
         </div>
@@ -3994,7 +4115,7 @@ function ScatterPlot({ realValues, predictions, title }) {
             y1={scaleY(minVal)}
             x2={scaleX(maxVal)}
             y2={scaleY(maxVal)}
-            stroke="#FF6B6B"
+            stroke="'${COLORS.accentDark}'"
             strokeWidth="2"
             strokeDasharray="4 4"
           />
@@ -4155,9 +4276,9 @@ function AfectacionesChart() {
   const maxValue = 2.0;
   
   const colors = {
-    Peor: '#FF6B6B',
-    Igual: '#FFB74D',
-    Mejor: '#00E676'
+    Peor: ''${COLORS.accentDark}'',
+    Igual: ''${COLORS.accent}'',
+    Mejor: ''${COLORS.primary}''
   };
   
   return (
