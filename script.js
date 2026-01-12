@@ -1956,21 +1956,30 @@ function GraficoTierlist({ data }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [expandedIndex, setExpandedIndex] = useState(null);
   
-  const tierColors = {
-    'Alto': 'COLORS.primary',      // Verde brillante
-    'Moderado': COLORS.primary,  // Celeste
-    'Básico': 'COLORS.accent'     // Naranja
-  };
-  
-  const tierLabels = {
-    'Alto': 'S Tier',
-    'Moderado': 'A Tier',
-    'Básico': 'B Tier'
+  const tierConfig = {
+    'Alto': {
+      color: COLORS.primary,
+      gradient: `linear-gradient(135deg, ${COLORS.primary}, ${COLORS.primaryDark})`,
+      label: 'Nivel Avanzado',
+      badge: 'Alto'
+    },
+    'Moderado': {
+      color: COLORS.accent,
+      gradient: `linear-gradient(135deg, ${COLORS.accent}, ${COLORS.accentDark})`,
+      label: 'Nivel Intermedio',
+      badge: 'Moderado'
+    },
+    'Básico': {
+      color: COLORS.primaryLight,
+      gradient: `linear-gradient(135deg, ${COLORS.primaryLight}, ${COLORS.primary})`,
+      label: 'Nivel Inicial',
+      badge: 'Básico'
+    }
   };
   
   const tierDetails = {
     'Alto': {
-      titulo: 'Nivel Alto - Digitalización Avanzada',
+      titulo: 'Digitalización Avanzada',
       items: [
         { texto: 'Presencia activa en redes sociales (Instagram, Facebook, TikTok)' },
         { texto: 'E-commerce funcional con catálogo online y pagos digitales' },
@@ -1981,18 +1990,18 @@ function GraficoTierlist({ data }) {
       ]
     },
     'Moderado': {
-      titulo: 'Nivel Moderado - Digitalización Intermedia',
+      titulo: 'Digitalización Intermedia',
       items: [
         { texto: 'WhatsApp Business para atención al cliente' },
         { texto: 'Apps de mensajería para pedidos y consultas' },
-        { texto: 'Códigos QR para pagos (Mercado Pago, modo, etc.)' },
+        { texto: 'Códigos QR para pagos (Mercado Pago, Modo, etc.)' },
         { texto: 'Aceptación de transferencias bancarias' },
         { texto: 'Catálogo digital básico (PDF o fotos)' },
         { texto: 'Email para comunicación con clientes' }
       ]
     },
     'Básico': {
-      titulo: 'Nivel Básico - Digitalización Inicial',
+      titulo: 'Digitalización Inicial',
       items: [
         { texto: 'Teléfono celular para contacto' },
         { texto: 'Tarjeta de débito/crédito física' },
@@ -2026,26 +2035,19 @@ function GraficoTierlist({ data }) {
         Adopción tecnológica
       </h3>
       <p style={{
-        fontSize: '13px',
+        fontSize: '14px',
         color: COLORS.textSecondary,
-        marginBottom: '10px'
+        marginBottom: '40px',
+        lineHeight: '1.6'
       }}>
-        Clasificación de comercios según nivel de digitalización
-      </p>
-      <p style={{
-        fontSize: '12px',
-        color: COLORS.primary,
-        marginBottom: '30px',
-        fontStyle: 'italic'
-      }}>
-         Haz click en cada nivel para ver qué implica
+        Clasificación de comercios según nivel de digitalización • Click para ver detalles
       </p>
       
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         {orderedData.map((item, idx) => {
           const isHovered = hoveredIndex === idx;
           const isExpanded = expandedIndex === idx;
-          const tierColor = tierColors[item.nivel];
+          const config = tierConfig[item.nivel];
           const details = tierDetails[item.nivel];
           
           return (
@@ -2056,105 +2058,149 @@ function GraficoTierlist({ data }) {
               onClick={() => setExpandedIndex(isExpanded ? null : idx)}
               style={{
                 position: 'relative',
-                padding: '30px',
+                padding: '0',
                 backgroundColor: COLORS.background,
-                border: `2px solid ${isHovered || isExpanded ? tierColor : COLORS.border}`,
-                borderRadius: '8px',
-                transition: 'all 0.3s',
-                transform: isHovered ? 'translateX(10px)' : 'translateX(0)',
-                cursor: 'pointer'
+                border: `2px solid ${isHovered || isExpanded ? config.color : COLORS.border}`,
+                borderRadius: '16px',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+                cursor: 'pointer',
+                boxShadow: isHovered || isExpanded 
+                  ? `0 12px 32px ${config.color}30` 
+                  : '0 4px 12px rgba(0,0,0,0.2)',
+                overflow: 'hidden'
               }}
             >
-              {/* Tier badge */}
+              {/* Header con gradiente */}
               <div style={{
-                position: 'absolute',
-                top: '-12px',
-                left: '20px',
-                padding: '4px 16px',
-                backgroundColor: tierColor,
-                color: COLORS.background,
-                fontSize: '12px',
-                fontWeight: '700',
-                letterSpacing: '0.1em',
-                borderRadius: '12px',
-                boxShadow: `0 4px 12px ${tierColor}40`
+                background: config.gradient,
+                padding: '28px 32px',
+                position: 'relative'
               }}>
-                {tierLabels[item.nivel]}
-              </div>
-              
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginTop: '10px'
-              }}>
-                <div>
-                  <div style={{
-                    fontSize: '18px',
-                    fontWeight: '600',
-                    color: COLORS.text,
-                    marginBottom: '4px'
-                  }}>
-                    Nivel {item.nivel}
-                  </div>
-                  <div style={{
-                    fontSize: '13px',
-                    color: COLORS.textSecondary
-                  }}>
-                    {item.cantidad} comercios
-                  </div>
+                {/* Badge */}
+                <div style={{
+                  position: 'absolute',
+                  top: '16px',
+                  right: '32px',
+                  padding: '6px 14px',
+                  backgroundColor: `${COLORS.background}90`,
+                  backdropFilter: 'blur(8px)',
+                  color: COLORS.text,
+                  fontSize: '11px',
+                  fontWeight: '700',
+                  letterSpacing: '0.1em',
+                  borderRadius: '20px',
+                  textTransform: 'uppercase'
+                }}>
+                  {config.badge}
                 </div>
                 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                  <div style={{
-                    fontSize: '32px',
-                    fontWeight: '700',
-                    fontFamily: '"Crimson Pro", serif',
-                    color: tierColor
-                  }}>
-                    {item.porcentaje}%
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-end'
+                }}>
+                  <div>
+                    <div style={{
+                      fontSize: '24px',
+                      fontWeight: '600',
+                      color: COLORS.background,
+                      marginBottom: '8px',
+                      textShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                    }}>
+                      {config.label}
+                    </div>
+                    <div style={{
+                      fontSize: '14px',
+                      color: `${COLORS.background}d0`,
+                      fontWeight: '500'
+                    }}>
+                      {item.cantidad} comercios
+                    </div>
                   </div>
                   
                   <div style={{
-                    fontSize: '20px',
-                    transition: 'transform 0.3s',
-                    transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    gap: '6px'
                   }}>
-                    ▼
+                    <div style={{
+                      fontSize: '56px',
+                      fontWeight: '300',
+                      fontFamily: '"Crimson Pro", serif',
+                      color: COLORS.background,
+                      lineHeight: '1',
+                      textShadow: '0 2px 8px rgba(0,0,0,0.15)'
+                    }}>
+                      {item.porcentaje}
+                    </div>
+                    <div style={{
+                      fontSize: '24px',
+                      fontWeight: '600',
+                      color: `${COLORS.background}c0`,
+                      marginBottom: '8px'
+                    }}>
+                      %
+                    </div>
                   </div>
+                </div>
+                
+                {/* Barra de progreso integrada */}
+                <div style={{
+                  marginTop: '20px',
+                  height: '8px',
+                  backgroundColor: `${COLORS.background}40`,
+                  borderRadius: '4px',
+                  overflow: 'hidden'
+                }}>
+                  <div style={{
+                    height: '100%',
+                    width: `${item.porcentaje}%`,
+                    backgroundColor: COLORS.background,
+                    transition: 'width 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                    boxShadow: '0 0 16px rgba(255,255,255,0.5)'
+                  }} />
                 </div>
               </div>
               
-              {/* Progress bar */}
+              {/* Footer con indicador expandible */}
               <div style={{
-                marginTop: '16px',
-                height: '6px',
-                backgroundColor: COLORS.border,
-                borderRadius: '3px',
-                overflow: 'hidden'
+                padding: '16px 32px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '8px',
+                backgroundColor: isExpanded ? `${config.color}10` : 'transparent',
+                transition: 'all 0.3s'
               }}>
+                <span style={{
+                  fontSize: '13px',
+                  color: config.color,
+                  fontWeight: '600'
+                }}>
+                  {isExpanded ? 'Ocultar detalles' : 'Ver qué incluye'}
+                </span>
                 <div style={{
-                  height: '100%',
-                  width: `${item.porcentaje}%`,
-                  backgroundColor: tierColor,
-                  transition: 'width 1s ease-out',
-                  boxShadow: `0 0 10px ${tierColor}80`
-                }} />
+                  fontSize: '12px',
+                  transition: 'transform 0.3s',
+                  transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                  color: config.color
+                }}>
+                  ▼
+                </div>
               </div>
               
               {/* Contenido expandible */}
               {isExpanded && (
                 <div style={{
-                  marginTop: '30px',
-                  paddingTop: '30px',
-                  borderTop: `1px solid ${COLORS.border}`,
-                  animation: 'slideDown 0.3s ease-out'
+                  padding: '0 32px 32px',
+                  animation: 'slideDown 0.4s ease-out'
                 }}>
                   <style>{`
                     @keyframes slideDown {
                       from {
                         opacity: 0;
-                        transform: translateY(-10px);
+                        transform: translateY(-20px);
                       }
                       to {
                         opacity: 1;
@@ -2163,73 +2209,49 @@ function GraficoTierlist({ data }) {
                     }
                   `}</style>
                   
-                  <h4 style={{
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    color: tierColor,
-                    marginBottom: '20px',
-                    letterSpacing: '0.05em'
-                  }}>
-                    {details.titulo}
-                  </h4>
-                  
                   <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                    gap: '16px'
+                    padding: '24px',
+                    backgroundColor: `${config.color}08`,
+                    borderRadius: '12px',
+                    border: `1px solid ${config.color}20`
                   }}>
-                    {details.items.map((detalle, detIdx) => (
-                      <div
-                        key={detIdx}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'flex-start',
-                          gap: '12px',
-                          padding: '12px',
-                          backgroundColor: COLORS.surface,
-                          borderRadius: '6px',
-                          border: `1px solid ${COLORS.border}`,
-                          transition: 'all 0.2s'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = COLORS.surfaceHover;
-                          e.currentTarget.style.borderColor = tierColor + '40';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = COLORS.surface;
-                          e.currentTarget.style.borderColor = COLORS.border;
-                        }}
-                      >
-                        <div style={{
-                          fontSize: '24px',
-                          flexShrink: 0
-                        }}>
-                          {detalle.icon}
+                    <h4 style={{
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      color: COLORS.text,
+                      marginBottom: '20px'
+                    }}>
+                      {details.titulo}
+                    </h4>
+                    
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                      gap: '12px'
+                    }}>
+                      {details.items.map((detail, i) => (
+                        <div
+                          key={i}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            gap: '10px',
+                            fontSize: '13px',
+                            color: COLORS.textSecondary,
+                            lineHeight: '1.6'
+                          }}
+                        >
+                          <div style={{
+                            minWidth: '6px',
+                            height: '6px',
+                            borderRadius: '50%',
+                            backgroundColor: config.color,
+                            marginTop: '6px'
+                          }} />
+                          <span>{detail.texto}</span>
                         </div>
-                        <div style={{
-                          fontSize: '13px',
-                          color: COLORS.textSecondary,
-                          lineHeight: '1.5'
-                        }}>
-                          {detalle.texto}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div style={{
-                    marginTop: '20px',
-                    padding: '16px',
-                    backgroundColor: COLORS.surface,
-                    borderRadius: '6px',
-                    borderLeft: `3px solid ${tierColor}`,
-                    fontSize: '12px',
-                    color: COLORS.textSecondary,
-                    fontStyle: 'italic'
-                  }}>
-                     <strong style={{ color: COLORS.text }}>Tip:</strong> La implementación 
-                    progresiva de estas herramientas puede aumentar significativamente la 
-                    competitividad y alcance del comercio.
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
@@ -2240,7 +2262,6 @@ function GraficoTierlist({ data }) {
     </div>
   );
 }
-
 // Gráfico de salarios
 function GraficoSalarios({ data }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
