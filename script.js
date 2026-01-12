@@ -2297,10 +2297,55 @@ function GraficoSalarios({ data }) {
           <p style={{
             fontSize: '13px',
             color: COLORS.textSecondary,
-            marginBottom: '0'
+            marginBottom: '16px'
           }}>
-            Rango salarial que los comerciantes están dispuestos a ofrecer
+            Rango salarial que los comerciantes están dispuestos a ofrecer (100k - 2M ARS)
           </p>
+          
+          {/* Disclaimer de calidad de datos */}
+          <div style={{
+            marginBottom: '20px',
+            padding: '14px 18px',
+            backgroundColor: `${COLORS.accent}12`,
+            borderRadius: '8px',
+            border: `1px solid ${COLORS.accent}40`,
+            borderLeft: `4px solid ${COLORS.accent}`
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '10px'
+            }}>
+              <div style={{
+                fontSize: '16px',
+                color: COLORS.accent,
+                marginTop: '2px'
+              }}>
+                ⚠
+              </div>
+              <div>
+                <div style={{
+                  fontSize: '12px',
+                  fontWeight: '600',
+                  color: COLORS.text,
+                  marginBottom: '4px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
+                  Nota sobre los datos
+                </div>
+                <div style={{
+                  fontSize: '13px',
+                  color: COLORS.textSecondary,
+                  lineHeight: '1.6'
+                }}>
+                  Esta pregunta tuvo <strong style={{ color: COLORS.text }}>{data.totalRespuestas || 'pocas'} respuestas válidas</strong>. 
+                  Se detectaron outliers extremos y datos inconsistentes que fueron filtrados (rango: $100k-$2M). 
+                  Los valores presentados deben interpretarse con cautela debido al tamaño limitado de la muestra.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         
         {/* Toggle de vista */}
@@ -5587,8 +5632,8 @@ function procesarDatosGraficos(datos) {
       const cleaned = sal.toString().replace(/\$/g, "").replace(/\./g, "").replace(/,/g, "").replace(/ /g, "");
       const num = parseFloat(cleaned);
       
-      // Filtrar solo valores numéricos en rango razonable (100k - 15M ARS)
-      if (isNaN(num) || num < 100000 || num > 15000000) return null;
+      // RANGO AJUSTADO: Filtrar solo valores entre 100k - 2M ARS (eliminando outliers extremos)
+      if (isNaN(num) || num < 100000 || num > 2000000) return null;
       
       return { valor: num, tipo: c.tipo_comercio || 'Sin categoría' };
     })
@@ -5648,11 +5693,12 @@ function procesarDatosGraficos(datos) {
     creditoPorFuente,
     adopcionTecnologica,
     salarioData: {
-      promedio: parseFloat(promedioSalario.toFixed(0)),
+      promedio: Math.round(promedioSalario),
       minimo: minSalario,
       maximo: maxSalario,
       distribucion: distribucionSalarios,
-      porComercio: salariosPorComercio
+      porComercio: salariosPorComercio,
+      totalRespuestas: salarios.length // Para mostrar en el disclaimer
     }
   };
 }
