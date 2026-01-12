@@ -797,6 +797,8 @@ function ResumenEjecutivo({ indicadores }) {
   );
 }
 
+function Indicadores({ data }) {
+  const indicadores = [
     { 
       label: 'Comercios Analizados', 
       value: data.total, 
@@ -1540,9 +1542,9 @@ function GraficoTierlist({ data }) {
   const [expandedIndex, setExpandedIndex] = useState(null);
   
   const tierColors = {
-    'Alto': ''${COLORS.primary}'',      // Verde brillante
+    'Alto': 'COLORS.primary',      // Verde brillante
     'Moderado': COLORS.primary,  // Celeste
-    'Básico': ''${COLORS.accent}''     // Naranja
+    'Básico': 'COLORS.accent'     // Naranja
   };
   
   const tierLabels = {
@@ -2157,7 +2159,7 @@ function GraficoSalarios({ data }) {
                       top: '-8px',
                       bottom: '-8px',
                       width: '2px',
-                      backgroundColor: ''${COLORS.accent}'',
+                      backgroundColor: 'COLORS.accent',
                       opacity: 0.6
                     }}>
                       <div style={{
@@ -2166,7 +2168,7 @@ function GraficoSalarios({ data }) {
                         left: '50%',
                         transform: 'translateX(-50%)',
                         fontSize: '10px',
-                        color: ''${COLORS.accent}'',
+                        color: 'COLORS.accent',
                         whiteSpace: 'nowrap',
                         fontWeight: '600'
                       }}>
@@ -2528,7 +2530,7 @@ function ModeloCrecimiento({ data }) {
         left: 0,
         width: '4px',
         height: '100%',
-        backgroundColor: ''${COLORS.primary}''
+        backgroundColor: 'COLORS.primary'
       }} />
       
       <h3 style={{
@@ -2558,10 +2560,10 @@ function ModeloCrecimiento({ data }) {
         gap: '16px',
         marginBottom: '30px'
       }}>
-        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color="'${COLORS.primary}'" />
+        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color="COLORS.primary" />
         <MetricaCard label="AUC-ROC" value={data.metricas.auc_roc.toFixed(3)} color="#4FC3F7" />
-        <MetricaCard label="Precision" value={`${(data.metricas.precision * 100).toFixed(1)}%`} color="'${COLORS.accent}'" />
-        <MetricaCard label="Recall" value={`${(data.metricas.recall * 100).toFixed(1)}%`} color="'${COLORS.accentDark}'" />
+        <MetricaCard label="Precision" value={`${(data.metricas.precision * 100).toFixed(1)}%`} color="COLORS.accent" />
+        <MetricaCard label="Recall" value={`${(data.metricas.recall * 100).toFixed(1)}%`} color="COLORS.accentDark" />
       </div>
 
       {/* Top 3 Features */}
@@ -2603,7 +2605,7 @@ function ModeloCrecimiento({ data }) {
               <div style={{
                 height: '100%',
                 width: `${f.importance * 100}%`,
-                backgroundColor: ''${COLORS.primary}'',
+                backgroundColor: 'COLORS.primary',
                 transition: 'width 1s ease-out'
               }} />
             </div>
@@ -2653,7 +2655,7 @@ function ModeloCrecimiento({ data }) {
           
           <FeatureImportanceChart 
             features={data.feature_importance.slice(0, 5)} 
-            color="'${COLORS.primary}'"
+            color="COLORS.primary"
             title="Top 5 Variables Predictivas"
           />
         </div>
@@ -2687,7 +2689,7 @@ function ModeloCrecimiento({ data }) {
           padding: '24px',
           backgroundColor: COLORS.surface,
           borderRadius: '6px',
-          borderLeft: `3px solid '${COLORS.primary}'`
+          borderLeft: `3px solid COLORS.primary`
         }}>
           <div style={{
             fontSize: '14px',
@@ -2876,7 +2878,7 @@ function ModeloSalario({ data }) {
         <div style={{
           fontSize: '28px',
           fontWeight: '700',
-          color: ''${COLORS.accent}'',
+          color: 'COLORS.accent',
           fontFamily: '"Crimson Pro", serif'
         }}>
           ${(data.metricas.mae / 1000000).toFixed(2)}M ARS
@@ -2998,7 +3000,7 @@ function ModeloSalario({ data }) {
                 <div style={{
                   fontSize: '28px',
                   fontWeight: '700',
-                  color: data.metricas.r2_score > 0 ? ''${COLORS.primary}'' : ''${COLORS.accentDark}'',
+                  color: data.metricas.r2_score > 0 ? 'COLORS.primary' : 'COLORS.accentDark',
                   fontFamily: '"Crimson Pro", serif'
                 }}>
                   {data.metricas.r2_score.toFixed(3)}
@@ -3009,7 +3011,7 @@ function ModeloSalario({ data }) {
                 padding: '20px',
                 backgroundColor: COLORS.background,
                 borderRadius: '8px',
-                border: `2px solid '${COLORS.accent}'`,
+                border: `2px solid COLORS.accent`,
                 textAlign: 'center'
               }}>
                 <div style={{
@@ -3023,7 +3025,7 @@ function ModeloSalario({ data }) {
                 <div style={{
                   fontSize: '20px',
                   fontWeight: '700',
-                  color: ''${COLORS.accent}'',
+                  color: 'COLORS.accent',
                   fontFamily: '"Crimson Pro", serif'
                 }}>
                   ${(data.metricas.rmse / 1000000).toFixed(2)}M
@@ -3034,7 +3036,7 @@ function ModeloSalario({ data }) {
                 padding: '20px',
                 backgroundColor: COLORS.background,
                 borderRadius: '8px',
-                border: `2px solid '${COLORS.primary}'`,
+                border: `2px solid COLORS.primary`,
                 textAlign: 'center'
               }}>
                 <div style={{
@@ -3048,7 +3050,7 @@ function ModeloSalario({ data }) {
                 <div style={{
                   fontSize: '20px',
                   fontWeight: '700',
-                  color: ''${COLORS.primary}'',
+                  color: 'COLORS.primary',
                   fontFamily: '"Crimson Pro", serif'
                 }}>
                   ${(data.metricas.mae / 1000000).toFixed(2)}M
@@ -3059,7 +3061,7 @@ function ModeloSalario({ data }) {
                 padding: '20px',
                 backgroundColor: COLORS.background,
                 borderRadius: '8px',
-                border: `2px solid '${COLORS.accentDark}'`,
+                border: `2px solid COLORS.accentDark`,
                 textAlign: 'center'
               }}>
                 <div style={{
@@ -3073,7 +3075,7 @@ function ModeloSalario({ data }) {
                 <div style={{
                   fontSize: '20px',
                   fontWeight: '700',
-                  color: ''${COLORS.accentDark}'',
+                  color: 'COLORS.accentDark',
                   fontFamily: '"Crimson Pro", serif'
                 }}>
                   {data.metricas.mape.toFixed(1)}%
@@ -3205,7 +3207,7 @@ function ModeloFactoresExternos({ data }) {
         left: 0,
         width: '4px',
         height: '100%',
-        backgroundColor: ''${COLORS.accent}''
+        backgroundColor: 'COLORS.accent'
       }} />
       
       <h3 style={{
@@ -3235,7 +3237,7 @@ function ModeloFactoresExternos({ data }) {
         gap: '16px',
         marginBottom: '30px'
       }}>
-        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color="'${COLORS.accent}'" />
+        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color="COLORS.accent" />
         <MetricaCard label="F1-Score" value={`${(data.metricas.f1_weighted * 100).toFixed(1)}%`} color="#4FC3F7" />
       </div>
 
@@ -3285,7 +3287,7 @@ function ModeloFactoresExternos({ data }) {
                 <div style={{
                   height: '100%',
                   width: `${f.importance * 100}%`,
-                  backgroundColor: ''${COLORS.accent}'',
+                  backgroundColor: 'COLORS.accent',
                   transition: 'width 1s ease-out'
                 }} />
               </div>
@@ -3340,14 +3342,14 @@ function ModeloFactoresExternos({ data }) {
           <DistribucionPredicciones
             distribucion={data.distribucion_clases}
             labels={['Peor', 'Igual', 'Mejor']}
-            colors={[''${COLORS.accentDark}'', ''${COLORS.accent}'', ''${COLORS.primary}'']}
+            colors={['COLORS.accentDark', 'COLORS.accent', 'COLORS.primary']}
           />
           
           <div style={{ height: '40px' }} />
           
           <FeatureImportanceChart 
             features={data.feature_importance.slice(0, 6)} 
-            color="'${COLORS.accent}'"
+            color="COLORS.accent"
             title="Top 6 Variables Predictivas"
           />
         </div>
@@ -3381,7 +3383,7 @@ function ModeloFactoresExternos({ data }) {
           padding: '24px',
           backgroundColor: COLORS.surface,
           borderRadius: '6px',
-          borderLeft: `3px solid '${COLORS.accent}'`
+          borderLeft: `3px solid COLORS.accent`
         }}>
           <div style={{
             fontSize: '14px',
@@ -3451,7 +3453,7 @@ function ModeloViabilidad({ data }) {
         left: 0,
         width: '4px',
         height: '100%',
-        backgroundColor: ''${COLORS.primaryDark}''
+        backgroundColor: 'COLORS.primaryDark'
       }} />
       
       <h3 style={{
@@ -3485,12 +3487,12 @@ function ModeloViabilidad({ data }) {
           padding: '16px',
           backgroundColor: COLORS.surface,
           borderRadius: '6px',
-          border: `2px solid '${COLORS.primary}'`,
+          border: `2px solid COLORS.primary`,
           textAlign: 'center'
         }}>
           <div style={{
             fontSize: '11px',
-            color: ''${COLORS.primary}'',
+            color: 'COLORS.primary',
             marginBottom: '6px',
             textTransform: 'uppercase',
             fontWeight: '600'
@@ -3551,12 +3553,12 @@ function ModeloViabilidad({ data }) {
           padding: '16px',
           backgroundColor: COLORS.surface,
           borderRadius: '6px',
-          border: `2px solid '${COLORS.accentDark}'`,
+          border: `2px solid COLORS.accentDark`,
           textAlign: 'center'
         }}>
           <div style={{
             fontSize: '11px',
-            color: ''${COLORS.accentDark}'',
+            color: 'COLORS.accentDark',
             marginBottom: '6px',
             textTransform: 'uppercase',
             fontWeight: '600'
@@ -3599,7 +3601,7 @@ function ModeloViabilidad({ data }) {
         <div style={{
           fontSize: '36px',
           fontWeight: '700',
-          color: ''${COLORS.primaryDark}'',
+          color: 'COLORS.primaryDark',
           fontFamily: '"Crimson Pro", serif'
         }}>
           {data.estadisticas_score.mean.toFixed(1)}<span style={{ fontSize: '20px' }}>/100</span>
@@ -3634,7 +3636,7 @@ function ModeloViabilidad({ data }) {
           padding: '24px',
           backgroundColor: COLORS.surface,
           borderRadius: '6px',
-          borderLeft: `3px solid '${COLORS.primaryDark}'`
+          borderLeft: `3px solid COLORS.primaryDark`
         }}>
           <div style={{
             fontSize: '14px',
@@ -3671,9 +3673,9 @@ function ModeloViabilidad({ data }) {
             lineHeight: '1.7'
           }}>
             <strong style={{ color: COLORS.text }}>¿Qué tan viable es tu comercio?</strong><br/>
-            Este es como un "estado de salud" de tu negocio. <strong style={{ color: ''${COLORS.primary}'' }}>Nivel Alto</strong> = 
+            Este es como un "estado de salud" de tu negocio. <strong style={{ color: 'COLORS.primary' }}>Nivel Alto</strong> = 
             negocio sólido con buenas expectativas, acceso a crédito y tecnología. <strong style={{ color: '#4FC3F7' }}>Nivel Medio</strong> = 
-            estás bien pero hay margen de mejora. <strong style={{ color: ''${COLORS.accentDark}'' }}>Nivel Bajo</strong> = necesitás reforzar 
+            estás bien pero hay margen de mejora. <strong style={{ color: 'COLORS.accentDark' }}>Nivel Bajo</strong> = necesitás reforzar 
             aspectos clave (digitalización, acceso a financiamiento, proyecciones). El score promedio del mercado es {data.estadisticas_score.mean.toFixed(0)} puntos. 
             <strong style={{ color: COLORS.primary }}> ¿Cómo mejorarlo?</strong> Invertí en tecnología, buscá crédito formal y consolidá tu equipo.
           </p>
@@ -3771,7 +3773,7 @@ function ConfusionMatrix({ data, labels }) {
           fontSize: '18px',
           fontWeight: '700',
           color: COLORS.text,
-          border: isCorrect ? '2px solid '${COLORS.primary}'' : '1px solid ' + COLORS.border
+          border: isCorrect ? '2px solid COLORS.primary' : '1px solid ' + COLORS.border
         }}>
           {value}
         </div>
@@ -4115,7 +4117,7 @@ function ScatterPlot({ realValues, predictions, title }) {
             y1={scaleY(minVal)}
             x2={scaleX(maxVal)}
             y2={scaleY(maxVal)}
-            stroke="'${COLORS.accentDark}'"
+            stroke="COLORS.accentDark"
             strokeWidth="2"
             strokeDasharray="4 4"
           />
@@ -4276,9 +4278,9 @@ function AfectacionesChart() {
   const maxValue = 2.0;
   
   const colors = {
-    Peor: ''${COLORS.accentDark}'',
-    Igual: ''${COLORS.accent}'',
-    Mejor: ''${COLORS.primary}''
+    Peor: 'COLORS.accentDark',
+    Igual: 'COLORS.accent',
+    Mejor: 'COLORS.primary'
   };
   
   return (
