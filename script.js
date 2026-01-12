@@ -332,13 +332,13 @@ function App() {
       <Navbar />
       <Hero scrollY={scrollY} />
       <ProjectIntro />
+      {datos.length > 0 && <Mapa datos={datos} />}
       {indicadores && <ResumenEjecutivo indicadores={indicadores} />}
       {indicadores && <Indicadores data={indicadores} />}
       {datosGraficos && indicadores && <AnalisisVisual data={datosGraficos} indicadores={indicadores} />}
-      <SeccionAnalisis />
       <SeccionMachineLearning />
+      <SeccionAnalisis />
       <Team />
-      {datos.length > 0 && <Mapa datos={datos} />}
       <Footer />
     </div>
   );
@@ -361,13 +361,13 @@ function Navbar() {
   const sections = [
     { id: 'hero', label: 'Inicio' },
     { id: 'intro', label: 'Introducción' },
+    { id: 'mapa', label: 'Mapa' },
     { id: 'resumen', label: 'Hallazgos Principales' },
     { id: 'indicadores', label: 'Indicadores' },
     { id: 'analisis-visual', label: 'Análisis Visual' },
-    { id: 'analisis', label: 'Conclusiones' },
     { id: 'machine-learning', label: 'Machine Learning' },
-    { id: 'equipo', label: 'Equipo' },
-    { id: 'mapa', label: 'Mapa' }
+    { id: 'analisis', label: 'Conclusiones' },
+    { id: 'equipo', label: 'Equipo' }
   ];
 
   const scrollToSection = (sectionId) => {
@@ -2960,7 +2960,6 @@ function SeccionMachineLearning() {
         <ModeloCrecimiento data={resultadosML.modelos.modelo_1_crecimiento} />
         <ModeloSalario data={resultadosML.modelos.modelo_2_salario} />
         <ModeloFactoresExternos data={resultadosML.modelos.modelo_3_factores_externos} />
-        <ModeloViabilidad data={resultadosML.modelos.modelo_4_viabilidad} />
       </div>
 
       <div style={{
@@ -3912,259 +3911,6 @@ function ModeloFactoresExternos({ data }) {
   );
 }
 
-// Modelo 4: Viabilidad
-function ModeloViabilidad({ data }) {
-  const [expanded, setExpanded] = useState(false);
-  
-  if (!data || !data.distribucion_clusters || !data.score_promedio_por_nivel || !data.estadisticas_score) {
-    return null;
-  }
-  
-  return (
-    <div style={{
-      backgroundColor: COLORS.background,
-      padding: '40px',
-      borderRadius: '8px',
-      border: `1px solid ${COLORS.border}`,
-      position: 'relative'
-    }}>
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '4px',
-        height: '100%',
-        backgroundColor: 'COLORS.primaryDark'
-      }} />
-      
-      <h3 style={{
-        fontFamily: '"Crimson Pro", serif',
-        fontSize: '24px',
-        fontWeight: '600',
-        color: COLORS.text,
-        marginBottom: '12px',
-        textAlign: 'center'
-      }}>
-        Score de Viabilidad Comercial
-      </h3>
-      
-      <p style={{
-        fontSize: '14px',
-        color: COLORS.textSecondary,
-        textAlign: 'center',
-        marginBottom: '30px'
-      }}>
-        Clasificación de comercios según su salud y potencial
-      </p>
-
-      {/* Distribución de clusters */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '12px',
-        marginBottom: '30px'
-      }}>
-        <div style={{
-          padding: '16px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          border: `2px solid COLORS.primary`,
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '11px',
-            color: 'COLORS.primary',
-            marginBottom: '6px',
-            textTransform: 'uppercase',
-            fontWeight: '600'
-          }}>
-            Alto
-          </div>
-          <div style={{
-            fontSize: '24px',
-            fontWeight: '700',
-            color: COLORS.text,
-            fontFamily: '"Crimson Pro", serif'
-          }}>
-            {data.distribucion_clusters.Alto}
-          </div>
-          <div style={{
-            fontSize: '10px',
-            color: COLORS.textSecondary,
-            marginTop: '4px'
-          }}>
-            Score: {data.score_promedio_por_nivel.Alto.toFixed(1)}
-          </div>
-        </div>
-        
-        <div style={{
-          padding: '16px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          border: `2px solid #4FC3F7`,
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '11px',
-            color: '#4FC3F7',
-            marginBottom: '6px',
-            textTransform: 'uppercase',
-            fontWeight: '600'
-          }}>
-            Medio
-          </div>
-          <div style={{
-            fontSize: '24px',
-            fontWeight: '700',
-            color: COLORS.text,
-            fontFamily: '"Crimson Pro", serif'
-          }}>
-            {data.distribucion_clusters.Medio}
-          </div>
-          <div style={{
-            fontSize: '10px',
-            color: COLORS.textSecondary,
-            marginTop: '4px'
-          }}>
-            Score: {data.score_promedio_por_nivel.Medio.toFixed(1)}
-          </div>
-        </div>
-        
-        <div style={{
-          padding: '16px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          border: `2px solid COLORS.accentDark`,
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '11px',
-            color: 'COLORS.accentDark',
-            marginBottom: '6px',
-            textTransform: 'uppercase',
-            fontWeight: '600'
-          }}>
-            Bajo
-          </div>
-          <div style={{
-            fontSize: '24px',
-            fontWeight: '700',
-            color: COLORS.text,
-            fontFamily: '"Crimson Pro", serif'
-          }}>
-            {data.distribucion_clusters.Bajo}
-          </div>
-          <div style={{
-            fontSize: '10px',
-            color: COLORS.textSecondary,
-            marginTop: '4px'
-          }}>
-            Score: {data.score_promedio_por_nivel.Bajo.toFixed(1)}
-          </div>
-        </div>
-      </div>
-
-      {/* Score promedio */}
-      <div style={{
-        padding: '20px',
-        backgroundColor: COLORS.surface,
-        borderRadius: '6px',
-        marginBottom: '20px',
-        textAlign: 'center'
-      }}>
-        <div style={{
-          fontSize: '13px',
-          color: COLORS.textSecondary,
-          marginBottom: '8px'
-        }}>
-          Score Promedio General
-        </div>
-        <div style={{
-          fontSize: '36px',
-          fontWeight: '700',
-          color: 'COLORS.primaryDark',
-          fontFamily: '"Crimson Pro", serif'
-        }}>
-          {data.estadisticas_score.mean.toFixed(1)}<span style={{ fontSize: '20px' }}>/100</span>
-        </div>
-      </div>
-
-      <button
-        onClick={() => setExpanded(!expanded)}
-        style={{
-          width: '100%',
-          padding: '12px',
-          backgroundColor: COLORS.surface,
-          color: COLORS.primary,
-          border: `1px solid ${COLORS.border}`,
-          borderRadius: '6px',
-          cursor: 'pointer',
-          fontSize: '13px',
-          fontWeight: '600',
-          letterSpacing: '0.05em',
-          textTransform: 'uppercase',
-          transition: 'all 0.3s'
-        }}
-        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
-        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
-      >
-        {expanded ? 'Ver menos' : 'Ver explicación'}
-      </button>
-
-      {expanded && (
-        <div style={{
-          marginTop: '20px',
-          padding: '24px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          borderLeft: `3px solid COLORS.primaryDark`
-        }}>
-          <div style={{
-            fontSize: '14px',
-            fontWeight: '600',
-            color: COLORS.text,
-            marginBottom: '12px'
-          }}>
-            Explicación Académica
-          </div>
-          <p style={{
-            fontSize: '13px',
-            color: COLORS.textSecondary,
-            lineHeight: '1.7',
-            marginBottom: '20px'
-          }}>
-            Clustering no supervisado mediante <strong style={{ color: COLORS.text }}>K-Means (k=3)</strong> que agrupa comercios 
-            según múltiples dimensiones de viabilidad. El score compuesto (0-100) pondera: expectativas de ventas (30%), 
-            acceso a crédito (20%), nivel tecnológico (20%), antigüedad (15%), tamaño de plantilla (10%) y propiedad del local (5%). 
-            Los {data.distribucion_clusters.Alto} comercios en el cluster "Alto" (score promedio {data.score_promedio_por_nivel.Alto.toFixed(1)}) 
-            muestran mayor resiliencia y potencial de crecimiento.
-          </p>
-
-          <div style={{
-            fontSize: '14px',
-            fontWeight: '600',
-            color: COLORS.text,
-            marginBottom: '12px'
-          }}>
-            En Términos Simples
-          </div>
-          <p style={{
-            fontSize: '13px',
-            color: COLORS.textSecondary,
-            lineHeight: '1.7'
-          }}>
-            <strong style={{ color: COLORS.text }}>¿Qué tan viable es tu comercio?</strong><br/>
-            Este es como un "estado de salud" de tu negocio. <strong style={{ color: 'COLORS.primary' }}>Nivel Alto</strong> = 
-            negocio sólido con buenas expectativas, acceso a crédito y tecnología. <strong style={{ color: '#4FC3F7' }}>Nivel Medio</strong> = 
-            estás bien pero hay margen de mejora. <strong style={{ color: 'COLORS.accentDark' }}>Nivel Bajo</strong> = necesitás reforzar 
-            aspectos clave (digitalización, acceso a financiamiento, proyecciones). El score promedio del mercado es {data.estadisticas_score.mean.toFixed(0)} puntos. 
-            <strong style={{ color: COLORS.primary }}> ¿Cómo mejorarlo?</strong> Invertí en tecnología, buscá crédito formal y consolidá tu equipo.
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
 
 // Componente auxiliar para métricas
 function MetricaCard({ label, value, color }) {
