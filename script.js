@@ -157,51 +157,67 @@ function App() {
         @media (max-width: 768px) {
           /* Hero section */
           section[data-section="hero"] {
-            padding: 80px 24px !important;
-            min-height: 70vh !important;
+            padding: 60px 20px !important;
+            min-height: 80vh !important;
           }
           
           section[data-section="hero"] h1 {
-            font-size: 36px !important;
+            font-size: 32px !important;
+            line-height: 1.2 !important;
           }
           
           section[data-section="hero"] p {
-            font-size: 16px !important;
+            font-size: 15px !important;
           }
           
-          /* General sections */
+          /* General sections - reducir padding vacío */
           section {
-            padding: 60px 24px !important;
+            padding: 50px 20px !important;
+          }
+          
+          /* Títulos más compactos */
+          h2 {
+            font-size: 28px !important;
+            margin-bottom: 16px !important;
+          }
+          
+          h3 {
+            font-size: 18px !important;
           }
           
           /* Grids - force single column */
           [style*="gridTemplateColumns: repeat(auto-fit"] {
             grid-template-columns: 1fr !important;
+            gap: 20px !important;
           }
           
           [style*="gridTemplateColumns: '2fr 1fr 1fr'"] {
             grid-template-columns: 1fr !important;
+            gap: 30px !important;
           }
           
-          /* ML Cards */
+          /* ML Cards - más compactos */
           [style*="padding: '40px'"][style*="borderRadius: '8px'"] {
-            padding: 24px !important;
+            padding: 20px !important;
           }
           
-          /* Footer */
+          /* Footer - más compacto */
+          footer {
+            padding: 50px 20px !important;
+          }
+          
           footer > div:first-child {
             grid-template-columns: 1fr !important;
-            gap: 40px !important;
+            gap: 30px !important;
           }
           
-          /* SVG Charts - make responsive */
+          /* SVG Charts - responsive */
           svg {
             max-width: 100% !important;
             height: auto !important;
           }
           
-          /* Confusion Matrix */
-          svg[width="400"] {
+          svg[width="400"], svg[width="450"] {
             width: 100% !important;
             height: auto !important;
           }
@@ -213,7 +229,7 @@ function App() {
           
           /* Navbar */
           nav {
-            padding: 20px 24px !important;
+            padding: 16px 20px !important;
           }
           
           /* Buttons */
@@ -222,37 +238,59 @@ function App() {
             padding: 10px 16px !important;
           }
           
-          /* Titles */
-          h2 {
-            font-size: 32px !important;
+          /* Margin/Padding reducidos */
+          [style*="marginBottom: '60px'"] {
+            margin-bottom: 30px !important;
           }
           
-          h3 {
-            font-size: 20px !important;
+          [style*="marginBottom: '80px'"] {
+            margin-bottom: 40px !important;
+          }
+          
+          /* Cards más compactas */
+          [style*="padding: '30px'"] {
+            padding: 20px !important;
+          }
+          
+          [style*="padding: '60px'"] {
+            padding: 24px !important;
           }
         }
         
         @media (max-width: 480px) {
           section[data-section="hero"] h1 {
-            font-size: 28px !important;
+            font-size: 26px !important;
           }
           
           section {
-            padding: 40px 20px !important;
+            padding: 40px 16px !important;
           }
           
           h2 {
-            font-size: 28px !important;
+            font-size: 24px !important;
           }
           
-          /* Cards */
+          /* Cards ultra-compactos */
           [style*="padding: '24px'"] {
+            padding: 16px !important;
+          }
+          
+          [style*="padding: '20px'"] {
             padding: 16px !important;
           }
           
           /* Campus images */
           [style*="height: '280px'"] {
-            height: 200px !important;
+            height: 180px !important;
+          }
+          
+          /* Reduce gaps */
+          [style*="gap: '30px'"] {
+            gap: 16px !important;
+          }
+          
+          [style*="gap: '40px'"] {
+            gap: 20px !important;
           }
         }
         
@@ -278,6 +316,7 @@ function App() {
       `}</style>
       <Hero scrollY={scrollY} />
       <ProjectIntro />
+      {indicadores && <ResumenEjecutivo indicadores={indicadores} />}
       {indicadores && <Indicadores data={indicadores} />}
       {datosGraficos && <AnalisisVisual data={datosGraficos} />}
       <SeccionAnalisis />
@@ -484,6 +523,190 @@ function ProjectIntro() {
 }
 
 // === INDICADORES CON GRÁFICOS CIRCULARES ===
+// === RESUMEN EJECUTIVO PARA COMERCIANTES ===
+function ResumenEjecutivo({ indicadores }) {
+  if (!indicadores) return null;
+  
+  return (
+    <section style={{
+      padding: '100px 60px',
+      backgroundColor: COLORS.background,
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      {/* Background decorativo */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `radial-gradient(circle at 20% 50%, ${COLORS.primary}08 0%, transparent 50%)`,
+        zIndex: 0
+      }} />
+      
+      <div style={{
+        maxWidth: '1000px',
+        margin: '0 auto',
+        position: 'relative',
+        zIndex: 1
+      }}>
+        <div style={{
+          textAlign: 'center',
+          marginBottom: '60px'
+        }}>
+          <div style={{
+            fontSize: '12px',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: COLORS.primary,
+            marginBottom: '20px',
+            fontWeight: '500'
+          }}>
+            Para los comerciantes
+          </div>
+          <h2 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: 'clamp(32px, 4vw, 48px)',
+            fontWeight: '400',
+            color: COLORS.text,
+            marginBottom: '20px'
+          }}>
+            Resumen Ejecutivo
+          </h2>
+          <p style={{
+            fontSize: '16px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7',
+            maxWidth: '700px',
+            margin: '0 auto'
+          }}>
+            Principales hallazgos del relevamiento de {indicadores.total} comercios en el AMBA
+          </p>
+        </div>
+
+        {/* Cards de hallazgos principales */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '30px',
+          marginBottom: '50px'
+        }}>
+          <HallazgoCard
+            title="Expectativas de ventas"
+            value={`${indicadores.pctExpectativas}%`}
+            description="de los comercios tiene expectativas positivas para los próximos 3 meses"
+            color="#00E676"
+          />
+          
+          <HallazgoCard
+            title="Deseo de crecimiento"
+            value={`${indicadores.pctCrecimiento}%`}
+            description="quiere que su negocio crezca y se expanda"
+            color="#4FC3F7"
+          />
+          
+          <HallazgoCard
+            title="Promedio de empleados"
+            value={indicadores.promTrabajadores}
+            description="trabajadores por comercio en promedio"
+            color="#FFB74D"
+          />
+        </div>
+
+        {/* Mensaje clave */}
+        <div style={{
+          padding: '40px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '8px',
+          border: `1px solid ${COLORS.border}`,
+          borderLeft: `4px solid ${COLORS.primary}`
+        }}>
+          <h3 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: '22px',
+            fontWeight: '600',
+            color: COLORS.text,
+            marginBottom: '20px'
+          }}>
+            ¿Qué significa esto para tu comercio?
+          </h3>
+          <div style={{
+            fontSize: '15px',
+            lineHeight: '1.8',
+            color: COLORS.textSecondary
+          }}>
+            <p style={{ marginBottom: '16px' }}>
+              <strong style={{ color: COLORS.text }}>No estás solo:</strong> La mayoría de los comerciantes 
+              como vos enfrenta desafíos similares relacionados con la competencia, acceso a crédito, y 
+              fluctuaciones de precios.
+            </p>
+            <p style={{ marginBottom: '16px' }}>
+              <strong style={{ color: COLORS.text }}>Hay optimismo:</strong> A pesar de las dificultades, 
+              {indicadores.pctExpectativas}% de los comercios mantiene una visión positiva para los próximos meses.
+            </p>
+            <p style={{ marginBottom: '0' }}>
+              <strong style={{ color: COLORS.text }}>Oportunidades de mejora:</strong> Los datos muestran que 
+              la adopción de tecnología y la formalización laboral son áreas clave donde muchos comercios 
+              pueden fortalecerse.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HallazgoCard({ title, value, description, color }) {
+  return (
+    <div style={{
+      padding: '30px',
+      backgroundColor: COLORS.surface,
+      borderRadius: '8px',
+      border: `1px solid ${COLORS.border}`,
+      borderTop: `3px solid ${color}`,
+      transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.transform = 'translateY(-4px)';
+      e.currentTarget.style.boxShadow = `0 8px 20px rgba(79, 195, 247, 0.15)`;
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.transform = 'translateY(0)';
+      e.currentTarget.style.boxShadow = 'none';
+    }}>
+      <div style={{
+        fontSize: '13px',
+        textTransform: 'uppercase',
+        letterSpacing: '0.08em',
+        color: color,
+        marginBottom: '16px',
+        fontWeight: '600'
+      }}>
+        {title}
+      </div>
+      <div style={{
+        fontFamily: '"Crimson Pro", serif',
+        fontSize: '42px',
+        fontWeight: '700',
+        color: COLORS.text,
+        marginBottom: '12px',
+        lineHeight: '1'
+      }}>
+        {value}
+      </div>
+      <p style={{
+        fontSize: '14px',
+        color: COLORS.textSecondary,
+        margin: 0,
+        lineHeight: '1.6'
+      }}>
+        {description}
+      </p>
+    </div>
+  );
+}
+
 function Indicadores({ data }) {
   const indicadores = [
     { 
@@ -1873,8 +2096,8 @@ function SeccionAnalisis() {
         backgroundImage: 'url(https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1600&q=85&auto=format&fit=crop)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        opacity: 0.15,
-        filter: 'grayscale(20%)',
+        opacity: 0.65,
+        filter: 'grayscale(0%) brightness(0.6)',
         zIndex: 0
       }} />
       
@@ -1885,7 +2108,7 @@ function SeccionAnalisis() {
         left: 0,
         right: 0,
         bottom: 0,
-        background: `linear-gradient(135deg, ${COLORS.background}e0 0%, ${COLORS.background}c8 50%, ${COLORS.background}e0 100%)`,
+        background: `linear-gradient(135deg, ${COLORS.background}70 0%, ${COLORS.background}50 50%, ${COLORS.background}70 100%)`,
         zIndex: 1
       }} />
       
@@ -4097,8 +4320,8 @@ function Team() {
         backgroundImage: 'url(https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=1600&q=85&auto=format&fit=crop)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        opacity: 0.12,
-        filter: 'grayscale(40%)',
+        opacity: 0.60,
+        filter: 'grayscale(15%) brightness(0.6)',
         zIndex: 0
       }} />
       
@@ -4109,7 +4332,7 @@ function Team() {
         left: 0,
         right: 0,
         bottom: 0,
-        background: `radial-gradient(circle at 50% 50%, ${COLORS.background}d0 0%, ${COLORS.background}f0 100%)`,
+        background: `radial-gradient(circle at 50% 50%, ${COLORS.background}60 0%, ${COLORS.background}90 100%)`,
         zIndex: 1
       }} />
       
@@ -4408,8 +4631,8 @@ function Footer() {
         backgroundImage: 'url(https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=1600&q=85&auto=format&fit=crop)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        opacity: 0.10,
-        filter: 'grayscale(50%)',
+        opacity: 0.55,
+        filter: 'grayscale(20%) brightness(0.65)',
         zIndex: 0
       }} />
       
@@ -4420,7 +4643,7 @@ function Footer() {
         left: 0,
         right: 0,
         bottom: 0,
-        background: `linear-gradient(to bottom, ${COLORS.surface}e8 0%, ${COLORS.surface}f0 40%, ${COLORS.surface} 100%)`,
+        background: `linear-gradient(to bottom, ${COLORS.surface}80 0%, ${COLORS.surface}90 40%, ${COLORS.surface}c0 100%)`,
         zIndex: 1
       }} />
       
@@ -4591,6 +4814,72 @@ function Footer() {
 }
 
 // === FUNCIONES AUXILIARES ===
+
+// Función para filtrar outliers usando IQR (Interquartile Range)
+function filtrarOutliers(datos, campo, factor = 1.5) {
+  const valores = datos
+    .map(d => parseFloat(d[campo]))
+    .filter(v => !isNaN(v) && v !== null && v !== undefined && v > 0)
+    .sort((a, b) => a - b);
+  
+  if (valores.length === 0) return datos;
+  
+  const q1Index = Math.floor(valores.length * 0.25);
+  const q3Index = Math.floor(valores.length * 0.75);
+  const q1 = valores[q1Index];
+  const q3 = valores[q3Index];
+  const iqr = q3 - q1;
+  
+  const lowerBound = q1 - factor * iqr;
+  const upperBound = q3 + factor * iqr;
+  
+  return datos.filter(d => {
+    const valor = parseFloat(d[campo]);
+    return isNaN(valor) || valor === null || valor === undefined || 
+           (valor >= lowerBound && valor <= upperBound);
+  });
+}
+
+// Función para limpiar y validar datos
+function limpiarDatos(datos) {
+  return datos.map(d => ({
+    ...d,
+    cantidad_trabajadores: validarNumero(d.cantidad_trabajadores),
+    trabajadores_salario_fijo: validarNumero(d.trabajadores_salario_fijo),
+    consumo_kw: validarNumero(d.consumo_kw),
+    año_apertura: validarNumero(d.año_apertura),
+    lat: validarNumero(d.lat),
+    long: validarNumero(d.long)
+  }));
+}
+
+// Función para validar números
+function validarNumero(valor) {
+  const num = parseFloat(valor);
+  return (!isNaN(num) && num !== null && num !== undefined && isFinite(num)) ? num : null;
+}
+
+// Función para obtener estadísticas robustas
+function obtenerEstadisticas(valores) {
+  const validos = valores.filter(v => v !== null && v !== undefined && !isNaN(v) && v > 0);
+  if (validos.length === 0) return { promedio: 0, mediana: 0, min: 0, max: 0, count: 0 };
+  
+  const sorted = [...validos].sort((a, b) => a - b);
+  const sum = sorted.reduce((a, b) => a + b, 0);
+  const promedio = sum / sorted.length;
+  const mediana = sorted.length % 2 === 0
+    ? (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2
+    : sorted[Math.floor(sorted.length / 2)];
+  
+  return {
+    promedio,
+    mediana,
+    min: sorted[0],
+    max: sorted[sorted.length - 1],
+    count: sorted.length
+  };
+}
+
 function calcularIndicadores(datos) {
   const formatearNumero = (num) => {
     if (num === null || num === undefined || isNaN(num)) return '0';
