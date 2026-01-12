@@ -2804,6 +2804,116 @@ function SeccionAnalisis() {
             y expresa deseo de expandir sus operaciones, lo que indica resiliencia y visión de futuro.
           </p>
 
+          <h3 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: '24px',
+            fontWeight: '600',
+            color: COLORS.accent,
+            marginTop: '50px',
+            marginBottom: '20px'
+          }}>
+            Hipótesis geoespaciales
+          </h3>
+          
+          <p style={{ marginBottom: '20px', color: COLORS.textSecondary }}>
+            El análisis de los mapas de calor de percepción de crimen y acceso a crédito revela patrones 
+            espaciales que sugieren correlaciones significativas entre factores geográficos y el desarrollo 
+            comercial. Proponemos las siguientes hipótesis a explorar:
+          </p>
+
+          <div style={{
+            display: 'grid',
+            gap: '20px',
+            marginTop: '30px'
+          }}>
+            {/* Hipótesis 1 */}
+            <div style={{
+              padding: '24px',
+              backgroundColor: COLORS.background,
+              borderRadius: '8px',
+              borderLeft: `4px solid #ff4400`,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                marginBottom: '12px'
+              }}>
+                <span style={{ fontSize: '24px' }}>🔥</span>
+                <h4 style={{
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  color: '#ff4400',
+                  margin: 0
+                }}>
+                  Crimen alto + Sin crédito = ¿Menor expectativa de crecimiento?
+                </h4>
+              </div>
+              <p style={{ 
+                fontSize: '15px',
+                color: COLORS.textSecondary,
+                lineHeight: '1.7',
+                margin: 0
+              }}>
+                Los comercios ubicados en zonas con alta percepción de inseguridad y sin acceso a financiamiento 
+                podrían presentar expectativas de crecimiento significativamente menores. La combinación de estos 
+                dos factores adversos podría crear una barrera doble que limite la visión expansiva de los 
+                emprendedores, generando un círculo vicioso de estancamiento económico en ciertas áreas del AMBA.
+              </p>
+            </div>
+
+            {/* Hipótesis 2 */}
+            <div style={{
+              padding: '24px',
+              backgroundColor: COLORS.background,
+              borderRadius: '8px',
+              borderLeft: `4px solid #00cc00`,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                marginBottom: '12px'
+              }}>
+                <span style={{ fontSize: '24px' }}>💰</span>
+                <h4 style={{
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  color: '#00cc00',
+                  margin: 0
+                }}>
+                  Crimen bajo + Con crédito = ¿Mayor inversión tecnológica?
+                </h4>
+              </div>
+              <p style={{ 
+                fontSize: '15px',
+                color: COLORS.textSecondary,
+                lineHeight: '1.7',
+                margin: 0
+              }}>
+                Los establecimientos en zonas percibidas como seguras y con acceso a múltiples fuentes de 
+                financiamiento podrían mostrar niveles superiores de adopción tecnológica. El entorno favorable 
+                permitiría a los comerciantes invertir con confianza en herramientas digitales, sistemas de gestión 
+                avanzados y plataformas de e-commerce, acelerando su transformación digital y competitividad.
+              </p>
+            </div>
+          </div>
+
+          <p style={{ 
+            marginTop: '30px',
+            marginBottom: '24px', 
+            color: COLORS.textSecondary,
+            fontSize: '14px',
+            fontStyle: 'italic'
+          }}>
+            Estas hipótesis requieren análisis estadístico riguroso para validar las correlaciones observadas 
+            espacialmente. Los mapas de calor interactivos proporcionan una herramienta visual inicial para 
+            identificar estos patrones, pero se necesitan pruebas de significancia estadística y controles por 
+            variables confusoras para establecer relaciones causales.
+          </p>
+
           <div style={{
             marginTop: '40px',
             padding: '30px',
