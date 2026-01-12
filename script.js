@@ -329,6 +329,7 @@ function App() {
           transform: translateY(20px);
         }
       `}</style>
+      <Navbar />
       <Hero scrollY={scrollY} />
       <ProjectIntro />
       {indicadores && <ResumenEjecutivo indicadores={indicadores} />}
@@ -344,11 +345,191 @@ function App() {
 }
 
 // === HERO SECTION ===
+// === NAVBAR CON MENÚ DESPLEGABLE ===
+function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const sections = [
+    { id: 'hero', label: 'Inicio' },
+    { id: 'intro', label: 'Introducción' },
+    { id: 'resumen', label: 'Hallazgos Principales' },
+    { id: 'indicadores', label: 'Indicadores' },
+    { id: 'analisis-visual', label: 'Análisis Visual' },
+    { id: 'analisis', label: 'Conclusiones' },
+    { id: 'machine-learning', label: 'Machine Learning' },
+    { id: 'equipo', label: 'Equipo' },
+    { id: 'mapa', label: 'Mapa' }
+  ];
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offsetTop = element.offsetTop - 80;
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+      setIsMenuOpen(false);
+    }
+  };
+
+  return (
+    <nav style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 1000,
+      backgroundColor: isScrolled ? `${COLORS.background}f5` : 'transparent',
+      backdropFilter: isScrolled ? 'blur(10px)' : 'none',
+      borderBottom: isScrolled ? `1px solid ${COLORS.border}` : 'none',
+      transition: 'all 0.3s ease',
+      padding: '20px 40px'
+    }}>
+      <div style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        {/* Logo/Título */}
+        <div 
+          onClick={() => scrollToSection('hero')}
+          style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: '20px',
+            fontWeight: '600',
+            color: COLORS.text,
+            cursor: 'pointer',
+            transition: 'color 0.3s ease'
+          }}
+          onMouseEnter={(e) => e.target.style.color = COLORS.primary}
+          onMouseLeave={(e) => e.target.style.color = COLORS.text}
+        >
+          MIT LIFT Lab
+        </div>
+
+        {/* Botón de menú desplegable */}
+        <div style={{ position: 'relative' }}>
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            style={{
+              padding: '12px 24px',
+              backgroundColor: isMenuOpen ? COLORS.primary : 'transparent',
+              color: isMenuOpen ? COLORS.background : COLORS.text,
+              border: `2px solid ${COLORS.primary}`,
+              borderRadius: '6px',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em'
+            }}
+            onMouseEnter={(e) => {
+              if (!isMenuOpen) {
+                e.target.style.backgroundColor = `${COLORS.primary}20`;
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isMenuOpen) {
+                e.target.style.backgroundColor = 'transparent';
+              }
+            }}
+          >
+            <span>Navegación</span>
+            <span style={{
+              transform: isMenuOpen ? 'rotate(180deg)' : 'rotate(0)',
+              transition: 'transform 0.3s ease',
+              display: 'inline-block'
+            }}>
+              ▾
+            </span>
+          </button>
+
+          {/* Menú desplegable */}
+          {isMenuOpen && (
+            <div style={{
+              position: 'absolute',
+              top: 'calc(100% + 10px)',
+              right: 0,
+              backgroundColor: COLORS.surface,
+              border: `1px solid ${COLORS.border}`,
+              borderRadius: '8px',
+              boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
+              minWidth: '250px',
+              overflow: 'hidden',
+              animation: 'slideDown 0.3s ease'
+            }}>
+              <style>{`
+                @keyframes slideDown {
+                  from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                  }
+                  to {
+                    opacity: 1;
+                    transform: translateY(0);
+                  }
+                }
+              `}</style>
+              
+              {sections.map((section, index) => (
+                <div
+                  key={section.id}
+                  onClick={() => scrollToSection(section.id)}
+                  style={{
+                    padding: '16px 20px',
+                    cursor: 'pointer',
+                    borderBottom: index < sections.length - 1 ? `1px solid ${COLORS.border}` : 'none',
+                    transition: 'all 0.2s ease',
+                    backgroundColor: 'transparent'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = `${COLORS.primary}15`;
+                    e.target.style.paddingLeft = '24px';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = 'transparent';
+                    e.target.style.paddingLeft = '20px';
+                  }}
+                >
+                  <div style={{
+                    fontSize: '14px',
+                    color: COLORS.text,
+                    fontWeight: '500'
+                  }}>
+                    {section.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
 function Hero({ scrollY }) {
   const parallaxOffset = scrollY * 0.5;
   
   return (
     <section 
+      id="hero"
       data-section="hero"
       style={{
         minHeight: '100vh',
@@ -500,7 +681,7 @@ function Hero({ scrollY }) {
 // === PROJECT INTRO ===
 function ProjectIntro() {
   return (
-    <section style={{
+    <section id="intro" style={{
       padding: '120px 60px',
       maxWidth: '1400px',
       margin: '0 auto'
@@ -571,7 +752,7 @@ function ResumenEjecutivo({ indicadores }) {
   if (!indicadores) return null;
   
   return (
-    <section style={{
+    <section id="resumen" style={{
       padding: '120px 60px',
       position: 'relative',
       overflow: 'hidden'
@@ -883,7 +1064,7 @@ function Indicadores({ data }) {
   ];
 
   return (
-    <section style={{
+    <section id="indicadores" style={{
       padding: '120px 60px',
       backgroundColor: COLORS.surface,
       borderTop: `1px solid ${COLORS.border}`,
@@ -1098,7 +1279,7 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
 // === ANÁLISIS VISUAL CON GRÁFICOS SVG ===
 function AnalisisVisual({ data }) {
   return (
-    <section style={{
+    <section id="analisis-visual" style={{
       padding: '120px 60px',
       maxWidth: '1400px',
       margin: '0 auto'
@@ -2198,7 +2379,7 @@ function GraficoSalarios({ data }) {
 // === SECCIÓN DE ANÁLISIS ===
 function SeccionAnalisis() {
   return (
-    <section style={{
+    <section id="analisis" style={{
       padding: '120px 60px',
       margin: '0 auto',
       position: 'relative',
@@ -4422,7 +4603,7 @@ function AfectacionesChart() {
 // === TEAM ===
 function Team() {
   return (
-    <section style={{
+    <section id="equipo" style={{
       padding: '120px 60px',
       margin: '0 auto',
       position: 'relative',
