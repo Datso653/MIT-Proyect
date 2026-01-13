@@ -645,7 +645,7 @@ function Hero({ scrollY }) {
           gap: '20px'
         }}>
           <span>Equipo {TEAM_DATA.name}</span>
-          <span style={{ color: COLORS.primary }}>â€¢</span>
+          <span style={{ color: COLORS.primary }}>•</span>
           <span>2025-2026</span>
         </div>
       </div>
@@ -1701,7 +1701,7 @@ function GraficoBarras({ data }) {
         color: COLORS.textSecondary,
         marginBottom: '30px'
       }}>
-        Promedio de empleados por categoría â€¢ Pasa el mouse sobre las barras
+        Promedio de empleados por categoría • Pasa el mouse sobre las barras
       </p>
       
       <div style={{ overflowX: 'auto', overflowY: 'visible', position: 'relative' }}>
@@ -2125,7 +2125,7 @@ function GraficoTierlist({ data }) {
         marginBottom: '40px',
         lineHeight: '1.6'
       }}>
-        Clasificación de comercios según nivel de digitalización â€¢ Click para ver detalles
+        Clasificación de comercios según nivel de digitalización • Click para ver detalles
       </p>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -2271,7 +2271,7 @@ function GraficoTierlist({ data }) {
                   transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                   color: config.color
                 }}>
-                  â–¼
+                  ▼
                 </div>
               </div>
               
@@ -2406,7 +2406,7 @@ function GraficoSalarios({ data }) {
                 color: COLORS.accent,
                 marginTop: '2px'
               }}>
-                âš 
+                ⚠
               </div>
               <div>
                 <div style={{
@@ -3062,7 +3062,7 @@ function SeccionAnalisis() {
               color: COLORS.primary,
               fontWeight: '500'
             }}>
-              â€” Equipo {TEAM_DATA.name}
+              — Equipo {TEAM_DATA.name}
             </div>
           </div>
         </div>
@@ -3168,7 +3168,7 @@ function SeccionMachineLearning() {
               letterSpacing: '0.08em',
               textTransform: 'uppercase'
             }}>
-              Disclaimer â€” Análisis Predictivo
+              Disclaimer — Análisis Predictivo
             </div>
             <div style={{
               fontSize: '14px',
@@ -3214,7 +3214,7 @@ function SeccionMachineLearning() {
           <strong style={{ color: COLORS.text }}>Metodología:</strong> Los modelos implementados 
           utilizan técnicas de machine learning supervisado (Random Forest, Gradient Boosting, K-Means) 
           entrenados sobre el conjunto de datos relevado. Las métricas de performance incluyen accuracy, 
-          precision, recall, AUC-ROC, RÂ² y RMSE con validación mediante train/test split (75%/25%).
+          precision, recall, AUC-ROC, R² y RMSE con validación mediante train/test split (75%/25%).
         </div>
       </div>
     </section>
@@ -4626,7 +4626,7 @@ function TeamMember({ member, index }) {
           fontWeight: '500'
         }}
       >
-        LinkedIn â†’
+        LinkedIn →
       </a>
     </div>
   );
@@ -4655,7 +4655,7 @@ function Mapa({ datos }) {
     const map = window.L.map(mapRef.current).setView([-34.6037, -58.3816], 12);
 
     window.L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: 'Â© OpenStreetMap, Â© CartoDB',
+      attribution: '© OpenStreetMap, © CartoDB',
       maxZoom: 19
     }).addTo(map);
 
@@ -5489,7 +5489,7 @@ function Footer() {
         color: COLORS.textSecondary
       }}>
         <div>
-          Â© 2025-2026 MIT LIFT Lab Â· Equipo {TEAM_DATA.name}
+          © 2025-2026 MIT LIFT Lab · Equipo {TEAM_DATA.name}
         </div>
         <div style={{
           display: 'flex',
