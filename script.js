@@ -748,15 +748,44 @@ function ProjectIntro() {
 // === UNIVERSIDADES PARTICIPANTES ===
 function UniversidadesParticipantes() {
   const universidades = [
-    { nombre: 'MIT', fullName: 'Massachusetts Institute of Technology' },
-    { nombre: 'UBA', fullName: 'Universidad de Buenos Aires' },
-    { nombre: 'UNSAM', fullName: 'Universidad Nacional de San Martín' },
-    { nombre: 'UP', fullName: 'Universidad de Palermo' },
-    { nombre: 'ITBA', fullName: 'Instituto Tecnológico de Buenos Aires' },
-    { nombre: 'UNICEN', fullName: 'Universidad Nacional del Centro (Tandil)' }
+    { 
+      nombre: 'MIT', 
+      fullName: 'Massachusetts Institute of Technology',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/MIT_logo.svg'
+    },
+    { 
+      nombre: 'UBA', 
+      fullName: 'Universidad de Buenos Aires',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/5/58/University_of_Buenos_Aires_logo.svg'
+    },
+    { 
+      nombre: 'UNSAM', 
+      fullName: 'Universidad Nacional de San Martín',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Logo_UNSAM.png'
+    },
+    { 
+      nombre: 'UP', 
+      fullName: 'Universidad de Palermo',
+      logo: 'https://seeklogo.com/images/U/universidad-de-palermo-logo-2E2B6BE7DA-seeklogo.com.png'
+    },
+    { 
+      nombre: 'ITBA', 
+      fullName: 'Instituto Tecnológico de Buenos Aires',
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/5/58/ITBA_isologo.svg'
+    },
+    { 
+      nombre: 'UNICEN', 
+      fullName: 'Universidad Nacional del Centro (Tandil)',
+      logo: 'https://www.exa.unicen.edu.ar/images/institucional/logo_unicen_transparente.png'
+    }
   ];
 
   const universidadesDuplicadas = [...universidades, ...universidades];
+  const [imageErrors, setImageErrors] = useState({});
+
+  const handleImageError = (nombre) => {
+    setImageErrors(prev => ({ ...prev, [nombre]: true }));
+  };
 
   return (
     <section style={{
@@ -797,7 +826,7 @@ function UniversidadesParticipantes() {
           100% { transform: translateX(-50%); }
         }
         .logos-container {
-          animation: scroll 30s linear infinite;
+          animation: scroll 40s linear infinite;
         }
         .logos-container:hover {
           animation-play-state: paused;
@@ -813,19 +842,23 @@ function UniversidadesParticipantes() {
           <div
             key={idx}
             style={{
-              minWidth: '200px',
-              padding: '30px 40px',
+              minWidth: '240px',
+              height: '180px',
+              padding: '30px',
               backgroundColor: COLORS.background,
-              borderRadius: '8px',
+              borderRadius: '12px',
               border: `1px solid ${COLORS.border}`,
-              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
               transition: 'all 0.3s ease',
               cursor: 'pointer'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = COLORS.primary;
-              e.currentTarget.style.transform = 'translateY(-5px)';
-              e.currentTarget.style.boxShadow = `0 8px 24px rgba(79, 195, 247, 0.2)`;
+              e.currentTarget.style.transform = 'translateY(-8px)';
+              e.currentTarget.style.boxShadow = `0 12px 32px rgba(79, 195, 247, 0.25)`;
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.borderColor = COLORS.border;
@@ -833,20 +866,37 @@ function UniversidadesParticipantes() {
               e.currentTarget.style.boxShadow = 'none';
             }}
           >
-            <div style={{
-              fontFamily: '"Crimson Pro", serif',
-              fontSize: '28px',
-              fontWeight: '700',
-              color: COLORS.primary,
-              marginBottom: '8px',
-              letterSpacing: '0.05em'
-            }}>
-              {uni.nombre}
-            </div>
+            {!imageErrors[uni.nombre + idx] ? (
+              <img 
+                src={uni.logo}
+                alt={uni.nombre}
+                onError={() => handleImageError(uni.nombre + idx)}
+                style={{
+                  maxWidth: '120px',
+                  maxHeight: '80px',
+                  objectFit: 'contain',
+                  marginBottom: '16px',
+                  filter: 'brightness(0) invert(1)',
+                  opacity: 0.9
+                }}
+              />
+            ) : (
+              <div style={{
+                fontFamily: '"Crimson Pro", serif',
+                fontSize: '36px',
+                fontWeight: '700',
+                color: COLORS.primary,
+                marginBottom: '16px',
+                letterSpacing: '0.05em'
+              }}>
+                {uni.nombre}
+              </div>
+            )}
             <div style={{
               fontSize: '11px',
               color: COLORS.textSecondary,
-              lineHeight: '1.4'
+              lineHeight: '1.4',
+              textAlign: 'center'
             }}>
               {uni.fullName}
             </div>
