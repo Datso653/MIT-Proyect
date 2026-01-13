@@ -345,7 +345,7 @@ function App() {
 }
 
 // === HERO SECTION ===
-// === NAVBAR CON MENÚ DESPLEGABLE ===
+// === NAVBAR CON MENÁš DESPLEGABLE ===
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -605,7 +605,7 @@ function Hero({ scrollY }) {
           marginBottom: '30px',
           fontWeight: '500'
         }}>
-          MIT LIFT Lab × Buenos Aires
+          MIT LIFT Lab Á— Buenos Aires
         </div>
         
         <h1 className="fade-in fade-in-delay-1" style={{
@@ -645,7 +645,7 @@ function Hero({ scrollY }) {
           gap: '20px'
         }}>
           <span>Equipo {TEAM_DATA.name}</span>
-          <span style={{ color: COLORS.primary }}>•</span>
+          <span style={{ color: COLORS.primary }}>â€¢</span>
           <span>2025-2026</span>
         </div>
       </div>
@@ -744,7 +744,7 @@ function ProjectIntro() {
   );
 }
 
-// === INDICADORES CON GRÁFICOS CIRCULARES ===
+// === INDICADORES CON GRÁFICOS CIRCULARES ===
 // === RESUMEN EJECUTIVO PARA COMERCIANTES ===
 function ResumenEjecutivo({ indicadores }) {
   if (!indicadores) return null;
@@ -824,7 +824,7 @@ function ResumenEjecutivo({ indicadores }) {
             margin: '0 auto',
             fontWeight: '300'
           }}>
-            Un análisis profundo del ecosistema comercial del Área Metropolitana de Buenos Aires
+            Un análisis profundo del ecosistema comercial del Área Metropolitana de Buenos Aires
           </p>
         </div>
 
@@ -1153,7 +1153,7 @@ function Indicadores({ data }) {
     },
     { 
       label: 'Años en Operación', 
-      value: parseFloat(data.promAñosOperacion), 
+      value: parseFloat(data.promAniosOperacion), 
       max: 50,
       suffix: '',
       description: 'Antigüedad promedio'
@@ -1373,7 +1373,7 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
   );
 }
 
-// === ANÁLISIS VISUAL CON GRÁFICOS SVG ===
+// === ANÁLISIS VISUAL CON GRÁFICOS SVG ===
 function AnalisisVisual({ data, indicadores }) {
   const [visibleItems, setVisibleItems] = useState(new Set());
   const sectionRef = useRef(null);
@@ -1701,7 +1701,7 @@ function GraficoBarras({ data }) {
         color: COLORS.textSecondary,
         marginBottom: '30px'
       }}>
-        Promedio de empleados por categoría • Pasa el mouse sobre las barras
+        Promedio de empleados por categoría â€¢ Pasa el mouse sobre las barras
       </p>
       
       <div style={{ overflowX: 'auto', overflowY: 'visible', position: 'relative' }}>
@@ -2125,7 +2125,7 @@ function GraficoTierlist({ data }) {
         marginBottom: '40px',
         lineHeight: '1.6'
       }}>
-        Clasificación de comercios según nivel de digitalización • Click para ver detalles
+        Clasificación de comercios según nivel de digitalización â€¢ Click para ver detalles
       </p>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -2271,7 +2271,7 @@ function GraficoTierlist({ data }) {
                   transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                   color: config.color
                 }}>
-                  ▼
+                  â–¼
                 </div>
               </div>
               
@@ -2406,7 +2406,7 @@ function GraficoSalarios({ data }) {
                 color: COLORS.accent,
                 marginTop: '2px'
               }}>
-                ⚠
+                âš 
               </div>
               <div>
                 <div style={{
@@ -2766,7 +2766,7 @@ function GraficoSalarios({ data }) {
   );
 }
 
-// === SECCIÓN DE ANÁLISIS ===
+// === SECCIÁ“N DE ANÁLISIS ===
 function SeccionAnalisis() {
   return (
     <section id="analisis" style={{
@@ -3062,7 +3062,7 @@ function SeccionAnalisis() {
               color: COLORS.primary,
               fontWeight: '500'
             }}>
-              — Equipo {TEAM_DATA.name}
+              â€” Equipo {TEAM_DATA.name}
             </div>
           </div>
         </div>
@@ -3072,7 +3072,7 @@ function SeccionAnalisis() {
   );
 }
 
-// === SECCIÓN MACHINE LEARNING ===
+// === SECCIÁ“N MACHINE LEARNING ===
 function SeccionMachineLearning() {
   const [resultadosML, setResultadosML] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -3168,7 +3168,7 @@ function SeccionMachineLearning() {
               letterSpacing: '0.08em',
               textTransform: 'uppercase'
             }}>
-              Disclaimer — Análisis Predictivo
+              Disclaimer â€” Análisis Predictivo
             </div>
             <div style={{
               fontSize: '14px',
@@ -3193,7 +3193,6 @@ function SeccionMachineLearning() {
         gap: '60px'
       }}>
         <ModeloCrecimiento data={resultadosML.modelos.modelo_1_crecimiento} />
-        <ModeloSalario data={resultadosML.modelos.modelo_2_salario} />
         <ModeloFactoresExternos data={resultadosML.modelos.modelo_3_factores_externos} />
       </div>
 
@@ -3215,7 +3214,7 @@ function SeccionMachineLearning() {
           <strong style={{ color: COLORS.text }}>Metodología:</strong> Los modelos implementados 
           utilizan técnicas de machine learning supervisado (Random Forest, Gradient Boosting, K-Means) 
           entrenados sobre el conjunto de datos relevado. Las métricas de performance incluyen accuracy, 
-          precision, recall, AUC-ROC, R² y RMSE con validación mediante train/test split (75%/25%).
+          precision, recall, AUC-ROC, RÂ² y RMSE con validación mediante train/test split (75%/25%).
         </div>
       </div>
     </section>
@@ -3423,7 +3422,7 @@ function ModeloCrecimiento({ data }) {
             Este modelo de clasificación binaria utiliza <strong style={{ color: COLORS.text }}>Random Forest</strong> para 
             predecir la probabilidad de que un comercio desee expandirse. Con un accuracy de {(data.metricas.accuracy * 100).toFixed(1)}% 
             y un recall de {(data.metricas.recall * 100).toFixed(1)}%, el modelo identifica correctamente la mayoría de los comercios 
-            con intención de crecimiento. Las variables más predictivas son la antigüedad del negocio ({(data.feature_importance[0].importance * 100).toFixed(1)}% 
+            con intención de crecimiento. Las variables más predictivas son la antigÁ¼edad del negocio ({(data.feature_importance[0].importance * 100).toFixed(1)}% 
             de importancia) y la cantidad de trabajadores, sugiriendo que comercios más establecidos y con mayor personal tienden a buscar expansión.
           </p>
 
@@ -3444,454 +3443,6 @@ function ModeloCrecimiento({ data }) {
             Si tu negocio tiene varios años funcionando y un equipo de trabajo estable, es más probable que estés pensando 
             en crecer. El modelo nos dice que {(data.metricas.accuracy * 100).toFixed(0)}% de las veces acierta quién quiere expandirse. 
             Las claves son: <strong style={{ color: COLORS.primary }}>experiencia en el rubro, equipo consolidado y expectativas positivas de ventas</strong>.
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// Modelo 2: Salario
-function ModeloSalario({ data }) {
-  const [expanded, setExpanded] = useState(false);
-  const [showCharts, setShowCharts] = useState(false);
-  
-  if (!data || !data.metricas || !data.estadisticas_salario || !data.feature_importance) {
-    return null;
-  }
-  
-  return (
-    <div style={{
-      backgroundColor: COLORS.background,
-      padding: '40px',
-      borderRadius: '8px',
-      border: `1px solid ${COLORS.border}`,
-      position: 'relative'
-    }}>
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '4px',
-        height: '100%',
-        backgroundColor: '#4FC3F7'
-      }} />
-      
-      <h3 style={{
-        fontFamily: '"Crimson Pro", serif',
-        fontSize: '24px',
-        fontWeight: '600',
-        color: COLORS.text,
-        marginBottom: '12px',
-        textAlign: 'center'
-      }}>
-        Predicción de Salario Ofrecido
-      </h3>
-      
-      <p style={{
-        fontSize: '14px',
-        color: COLORS.textSecondary,
-        textAlign: 'center',
-        marginBottom: '30px'
-      }}>
-        Estimación del salario mínimo según características del comercio
-      </p>
-
-      {/* Estadísticas de salario */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '12px',
-        marginBottom: '30px'
-      }}>
-        <div style={{
-          padding: '16px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '11px',
-            color: COLORS.textSecondary,
-            marginBottom: '6px',
-            textTransform: 'uppercase'
-          }}>
-            Promedio
-          </div>
-          <div style={{
-            fontSize: '18px',
-            fontWeight: '700',
-            color: COLORS.primary,
-            fontFamily: '"Crimson Pro", serif'
-          }}>
-            ${(data.estadisticas_salario.promedio / 1000000).toFixed(1)}M
-          </div>
-        </div>
-        <div style={{
-          padding: '16px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '11px',
-            color: COLORS.textSecondary,
-            marginBottom: '6px',
-            textTransform: 'uppercase'
-          }}>
-            Mínimo
-          </div>
-          <div style={{
-            fontSize: '18px',
-            fontWeight: '700',
-            color: COLORS.text,
-            fontFamily: '"Crimson Pro", serif'
-          }}>
-            ${(data.estadisticas_salario.min / 1000).toFixed(0)}k
-          </div>
-        </div>
-        <div style={{
-          padding: '16px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '11px',
-            color: COLORS.textSecondary,
-            marginBottom: '6px',
-            textTransform: 'uppercase'
-          }}>
-            Máximo
-          </div>
-          <div style={{
-            fontSize: '18px',
-            fontWeight: '700',
-            color: COLORS.text,
-            fontFamily: '"Crimson Pro", serif'
-          }}>
-            ${(data.estadisticas_salario.max / 1000000).toFixed(0)}M
-          </div>
-        </div>
-      </div>
-
-      {/* Métrica R² */}
-      <div style={{
-        padding: '20px',
-        backgroundColor: COLORS.surface,
-        borderRadius: '6px',
-        marginBottom: '20px',
-        textAlign: 'center'
-      }}>
-        <div style={{
-          fontSize: '13px',
-          color: COLORS.textSecondary,
-          marginBottom: '8px'
-        }}>
-          Error Promedio Absoluto (MAE)
-        </div>
-        <div style={{
-          fontSize: '28px',
-          fontWeight: '700',
-          color: 'COLORS.accent',
-          fontFamily: '"Crimson Pro", serif'
-        }}>
-          ${(data.metricas.mae / 1000000).toFixed(2)}M ARS
-        </div>
-      </div>
-
-      {/* Top 3 Features */}
-      <div style={{
-        marginBottom: '20px',
-        padding: '20px',
-        backgroundColor: COLORS.surface,
-        borderRadius: '6px'
-      }}>
-        <div style={{
-          fontSize: '13px',
-          fontWeight: '600',
-          color: COLORS.primary,
-          marginBottom: '16px',
-          letterSpacing: '0.05em',
-          textTransform: 'uppercase'
-        }}>
-          Factores que más influyen
-        </div>
-        {data.feature_importance.slice(0, 3).map((f, idx) => (
-          <div key={idx} style={{ marginBottom: '12px' }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '12px',
-              marginBottom: '4px'
-            }}>
-              <span style={{ color: COLORS.text }}>{f.feature}</span>
-              <span style={{ color: COLORS.primary, fontWeight: '600' }}>
-                {(f.importance * 100).toFixed(1)}%
-              </span>
-            </div>
-            <div style={{
-              height: '6px',
-              backgroundColor: COLORS.border,
-              borderRadius: '3px',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                height: '100%',
-                width: `${f.importance * 100}%`,
-                backgroundColor: '#4FC3F7',
-                transition: 'width 1s ease-out'
-              }} />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Botón para mostrar gráficos */}
-      <button
-        onClick={() => setShowCharts(!showCharts)}
-        style={{
-          width: '100%',
-          padding: '12px',
-          backgroundColor: COLORS.surface,
-          color: COLORS.primary,
-          border: `1px solid ${COLORS.border}`,
-          borderRadius: '6px',
-          cursor: 'pointer',
-          fontSize: '13px',
-          fontWeight: '600',
-          letterSpacing: '0.05em',
-          textTransform: 'uppercase',
-          transition: 'all 0.3s',
-          marginBottom: '12px'
-        }}
-        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
-        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
-      >
-        {showCharts ? 'Ocultar gráficos' : 'Ver gráficos del modelo'}
-      </button>
-
-      {showCharts && (
-        <div style={{
-          marginTop: '20px',
-          padding: '24px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          border: `1px solid ${COLORS.border}`
-        }}>
-          {/* Métricas de Error Visualizadas */}
-          <div style={{ marginBottom: '40px' }}>
-            <h4 style={{
-              fontSize: '14px',
-              fontWeight: '600',
-              color: COLORS.primary,
-              marginBottom: '20px',
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase'
-            }}>
-              Métricas de Performance
-            </h4>
-            
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-              gap: '16px'
-            }}>
-              <div style={{
-                padding: '20px',
-                backgroundColor: COLORS.background,
-                borderRadius: '8px',
-                border: `2px solid #4FC3F7`,
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  fontSize: '11px',
-                  color: COLORS.textSecondary,
-                  marginBottom: '8px',
-                  textTransform: 'uppercase'
-                }}>
-                  R² Score
-                </div>
-                <div style={{
-                  fontSize: '28px',
-                  fontWeight: '700',
-                  color: data.metricas.r2_score > 0 ? 'COLORS.primary' : 'COLORS.accentDark',
-                  fontFamily: '"Crimson Pro", serif'
-                }}>
-                  {data.metricas.r2_score.toFixed(3)}
-                </div>
-              </div>
-              
-              <div style={{
-                padding: '20px',
-                backgroundColor: COLORS.background,
-                borderRadius: '8px',
-                border: `2px solid COLORS.accent`,
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  fontSize: '11px',
-                  color: COLORS.textSecondary,
-                  marginBottom: '8px',
-                  textTransform: 'uppercase'
-                }}>
-                  RMSE
-                </div>
-                <div style={{
-                  fontSize: '20px',
-                  fontWeight: '700',
-                  color: 'COLORS.accent',
-                  fontFamily: '"Crimson Pro", serif'
-                }}>
-                  ${(data.metricas.rmse / 1000000).toFixed(2)}M
-                </div>
-              </div>
-              
-              <div style={{
-                padding: '20px',
-                backgroundColor: COLORS.background,
-                borderRadius: '8px',
-                border: `2px solid COLORS.primary`,
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  fontSize: '11px',
-                  color: COLORS.textSecondary,
-                  marginBottom: '8px',
-                  textTransform: 'uppercase'
-                }}>
-                  MAE
-                </div>
-                <div style={{
-                  fontSize: '20px',
-                  fontWeight: '700',
-                  color: 'COLORS.primary',
-                  fontFamily: '"Crimson Pro", serif'
-                }}>
-                  ${(data.metricas.mae / 1000000).toFixed(2)}M
-                </div>
-              </div>
-              
-              <div style={{
-                padding: '20px',
-                backgroundColor: COLORS.background,
-                borderRadius: '8px',
-                border: `2px solid COLORS.accentDark`,
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  fontSize: '11px',
-                  color: COLORS.textSecondary,
-                  marginBottom: '8px',
-                  textTransform: 'uppercase'
-                }}>
-                  MAPE
-                </div>
-                <div style={{
-                  fontSize: '20px',
-                  fontWeight: '700',
-                  color: 'COLORS.accentDark',
-                  fontFamily: '"Crimson Pro", serif'
-                }}>
-                  {data.metricas.mape.toFixed(1)}%
-                </div>
-              </div>
-            </div>
-            
-            <div style={{
-              marginTop: '20px',
-              padding: '16px',
-              backgroundColor: COLORS.background,
-              borderRadius: '6px',
-              borderLeft: `3px solid #4FC3F7`,
-              fontSize: '12px',
-              color: COLORS.textSecondary,
-              lineHeight: '1.6'
-            }}>
-              <strong style={{ color: COLORS.text }}>Interpretación:</strong> El modelo predice salarios con un error promedio de ${(data.metricas.mae / 1000000).toFixed(2)}M ARS. 
-              {data.metricas.r2_score > 0 
-                ? ` El R² positivo indica que el modelo captura patrones en los datos.`
-                : ` El R² negativo sugiere alta variabilidad en los salarios que requiere más features.`}
-            </div>
-          </div>
-          
-          <FeatureImportanceChart 
-            features={data.feature_importance.slice(0, 8)} 
-            color="#4FC3F7"
-            title="Top 8 Variables Predictivas"
-          />
-        </div>
-      )}
-
-      <button
-        onClick={() => setExpanded(!expanded)}
-        style={{
-          width: '100%',
-          padding: '12px',
-          backgroundColor: COLORS.surface,
-          color: COLORS.primary,
-          border: `1px solid ${COLORS.border}`,
-          borderRadius: '6px',
-          cursor: 'pointer',
-          fontSize: '13px',
-          fontWeight: '600',
-          letterSpacing: '0.05em',
-          textTransform: 'uppercase',
-          transition: 'all 0.3s'
-        }}
-        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
-        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
-      >
-        {expanded ? 'Ver menos' : 'Ver explicación'}
-      </button>
-
-      {expanded && (
-        <div style={{
-          marginTop: '20px',
-          padding: '24px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          borderLeft: `3px solid #4FC3F7`
-        }}>
-          <div style={{
-            fontSize: '14px',
-            fontWeight: '600',
-            color: COLORS.text,
-            marginBottom: '12px'
-          }}>
-            Explicación Académica
-          </div>
-          <p style={{
-            fontSize: '13px',
-            color: COLORS.textSecondary,
-            lineHeight: '1.7',
-            marginBottom: '20px'
-          }}>
-            Modelo de regresión mediante <strong style={{ color: COLORS.text }}>Gradient Boosting</strong> que predice 
-            el salario mínimo ofrecido por los comercios. Con un error promedio de ${(data.metricas.mae / 1000000).toFixed(2)}M ARS, 
-            el modelo captura la relación entre características del comercio y compensación salarial. La antigüedad del negocio 
-            ({(data.feature_importance[0].importance * 100).toFixed(1)}%) y cantidad de trabajadores son los predictores más fuertes, 
-            indicando que comercios más establecidos y con mayor plantilla tienden a ofrecer mejores salarios.
-          </p>
-
-          <div style={{
-            fontSize: '14px',
-            fontWeight: '600',
-            color: COLORS.text,
-            marginBottom: '12px'
-          }}>
-            En Términos Simples
-          </div>
-          <p style={{
-            fontSize: '13px',
-            color: COLORS.textSecondary,
-            lineHeight: '1.7'
-          }}>
-            <strong style={{ color: COLORS.text }}>¿Cuánto deberías estar pagando?</strong><br/>
-            El salario promedio del mercado es de ${(data.estadisticas_salario.promedio / 1000000).toFixed(1)} millones de pesos. 
-            Si tu comercio tiene antigüedad y varios empleados, probablemente estés pagando más que el promedio. Los comercios 
-            más nuevos o pequeños suelen pagar alrededor de ${(data.estadisticas_salario.min / 1000).toFixed(0)}k. 
-            <strong style={{ color: COLORS.primary }}> El tipo de comercio también importa</strong>: gastronómicos y dietéticas tienden a pagar más.
           </p>
         </div>
       )}
@@ -4117,7 +3668,7 @@ function ModeloFactoresExternos({ data }) {
             Clasificador multiclase <strong style={{ color: COLORS.text }}>Random Forest</strong> que predice si las ventas 
             empeorarán, se mantendrán o mejorarán según factores externos. Con {(data.metricas.accuracy * 100).toFixed(1)}% de accuracy, 
             el modelo identifica que <strong style={{ color: COLORS.text }}>los precios</strong> son el factor más determinante, 
-            seguido por la competencia. Interesantemente, la antigüedad del negocio también es altamente predictiva, sugiriendo 
+            seguido por la competencia. Interesantemente, la antigÁ¼edad del negocio también es altamente predictiva, sugiriendo 
             que comercios más establecidos manejan mejor las adversidades externas.
           </p>
 
@@ -5075,7 +4626,7 @@ function TeamMember({ member, index }) {
           fontWeight: '500'
         }}
       >
-        LinkedIn →
+        LinkedIn â†’
       </a>
     </div>
   );
@@ -5104,7 +4655,7 @@ function Mapa({ datos }) {
     const map = window.L.map(mapRef.current).setView([-34.6037, -58.3816], 12);
 
     window.L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '© OpenStreetMap, © CartoDB',
+      attribution: 'Â© OpenStreetMap, Â© CartoDB',
       maxZoom: 19
     }).addTo(map);
 
@@ -5520,7 +5071,7 @@ function Mapa({ datos }) {
               }
             }}
           >
-            PERCEPCIÓN DE CRIMEN
+            PERCEPCIÁ“N DE CRIMEN
           </button>
           <button
             onClick={() => setViewMode('credito')}
@@ -5549,7 +5100,7 @@ function Mapa({ datos }) {
               }
             }}
           >
-            ACCESO A CRÉDITO
+            ACCESO A CRÁ‰DITO
           </button>
         </div>
       </div>
@@ -5747,7 +5298,7 @@ function Mapa({ datos }) {
           flexWrap: 'wrap'
         }}>
           <div style={{ fontSize: '13px', fontWeight: '600', color: COLORS.textSecondary }}>
-            ACCESO A CRÉDITO:
+            ACCESO A CRÁ‰DITO:
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '20px', height: '20px', background: '#ff0000', borderRadius: '4px' }} />
@@ -5938,7 +5489,7 @@ function Footer() {
         color: COLORS.textSecondary
       }}>
         <div>
-          © 2025-2026 MIT LIFT Lab · Equipo {TEAM_DATA.name}
+          Â© 2025-2026 MIT LIFT Lab Â· Equipo {TEAM_DATA.name}
         </div>
         <div style={{
           display: 'flex',
@@ -6072,17 +5623,17 @@ function calcularIndicadores(datos) {
   ).length;
   const pctLocalPropio = total > 0 ? (localPropio / total) * 100 : 0;
 
-  const añoActual = new Date().getFullYear();
-  const sumaAños = datos.reduce((acc, c) => {
-    const añoApertura = parseFloat(c.año_apertura);
-    if (isNaN(añoApertura) || añoApertura > añoActual) return acc;
-    return acc + (añoActual - añoApertura);
+  const anioActual = new Date().getFullYear();
+  const sumaAnios = datos.reduce((acc, c) => {
+    const anioApertura = parseFloat(c.año_apertura);
+    if (isNaN(anioApertura) || anioApertura > anioActual) return acc;
+    return acc + (anioActual - anioApertura);
   }, 0);
-  const conteoAños = datos.filter(c => {
-    const año = parseFloat(c.año_apertura);
-    return !isNaN(año) && año <= añoActual;
+  const conteoAnios = datos.filter(c => {
+    const anio = parseFloat(c.año_apertura);
+    return !isNaN(anio) && anio <= anioActual;
   }).length;
-  const promAñosOperacion = conteoAños > 0 ? sumaAños / conteoAños : 0;
+  const promAniosOperacion = conteoAnios > 0 ? sumaAnios / conteoAnios : 0;
 
   return {
     total,
@@ -6092,7 +5643,7 @@ function calcularIndicadores(datos) {
     pctExpectativas: formatearNumero(pctExpectativas),
     pctCrecimiento: formatearNumero(pctCrecimiento),
     pctLocalPropio: formatearNumero(pctLocalPropio),
-    promAñosOperacion: formatearNumero(promAñosOperacion)
+    promAniosOperacion: formatearNumero(promAniosOperacion)
   };
 }
 
