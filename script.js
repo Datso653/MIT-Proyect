@@ -2828,24 +2828,43 @@ function SeccionAnalisis() {
           }}>
             {/* Hipótesis 1 */}
             <div style={{
-              padding: '24px',
+              padding: '30px',
               backgroundColor: COLORS.background,
-              borderRadius: '8px',
+              borderRadius: '12px',
+              border: `1px solid #ff440040`,
               borderLeft: `4px solid #ff4400`,
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
-            }}>
+              boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              cursor: 'default'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 68, 0, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
+            }}
+            >
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
-                marginBottom: '12px'
+                marginBottom: '16px'
               }}>
-                <span style={{ fontSize: '24px' }}>🔥</span>
+                <div style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: '#ff4400',
+                  boxShadow: '0 0 12px #ff4400'
+                }} />
                 <h4 style={{
-                  fontSize: '18px',
+                  fontSize: '19px',
                   fontWeight: '600',
                   color: '#ff4400',
-                  margin: 0
+                  margin: 0,
+                  letterSpacing: '-0.01em'
                 }}>
                   Crimen alto + Sin crédito = ¿Menor expectativa de crecimiento?
                 </h4>
@@ -2853,8 +2872,9 @@ function SeccionAnalisis() {
               <p style={{ 
                 fontSize: '15px',
                 color: COLORS.textSecondary,
-                lineHeight: '1.7',
-                margin: 0
+                lineHeight: '1.8',
+                margin: 0,
+                paddingLeft: '20px'
               }}>
                 Los comercios ubicados en zonas con alta percepción de inseguridad y sin acceso a financiamiento 
                 podrían presentar expectativas de crecimiento significativamente menores. La combinación de estos 
@@ -2865,24 +2885,43 @@ function SeccionAnalisis() {
 
             {/* Hipótesis 2 */}
             <div style={{
-              padding: '24px',
+              padding: '30px',
               backgroundColor: COLORS.background,
-              borderRadius: '8px',
+              borderRadius: '12px',
+              border: `1px solid #00cc0040`,
               borderLeft: `4px solid #00cc00`,
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
-            }}>
+              boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              cursor: 'default'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 204, 0, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
+            }}
+            >
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
-                marginBottom: '12px'
+                marginBottom: '16px'
               }}>
-                <span style={{ fontSize: '24px' }}>💰</span>
+                <div style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: '#00cc00',
+                  boxShadow: '0 0 12px #00cc00'
+                }} />
                 <h4 style={{
-                  fontSize: '18px',
+                  fontSize: '19px',
                   fontWeight: '600',
                   color: '#00cc00',
-                  margin: 0
+                  margin: 0,
+                  letterSpacing: '-0.01em'
                 }}>
                   Crimen bajo + Con crédito = ¿Mayor inversión tecnológica?
                 </h4>
@@ -2890,8 +2929,9 @@ function SeccionAnalisis() {
               <p style={{ 
                 fontSize: '15px',
                 color: COLORS.textSecondary,
-                lineHeight: '1.7',
-                margin: 0
+                lineHeight: '1.8',
+                margin: 0,
+                paddingLeft: '20px'
               }}>
                 Los establecimientos en zonas percibidas como seguras y con acceso a múltiples fuentes de 
                 financiamiento podrían mostrar niveles superiores de adopción tecnológica. El entorno favorable 
@@ -5133,7 +5173,7 @@ function Mapa({ datos }) {
             </strong>
             <div style="font-size: 13px; color: ${COLORS.textSecondary};">
               Tipo: ${comercio.tipo_comercio || 'N/A'}<br>
-              ${comercio.reja ? '🔒 Con rejas de seguridad' : ''}
+              ${comercio.reja ? 'Con rejas de seguridad' : ''}
             </div>
           </div>
         `);
@@ -5229,7 +5269,7 @@ function Mapa({ datos }) {
             border-radius: 4px;
           ">
             <strong style="color: ${color}; display: block; margin-bottom: 8px;">
-              ${numFuentes === 0 ? '❌ Sin acceso a crédito' : `✅ ${numFuentes} fuente${numFuentes > 1 ? 's' : ''} de crédito`}
+              ${numFuentes === 0 ? 'Sin acceso a crédito' : `${numFuentes} fuente${numFuentes > 1 ? 's' : ''} de crédito`}
             </strong>
             <div style="font-size: 13px; color: ${COLORS.textSecondary};">
               Tipo: ${comercio.tipo_comercio || 'N/A'}<br>
@@ -5330,64 +5370,101 @@ function Mapa({ datos }) {
         {/* Toggle de vista con 3 opciones */}
         <div style={{
           display: 'inline-flex',
-          gap: '8px',
+          gap: '12px',
           backgroundColor: COLORS.surface,
-          padding: '6px',
-          borderRadius: '8px',
+          padding: '8px',
+          borderRadius: '12px',
           border: `1px solid ${COLORS.border}`,
           flexWrap: 'wrap',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
         }}>
           <button
             onClick={() => setViewMode('general')}
             style={{
-              padding: '12px 20px',
+              padding: '14px 28px',
               fontSize: '13px',
               fontWeight: '600',
               backgroundColor: viewMode === 'general' ? COLORS.primary : 'transparent',
               color: viewMode === 'general' ? COLORS.background : COLORS.textSecondary,
               border: 'none',
-              borderRadius: '6px',
+              borderRadius: '8px',
               cursor: 'pointer',
-              transition: 'all 0.3s',
-              letterSpacing: '0.05em'
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              letterSpacing: '0.05em',
+              boxShadow: viewMode === 'general' ? `0 4px 12px ${COLORS.primary}40` : 'none',
+              transform: viewMode === 'general' ? 'translateY(-2px)' : 'translateY(0)'
+            }}
+            onMouseEnter={(e) => {
+              if (viewMode !== 'general') {
+                e.currentTarget.style.backgroundColor = `${COLORS.primary}20`;
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (viewMode !== 'general') {
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }
             }}
           >
-            📍 UBICACIONES
+            UBICACIONES
           </button>
           <button
             onClick={() => setViewMode('crimen')}
             style={{
-              padding: '12px 20px',
+              padding: '14px 28px',
               fontSize: '13px',
               fontWeight: '600',
               backgroundColor: viewMode === 'crimen' ? '#ff4400' : 'transparent',
               color: viewMode === 'crimen' ? COLORS.background : COLORS.textSecondary,
               border: 'none',
-              borderRadius: '6px',
+              borderRadius: '8px',
               cursor: 'pointer',
-              transition: 'all 0.3s',
-              letterSpacing: '0.05em'
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              letterSpacing: '0.05em',
+              boxShadow: viewMode === 'crimen' ? '0 4px 12px #ff440040' : 'none',
+              transform: viewMode === 'crimen' ? 'translateY(-2px)' : 'translateY(0)'
+            }}
+            onMouseEnter={(e) => {
+              if (viewMode !== 'crimen') {
+                e.currentTarget.style.backgroundColor = '#ff440020';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (viewMode !== 'crimen') {
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }
             }}
           >
-            🔥 CRIMEN
+            PERCEPCIÓN DE CRIMEN
           </button>
           <button
             onClick={() => setViewMode('credito')}
             style={{
-              padding: '12px 20px',
+              padding: '14px 28px',
               fontSize: '13px',
               fontWeight: '600',
               backgroundColor: viewMode === 'credito' ? '#00cc00' : 'transparent',
               color: viewMode === 'credito' ? COLORS.background : COLORS.textSecondary,
               border: 'none',
-              borderRadius: '6px',
+              borderRadius: '8px',
               cursor: 'pointer',
-              transition: 'all 0.3s',
-              letterSpacing: '0.05em'
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              letterSpacing: '0.05em',
+              boxShadow: viewMode === 'credito' ? '0 4px 12px #00cc0040' : 'none',
+              transform: viewMode === 'credito' ? 'translateY(-2px)' : 'translateY(0)'
+            }}
+            onMouseEnter={(e) => {
+              if (viewMode !== 'credito') {
+                e.currentTarget.style.backgroundColor = '#00cc0020';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (viewMode !== 'credito') {
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }
             }}
           >
-            💰 CRÉDITO
+            ACCESO A CRÉDITO
           </button>
         </div>
       </div>
