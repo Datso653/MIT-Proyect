@@ -332,6 +332,7 @@ function App() {
       <Navbar />
       <Hero scrollY={scrollY} />
       <ProjectIntro />
+      <UniversidadesParticipantes />
       {datos.length > 0 && <Mapa datos={datos} />}
       {indicadores && <ResumenEjecutivo indicadores={indicadores} />}
       {indicadores && <Indicadores data={indicadores} />}
@@ -739,6 +740,118 @@ function ProjectIntro() {
             mercados emergentes.
           </p>
         </div>
+      </div>
+    </section>
+  );
+}
+
+// === UNIVERSIDADES PARTICIPANTES ===
+function UniversidadesParticipantes() {
+  const universidades = [
+    { nombre: 'MIT', fullName: 'Massachusetts Institute of Technology' },
+    { nombre: 'UBA', fullName: 'Universidad de Buenos Aires' },
+    { nombre: 'UNSAM', fullName: 'Universidad Nacional de San Martín' },
+    { nombre: 'UP', fullName: 'Universidad de Palermo' },
+    { nombre: 'ITBA', fullName: 'Instituto Tecnológico de Buenos Aires' },
+    { nombre: 'UNICEN', fullName: 'Universidad Nacional del Centro (Tandil)' }
+  ];
+
+  const universidadesDuplicadas = [...universidades, ...universidades];
+
+  return (
+    <section style={{
+      padding: '80px 0',
+      backgroundColor: COLORS.surface,
+      borderTop: `1px solid ${COLORS.border}`,
+      borderBottom: `1px solid ${COLORS.border}`,
+      overflow: 'hidden',
+      position: 'relative'
+    }}>
+      <div style={{
+        textAlign: 'center',
+        marginBottom: '60px'
+      }}>
+        <div style={{
+          fontSize: '12px',
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: COLORS.primary,
+          marginBottom: '16px',
+          fontWeight: '500'
+        }}>
+          Instituciones Participantes
+        </div>
+        <h3 style={{
+          fontFamily: '"Crimson Pro", serif',
+          fontSize: '32px',
+          fontWeight: '400',
+          color: COLORS.text
+        }}>
+          Colaboración Interinstitucional
+        </h3>
+      </div>
+
+      <style>{`
+        @keyframes scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .logos-container {
+          animation: scroll 30s linear infinite;
+        }
+        .logos-container:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '60px'
+      }} className="logos-container">
+        {universidadesDuplicadas.map((uni, idx) => (
+          <div
+            key={idx}
+            style={{
+              minWidth: '200px',
+              padding: '30px 40px',
+              backgroundColor: COLORS.background,
+              borderRadius: '8px',
+              border: `1px solid ${COLORS.border}`,
+              textAlign: 'center',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = COLORS.primary;
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.boxShadow = `0 8px 24px rgba(79, 195, 247, 0.2)`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = COLORS.border;
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            <div style={{
+              fontFamily: '"Crimson Pro", serif',
+              fontSize: '28px',
+              fontWeight: '700',
+              color: COLORS.primary,
+              marginBottom: '8px',
+              letterSpacing: '0.05em'
+            }}>
+              {uni.nombre}
+            </div>
+            <div style={{
+              fontSize: '11px',
+              color: COLORS.textSecondary,
+              lineHeight: '1.4'
+            }}>
+              {uni.fullName}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
