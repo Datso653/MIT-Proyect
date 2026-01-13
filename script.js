@@ -1375,15 +1375,38 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
 
 // === ANÁLISIS VISUAL CON GRÁFICOS SVG ===
 function AnalisisVisual({ data, indicadores }) {
+  const [visibleItems, setVisibleItems] = useState(new Set());
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleItems(prev => new Set([...prev, entry.target.dataset.index]));
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '50px' }
+    );
+
+    const elements = sectionRef.current?.querySelectorAll('[data-index]');
+    elements?.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="analisis-visual" style={{
+    <section id="analisis-visual" ref={sectionRef} style={{
       padding: '120px 60px',
       maxWidth: '1400px',
       margin: '0 auto'
     }}>
       <div style={{
         marginBottom: '80px',
-        textAlign: 'center'
+        textAlign: 'center',
+        opacity: 0,
+        animation: 'fadeInUp 0.8s ease-out forwards'
       }}>
         <div style={{
           fontSize: '12px',
@@ -1415,29 +1438,70 @@ function AnalisisVisual({ data, indicadores }) {
       </div>
 
       {/* Primera fila: Distribución de comercios y Trabajadores */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
-        gap: '40px',
-        marginBottom: '40px'
-      }}>
-        <GraficoDistribucion data={data.distribucionComercios} />
-        <GraficoBarras data={data.trabajadoresPorTipo} />
+      <div 
+        data-index="0"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+          gap: '40px',
+          marginBottom: '40px',
+          opacity: visibleItems.has('0') ? 1 : 0,
+          transform: visibleItems.has('0') ? 'translateY(0)' : 'translateY(40px)',
+          transition: 'opacity 0.8s ease-out, transform 0.8s ease-out'
+        }}>
+        <div style={{
+          opacity: visibleItems.has('0') ? 1 : 0,
+          transform: visibleItems.has('0') ? 'translateX(0)' : 'translateX(-40px)',
+          transition: 'opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s'
+        }}>
+          <GraficoDistribucion data={data.distribucionComercios} />
+        </div>
+        <div style={{
+          opacity: visibleItems.has('0') ? 1 : 0,
+          transform: visibleItems.has('0') ? 'translateX(0)' : 'translateX(40px)',
+          transition: 'opacity 0.8s ease-out 0.4s, transform 0.8s ease-out 0.4s'
+        }}>
+          <GraficoBarras data={data.trabajadoresPorTipo} />
+        </div>
       </div>
 
       {/* Segunda fila: Fuentes de crédito (barras horizontales) */}
-      <div style={{ marginBottom: '40px' }}>
+      <div 
+        data-index="1"
+        style={{ 
+          marginBottom: '40px',
+          opacity: visibleItems.has('1') ? 1 : 0,
+          transform: visibleItems.has('1') ? 'scale(1)' : 'scale(0.95)',
+          transition: 'opacity 0.8s ease-out, transform 0.8s ease-out'
+        }}>
         <GraficoBarrasHorizontales data={data.creditoPorFuente} pctCredito={indicadores?.pctCredito || 0} />
       </div>
 
       {/* Tercera fila: Adopción tecnológica y Salarios */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
-        gap: '40px'
-      }}>
-        <GraficoTierlist data={data.adopcionTecnologica} />
-        <GraficoSalarios data={data.salarioData} />
+      <div 
+        data-index="2"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+          gap: '40px',
+          opacity: visibleItems.has('2') ? 1 : 0,
+          transform: visibleItems.has('2') ? 'translateY(0)' : 'translateY(40px)',
+          transition: 'opacity 0.8s ease-out, transform 0.8s ease-out'
+        }}>
+        <div style={{
+          opacity: visibleItems.has('2') ? 1 : 0,
+          transform: visibleItems.has('2') ? 'translateX(0)' : 'translateX(-40px)',
+          transition: 'opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s'
+        }}>
+          <GraficoTierlist data={data.adopcionTecnologica} />
+        </div>
+        <div style={{
+          opacity: visibleItems.has('2') ? 1 : 0,
+          transform: visibleItems.has('2') ? 'translateX(0)' : 'translateX(40px)',
+          transition: 'opacity 0.8s ease-out 0.4s, transform 0.8s ease-out 0.4s'
+        }}>
+          <GraficoSalarios data={data.salarioData} />
+        </div>
       </div>
     </section>
   );
@@ -1446,6 +1510,13 @@ function AnalisisVisual({ data, indicadores }) {
 // Gráfico de distribución (Donut)
 function GraficoDistribucion({ data }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    // Trigger animation after component mounts
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
   
   const total = data.reduce((acc, d) => acc + d.cantidad, 0);
   let currentAngle = 0;
@@ -1471,7 +1542,8 @@ function GraficoDistribucion({ data }) {
       backgroundColor: COLORS.surface,
       padding: '40px',
       borderRadius: '4px',
-      border: `1px solid ${COLORS.border}`
+      border: `1px solid ${COLORS.border}`,
+      transition: 'all 0.3s ease'
     }}>
       <h3 style={{
         fontFamily: '"Crimson Pro", serif',
@@ -1492,7 +1564,11 @@ function GraficoDistribucion({ data }) {
       
       <div style={{ display: 'flex', gap: '40px', alignItems: 'center', flexWrap: 'wrap' }}>
         {/* SVG Donut Chart */}
-        <svg width="200" height="200" viewBox="0 0 200 200">
+        <svg width="200" height="200" viewBox="0 0 200 200" style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'rotate(0deg)' : 'rotate(-90deg)',
+          transition: 'opacity 1s ease-out, transform 1s ease-out'
+        }}>
           {segments.map((seg, idx) => {
             const isHovered = hoveredIndex === idx;
             const radius = isHovered ? 75 : 70;
@@ -1527,8 +1603,11 @@ function GraficoDistribucion({ data }) {
                 strokeWidth="2"
                 style={{
                   cursor: 'pointer',
-                  transition: 'all 0.3s',
-                  opacity: hoveredIndex !== null && hoveredIndex !== idx ? 0.5 : 1
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  opacity: isVisible ? (hoveredIndex !== null && hoveredIndex !== idx ? 0.5 : 1) : 0,
+                  transformOrigin: '100px 100px',
+                  animationDelay: `${idx * 0.1}s`,
+                  animation: isVisible ? `segmentFadeIn 0.6s ease-out forwards ${idx * 0.1}s` : 'none'
                 }}
                 onMouseEnter={() => setHoveredIndex(idx)}
                 onMouseLeave={() => setHoveredIndex(null)}
@@ -1587,6 +1666,12 @@ function GraficoDistribucion({ data }) {
 function GraficoBarras({ data }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), 200);
+    return () => clearTimeout(timer);
+  }, []);
   
   const maxValue = Math.ceil(Math.max(...data.map(d => d.promedio)) * 1.15); // +15% padding superior
   const height = 300;
