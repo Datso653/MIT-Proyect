@@ -2725,7 +2725,7 @@ function GraficoSalarios({ data }) {
                       top: '-8px',
                       bottom: '-8px',
                       width: '2px',
-                      backgroundColor: 'COLORS.accent',
+                      backgroundColor: COLORS.accent,
                       opacity: 0.6
                     }}>
                       <div style={{
@@ -2734,7 +2734,7 @@ function GraficoSalarios({ data }) {
                         left: '50%',
                         transform: 'translateX(-50%)',
                         fontSize: '10px',
-                        color: 'COLORS.accent',
+                        color: COLORS.accent,
                         whiteSpace: 'nowrap',
                         fontWeight: '600'
                       }}>
@@ -3244,7 +3244,7 @@ function ModeloCrecimiento({ data }) {
         left: 0,
         width: '4px',
         height: '100%',
-        backgroundColor: 'COLORS.primary'
+        backgroundColor: COLORS.primary
       }} />
       
       <h3 style={{
@@ -3274,10 +3274,10 @@ function ModeloCrecimiento({ data }) {
         gap: '16px',
         marginBottom: '30px'
       }}>
-        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color="COLORS.primary" />
+        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color={COLORS.primary} />
         <MetricaCard label="AUC-ROC" value={data.metricas.auc_roc.toFixed(3)} color="#4FC3F7" />
-        <MetricaCard label="Precision" value={`${(data.metricas.precision * 100).toFixed(1)}%`} color="COLORS.accent" />
-        <MetricaCard label="Recall" value={`${(data.metricas.recall * 100).toFixed(1)}%`} color="COLORS.accentDark" />
+        <MetricaCard label="Precision" value={`${(data.metricas.precision * 100).toFixed(1)}%`} color={COLORS.accent} />
+        <MetricaCard label="Recall" value={`${(data.metricas.recall * 100).toFixed(1)}%`} color={COLORS.accentDark} />
       </div>
 
       {/* Top 3 Features */}
@@ -3319,7 +3319,7 @@ function ModeloCrecimiento({ data }) {
               <div style={{
                 height: '100%',
                 width: `${f.importance * 100}%`,
-                backgroundColor: 'COLORS.primary',
+                backgroundColor: COLORS.primary,
                 transition: 'width 1s ease-out'
               }} />
             </div>
@@ -3369,7 +3369,7 @@ function ModeloCrecimiento({ data }) {
           
           <FeatureImportanceChart 
             features={data.feature_importance.slice(0, 5)} 
-            color="COLORS.primary"
+            color={COLORS.primary}
             title="Top 5 Variables Predictivas"
           />
         </div>
@@ -3473,7 +3473,7 @@ function ModeloFactoresExternos({ data }) {
         left: 0,
         width: '4px',
         height: '100%',
-        backgroundColor: 'COLORS.accent'
+        backgroundColor: COLORS.accent
       }} />
       
       <h3 style={{
@@ -3503,7 +3503,7 @@ function ModeloFactoresExternos({ data }) {
         gap: '16px',
         marginBottom: '30px'
       }}>
-        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color="COLORS.accent" />
+        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color={COLORS.accent} />
         <MetricaCard label="F1-Score" value={`${(data.metricas.f1_weighted * 100).toFixed(1)}%`} color="#4FC3F7" />
       </div>
 
@@ -3553,7 +3553,7 @@ function ModeloFactoresExternos({ data }) {
                 <div style={{
                   height: '100%',
                   width: `${f.importance * 100}%`,
-                  backgroundColor: 'COLORS.accent',
+                  backgroundColor: COLORS.accent,
                   transition: 'width 1s ease-out'
                 }} />
               </div>
@@ -3608,14 +3608,14 @@ function ModeloFactoresExternos({ data }) {
           <DistribucionPredicciones
             distribucion={data.distribucion_clases}
             labels={['Peor', 'Igual', 'Mejor']}
-            colors={['COLORS.accentDark', 'COLORS.accent', 'COLORS.primary']}
+            colors={[COLORS.accentDark, COLORS.accent, COLORS.primary]}
           />
           
           <div style={{ height: '40px' }} />
           
           <FeatureImportanceChart 
             features={data.feature_importance.slice(0, 6)} 
-            color="COLORS.accent"
+            color={COLORS.accent}
             title="Top 6 Variables Predictivas"
           />
         </div>
@@ -4130,7 +4130,7 @@ function ScatterPlot({ realValues, predictions, title }) {
             y1={scaleY(minVal)}
             x2={scaleX(maxVal)}
             y2={scaleY(maxVal)}
-            stroke="COLORS.accentDark"
+            stroke={COLORS.accentDark}
             strokeWidth="2"
             strokeDasharray="4 4"
           />
@@ -4291,9 +4291,9 @@ function AfectacionesChart() {
   const maxValue = 2.0;
   
   const colors = {
-    Peor: 'COLORS.accentDark',
-    Igual: 'COLORS.accent',
-    Mejor: 'COLORS.primary'
+    Peor: COLORS.accentDark,
+    Igual: COLORS.accent,
+    Mejor: COLORS.primary
   };
   
   return (
