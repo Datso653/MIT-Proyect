@@ -346,7 +346,7 @@ function App() {
 }
 
 // === HERO SECTION ===
-// === NAVBAR CON MENÁš DESPLEGABLE ===
+// === NAVBAR CON MENÚ DESPLEGABLE ===
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -363,7 +363,7 @@ function Navbar() {
     { id: 'hero', label: 'Inicio' },
     { id: 'intro', label: 'Introducción' },
     { id: 'mapa', label: 'Mapa' },
-    { id: 'resumen', label: 'Hallazgos Principales' },
+    { id: 'resumen', label: 'Hipótesis y Primeras Impresiones' },
     { id: 'indicadores', label: 'Indicadores' },
     { id: 'analisis-visual', label: 'Análisis Visual' },
     { id: 'machine-learning', label: 'Machine Learning' },
@@ -943,7 +943,7 @@ function ResumenEjecutivo({ indicadores }) {
             marginBottom: '24px',
             fontWeight: '700'
           }}>
-            Principales hallazgos
+            Hipótesis y Primeras Impresiones
           </div>
           <h2 style={{
             fontFamily: '"Crimson Pro", serif',
@@ -1236,6 +1236,155 @@ function ResumenEjecutivo({ indicadores }) {
             }}>Para los comerciantes:</strong> Este estudio refleja 
             la realidad de tu sector. Los datos completos y herramientas de análisis están disponibles 
             más abajo para ayudarte a tomar mejores decisiones.
+          </p>
+          <h3 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: '24px',
+            fontWeight: '600',
+            color: COLORS.accent,
+            marginTop: '50px',
+            marginBottom: '20px'
+          }}>
+            Hipótesis geoespaciales
+          </h3>
+          
+          <p style={{ marginBottom: '20px', color: COLORS.textSecondary }}>
+            El análisis de los mapas de calor de percepción de crimen y acceso a crédito revela patrones 
+            espaciales que sugieren correlaciones significativas entre factores geográficos y el desarrollo 
+            comercial. Proponemos las siguientes hipótesis a explorar:
+          </p>
+
+          <div style={{
+            display: 'grid',
+            gap: '20px',
+            marginTop: '30px'
+          }}>
+            {/* Hipótesis 1 */}
+            <div style={{
+              padding: '30px',
+              backgroundColor: COLORS.background,
+              borderRadius: '12px',
+              border: `1px solid #ff440040`,
+              borderLeft: `4px solid #ff4400`,
+              boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              cursor: 'default'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 68, 0, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
+            }}
+            >
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                marginBottom: '16px'
+              }}>
+                <div style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: '#ff4400',
+                  boxShadow: '0 0 12px #ff4400'
+                }} />
+                <h4 style={{
+                  fontSize: '19px',
+                  fontWeight: '600',
+                  color: '#ff4400',
+                  margin: 0,
+                  letterSpacing: '-0.01em'
+                }}>
+                  Crimen alto + Sin crédito = ¿Menor expectativa de crecimiento?
+                </h4>
+              </div>
+              <p style={{ 
+                fontSize: '15px',
+                color: COLORS.textSecondary,
+                lineHeight: '1.8',
+                margin: 0,
+                paddingLeft: '20px'
+              }}>
+                Los comercios ubicados en zonas con alta percepción de inseguridad y sin acceso a financiamiento 
+                podrían presentar expectativas de crecimiento significativamente menores. La combinación de estos 
+                dos factores adversos podría crear una barrera doble que limite la visión expansiva de los 
+                emprendedores, generando un círculo vicioso de estancamiento económico en ciertas áreas del AMBA.
+              </p>
+            </div>
+
+            {/* Hipótesis 2 */}
+            <div style={{
+              padding: '30px',
+              backgroundColor: COLORS.background,
+              borderRadius: '12px',
+              border: `1px solid #00cc0040`,
+              borderLeft: `4px solid #00cc00`,
+              boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              cursor: 'default'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 204, 0, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
+            }}
+            >
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                marginBottom: '16px'
+              }}>
+                <div style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: '#00cc00',
+                  boxShadow: '0 0 12px #00cc00'
+                }} />
+                <h4 style={{
+                  fontSize: '19px',
+                  fontWeight: '600',
+                  color: '#00cc00',
+                  margin: 0,
+                  letterSpacing: '-0.01em'
+                }}>
+                  Crimen bajo + Con crédito = ¿Mayor inversión tecnológica?
+                </h4>
+              </div>
+              <p style={{ 
+                fontSize: '15px',
+                color: COLORS.textSecondary,
+                lineHeight: '1.8',
+                margin: 0,
+                paddingLeft: '20px'
+              }}>
+                Los establecimientos en zonas percibidas como seguras y con acceso a múltiples fuentes de 
+                financiamiento podrían mostrar niveles superiores de adopción tecnológica. El entorno favorable 
+                permitiría a los comerciantes invertir con confianza en herramientas digitales, sistemas de gestión 
+                avanzados y plataformas de e-commerce, acelerando su transformación digital y competitividad.
+              </p>
+            </div>
+          </div>
+
+          <p style={{ 
+            marginTop: '30px',
+            marginBottom: '24px', 
+            color: COLORS.textSecondary,
+            fontSize: '14px',
+            fontStyle: 'italic'
+          }}>
+            Estas hipótesis requieren análisis estadístico riguroso para validar las correlaciones observadas 
+            espacialmente. Los mapas de calor interactivos proporcionan una herramienta visual inicial para 
+            identificar estos patrones, pero se necesitan pruebas de significancia estadística y controles por 
+            variables confusoras para establecer relaciones causales.
           </p>
         </div>
       </div>
@@ -2983,158 +3132,7 @@ function SeccionAnalisis() {
             y expresa deseo de expandir sus operaciones, lo que indica resiliencia y visión de futuro.
           </p>
 
-          <h3 style={{
-            fontFamily: '"Crimson Pro", serif',
-            fontSize: '24px',
-            fontWeight: '600',
-            color: COLORS.accent,
-            marginTop: '50px',
-            marginBottom: '20px'
-          }}>
-            Hipótesis geoespaciales
-          </h3>
-          
-          <p style={{ marginBottom: '20px', color: COLORS.textSecondary }}>
-            El análisis de los mapas de calor de percepción de crimen y acceso a crédito revela patrones 
-            espaciales que sugieren correlaciones significativas entre factores geográficos y el desarrollo 
-            comercial. Proponemos las siguientes hipótesis a explorar:
-          </p>
-
           <div style={{
-            display: 'grid',
-            gap: '20px',
-            marginTop: '30px'
-          }}>
-            {/* Hipótesis 1 */}
-            <div style={{
-              padding: '30px',
-              backgroundColor: COLORS.background,
-              borderRadius: '12px',
-              border: `1px solid #ff440040`,
-              borderLeft: `4px solid #ff4400`,
-              boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
-              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-              cursor: 'default'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 68, 0, 0.3)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
-            }}
-            >
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                marginBottom: '16px'
-              }}>
-                <div style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  backgroundColor: '#ff4400',
-                  boxShadow: '0 0 12px #ff4400'
-                }} />
-                <h4 style={{
-                  fontSize: '19px',
-                  fontWeight: '600',
-                  color: '#ff4400',
-                  margin: 0,
-                  letterSpacing: '-0.01em'
-                }}>
-                  Crimen alto + Sin crédito = ¿Menor expectativa de crecimiento?
-                </h4>
-              </div>
-              <p style={{ 
-                fontSize: '15px',
-                color: COLORS.textSecondary,
-                lineHeight: '1.8',
-                margin: 0,
-                paddingLeft: '20px'
-              }}>
-                Los comercios ubicados en zonas con alta percepción de inseguridad y sin acceso a financiamiento 
-                podrían presentar expectativas de crecimiento significativamente menores. La combinación de estos 
-                dos factores adversos podría crear una barrera doble que limite la visión expansiva de los 
-                emprendedores, generando un círculo vicioso de estancamiento económico en ciertas áreas del AMBA.
-              </p>
-            </div>
-
-            {/* Hipótesis 2 */}
-            <div style={{
-              padding: '30px',
-              backgroundColor: COLORS.background,
-              borderRadius: '12px',
-              border: `1px solid #00cc0040`,
-              borderLeft: `4px solid #00cc00`,
-              boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
-              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-              cursor: 'default'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 204, 0, 0.3)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
-            }}
-            >
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                marginBottom: '16px'
-              }}>
-                <div style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  backgroundColor: '#00cc00',
-                  boxShadow: '0 0 12px #00cc00'
-                }} />
-                <h4 style={{
-                  fontSize: '19px',
-                  fontWeight: '600',
-                  color: '#00cc00',
-                  margin: 0,
-                  letterSpacing: '-0.01em'
-                }}>
-                  Crimen bajo + Con crédito = ¿Mayor inversión tecnológica?
-                </h4>
-              </div>
-              <p style={{ 
-                fontSize: '15px',
-                color: COLORS.textSecondary,
-                lineHeight: '1.8',
-                margin: 0,
-                paddingLeft: '20px'
-              }}>
-                Los establecimientos en zonas percibidas como seguras y con acceso a múltiples fuentes de 
-                financiamiento podrían mostrar niveles superiores de adopción tecnológica. El entorno favorable 
-                permitiría a los comerciantes invertir con confianza en herramientas digitales, sistemas de gestión 
-                avanzados y plataformas de e-commerce, acelerando su transformación digital y competitividad.
-              </p>
-            </div>
-          </div>
-
-          <p style={{ 
-            marginTop: '30px',
-            marginBottom: '24px', 
-            color: COLORS.textSecondary,
-            fontSize: '14px',
-            fontStyle: 'italic'
-          }}>
-            Estas hipótesis requieren análisis estadístico riguroso para validar las correlaciones observadas 
-            espacialmente. Los mapas de calor interactivos proporcionan una herramienta visual inicial para 
-            identificar estos patrones, pero se necesitan pruebas de significancia estadística y controles por 
-            variables confusoras para establecer relaciones causales.
-          </p>
-
-          <div style={{
-            marginTop: '40px',
             padding: '30px',
             backgroundColor: COLORS.background,
             borderRadius: '4px',
@@ -3516,7 +3514,7 @@ function ModeloCrecimiento({ data }) {
             Este modelo de clasificación binaria utiliza <strong style={{ color: COLORS.text }}>Random Forest</strong> para 
             predecir la probabilidad de que un comercio desee expandirse. Con un accuracy de {(data.metricas.accuracy * 100).toFixed(1)}% 
             y un recall de {(data.metricas.recall * 100).toFixed(1)}%, el modelo identifica correctamente la mayoría de los comercios 
-            con intención de crecimiento. Las variables más predictivas son la antigÁ¼edad del negocio ({(data.feature_importance[0].importance * 100).toFixed(1)}% 
+            con intención de crecimiento. Las variables más predictivas son la antigüedad del negocio ({(data.feature_importance[0].importance * 100).toFixed(1)}% 
             de importancia) y la cantidad de trabajadores, sugiriendo que comercios más establecidos y con mayor personal tienden a buscar expansión.
           </p>
 
@@ -3762,7 +3760,7 @@ function ModeloFactoresExternos({ data }) {
             Clasificador multiclase <strong style={{ color: COLORS.text }}>Random Forest</strong> que predice si las ventas 
             empeorarán, se mantendrán o mejorarán según factores externos. Con {(data.metricas.accuracy * 100).toFixed(1)}% de accuracy, 
             el modelo identifica que <strong style={{ color: COLORS.text }}>los precios</strong> son el factor más determinante, 
-            seguido por la competencia. Interesantemente, la antigÁ¼edad del negocio también es altamente predictiva, sugiriendo 
+            seguido por la competencia. Interesantemente, la antigüedad del negocio también es altamente predictiva, sugiriendo 
             que comercios más establecidos manejan mejor las adversidades externas.
           </p>
 
@@ -5188,7 +5186,7 @@ function Mapa({ datos }) {
               }
             }}
           >
-            PERCEPCIÁ“N DE CRIMEN
+            PERCEPCIÓN DE CRIMEN
           </button>
           <button
             onClick={() => setViewMode('credito')}
@@ -5217,7 +5215,7 @@ function Mapa({ datos }) {
               }
             }}
           >
-            ACCESO A CRÁ‰DITO
+            ACCESO A CRÉDITO
           </button>
         </div>
       </div>
@@ -5415,7 +5413,7 @@ function Mapa({ datos }) {
           flexWrap: 'wrap'
         }}>
           <div style={{ fontSize: '13px', fontWeight: '600', color: COLORS.textSecondary }}>
-            ACCESO A CRÁ‰DITO:
+            ACCESO A CRÉDITO:
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '20px', height: '20px', background: '#ff0000', borderRadius: '4px' }} />
