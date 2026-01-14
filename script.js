@@ -1264,15 +1264,15 @@ function ResumenEjecutivo({ indicadores }) {
               padding: '30px',
               backgroundColor: COLORS.background,
               borderRadius: '12px',
-              border: `1px solid #ff440040`,
-              borderLeft: `4px solid #ff4400`,
+              border: `1px solid #ffa50040`,
+              borderLeft: `4px solid #ffa500`,
               boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
               transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
               cursor: 'default'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 68, 0, 0.3)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 165, 0, 0.3)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
@@ -1282,38 +1282,76 @@ function ResumenEjecutivo({ indicadores }) {
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '12px',
+                justifyContent: 'space-between',
                 marginBottom: '16px'
               }}>
-                <div style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  backgroundColor: '#ff4400',
-                  boxShadow: '0 0 12px #ff4400'
-                }} />
-                <h4 style={{
-                  fontSize: '19px',
-                  fontWeight: '600',
-                  color: '#ff4400',
-                  margin: 0,
-                  letterSpacing: '-0.01em'
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    backgroundColor: '#ffa500',
+                    boxShadow: '0 0 12px #ffa500'
+                  }} />
+                  <h4 style={{
+                    fontSize: '19px',
+                    fontWeight: '600',
+                    color: '#ffa500',
+                    margin: 0,
+                    letterSpacing: '-0.01em'
+                  }}>
+                    H1: Crimen alto + Sin crédito → ¿Menor expectativa de crecimiento?
+                  </h4>
+                </div>
+                <span style={{
+                  padding: '6px 14px',
+                  backgroundColor: '#ffa50020',
+                  border: '1px solid #ffa500',
+                  borderRadius: '20px',
+                  fontSize: '12px',
+                  fontWeight: '700',
+                  color: '#ffa500',
+                  letterSpacing: '0.05em'
                 }}>
-                  Crimen alto + Sin crédito = ¿Menor expectativa de crecimiento?
-                </h4>
+                  NO RECHAZADA
+                </span>
               </div>
-              <p style={{ 
+              <div style={{ 
                 fontSize: '15px',
                 color: COLORS.textSecondary,
                 lineHeight: '1.8',
-                margin: 0,
                 paddingLeft: '20px'
               }}>
-                Los comercios ubicados en zonas con alta percepción de inseguridad y sin acceso a financiamiento 
-                podrían presentar expectativas de crecimiento significativamente menores. La combinación de estos 
-                dos factores adversos podría crear una barrera doble que limite la visión expansiva de los 
-                emprendedores, generando un círculo vicioso de estancamiento económico en ciertas áreas del AMBA.
-              </p>
+                <p style={{ marginBottom: '12px' }}>
+                  <strong style={{ color: COLORS.text }}>Resultados del análisis estadístico (n=710):</strong>
+                </p>
+                <ul style={{ margin: '12px 0', paddingLeft: '20px' }}>
+                  <li style={{ marginBottom: '8px' }}>
+                    Grupo adverso (crimen alto + sin crédito, n=34): <strong>76.5%</strong> quiere crecer
+                  </li>
+                  <li style={{ marginBottom: '8px' }}>
+                    Grupo comparación (n=676): <strong>78.4%</strong> quiere crecer
+                  </li>
+                  <li style={{ marginBottom: '8px' }}>
+                    Diferencia: <strong>1.9 puntos porcentuales</strong>
+                  </li>
+                  <li style={{ marginBottom: '8px' }}>
+                    Prueba Chi-cuadrado: χ²=0.003, <strong>p=0.96</strong> (no significativo)
+                  </li>
+                </ul>
+                <p style={{ 
+                  marginTop: '16px', 
+                  fontSize: '14px',
+                  fontStyle: 'italic',
+                  backgroundColor: '#ffa50010',
+                  padding: '12px',
+                  borderRadius: '6px'
+                }}>
+                  <strong>Conclusión:</strong> No se encontró evidencia estadística suficiente para confirmar que 
+                  la combinación de alta percepción de crimen y falta de acceso a crédito reduzca significativamente 
+                  las expectativas de crecimiento. Ambos grupos muestran intención similar (~77-78%).
+                </p>
+              </div>
             </div>
 
             {/* Hipótesis 2 */}
@@ -1321,15 +1359,15 @@ function ResumenEjecutivo({ indicadores }) {
               padding: '30px',
               backgroundColor: COLORS.background,
               borderRadius: '12px',
-              border: `1px solid #00cc0040`,
-              borderLeft: `4px solid #00cc00`,
+              border: `1px solid #ffa50040`,
+              borderLeft: `4px solid #ffa500`,
               boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
               transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
               cursor: 'default'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 204, 0, 0.3)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 165, 0, 0.3)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
@@ -1339,38 +1377,76 @@ function ResumenEjecutivo({ indicadores }) {
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '12px',
+                justifyContent: 'space-between',
                 marginBottom: '16px'
               }}>
-                <div style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  backgroundColor: '#00cc00',
-                  boxShadow: '0 0 12px #00cc00'
-                }} />
-                <h4 style={{
-                  fontSize: '19px',
-                  fontWeight: '600',
-                  color: '#00cc00',
-                  margin: 0,
-                  letterSpacing: '-0.01em'
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    backgroundColor: '#ffa500',
+                    boxShadow: '0 0 12px #ffa500'
+                  }} />
+                  <h4 style={{
+                    fontSize: '19px',
+                    fontWeight: '600',
+                    color: '#ffa500',
+                    margin: 0,
+                    letterSpacing: '-0.01em'
+                  }}>
+                    H2: Crimen bajo + Con crédito → ¿Mayor inversión tecnológica?
+                  </h4>
+                </div>
+                <span style={{
+                  padding: '6px 14px',
+                  backgroundColor: '#ffa50020',
+                  border: '1px solid #ffa500',
+                  borderRadius: '20px',
+                  fontSize: '12px',
+                  fontWeight: '700',
+                  color: '#ffa500',
+                  letterSpacing: '0.05em'
                 }}>
-                  Crimen bajo + Con crédito = ¿Mayor inversión tecnológica?
-                </h4>
+                  NO RECHAZADA
+                </span>
               </div>
-              <p style={{ 
+              <div style={{ 
                 fontSize: '15px',
                 color: COLORS.textSecondary,
                 lineHeight: '1.8',
-                margin: 0,
                 paddingLeft: '20px'
               }}>
-                Los establecimientos en zonas percibidas como seguras y con acceso a múltiples fuentes de 
-                financiamiento podrían mostrar niveles superiores de adopción tecnológica. El entorno favorable 
-                permitiría a los comerciantes invertir con confianza en herramientas digitales, sistemas de gestión 
-                avanzados y plataformas de e-commerce, acelerando su transformación digital y competitividad.
-              </p>
+                <p style={{ marginBottom: '12px' }}>
+                  <strong style={{ color: COLORS.text }}>Resultados del análisis estadístico (n=702):</strong>
+                </p>
+                <ul style={{ margin: '12px 0', paddingLeft: '20px' }}>
+                  <li style={{ marginBottom: '8px' }}>
+                    Grupo favorable (crimen bajo + con crédito, n=289): <strong>20.8%</strong> tiene tecnología alta
+                  </li>
+                  <li style={{ marginBottom: '8px' }}>
+                    Grupo comparación (n=413): <strong>18.9%</strong> tiene tecnología alta
+                  </li>
+                  <li style={{ marginBottom: '8px' }}>
+                    Diferencia: <strong>1.9 puntos porcentuales</strong>
+                  </li>
+                  <li style={{ marginBottom: '8px' }}>
+                    Prueba Mann-Whitney U: U=58,075, <strong>p=0.76</strong> (no significativo)
+                  </li>
+                </ul>
+                <p style={{ 
+                  marginTop: '16px', 
+                  fontSize: '14px',
+                  fontStyle: 'italic',
+                  backgroundColor: '#ffa50010',
+                  padding: '12px',
+                  borderRadius: '6px'
+                }}>
+                  <strong>Conclusión:</strong> No se encontró evidencia estadística suficiente para confirmar que 
+                  la combinación de baja percepción de crimen y acceso a crédito incremente significativamente 
+                  la adopción tecnológica. Ambos grupos muestran niveles similares (~19-21%).
+                </p>
+              </div>
             </div>
           </div>
 
@@ -1381,10 +1457,10 @@ function ResumenEjecutivo({ indicadores }) {
             fontSize: '14px',
             fontStyle: 'italic'
           }}>
-            Estas hipótesis requieren análisis estadístico riguroso para validar las correlaciones observadas 
-            espacialmente. Los mapas de calor interactivos proporcionan una herramienta visual inicial para 
-            identificar estos patrones, pero se necesitan pruebas de significancia estadística y controles por 
-            variables confusoras para establecer relaciones causales.
+            <strong>Metodología:</strong> Se aplicaron pruebas estadísticas rigurosas (Chi-cuadrado para H1, Mann-Whitney U para H2) 
+            con nivel de significancia α=0.05. Ambas hipótesis resultaron NO RECHAZADAS al no alcanzar significancia estadística 
+            (p&gt;0.05), indicando que los patrones geoespaciales observados no generan diferencias sustanciales en los comportamientos 
+            analizados. Estos resultados sugieren que otros factores no incluidos en el modelo podrían tener mayor peso explicativo.
           </p>
         </div>
       </div>
