@@ -1058,7 +1058,6 @@ function ResumenEjecutivo({ indicadores }) {
               </div>
             </div>
           </div>
-          </div>
 
           </AnimatedModelCard>
           <AnimatedModelCard delay={200}>
@@ -1138,7 +1137,6 @@ function ResumenEjecutivo({ indicadores }) {
                 </p>
               </div>
             </div>
-          </div>
           </div>
 
           </AnimatedModelCard>
