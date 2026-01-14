@@ -1808,7 +1808,6 @@ function GraficoDistribucion({ data }) {
 // Gráfico de barras
 function GraficoBarras({ data }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
   
   useEffect(() => {
@@ -1816,11 +1815,12 @@ function GraficoBarras({ data }) {
     return () => clearTimeout(timer);
   }, []);
   
-  const maxValue = Math.ceil(Math.max(...data.map(d => d.promedio)) * 1.15); // +15% padding superior
-  const height = 300;
-  const barWidth = 40;
-  const gap = 20;
-  const chartWidth = data.length * (barWidth + gap);
+  const maxValue = Math.ceil(Math.max(...data.map(d => d.promedio)) * 1.15);
+  const barHeight = 35;
+  const gap = 15;
+  const labelWidth = 200;
+  const chartWidth = 600;
+  const chartHeight = data.length * (barHeight + gap) + 40;
   
   return (
     <div style={{
@@ -1847,27 +1847,27 @@ function GraficoBarras({ data }) {
         Promedio de empleados por categoría • Pasa el mouse sobre las barras
       </p>
       
-      <div style={{ overflowX: 'auto', overflowY: 'visible', position: 'relative' }}>
-        <svg width={Math.max(chartWidth, 400)} height={height + 100} style={{ minWidth: '100%' }}>
-          {/* Grid lines */}
+      <div style={{ overflowX: 'auto', position: 'relative' }}>
+        <svg width={labelWidth + chartWidth + 60} height={chartHeight} style={{ minWidth: '100%' }}>
+          {/* Grid lines verticales */}
           {[0, 25, 50, 75, 100].map((percent, idx) => {
-            const y = height - (height * percent / 100);
+            const x = labelWidth + (chartWidth * percent / 100);
             return (
               <g key={idx}>
                 <line
-                  x1="0"
-                  y1={y}
-                  x2={chartWidth}
-                  y2={y}
+                  x1={x}
+                  y1="0"
+                  x2={x}
+                  y2={chartHeight - 40}
                   stroke={COLORS.border}
                   strokeDasharray="4 4"
                 />
                 <text
-                  x="-10"
-                  y={y + 4}
+                  x={x}
+                  y={chartHeight - 20}
                   fill={COLORS.textSecondary}
                   fontSize="10"
-                  textAnchor="end"
+                  textAnchor="middle"
                 >
                   {(maxValue * percent / 100).toFixed(1)}
                 </text>
@@ -1875,37 +1875,46 @@ function GraficoBarras({ data }) {
             );
           })}
           
-          {/* Bars */}
+          {/* Barras horizontales */}
           {data.map((item, idx) => {
-            const barHeight = (item.promedio / maxValue) * height;
-            const x = idx * (barWidth + gap) + 30; // Margen izquierdo
+            const barWidth = (item.promedio / maxValue) * chartWidth;
+            const y = idx * (barHeight + gap);
             const isHovered = hoveredIndex === idx;
             
             return (
               <g
                 key={idx}
-                onMouseEnter={(e) => {
-                  setHoveredIndex(idx);
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  setTooltipPos({ x: rect.left + rect.width / 2, y: rect.top - 10 });
-                }}
+                onMouseEnter={() => setHoveredIndex(idx)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 style={{ cursor: 'pointer' }}
               >
-                {/* Barra con gradiente en hover */}
                 <defs>
-                  <linearGradient id={`barGradient-${idx}`} x1="0%" y1="0%" x2="0%" y2="100%">
+                  <linearGradient id={`barGradient-h-${idx}`} x1="0%" y1="0%" x2="100%" y2="0%">
                     <stop offset="0%" stopColor={COLORS.primary} stopOpacity="1" />
                     <stop offset="100%" stopColor={COLORS.primaryDark} stopOpacity="0.8" />
                   </linearGradient>
                 </defs>
                 
+                {/* Label del tipo de comercio */}
+                <text
+                  x={labelWidth - 10}
+                  y={y + barHeight / 2 + 4}
+                  fill={isHovered ? COLORS.primary : COLORS.text}
+                  fontSize="12"
+                  fontWeight={isHovered ? "600" : "400"}
+                  textAnchor="end"
+                  style={{ transition: 'all 0.3s' }}
+                >
+                  {item.tipo}
+                </text>
+                
+                {/* Barra */}
                 <rect
-                  x={x}
-                  y={height - barHeight}
+                  x={labelWidth}
+                  y={y}
                   width={barWidth}
                   height={barHeight}
-                  fill={isHovered ? `url(#barGradient-${idx})` : COLORS.primary}
+                  fill={isHovered ? `url(#barGradient-h-${idx})` : COLORS.primary}
                   opacity={isHovered ? 1 : 0.8}
                   rx="4"
                   style={{ 
@@ -1914,80 +1923,22 @@ function GraficoBarras({ data }) {
                   }}
                 />
                 
-                {/* Value on top */}
+                {/* Valor al final de la barra */}
                 <text
-                  x={x + barWidth / 2}
-                  y={height - barHeight - 8}
+                  x={labelWidth + barWidth + 10}
+                  y={y + barHeight / 2 + 4}
                   fill={isHovered ? COLORS.accent : COLORS.text}
                   fontSize="13"
                   fontWeight="700"
-                  textAnchor="middle"
+                  textAnchor="start"
                   style={{ transition: 'all 0.3s' }}
                 >
                   {item.promedio.toFixed(1)}
-                </text>
-                
-                {/* Label rotado mejorado */}
-                <text
-                  x={x + barWidth / 2}
-                  y={height + 15}
-                  fill={isHovered ? COLORS.primary : COLORS.textSecondary}
-                  fontSize="11"
-                  fontWeight={isHovered ? "600" : "500"}
-                  textAnchor="end"
-                  transform={`rotate(-35 ${x + barWidth / 2} ${height + 15})`}
-                  style={{ transition: 'all 0.3s' }}
-                >
-                  {item.tipo}
                 </text>
               </g>
             );
           })}
         </svg>
-        
-        {/* Tooltip flotante */}
-        {hoveredIndex !== null && (
-          <div style={{
-            position: 'fixed',
-            left: `${tooltipPos.x}px`,
-            top: `${tooltipPos.y}px`,
-            transform: 'translate(-50%, -100%)',
-            backgroundColor: COLORS.surface,
-            border: `2px solid ${COLORS.primary}`,
-            borderRadius: '8px',
-            padding: '12px 16px',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
-            zIndex: 1000,
-            pointerEvents: 'none',
-            minWidth: '200px',
-            animation: 'fadeIn 0.2s ease'
-          }}>
-            <style>{`
-              @keyframes fadeIn {
-                from { opacity: 0; transform: translate(-50%, -100%) scale(0.9); }
-                to { opacity: 1; transform: translate(-50%, -100%) scale(1); }
-              }
-            `}</style>
-            <div style={{
-              fontSize: '14px',
-              fontWeight: '600',
-              color: COLORS.text,
-              marginBottom: '6px'
-            }}>
-              {data[hoveredIndex].tipo}
-            </div>
-            <div style={{
-              fontSize: '13px',
-              color: COLORS.textSecondary
-            }}>
-              Promedio: <span style={{ 
-                color: COLORS.accent,
-                fontWeight: '700',
-                fontSize: '15px'
-              }}>{data[hoveredIndex].promedio.toFixed(1)}</span> empleados
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -4669,11 +4620,11 @@ function TeamMember({ member, index }) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), index * 200); // Delay escalonado
+          setTimeout(() => setIsVisible(true), index * 100); // Delay más corto
           observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
 
     if (memberRef.current) {
@@ -4691,11 +4642,9 @@ function TeamMember({ member, index }) {
       style={{
         position: 'relative',
         cursor: 'pointer',
-        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        transition: 'all 0.6s ease-out',
         opacity: isVisible ? 1 : 0,
-        transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-        transitionDuration: '0.8s',
-        transitionDelay: '0s'
+        transform: isVisible ? 'translateY(0)' : 'translateY(15px)' // Menos movimiento
       }}
     >
       <div style={{
