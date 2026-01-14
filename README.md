@@ -206,14 +206,13 @@ seaborn>=0.12.0
 - [ ] Análisis temporal longitudinal
 - [ ] Modelos de causalidad con variables instrumentales
 - [ ] Dashboard mobile-responsive completo
-- [ ] API REST para consultas dinámicas
 - [ ] Integración con datos gubernamentales INDEC
 
 ## 👥 Equipo Greenthunder
 
-**Juan Ignacio Orellano** - MIT-UNSAM  
-**Sofía Ortega** - UBA  
-**Gina Ibarrondo** - Universidad de Palermo  
+**Juan Ignacio da Torre** - UBA
+**Sofía Gálvez** - UNSAM  
+**Gina Marrazzo** - UBA
 
 ## 📄 Licencia
 
