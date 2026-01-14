@@ -1245,7 +1245,9 @@ function ResumenEjecutivo({ indicadores }) {
             la realidad de tu sector. Los datos completos y herramientas de análisis están disponibles 
             más abajo para ayudarte a tomar mejores decisiones.
           </p>
-          <AnimatedModelCard delay={400}>
+        </div>
+
+        <AnimatedModelCard delay={400}>
           <div>
           <h3 style={{
             fontFamily: '"Crimson Pro", serif',
@@ -1473,7 +1475,6 @@ function ResumenEjecutivo({ indicadores }) {
             analizados. Estos resultados sugieren que otros factores no incluidos en el modelo podrían tener mayor peso explicativo.
           </p>
         </div>
-      </div>
           </AnimatedModelCard>
     </section>
   );
