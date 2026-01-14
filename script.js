@@ -3283,61 +3283,62 @@ function SeccionMachineLearning() {
       borderTop: `1px solid ${COLORS.border}`,
       borderBottom: `1px solid ${COLORS.border}`
     }}>
-      <div style={{
-        marginBottom: '60px',
-        textAlign: 'center'
-      }}>
+      <AnimatedModelCard delay={0}>
         <div style={{
-          fontSize: '12px',
-          letterSpacing: '0.15em',
-          textTransform: 'uppercase',
-          color: COLORS.primary,
-          marginBottom: '20px',
-          fontWeight: '500'
-        }}>
-          Modelos predictivos
-        </div>
-        <h2 style={{
-          fontFamily: '"Crimson Pro", serif',
-          fontSize: 'clamp(36px, 4vw, 52px)',
-          fontWeight: '400',
-          color: COLORS.text,
-          marginBottom: '30px'
-        }}>
-          Predicciones estadísticas
-        </h2>
-        
-        {/* Disclaimer prominente */}
-        <div style={{
-          maxWidth: '900px',
-          margin: '0 auto',
-          padding: '24px 40px',
-          backgroundColor: COLORS.background,
-          border: `2px solid ${COLORS.primary}40`,
-          borderRadius: '8px',
-          position: 'relative',
-          overflow: 'hidden'
+          marginBottom: '60px',
+          textAlign: 'center'
         }}>
           <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '3px',
-            background: `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.primaryDark})`
-          }} />
+            fontSize: '12px',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: COLORS.primary,
+            marginBottom: '20px',
+            fontWeight: '500'
+          }}>
+            Modelos predictivos
+          </div>
+          <h2 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: 'clamp(36px, 4vw, 52px)',
+            fontWeight: '400',
+            color: COLORS.text,
+            marginBottom: '30px'
+          }}>
+            Predicciones estadísticas
+          </h2>
           
-          <div style={{ textAlign: 'left', paddingLeft: '20px' }}>
+          {/* Disclaimer prominente */}
+          <div style={{
+            maxWidth: '900px',
+            margin: '0 auto',
+            padding: '24px 40px',
+            backgroundColor: COLORS.background,
+            border: `2px solid ${COLORS.primary}40`,
+            borderRadius: '8px',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
             <div style={{
-              fontSize: '13px',
-              fontWeight: '600',
-              color: COLORS.primary,
-              marginBottom: '12px',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase'
-            }}>
-              Disclaimer — Análisis Predictivo
-            </div>
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '3px',
+              background: `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.primaryDark})`
+            }} />
+            
+            <div style={{ textAlign: 'left', paddingLeft: '20px' }}>
+              <div style={{
+                fontSize: '13px',
+                fontWeight: '600',
+                color: COLORS.primary,
+                marginBottom: '12px',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase'
+              }}>
+                Disclaimer — Análisis Predictivo
+              </div>
             <div style={{
               fontSize: '14px',
               lineHeight: '1.7',
@@ -3354,38 +3355,82 @@ function SeccionMachineLearning() {
           </div>
         </div>
       </div>
+      </AnimatedModelCard>
 
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))',
         gap: '60px'
       }}>
-        <ModeloCrecimiento data={resultadosML.modelos.modelo_1_crecimiento} />
-        <ModeloFactoresExternos data={resultadosML.modelos.modelo_3_factores_externos} />
+        <AnimatedModelCard delay={0}>
+          <ModeloCrecimiento data={resultadosML.modelos.modelo_1_crecimiento} />
+        </AnimatedModelCard>
+        <AnimatedModelCard delay={200}>
+          <ModeloFactoresExternos data={resultadosML.modelos.modelo_3_factores_externos} />
+        </AnimatedModelCard>
       </div>
 
-      <div style={{
-        marginTop: '60px',
-        textAlign: 'center',
-        padding: '40px',
-        backgroundColor: COLORS.background,
-        borderRadius: '4px',
-        border: `1px solid ${COLORS.border}`
-      }}>
+      <AnimatedModelCard delay={400}>
         <div style={{
-          fontSize: '14px',
-          color: COLORS.textSecondary,
-          lineHeight: '1.8',
-          maxWidth: '800px',
-          margin: '0 auto'
+          marginTop: '60px',
+          textAlign: 'center',
+          padding: '40px',
+          backgroundColor: COLORS.background,
+          borderRadius: '4px',
+          border: `1px solid ${COLORS.border}`
         }}>
-          <strong style={{ color: COLORS.text }}>Metodología:</strong> Los modelos implementados 
-          utilizan técnicas de machine learning supervisado (Random Forest, Gradient Boosting, K-Means) 
-          entrenados sobre el conjunto de datos relevado. Las métricas de performance incluyen accuracy, 
-          precision, recall, AUC-ROC, R² y RMSE con validación mediante train/test split (75%/25%).
+          <div style={{
+            fontSize: '14px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.8',
+            maxWidth: '800px',
+            margin: '0 auto'
+          }}>
+            <strong style={{ color: COLORS.text }}>Metodología:</strong> Los modelos implementados 
+            utilizan técnicas de machine learning supervisado (Random Forest, Gradient Boosting, K-Means) 
+            entrenados sobre el conjunto de datos relevado. Las métricas de performance incluyen accuracy, 
+            precision, recall, AUC-ROC, R² y RMSE con validación mediante train/test split (75%/25%).
+          </div>
         </div>
-      </div>
+      </AnimatedModelCard>
     </section>
+  );
+}
+
+// Componente con animación fade-in para modelos
+function AnimatedModelCard({ children, delay = 0 }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [delay]);
+
+  return (
+    <div
+      ref={cardRef}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
+        transition: 'all 0.8s ease-out'
+      }}
+    >
+      {children}
+    </div>
   );
 }
 
