@@ -751,41 +751,36 @@ function UniversidadesParticipantes() {
     { 
       nombre: 'MIT', 
       fullName: 'Massachusetts Institute of Technology',
-      logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0c/MIT_logo.svg'
+      color: '#A31F34'
     },
     { 
       nombre: 'UBA', 
       fullName: 'Universidad de Buenos Aires',
-      logo: 'https://upload.wikimedia.org/wikipedia/commons/5/58/University_of_Buenos_Aires_logo.svg'
+      color: '#C8102E'
     },
     { 
       nombre: 'UNSAM', 
       fullName: 'Universidad Nacional de San Martín',
-      logo: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Logo_UNSAM.png'
+      color: '#00AEEF'
     },
     { 
       nombre: 'UP', 
       fullName: 'Universidad de Palermo',
-      logo: 'https://seeklogo.com/images/U/universidad-de-palermo-logo-2E2B6BE7DA-seeklogo.com.png'
+      color: '#E31E24'
     },
     { 
       nombre: 'ITBA', 
       fullName: 'Instituto Tecnológico de Buenos Aires',
-      logo: 'https://upload.wikimedia.org/wikipedia/commons/5/58/ITBA_isologo.svg'
+      color: '#004B87'
     },
     { 
       nombre: 'UNICEN', 
-      fullName: 'Universidad Nacional del Centro (Tandil)',
-      logo: 'https://www.exa.unicen.edu.ar/images/institucional/logo_unicen_transparente.png'
+      fullName: 'Universidad Nacional del Centro',
+      color: '#0066B3'
     }
   ];
 
   const universidadesDuplicadas = [...universidades, ...universidades];
-  const [imageErrors, setImageErrors] = useState({});
-
-  const handleImageError = (nombre) => {
-    setImageErrors(prev => ({ ...prev, [nombre]: true }));
-  };
 
   return (
     <section style={{
@@ -853,7 +848,9 @@ function UniversidadesParticipantes() {
               justifyContent: 'center',
               alignItems: 'center',
               transition: 'all 0.3s ease',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = COLORS.primary;
@@ -866,37 +863,38 @@ function UniversidadesParticipantes() {
               e.currentTarget.style.boxShadow = 'none';
             }}
           >
-            {!imageErrors[uni.nombre + idx] ? (
-              <img 
-                src={uni.logo}
-                alt={uni.nombre}
-                onError={() => handleImageError(uni.nombre + idx)}
-                style={{
-                  maxWidth: '120px',
-                  maxHeight: '80px',
-                  objectFit: 'contain',
-                  marginBottom: '16px',
-                  filter: 'brightness(0) invert(1)',
-                  opacity: 0.9
-                }}
-              />
-            ) : (
-              <div style={{
-                fontFamily: '"Crimson Pro", serif',
-                fontSize: '36px',
-                fontWeight: '700',
-                color: COLORS.primary,
-                marginBottom: '16px',
-                letterSpacing: '0.05em'
-              }}>
-                {uni.nombre}
-              </div>
-            )}
+            {/* Badge de color institucional */}
+            <div style={{
+              position: 'absolute',
+              top: '15px',
+              right: '15px',
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              backgroundColor: uni.color,
+              boxShadow: `0 0 12px ${uni.color}`
+            }} />
+            
+            {/* Logo tipográfico */}
+            <div style={{
+              fontFamily: '"Crimson Pro", serif',
+              fontSize: '42px',
+              fontWeight: '700',
+              color: COLORS.primary,
+              marginBottom: '16px',
+              letterSpacing: '0.05em',
+              textShadow: '0 2px 8px rgba(79, 195, 247, 0.3)'
+            }}>
+              {uni.nombre}
+            </div>
+            
+            {/* Nombre completo */}
             <div style={{
               fontSize: '11px',
               color: COLORS.textSecondary,
               lineHeight: '1.4',
-              textAlign: 'center'
+              textAlign: 'center',
+              fontWeight: '500'
             }}>
               {uni.fullName}
             </div>
