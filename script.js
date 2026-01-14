@@ -3186,7 +3186,7 @@ function GraficoSalarios({ data }) {
             color: COLORS.textSecondary,
             marginBottom: '16px'
           }}>
-            Rango salarial que los comerciantes están dispuestos a ofrecer (100k - 2M ARS)
+            Rango salarial que los comerciantes están dispuestos a ofrecer (100k - 1.3M ARS)
           </p>
           
           {/* Disclaimer de calidad de datos */}
@@ -3227,7 +3227,7 @@ function GraficoSalarios({ data }) {
                   lineHeight: '1.6'
                 }}>
                   Esta pregunta tuvo <strong style={{ color: COLORS.text }}>{data.totalRespuestas || 'pocas'} respuestas válidas</strong>. 
-                  Se detectaron outliers extremos y datos inconsistentes que fueron filtrados (rango: $100k-$2M). 
+                  Se detectaron outliers extremos y datos inconsistentes que fueron filtrados (rango: $100k-$1.3M). 
                   Los valores presentados deben interpretarse con cautela debido al tamaño limitado de la muestra.
                 </div>
               </div>
@@ -3283,85 +3283,37 @@ function GraficoSalarios({ data }) {
       
       {viewMode === 'general' ? (
         <>
-          {/* Estadísticas principales */}
+          {/* Estadísticas principales - Solo promedio */}
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '20px',
+            display: 'flex',
+            justifyContent: 'center',
             marginBottom: '40px'
           }}>
             <div style={{
-              padding: '20px',
+              padding: '30px 60px',
               backgroundColor: COLORS.background,
-              borderRadius: '4px',
-              textAlign: 'center'
+              borderRadius: '8px',
+              textAlign: 'center',
+              border: `2px solid ${COLORS.primary}40`,
+              boxShadow: `0 4px 16px ${COLORS.primary}20`
             }}>
               <div style={{
-                fontSize: '12px',
+                fontSize: '13px',
                 color: COLORS.textSecondary,
-                marginBottom: '8px',
+                marginBottom: '12px',
                 textTransform: 'uppercase',
-                letterSpacing: '0.1em'
+                letterSpacing: '0.12em',
+                fontWeight: '600'
               }}>
                 Promedio
               </div>
               <div style={{
-                fontSize: '24px',
-                fontWeight: '600',
+                fontSize: '36px',
+                fontWeight: '700',
                 color: COLORS.primary,
                 fontFamily: '"Crimson Pro", serif'
               }}>
                 {formatCurrency(data.promedio)}
-              </div>
-            </div>
-            
-            <div style={{
-              padding: '20px',
-              backgroundColor: COLORS.background,
-              borderRadius: '4px',
-              textAlign: 'center'
-            }}>
-              <div style={{
-                fontSize: '12px',
-                color: COLORS.textSecondary,
-                marginBottom: '8px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em'
-              }}>
-                Mínimo
-              </div>
-              <div style={{
-                fontSize: '24px',
-                fontWeight: '600',
-                color: COLORS.text,
-                fontFamily: '"Crimson Pro", serif'
-              }}>
-                {formatCurrency(data.minimo)}
-              </div>
-            </div>
-            
-            <div style={{
-              padding: '20px',
-              backgroundColor: COLORS.background,
-              borderRadius: '4px',
-              textAlign: 'center'
-            }}>
-              <div style={{
-                fontSize: '12px',
-                color: COLORS.textSecondary,
-                marginBottom: '8px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em'
-              }}>
-                Máximo
-              </div>
-              <div style={{
-                fontSize: '24px',
-                fontWeight: '600',
-                color: COLORS.text,
-                fontFamily: '"Crimson Pro", serif'
-              }}>
-                {formatCurrency(data.maximo)}
               </div>
             </div>
           </div>
@@ -6565,8 +6517,8 @@ function procesarDatosGraficos(datos) {
       const cleaned = sal.toString().replace(/\$/g, "").replace(/\./g, "").replace(/,/g, "").replace(/ /g, "");
       const num = parseFloat(cleaned);
       
-      // RANGO AJUSTADO: Filtrar solo valores entre 100k - 2M ARS (eliminando outliers extremos)
-      if (isNaN(num) || num < 100000 || num > 2000000) return null;
+      // RANGO AJUSTADO: Filtrar solo valores entre 100k - 1.3M ARS (eliminando outliers extremos)
+      if (isNaN(num) || num < 100000 || num > 1300000) return null;
       
       return { valor: num, tipo: c.tipo_comercio || 'Sin categoría' };
     })
