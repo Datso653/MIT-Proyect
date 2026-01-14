@@ -1476,6 +1476,7 @@ function ResumenEjecutivo({ indicadores }) {
           </p>
         </div>
           </AnimatedModelCard>
+      </div>
     </section>
   );
 }
