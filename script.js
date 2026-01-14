@@ -3162,7 +3162,6 @@ function SeccionAnalisis() {
             Análisis y conclusiones
           </h2>
         </div>
-        </div>
 
         </AnimatedModelCard>
       <AnimatedModelCard delay={200}>
@@ -3251,6 +3250,7 @@ function SeccionAnalisis() {
         </div>
       </div>
       </AnimatedModelCard>
+      </div>
     </section>
   );
 }
