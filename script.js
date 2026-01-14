@@ -931,7 +931,6 @@ function ResumenEjecutivo({ indicadores }) {
         position: 'relative',
         zIndex: 2
       }}>
-        <AnimatedModelCard delay={0}>
         <div style={{
           textAlign: 'center',
           marginBottom: '80px'
@@ -971,7 +970,6 @@ function ResumenEjecutivo({ indicadores }) {
             Un análisis profundo del ecosistema comercial del Área Metropolitana de Buenos Aires
           </p>
         </div>
-        </AnimatedModelCard>
 
         {/* Cards con diseño moderno */}
         <div style={{
@@ -980,7 +978,6 @@ function ResumenEjecutivo({ indicadores }) {
           gap: '40px',
           marginBottom: '60px'
         }}>
-          <AnimatedModelCard delay={100}>
           {/* Hallazgo 1 */}
           <div style={{
             padding: '50px',
@@ -1059,8 +1056,6 @@ function ResumenEjecutivo({ indicadores }) {
             </div>
           </div>
 
-          </AnimatedModelCard>
-          <AnimatedModelCard delay={200}>
           {/* Hallazgo 2 */}
           <div style={{
             padding: '50px',
@@ -1139,8 +1134,6 @@ function ResumenEjecutivo({ indicadores }) {
             </div>
           </div>
 
-          </AnimatedModelCard>
-          <AnimatedModelCard delay={300}>
           {/* Hallazgo 3 */}
           <div style={{
             padding: '50px',
@@ -1218,7 +1211,6 @@ function ResumenEjecutivo({ indicadores }) {
               </div>
             </div>
           </div>
-          </AnimatedModelCard>
         </div>
 
         {/* CTA final */}
@@ -1245,7 +1237,6 @@ function ResumenEjecutivo({ indicadores }) {
             la realidad de tu sector. Los datos completos y herramientas de análisis están disponibles 
             más abajo para ayudarte a tomar mejores decisiones.
           </p>
-          <AnimatedModelCard delay={400}>
           <h3 style={{
             fontFamily: '"Crimson Pro", serif',
             fontSize: '24px',
@@ -1473,7 +1464,6 @@ function ResumenEjecutivo({ indicadores }) {
           </p>
         </div>
       </div>
-          </AnimatedModelCard>
     </section>
   );
 }
@@ -3136,7 +3126,6 @@ function SeccionAnalisis() {
         position: 'relative',
         zIndex: 2
       }}>
-        <AnimatedModelCard delay={0}>
         <div style={{
           marginBottom: '60px',
           textAlign: 'center'
@@ -3162,8 +3151,6 @@ function SeccionAnalisis() {
           </h2>
         </div>
 
-        </AnimatedModelCard>
-      <AnimatedModelCard delay={200}>
       <div style={{
         backgroundColor: COLORS.surface,
         padding: '60px',
@@ -3248,7 +3235,7 @@ function SeccionAnalisis() {
           </div>
         </div>
       </div>
-      </AnimatedModelCard>
+      </div>
     </section>
   );
 }
