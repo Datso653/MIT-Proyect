@@ -346,7 +346,7 @@ function App() {
 }
 
 // === HERO SECTION ===
-// === NAVBAR CON MENÃš DESPLEGABLE ===
+// === NAVBAR CON MENÚ DESPLEGABLE ===
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -368,7 +368,7 @@ function Navbar() {
     { id: 'analisis-visual', label: 'Análisis Visual' },
     { id: 'machine-learning', label: 'Machine Learning' },
     { id: 'analisis', label: 'Conclusiones' },
-    { id: 'equipo', label: 'Â¿Quiénes somos?' }
+    { id: 'equipo', label: '¿Quiénes somos?' }
   ];
 
   const scrollToSection = (sectionId) => {
@@ -606,7 +606,7 @@ function Hero({ scrollY }) {
           marginBottom: '30px',
           fontWeight: '500'
         }}>
-          MIT LIFT Lab â€” Buenos Aires
+          MIT LIFT Lab — Buenos Aires
         </div>
         
         <h1 className="fade-in fade-in-delay-1" style={{
@@ -646,7 +646,7 @@ function Hero({ scrollY }) {
           gap: '20px'
         }}>
           <span>Equipo {TEAM_DATA.name}</span>
-          <span style={{ color: COLORS.primary }}>â€¢</span>
+          <span style={{ color: COLORS.primary }}>•</span>
           <span>2025-2026</span>
         </div>
       </div>
@@ -887,7 +887,7 @@ function UniversidadesParticipantes() {
   );
 }
 
-// === INDICADORES CON GRÃÂFICOS CIRCULARES ===
+// === INDICADORES CON GRÁFICOS CIRCULARES ===
 // === RESUMEN EJECUTIVO PARA COMERCIANTES ===
 function ResumenEjecutivo({ indicadores }) {
   if (!indicadores) return null;
@@ -931,6 +931,7 @@ function ResumenEjecutivo({ indicadores }) {
         position: 'relative',
         zIndex: 2
       }}>
+        <AnimatedModelCard delay={0}>
         <div style={{
           textAlign: 'center',
           marginBottom: '80px'
@@ -967,9 +968,10 @@ function ResumenEjecutivo({ indicadores }) {
             margin: '0 auto',
             fontWeight: '300'
           }}>
-            Un análisis profundo del ecosistema comercial del ÃÂrea Metropolitana de Buenos Aires
+            Un análisis profundo del ecosistema comercial del Área Metropolitana de Buenos Aires
           </p>
         </div>
+        </AnimatedModelCard>
 
         {/* Cards con diseño moderno */}
         <div style={{
@@ -978,6 +980,7 @@ function ResumenEjecutivo({ indicadores }) {
           gap: '40px',
           marginBottom: '60px'
         }}>
+          <AnimatedModelCard delay={100}>
           {/* Hallazgo 1 */}
           <div style={{
             padding: '50px',
@@ -1056,6 +1059,8 @@ function ResumenEjecutivo({ indicadores }) {
             </div>
           </div>
 
+          </AnimatedModelCard>
+          <AnimatedModelCard delay={200}>
           {/* Hallazgo 2 */}
           <div style={{
             padding: '50px',
@@ -1134,6 +1139,8 @@ function ResumenEjecutivo({ indicadores }) {
             </div>
           </div>
 
+          </AnimatedModelCard>
+          <AnimatedModelCard delay={300}>
           {/* Hallazgo 3 */}
           <div style={{
             padding: '50px',
@@ -1211,6 +1218,7 @@ function ResumenEjecutivo({ indicadores }) {
               </div>
             </div>
           </div>
+          </AnimatedModelCard>
         </div>
 
         {/* CTA final */}
@@ -1237,6 +1245,10 @@ function ResumenEjecutivo({ indicadores }) {
             la realidad de tu sector. Los datos completos y herramientas de análisis están disponibles 
             más abajo para ayudarte a tomar mejores decisiones.
           </p>
+        </div>
+
+        <AnimatedModelCard delay={400}>
+          <div>
           <h3 style={{
             fontFamily: '"Crimson Pro", serif',
             fontSize: '24px',
@@ -1300,7 +1312,7 @@ function ResumenEjecutivo({ indicadores }) {
                     margin: 0,
                     letterSpacing: '-0.01em'
                   }}>
-                    H1: Crimen alto + Sin crédito â†’ Â¿Menor expectativa de crecimiento?
+                    H1: Crimen alto + Sin crédito → ¿Menor expectativa de crecimiento?
                   </h4>
                 </div>
                 <span style={{
@@ -1336,7 +1348,7 @@ function ResumenEjecutivo({ indicadores }) {
                     Diferencia: <strong>1.9 puntos porcentuales</strong>
                   </li>
                   <li style={{ marginBottom: '8px' }}>
-                    Prueba Chi-cuadrado: Ï‡Â²=0.003, <strong>p=0.96</strong> (no significativo)
+                    Prueba Chi-cuadrado: χ²=0.003, <strong>p=0.96</strong> (no significativo)
                   </li>
                 </ul>
                 <p style={{ 
@@ -1351,6 +1363,217 @@ function ResumenEjecutivo({ indicadores }) {
                   la combinación de alta percepción de crimen y falta de acceso a crédito reduzca significativamente 
                   las expectativas de crecimiento. Ambos grupos muestran intención similar (~77-78%).
                 </p>
+
+                {/* Gráfico visual comparativo */}
+                <div style={{
+                  marginTop: '30px',
+                  padding: '24px',
+                  backgroundColor: COLORS.surface,
+                  borderRadius: '12px',
+                  border: `1px solid #ffa50030`
+                }}>
+                  <h5 style={{
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: COLORS.text,
+                    marginBottom: '20px',
+                    textAlign: 'center'
+                  }}>
+                    Comparación Visual: Intención de Crecimiento
+                  </h5>
+
+                  {/* Grupo Adverso */}
+                  <div style={{ marginBottom: '30px' }}>
+                    <div style={{
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      color: '#ff6b6b',
+                      marginBottom: '12px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center'
+                    }}>
+                      <span>Grupo Adverso (Crimen alto + Sin crédito)</span>
+                      <span style={{ fontSize: '12px', color: COLORS.textSecondary }}>n=34</span>
+                    </div>
+                    
+                    <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                      {/* Quiere crecer */}
+                      <div style={{
+                        flex: '76.5',
+                        height: '50px',
+                        backgroundColor: '#4FC3F7',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: COLORS.background,
+                        fontWeight: '700',
+                        fontSize: '16px',
+                        transition: 'all 0.3s',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        overflow: 'hidden'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(79, 195, 247, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                      >
+                        <div style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          background: 'linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.2) 100%)'
+                        }} />
+                        <span style={{ position: 'relative' }}>76.5% Quiere crecer</span>
+                      </div>
+                      
+                      {/* No quiere crecer */}
+                      <div style={{
+                        flex: '23.5',
+                        height: '50px',
+                        backgroundColor: '#666',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: COLORS.text,
+                        fontWeight: '600',
+                        fontSize: '14px',
+                        transition: 'all 0.3s',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                        e.currentTarget.style.backgroundColor = '#777';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.backgroundColor = '#666';
+                      }}
+                      >
+                        23.5%
+                      </div>
+                    </div>
+                    <div style={{ fontSize: '12px', color: COLORS.textSecondary, textAlign: 'right' }}>
+                      26 comercios quieren crecer | 8 no quieren
+                    </div>
+                  </div>
+
+                  {/* Grupo Comparación */}
+                  <div>
+                    <div style={{
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      color: '#51cf66',
+                      marginBottom: '12px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center'
+                    }}>
+                      <span>Grupo Comparación (Otros comercios)</span>
+                      <span style={{ fontSize: '12px', color: COLORS.textSecondary }}>n=676</span>
+                    </div>
+                    
+                    <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                      {/* Quiere crecer */}
+                      <div style={{
+                        flex: '78.4',
+                        height: '50px',
+                        backgroundColor: '#4FC3F7',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: COLORS.background,
+                        fontWeight: '700',
+                        fontSize: '16px',
+                        transition: 'all 0.3s',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        overflow: 'hidden'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(79, 195, 247, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                      >
+                        <div style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          background: 'linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.2) 100%)'
+                        }} />
+                        <span style={{ position: 'relative' }}>78.4% Quiere crecer</span>
+                      </div>
+                      
+                      {/* No quiere crecer */}
+                      <div style={{
+                        flex: '21.6',
+                        height: '50px',
+                        backgroundColor: '#666',
+                        borderRadius: '6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: COLORS.text,
+                        fontWeight: '600',
+                        fontSize: '14px',
+                        transition: 'all 0.3s',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                        e.currentTarget.style.backgroundColor = '#777';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.backgroundColor = '#666';
+                      }}
+                      >
+                        21.6%
+                      </div>
+                    </div>
+                    <div style={{ fontSize: '12px', color: COLORS.textSecondary, textAlign: 'right' }}>
+                      530 comercios quieren crecer | 146 no quieren
+                    </div>
+                  </div>
+
+                  {/* Interpretación */}
+                  <div style={{
+                    marginTop: '20px',
+                    padding: '16px',
+                    backgroundColor: '#ffa50008',
+                    borderRadius: '8px',
+                    borderLeft: '3px solid #ffa500'
+                  }}>
+                    <p style={{
+                      fontSize: '13px',
+                      color: COLORS.textSecondary,
+                      margin: 0,
+                      lineHeight: '1.6'
+                    }}>
+                      <strong style={{ color: COLORS.text }}>Interpretación visual:</strong> A pesar de las condiciones adversas 
+                      (crimen alto + sin crédito), ambos grupos muestran una intención de crecimiento muy similar. 
+                      La diferencia de apenas <strong style={{ color: '#ffa500' }}>1.9 puntos porcentuales</strong> no es 
+                      estadísticamente significativa, lo que sugiere que la resiliencia emprendedora es alta independientemente 
+                      de las barreras percibidas.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -1395,7 +1618,7 @@ function ResumenEjecutivo({ indicadores }) {
                     margin: 0,
                     letterSpacing: '-0.01em'
                   }}>
-                    H2: Crimen bajo + Con crédito â†’ Â¿Mayor inversión tecnológica?
+                    H2: Crimen bajo + Con crédito → ¿Mayor inversión tecnológica?
                   </h4>
                 </div>
                 <span style={{
@@ -1446,6 +1669,265 @@ function ResumenEjecutivo({ indicadores }) {
                   la combinación de baja percepción de crimen y acceso a crédito incremente significativamente 
                   la adopción tecnológica. Ambos grupos muestran niveles similares (~19-21%).
                 </p>
+
+                {/* Gráfico visual comparativo de tecnología */}
+                <div style={{
+                  marginTop: '30px',
+                  padding: '24px',
+                  backgroundColor: COLORS.surface,
+                  borderRadius: '12px',
+                  border: `1px solid #ffa50030`
+                }}>
+                  <h5 style={{
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: COLORS.text,
+                    marginBottom: '20px',
+                    textAlign: 'center'
+                  }}>
+                    Comparación Visual: Nivel de Adopción Tecnológica
+                  </h5>
+
+                  {/* Grupo Favorable */}
+                  <div style={{ marginBottom: '30px' }}>
+                    <div style={{
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      color: '#51cf66',
+                      marginBottom: '12px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center'
+                    }}>
+                      <span>Grupo Favorable (Crimen bajo + Con crédito)</span>
+                      <span style={{ fontSize: '12px', color: COLORS.textSecondary }}>n=289</span>
+                    </div>
+                    
+                    <div style={{ display: 'flex', gap: '8px', marginBottom: '8px', height: '50px' }}>
+                      {/* Tecnología Baja */}
+                      <div style={{
+                        flex: '37.7',
+                        backgroundColor: '#ff6b6b',
+                        borderRadius: '6px 0 0 6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: COLORS.background,
+                        fontWeight: '600',
+                        fontSize: '14px',
+                        transition: 'all 0.3s',
+                        cursor: 'pointer',
+                        position: 'relative'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 107, 107, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                      >
+                        <span>37.7% Baja</span>
+                      </div>
+                      
+                      {/* Tecnología Media */}
+                      <div style={{
+                        flex: '41.5',
+                        backgroundColor: '#ffa500',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: COLORS.background,
+                        fontWeight: '600',
+                        fontSize: '14px',
+                        transition: 'all 0.3s',
+                        cursor: 'pointer',
+                        position: 'relative'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 165, 0, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                      >
+                        <span>41.5% Media</span>
+                      </div>
+                      
+                      {/* Tecnología Alta */}
+                      <div style={{
+                        flex: '20.8',
+                        backgroundColor: '#4FC3F7',
+                        borderRadius: '0 6px 6px 0',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: COLORS.background,
+                        fontWeight: '700',
+                        fontSize: '15px',
+                        transition: 'all 0.3s',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        overflow: 'hidden'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(79, 195, 247, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                      >
+                        <div style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          background: 'linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.3) 100%)'
+                        }} />
+                        <span style={{ position: 'relative' }}>20.8% Alta</span>
+                      </div>
+                    </div>
+                    <div style={{ fontSize: '12px', color: COLORS.textSecondary, textAlign: 'right' }}>
+                      109 baja | 120 media | 60 alta
+                    </div>
+                  </div>
+
+                  {/* Grupo Comparación */}
+                  <div>
+                    <div style={{
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      color: '#ff6b6b',
+                      marginBottom: '12px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center'
+                    }}>
+                      <span>Grupo Comparación (Otros comercios)</span>
+                      <span style={{ fontSize: '12px', color: COLORS.textSecondary }}>n=413</span>
+                    </div>
+                    
+                    <div style={{ display: 'flex', gap: '8px', marginBottom: '8px', height: '50px' }}>
+                      {/* Tecnología Baja */}
+                      <div style={{
+                        flex: '42.6',
+                        backgroundColor: '#ff6b6b',
+                        borderRadius: '6px 0 0 6px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: COLORS.background,
+                        fontWeight: '600',
+                        fontSize: '14px',
+                        transition: 'all 0.3s',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 107, 107, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                      >
+                        <span>42.6% Baja</span>
+                      </div>
+                      
+                      {/* Tecnología Media */}
+                      <div style={{
+                        flex: '38.5',
+                        backgroundColor: '#ffa500',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: COLORS.background,
+                        fontWeight: '600',
+                        fontSize: '14px',
+                        transition: 'all 0.3s',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 165, 0, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                      >
+                        <span>38.5% Media</span>
+                      </div>
+                      
+                      {/* Tecnología Alta */}
+                      <div style={{
+                        flex: '18.9',
+                        backgroundColor: '#4FC3F7',
+                        borderRadius: '0 6px 6px 0',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: COLORS.background,
+                        fontWeight: '700',
+                        fontSize: '15px',
+                        transition: 'all 0.3s',
+                        cursor: 'pointer',
+                        position: 'relative',
+                        overflow: 'hidden'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.02)';
+                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(79, 195, 247, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }}
+                      >
+                        <div style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          background: 'linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.3) 100%)'
+                        }} />
+                        <span style={{ position: 'relative' }}>18.9% Alta</span>
+                      </div>
+                    </div>
+                    <div style={{ fontSize: '12px', color: COLORS.textSecondary, textAlign: 'right' }}>
+                      176 baja | 159 media | 78 alta
+                    </div>
+                  </div>
+
+                  {/* Interpretación */}
+                  <div style={{
+                    marginTop: '20px',
+                    padding: '16px',
+                    backgroundColor: '#ffa50008',
+                    borderRadius: '8px',
+                    borderLeft: '3px solid #ffa500'
+                  }}>
+                    <p style={{
+                      fontSize: '13px',
+                      color: COLORS.textSecondary,
+                      margin: 0,
+                      lineHeight: '1.6'
+                    }}>
+                      <strong style={{ color: COLORS.text }}>Interpretación visual:</strong> Las condiciones favorables 
+                      (crimen bajo + acceso a crédito) muestran solo una ligera ventaja en adopción tecnológica alta. 
+                      La diferencia de <strong style={{ color: '#ffa500' }}>1.9 puntos porcentuales</strong> (20.8% vs 18.9%) 
+                      no es estadísticamente significativa, indicando que otros factores como capacitación, tamaño del negocio 
+                      o tipo de comercio pueden ser más determinantes que las condiciones del entorno.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1458,11 +1940,12 @@ function ResumenEjecutivo({ indicadores }) {
             fontStyle: 'italic'
           }}>
             <strong>Metodología:</strong> Se aplicaron pruebas estadísticas rigurosas (Chi-cuadrado para H1, Mann-Whitney U para H2) 
-            con nivel de significancia Î±=0.05. Ambas hipótesis resultaron NO RECHAZADAS al no alcanzar significancia estadística 
+            con nivel de significancia α=0.05. Ambas hipótesis resultaron NO RECHAZADAS al no alcanzar significancia estadística 
             (p&gt;0.05), indicando que los patrones geoespaciales observados no generan diferencias sustanciales en los comportamientos 
             analizados. Estos resultados sugieren que otros factores no incluidos en el modelo podrían tener mayor peso explicativo.
           </p>
         </div>
+          </AnimatedModelCard>
       </div>
     </section>
   );
@@ -1741,7 +2224,7 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
   );
 }
 
-// === ANÃÂLISIS VISUAL CON GRÃÂFICOS SVG ===
+// === ANÁLISIS VISUAL CON GRÁFICOS SVG ===
 function AnalisisVisual({ data, indicadores }) {
   const [visibleItems, setVisibleItems] = useState(new Set());
   const sectionRef = useRef(null);
@@ -2069,7 +2552,7 @@ function GraficoBarras({ data }) {
         color: COLORS.textSecondary,
         marginBottom: '30px'
       }}>
-        Promedio de empleados por categoría â€¢ Pasa el mouse sobre las barras
+        Promedio de empleados por categoría • Pasa el mouse sobre las barras
       </p>
       
       <div style={{ overflowX: 'auto', position: 'relative' }}>
@@ -2444,7 +2927,7 @@ function GraficoTierlist({ data }) {
         marginBottom: '40px',
         lineHeight: '1.6'
       }}>
-        Clasificación de comercios según nivel de digitalización â€¢ Click para ver detalles
+        Clasificación de comercios según nivel de digitalización • Click para ver detalles
       </p>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -2590,7 +3073,7 @@ function GraficoTierlist({ data }) {
                   transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                   color: config.color
                 }}>
-                  â–¼
+                  ▼
                 </div>
               </div>
               
@@ -2703,7 +3186,7 @@ function GraficoSalarios({ data }) {
             color: COLORS.textSecondary,
             marginBottom: '16px'
           }}>
-            Rango salarial que los comerciantes están dispuestos a ofrecer (100k - 2M ARS)
+            Rango salarial que los comerciantes están dispuestos a ofrecer (100k - 1.3M ARS)
           </p>
           
           {/* Disclaimer de calidad de datos */}
@@ -2725,7 +3208,7 @@ function GraficoSalarios({ data }) {
                 color: COLORS.accent,
                 marginTop: '2px'
               }}>
-                âš 
+                ⚠
               </div>
               <div>
                 <div style={{
@@ -2744,7 +3227,7 @@ function GraficoSalarios({ data }) {
                   lineHeight: '1.6'
                 }}>
                   Esta pregunta tuvo <strong style={{ color: COLORS.text }}>{data.totalRespuestas || 'pocas'} respuestas válidas</strong>. 
-                  Se detectaron outliers extremos y datos inconsistentes que fueron filtrados (rango: $100k-$2M). 
+                  Se detectaron outliers extremos y datos inconsistentes que fueron filtrados (rango: $100k-$1.3M). 
                   Los valores presentados deben interpretarse con cautela debido al tamaño limitado de la muestra.
                 </div>
               </div>
@@ -2800,85 +3283,37 @@ function GraficoSalarios({ data }) {
       
       {viewMode === 'general' ? (
         <>
-          {/* Estadísticas principales */}
+          {/* Estadísticas principales - Solo promedio */}
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '20px',
+            display: 'flex',
+            justifyContent: 'center',
             marginBottom: '40px'
           }}>
             <div style={{
-              padding: '20px',
+              padding: '30px 60px',
               backgroundColor: COLORS.background,
-              borderRadius: '4px',
-              textAlign: 'center'
+              borderRadius: '8px',
+              textAlign: 'center',
+              border: `2px solid ${COLORS.primary}40`,
+              boxShadow: `0 4px 16px ${COLORS.primary}20`
             }}>
               <div style={{
-                fontSize: '12px',
+                fontSize: '13px',
                 color: COLORS.textSecondary,
-                marginBottom: '8px',
+                marginBottom: '12px',
                 textTransform: 'uppercase',
-                letterSpacing: '0.1em'
+                letterSpacing: '0.12em',
+                fontWeight: '600'
               }}>
                 Promedio
               </div>
               <div style={{
-                fontSize: '24px',
-                fontWeight: '600',
+                fontSize: '36px',
+                fontWeight: '700',
                 color: COLORS.primary,
                 fontFamily: '"Crimson Pro", serif'
               }}>
                 {formatCurrency(data.promedio)}
-              </div>
-            </div>
-            
-            <div style={{
-              padding: '20px',
-              backgroundColor: COLORS.background,
-              borderRadius: '4px',
-              textAlign: 'center'
-            }}>
-              <div style={{
-                fontSize: '12px',
-                color: COLORS.textSecondary,
-                marginBottom: '8px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em'
-              }}>
-                Mínimo
-              </div>
-              <div style={{
-                fontSize: '24px',
-                fontWeight: '600',
-                color: COLORS.text,
-                fontFamily: '"Crimson Pro", serif'
-              }}>
-                {formatCurrency(data.minimo)}
-              </div>
-            </div>
-            
-            <div style={{
-              padding: '20px',
-              backgroundColor: COLORS.background,
-              borderRadius: '4px',
-              textAlign: 'center'
-            }}>
-              <div style={{
-                fontSize: '12px',
-                color: COLORS.textSecondary,
-                marginBottom: '8px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em'
-              }}>
-                Máximo
-              </div>
-              <div style={{
-                fontSize: '24px',
-                fontWeight: '600',
-                color: COLORS.text,
-                fontFamily: '"Crimson Pro", serif'
-              }}>
-                {formatCurrency(data.maximo)}
               </div>
             </div>
           </div>
@@ -3085,7 +3520,7 @@ function GraficoSalarios({ data }) {
   );
 }
 
-// === SECCIÃâ€œN DE ANÃÂLISIS ===
+// === SECCIÁ“N DE ANÁLISIS ===
 function SeccionAnalisis() {
   return (
     <section id="analisis" style={{
@@ -3126,6 +3561,7 @@ function SeccionAnalisis() {
         position: 'relative',
         zIndex: 2
       }}>
+        <AnimatedModelCard delay={0}>
         <div style={{
           marginBottom: '60px',
           textAlign: 'center'
@@ -3151,6 +3587,8 @@ function SeccionAnalisis() {
           </h2>
         </div>
 
+        </AnimatedModelCard>
+      <AnimatedModelCard delay={200}>
       <div style={{
         backgroundColor: COLORS.surface,
         padding: '60px',
@@ -3230,17 +3668,18 @@ function SeccionAnalisis() {
               color: COLORS.primary,
               fontWeight: '500'
             }}>
-              â€” Equipo {TEAM_DATA.name}
+              — Equipo {TEAM_DATA.name}
             </div>
           </div>
         </div>
       </div>
+      </AnimatedModelCard>
       </div>
     </section>
   );
 }
 
-// === SECCIÃâ€œN MACHINE LEARNING ===
+// === SECCIÁ“N MACHINE LEARNING ===
 function SeccionMachineLearning() {
   const [resultadosML, setResultadosML] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -3337,7 +3776,7 @@ function SeccionMachineLearning() {
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase'
               }}>
-                Disclaimer â€” Análisis Predictivo
+                Disclaimer — Análisis Predictivo
               </div>
             <div style={{
               fontSize: '14px',
@@ -3389,7 +3828,7 @@ function SeccionMachineLearning() {
             <strong style={{ color: COLORS.text }}>Metodología:</strong> Los modelos implementados 
             utilizan técnicas de machine learning supervisado (Random Forest, Gradient Boosting, K-Means) 
             entrenados sobre el conjunto de datos relevado. Las métricas de performance incluyen accuracy, 
-            precision, recall, AUC-ROC, RÂ² y RMSE con validación mediante train/test split (75%/25%).
+            precision, recall, AUC-ROC, R² y RMSE con validación mediante train/test split (75%/25%).
           </div>
         </div>
       </AnimatedModelCard>
@@ -3477,7 +3916,7 @@ function ModeloCrecimiento({ data }) {
         textAlign: 'center',
         marginBottom: '30px'
       }}>
-        Â¿Qué comercios tienen intención de expandirse?
+        ¿Qué comercios tienen intención de expandirse?
       </p>
 
       {/* Métricas principales */}
@@ -3487,10 +3926,30 @@ function ModeloCrecimiento({ data }) {
         gap: '16px',
         marginBottom: '30px'
       }}>
-        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color={COLORS.primary} />
-        <MetricaCard label="AUC-ROC" value={data.metricas.auc_roc.toFixed(3)} color="#4FC3F7" />
-        <MetricaCard label="Precision" value={`${(data.metricas.precision * 100).toFixed(1)}%`} color={COLORS.accent} />
-        <MetricaCard label="Recall" value={`${(data.metricas.recall * 100).toFixed(1)}%`} color={COLORS.accentDark} />
+        <MetricaCard 
+          label="Accuracy" 
+          value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} 
+          color={COLORS.primary}
+          tooltip="Porcentaje de predicciones correctas del total. Indica qué tan bien el modelo clasifica en general."
+        />
+        <MetricaCard 
+          label="AUC-ROC" 
+          value={data.metricas.auc_roc.toFixed(3)} 
+          color="#4FC3F7"
+          tooltip="Área bajo la curva ROC (0-1). Mide la capacidad del modelo para distinguir entre clases. Valores cercanos a 1 indican excelente desempeño."
+        />
+        <MetricaCard 
+          label="Precision" 
+          value={`${(data.metricas.precision * 100).toFixed(1)}%`} 
+          color={COLORS.accent}
+          tooltip="De todos los comercios que predijimos que crecerán, qué porcentaje realmente tiene esa intención. Mide cuán confiables son las predicciones positivas."
+        />
+        <MetricaCard 
+          label="Recall" 
+          value={`${(data.metricas.recall * 100).toFixed(1)}%`} 
+          color={COLORS.accentDark}
+          tooltip="De todos los comercios que realmente quieren crecer, qué porcentaje logramos identificar. Mide qué tan completo es el modelo al detectar casos positivos."
+        />
       </div>
 
       {/* Top 3 Features */}
@@ -3652,7 +4111,7 @@ function ModeloCrecimiento({ data }) {
             color: COLORS.textSecondary,
             lineHeight: '1.7'
           }}>
-            <strong style={{ color: COLORS.text }}>Â¿Qué significa esto para tu comercio?</strong><br/>
+            <strong style={{ color: COLORS.text }}>¿Qué significa esto para tu comercio?</strong><br/>
             Si tu negocio tiene varios años funcionando y un equipo de trabajo estable, es más probable que estés pensando 
             en crecer. El modelo nos dice que {(data.metricas.accuracy * 100).toFixed(0)}% de las veces acierta quién quiere expandirse. 
             Las claves son: <strong style={{ color: COLORS.primary }}>experiencia en el rubro, equipo consolidado y expectativas positivas de ventas</strong>.
@@ -3706,7 +4165,7 @@ function ModeloFactoresExternos({ data }) {
         textAlign: 'center',
         marginBottom: '30px'
       }}>
-        Â¿Qué afecta más las ventas: crimen, precios, competencia o crédito?
+        ¿Qué afecta más las ventas: crimen, precios, competencia o crédito?
       </p>
 
       {/* Métricas */}
@@ -3716,8 +4175,18 @@ function ModeloFactoresExternos({ data }) {
         gap: '16px',
         marginBottom: '30px'
       }}>
-        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color={COLORS.accent} />
-        <MetricaCard label="F1-Score" value={`${(data.metricas.f1_weighted * 100).toFixed(1)}%`} color="#4FC3F7" />
+        <MetricaCard 
+          label="Accuracy" 
+          value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} 
+          color={COLORS.accent}
+          tooltip="Porcentaje de predicciones correctas del total. Indica qué tan bien el modelo clasifica las tendencias de ventas (peor/igual/mejor)."
+        />
+        <MetricaCard 
+          label="F1-Score" 
+          value={`${(data.metricas.f1_weighted * 100).toFixed(1)}%`} 
+          color="#4FC3F7"
+          tooltip="Promedio ponderado de precisión y recall. Balance entre identificar correctamente las tendencias y no generar falsos positivos. Útil en clasificación multiclase."
+        />
       </div>
 
       {/* Factores de afectación */}
@@ -3898,7 +4367,7 @@ function ModeloFactoresExternos({ data }) {
             color: COLORS.textSecondary,
             lineHeight: '1.7'
           }}>
-            <strong style={{ color: COLORS.text }}>Â¿Qué está afectando tus ventas?</strong><br/>
+            <strong style={{ color: COLORS.text }}>¿Qué está afectando tus ventas?</strong><br/>
             El factor #1 que impacta las ventas son <strong style={{ color: COLORS.primary }}>los precios y la inflación</strong>. 
             Luego viene la competencia en tu zona. El crimen y el acceso a crédito también importan, pero menos. 
             Si tu negocio tiene varios años, probablemente ya sepas cómo adaptarte a estos cambios. Los comercios nuevos 
@@ -3912,15 +4381,23 @@ function ModeloFactoresExternos({ data }) {
 
 
 // Componente auxiliar para métricas
-function MetricaCard({ label, value, color }) {
+function MetricaCard({ label, value, color, tooltip }) {
+  const [showTooltip, setShowTooltip] = useState(false);
+  
   return (
-    <div style={{
-      padding: '16px',
-      backgroundColor: COLORS.surface,
-      borderRadius: '6px',
-      textAlign: 'center',
-      border: `1px solid ${color}40`
-    }}>
+    <div 
+      style={{
+        padding: '16px',
+        backgroundColor: COLORS.surface,
+        borderRadius: '6px',
+        textAlign: 'center',
+        border: `1px solid ${color}40`,
+        position: 'relative',
+        cursor: 'help'
+      }}
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
+    >
       <div style={{
         fontSize: '11px',
         color: COLORS.textSecondary,
@@ -3938,6 +4415,64 @@ function MetricaCard({ label, value, color }) {
       }}>
         {value}
       </div>
+      
+      {/* Tooltip */}
+      {showTooltip && tooltip && (
+        <div style={{
+          position: 'absolute',
+          bottom: '100%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          marginBottom: '8px',
+          padding: '12px 16px',
+          backgroundColor: COLORS.background,
+          border: `1px solid ${color}`,
+          borderRadius: '8px',
+          boxShadow: `0 8px 24px rgba(0,0,0,0.4)`,
+          zIndex: 1000,
+          minWidth: '250px',
+          maxWidth: '300px',
+          animation: 'fadeIn 0.2s ease-out'
+        }}>
+          <style>{`
+            @keyframes fadeIn {
+              from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-5px);
+              }
+              to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+              }
+            }
+          `}</style>
+          
+          {/* Flecha del tooltip */}
+          <div style={{
+            position: 'absolute',
+            bottom: '-6px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '12px',
+            height: '12px',
+            backgroundColor: COLORS.background,
+            border: `1px solid ${color}`,
+            borderTop: 'none',
+            borderLeft: 'none',
+            transform: 'translateX(-50%) rotate(45deg)'
+          }} />
+          
+          <div style={{
+            fontSize: '13px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.6',
+            textAlign: 'left',
+            position: 'relative'
+          }}>
+            {tooltip}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -4711,7 +5246,7 @@ function Team() {
             fontWeight: '400',
             color: COLORS.text
           }}>
-            Â¿Quiénes somos?
+            ¿Quiénes somos?
           </h2>
         </div>
         
@@ -4862,7 +5397,7 @@ function TeamMember({ member, index }) {
           fontWeight: '500'
         }}
       >
-        LinkedIn â†’
+        LinkedIn →
       </a>
     </div>
   );
@@ -4891,7 +5426,7 @@ function Mapa({ datos }) {
     const map = window.L.map(mapRef.current).setView([-34.6037, -58.3816], 12);
 
     window.L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: 'Â© OpenStreetMap, Â© CartoDB',
+      attribution: '© OpenStreetMap, © CartoDB',
       maxZoom: 19
     }).addTo(map);
 
@@ -5307,7 +5842,7 @@ function Mapa({ datos }) {
               }
             }}
           >
-            PERCEPCIÃ“N DE CRIMEN
+            PERCEPCIÓN DE CRIMEN
           </button>
           <button
             onClick={() => setViewMode('credito')}
@@ -5336,7 +5871,7 @@ function Mapa({ datos }) {
               }
             }}
           >
-            ACCESO A CRÃ‰DITO
+            ACCESO A CRÉDITO
           </button>
         </div>
       </div>
@@ -5534,7 +6069,7 @@ function Mapa({ datos }) {
           flexWrap: 'wrap'
         }}>
           <div style={{ fontSize: '13px', fontWeight: '600', color: COLORS.textSecondary }}>
-            ACCESO A CRÃ‰DITO:
+            ACCESO A CRÉDITO:
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '20px', height: '20px', background: '#ff0000', borderRadius: '4px' }} />
@@ -5725,7 +6260,7 @@ function Footer() {
         color: COLORS.textSecondary
       }}>
         <div>
-          Â© 2025-2026 MIT LIFT Lab Â· Equipo {TEAM_DATA.name}
+          © 2025-2026 MIT LIFT Lab · Equipo {TEAM_DATA.name}
         </div>
         <div style={{
           display: 'flex',
@@ -5982,8 +6517,8 @@ function procesarDatosGraficos(datos) {
       const cleaned = sal.toString().replace(/\$/g, "").replace(/\./g, "").replace(/,/g, "").replace(/ /g, "");
       const num = parseFloat(cleaned);
       
-      // RANGO AJUSTADO: Filtrar solo valores entre 100k - 2M ARS (eliminando outliers extremos)
-      if (isNaN(num) || num < 100000 || num > 2000000) return null;
+      // RANGO AJUSTADO: Filtrar solo valores entre 100k - 1.3M ARS (eliminando outliers extremos)
+      if (isNaN(num) || num < 100000 || num > 1300000) return null;
       
       return { valor: num, tipo: c.tipo_comercio || 'Sin categoría' };
     })
