@@ -868,9 +868,7 @@ function UniversidadesParticipantes() {
                 maxWidth: '140px',
                 maxHeight: '100px',
                 objectFit: 'contain',
-                marginBottom: '20px',
-                filter: 'brightness(0) invert(1)',
-                opacity: 0.95
+                marginBottom: '20px'
               }}
             />
             <div style={{
