@@ -931,6 +931,7 @@ function ResumenEjecutivo({ indicadores }) {
         position: 'relative',
         zIndex: 2
       }}>
+        <AnimatedModelCard delay={0}>
         <div style={{
           textAlign: 'center',
           marginBottom: '80px'
@@ -970,6 +971,7 @@ function ResumenEjecutivo({ indicadores }) {
             Un análisis profundo del ecosistema comercial del Área Metropolitana de Buenos Aires
           </p>
         </div>
+        </AnimatedModelCard>
 
         {/* Cards con diseño moderno */}
         <div style={{
@@ -978,6 +980,7 @@ function ResumenEjecutivo({ indicadores }) {
           gap: '40px',
           marginBottom: '60px'
         }}>
+          <AnimatedModelCard delay={100}>
           {/* Hallazgo 1 */}
           <div style={{
             padding: '50px',
@@ -1056,6 +1059,8 @@ function ResumenEjecutivo({ indicadores }) {
             </div>
           </div>
 
+          </AnimatedModelCard>
+          <AnimatedModelCard delay={200}>
           {/* Hallazgo 2 */}
           <div style={{
             padding: '50px',
@@ -1134,6 +1139,8 @@ function ResumenEjecutivo({ indicadores }) {
             </div>
           </div>
 
+          </AnimatedModelCard>
+          <AnimatedModelCard delay={300}>
           {/* Hallazgo 3 */}
           <div style={{
             padding: '50px',
@@ -1211,6 +1218,7 @@ function ResumenEjecutivo({ indicadores }) {
               </div>
             </div>
           </div>
+          </AnimatedModelCard>
         </div>
 
         {/* CTA final */}
@@ -1237,6 +1245,8 @@ function ResumenEjecutivo({ indicadores }) {
             la realidad de tu sector. Los datos completos y herramientas de análisis están disponibles 
             más abajo para ayudarte a tomar mejores decisiones.
           </p>
+          <AnimatedModelCard delay={400}>
+          <div>
           <h3 style={{
             fontFamily: '"Crimson Pro", serif',
             fontSize: '24px',
@@ -1464,6 +1474,8 @@ function ResumenEjecutivo({ indicadores }) {
           </p>
         </div>
       </div>
+      </div>
+          </AnimatedModelCard>
     </section>
   );
 }
@@ -3126,6 +3138,7 @@ function SeccionAnalisis() {
         position: 'relative',
         zIndex: 2
       }}>
+        <AnimatedModelCard delay={0}>
         <div style={{
           marginBottom: '60px',
           textAlign: 'center'
@@ -3150,7 +3163,10 @@ function SeccionAnalisis() {
             Análisis y conclusiones
           </h2>
         </div>
+        </div>
 
+        </AnimatedModelCard>
+      <AnimatedModelCard delay={200}>
       <div style={{
         backgroundColor: COLORS.surface,
         padding: '60px',
@@ -3235,7 +3251,7 @@ function SeccionAnalisis() {
           </div>
         </div>
       </div>
-      </div>
+      </AnimatedModelCard>
     </section>
   );
 }
@@ -3487,10 +3503,30 @@ function ModeloCrecimiento({ data }) {
         gap: '16px',
         marginBottom: '30px'
       }}>
-        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color={COLORS.primary} />
-        <MetricaCard label="AUC-ROC" value={data.metricas.auc_roc.toFixed(3)} color="#4FC3F7" />
-        <MetricaCard label="Precision" value={`${(data.metricas.precision * 100).toFixed(1)}%`} color={COLORS.accent} />
-        <MetricaCard label="Recall" value={`${(data.metricas.recall * 100).toFixed(1)}%`} color={COLORS.accentDark} />
+        <MetricaCard 
+          label="Accuracy" 
+          value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} 
+          color={COLORS.primary}
+          tooltip="Porcentaje de predicciones correctas del total. Indica qué tan bien el modelo clasifica en general."
+        />
+        <MetricaCard 
+          label="AUC-ROC" 
+          value={data.metricas.auc_roc.toFixed(3)} 
+          color="#4FC3F7"
+          tooltip="Área bajo la curva ROC (0-1). Mide la capacidad del modelo para distinguir entre clases. Valores cercanos a 1 indican excelente desempeño."
+        />
+        <MetricaCard 
+          label="Precision" 
+          value={`${(data.metricas.precision * 100).toFixed(1)}%`} 
+          color={COLORS.accent}
+          tooltip="De todos los comercios que predijimos que crecerán, qué porcentaje realmente tiene esa intención. Mide cuán confiables son las predicciones positivas."
+        />
+        <MetricaCard 
+          label="Recall" 
+          value={`${(data.metricas.recall * 100).toFixed(1)}%`} 
+          color={COLORS.accentDark}
+          tooltip="De todos los comercios que realmente quieren crecer, qué porcentaje logramos identificar. Mide qué tan completo es el modelo al detectar casos positivos."
+        />
       </div>
 
       {/* Top 3 Features */}
@@ -3716,8 +3752,18 @@ function ModeloFactoresExternos({ data }) {
         gap: '16px',
         marginBottom: '30px'
       }}>
-        <MetricaCard label="Accuracy" value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} color={COLORS.accent} />
-        <MetricaCard label="F1-Score" value={`${(data.metricas.f1_weighted * 100).toFixed(1)}%`} color="#4FC3F7" />
+        <MetricaCard 
+          label="Accuracy" 
+          value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} 
+          color={COLORS.accent}
+          tooltip="Porcentaje de predicciones correctas del total. Indica qué tan bien el modelo clasifica las tendencias de ventas (peor/igual/mejor)."
+        />
+        <MetricaCard 
+          label="F1-Score" 
+          value={`${(data.metricas.f1_weighted * 100).toFixed(1)}%`} 
+          color="#4FC3F7"
+          tooltip="Promedio ponderado de precisión y recall. Balance entre identificar correctamente las tendencias y no generar falsos positivos. Útil en clasificación multiclase."
+        />
       </div>
 
       {/* Factores de afectación */}
@@ -3912,15 +3958,23 @@ function ModeloFactoresExternos({ data }) {
 
 
 // Componente auxiliar para métricas
-function MetricaCard({ label, value, color }) {
+function MetricaCard({ label, value, color, tooltip }) {
+  const [showTooltip, setShowTooltip] = useState(false);
+  
   return (
-    <div style={{
-      padding: '16px',
-      backgroundColor: COLORS.surface,
-      borderRadius: '6px',
-      textAlign: 'center',
-      border: `1px solid ${color}40`
-    }}>
+    <div 
+      style={{
+        padding: '16px',
+        backgroundColor: COLORS.surface,
+        borderRadius: '6px',
+        textAlign: 'center',
+        border: `1px solid ${color}40`,
+        position: 'relative',
+        cursor: 'help'
+      }}
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
+    >
       <div style={{
         fontSize: '11px',
         color: COLORS.textSecondary,
@@ -3938,6 +3992,64 @@ function MetricaCard({ label, value, color }) {
       }}>
         {value}
       </div>
+      
+      {/* Tooltip */}
+      {showTooltip && tooltip && (
+        <div style={{
+          position: 'absolute',
+          bottom: '100%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          marginBottom: '8px',
+          padding: '12px 16px',
+          backgroundColor: COLORS.background,
+          border: `1px solid ${color}`,
+          borderRadius: '8px',
+          boxShadow: `0 8px 24px rgba(0,0,0,0.4)`,
+          zIndex: 1000,
+          minWidth: '250px',
+          maxWidth: '300px',
+          animation: 'fadeIn 0.2s ease-out'
+        }}>
+          <style>{`
+            @keyframes fadeIn {
+              from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-5px);
+              }
+              to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+              }
+            }
+          `}</style>
+          
+          {/* Flecha del tooltip */}
+          <div style={{
+            position: 'absolute',
+            bottom: '-6px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '12px',
+            height: '12px',
+            backgroundColor: COLORS.background,
+            border: `1px solid ${color}`,
+            borderTop: 'none',
+            borderLeft: 'none',
+            transform: 'translateX(-50%) rotate(45deg)'
+          }} />
+          
+          <div style={{
+            fontSize: '13px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.6',
+            textAlign: 'left',
+            position: 'relative'
+          }}>
+            {tooltip}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
