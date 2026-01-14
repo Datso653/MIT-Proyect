@@ -3,7 +3,7 @@ const { useState, useEffect, useRef } = React;
 // === DATOS DEL PROYECTO ===
 const TEAM_DATA = {
   name: "GreenThunder",
-  tagline: "Data-driven insights for local business transformation",
+  tagline: "Análisis basado en datos para la transformación de negocios locales",
   members: [
     {
       name: "Gina Marrazzo",
@@ -606,7 +606,7 @@ function Hero({ scrollY }) {
           marginBottom: '30px',
           fontWeight: '500'
         }}>
-          MIT LIFT Lab Á— Buenos Aires
+          MIT LIFT Lab — Buenos Aires
         </div>
         
         <h1 className="fade-in fade-in-delay-1" style={{
@@ -1927,18 +1927,18 @@ function GraficoBarras({ data }) {
                   {item.promedio.toFixed(1)}
                 </text>
                 
-                {/* Label abreviado */}
+                {/* Label rotado mejorado */}
                 <text
                   x={x + barWidth / 2}
-                  y={height + 20}
+                  y={height + 15}
                   fill={isHovered ? COLORS.primary : COLORS.textSecondary}
-                  fontSize="10"
-                  fontWeight={isHovered ? "600" : "400"}
+                  fontSize="11"
+                  fontWeight={isHovered ? "600" : "500"}
                   textAnchor="end"
-                  transform={`rotate(-45 ${x + barWidth / 2} ${height + 20})`}
+                  transform={`rotate(-35 ${x + barWidth / 2} ${height + 15})`}
                   style={{ transition: 'all 0.3s' }}
                 >
-                  {item.tipo.length > 12 ? item.tipo.substring(0, 12) + '...' : item.tipo}
+                  {item.tipo}
                 </text>
               </g>
             );
@@ -4662,15 +4662,40 @@ function Team() {
 function TeamMember({ member, index }) {
   const [isHovered, setIsHovered] = useState(false);
   const [imgError, setImgError] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const memberRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), index * 200); // Delay escalonado
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (memberRef.current) {
+      observer.observe(memberRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [index]);
 
   return (
     <div
+      ref={memberRef}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
         position: 'relative',
         cursor: 'pointer',
-        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
+        transitionDuration: '0.8s',
+        transitionDelay: '0s'
       }}
     >
       <div style={{
