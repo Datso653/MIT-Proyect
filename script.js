@@ -751,32 +751,32 @@ function UniversidadesParticipantes() {
     { 
       nombre: 'MIT', 
       fullName: 'Massachusetts Institute of Technology',
-      color: '#A31F34'
+      logo: './mit.png'
     },
     { 
       nombre: 'UBA', 
       fullName: 'Universidad de Buenos Aires',
-      color: '#C8102E'
+      logo: './uba.jpg'
     },
     { 
       nombre: 'UNSAM', 
       fullName: 'Universidad Nacional de San Martín',
-      color: '#00AEEF'
+      logo: './unsam.jpg'
     },
     { 
       nombre: 'UP', 
       fullName: 'Universidad de Palermo',
-      color: '#E31E24'
+      logo: './up.png'
     },
     { 
       nombre: 'ITBA', 
       fullName: 'Instituto Tecnológico de Buenos Aires',
-      color: '#004B87'
+      logo: './itba.jpg'
     },
     { 
       nombre: 'UNICEN', 
       fullName: 'Universidad Nacional del Centro',
-      color: '#0066B3'
+      logo: './tandil.jpg'
     }
   ];
 
@@ -837,9 +837,9 @@ function UniversidadesParticipantes() {
           <div
             key={idx}
             style={{
-              minWidth: '240px',
-              height: '180px',
-              padding: '30px',
+              minWidth: '260px',
+              height: '200px',
+              padding: '40px',
               backgroundColor: COLORS.background,
               borderRadius: '12px',
               border: `1px solid ${COLORS.border}`,
@@ -848,9 +848,7 @@ function UniversidadesParticipantes() {
               justifyContent: 'center',
               alignItems: 'center',
               transition: 'all 0.3s ease',
-              cursor: 'pointer',
-              position: 'relative',
-              overflow: 'hidden'
+              cursor: 'pointer'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = COLORS.primary;
@@ -863,32 +861,18 @@ function UniversidadesParticipantes() {
               e.currentTarget.style.boxShadow = 'none';
             }}
           >
-            {/* Badge de color institucional */}
-            <div style={{
-              position: 'absolute',
-              top: '15px',
-              right: '15px',
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              backgroundColor: uni.color,
-              boxShadow: `0 0 12px ${uni.color}`
-            }} />
-            
-            {/* Logo tipográfico */}
-            <div style={{
-              fontFamily: '"Crimson Pro", serif',
-              fontSize: '42px',
-              fontWeight: '700',
-              color: COLORS.primary,
-              marginBottom: '16px',
-              letterSpacing: '0.05em',
-              textShadow: '0 2px 8px rgba(79, 195, 247, 0.3)'
-            }}>
-              {uni.nombre}
-            </div>
-            
-            {/* Nombre completo */}
+            <img 
+              src={uni.logo}
+              alt={uni.nombre}
+              style={{
+                maxWidth: '140px',
+                maxHeight: '100px',
+                objectFit: 'contain',
+                marginBottom: '20px',
+                filter: 'brightness(0) invert(1)',
+                opacity: 0.95
+              }}
+            />
             <div style={{
               fontSize: '11px',
               color: COLORS.textSecondary,
