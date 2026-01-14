@@ -201,9 +201,14 @@ function App() {
           }
           
           /* Grids - force single column */
-          [style*="gridTemplateColumns"] {
+          [style*="gridTemplateColumns: repeat(auto-fit"] {
             grid-template-columns: 1fr !important;
             gap: 20px !important;
+          }
+          
+          [style*="gridTemplateColumns: '2fr 1fr 1fr'"] {
+            grid-template-columns: 1fr !important;
+            gap: 30px !important;
           }
           
           /* ML Cards - más compactos */
@@ -221,17 +226,31 @@ function App() {
             gap: 30px !important;
           }
           
-          /* SVG Charts - responsive - IMPORTANTE */
+          /* SVG Charts - responsive */
           svg {
             max-width: 100% !important;
             height: auto !important;
-            display: block !important;
-            margin: 0 auto !important;
+          }
+          
+          svg[width="400"], svg[width="450"] {
+            width: 100% !important;
+            height: auto !important;
+          }
+          
+          /* Campus cards */
+          [style*="minmax(400px"] {
+            grid-template-columns: 1fr !important;
           }
           
           /* Navbar */
           nav {
             padding: 16px 20px !important;
+          }
+          
+          /* Buttons */
+          button {
+            font-size: 12px !important;
+            padding: 10px 16px !important;
           }
           
           /* Margin/Padding reducidos */
@@ -250,25 +269,6 @@ function App() {
           
           [style*="padding: '60px'"] {
             padding: 24px !important;
-          }
-        }
-        
-        /* Landscape mode en móvil - evitar cortes */
-        @media (max-width: 900px) and (orientation: landscape) {
-          section {
-            padding: 40px 24px !important;
-          }
-          
-          /* Permitir scroll horizontal en gráficos */
-          svg {
-            max-width: none !important;
-            width: auto !important;
-          }
-          
-          /* Contenedor de gráficos */
-          [style*="overflowX"] {
-            overflow-x: auto !important;
-            -webkit-overflow-scrolling: touch !important;
           }
         }
         
@@ -346,7 +346,7 @@ function App() {
 }
 
 // === HERO SECTION ===
-// === NAVBAR CON MENÁš DESPLEGABLE ===
+// === NAVBAR CON MENÚ DESPLEGABLE ===
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -368,7 +368,7 @@ function Navbar() {
     { id: 'analisis-visual', label: 'Análisis Visual' },
     { id: 'machine-learning', label: 'Machine Learning' },
     { id: 'analisis', label: 'Conclusiones' },
-    { id: 'equipo', label: 'Â¿Quiénes somos?' }
+    { id: 'equipo', label: '¿Quiénes somos?' }
   ];
 
   const scrollToSection = (sectionId) => {
@@ -606,7 +606,7 @@ function Hero({ scrollY }) {
           marginBottom: '30px',
           fontWeight: '500'
         }}>
-          MIT LIFT Lab "” Buenos Aires
+          MIT LIFT Lab — Buenos Aires
         </div>
         
         <h1 className="fade-in fade-in-delay-1" style={{
@@ -887,7 +887,7 @@ function UniversidadesParticipantes() {
   );
 }
 
-// === INDICADORES CON GRÁÂFICOS CIRCULARES ===
+// === INDICADORES CON GRÁFICOS CIRCULARES ===
 // === RESUMEN EJECUTIVO PARA COMERCIANTES ===
 function ResumenEjecutivo({ indicadores }) {
   if (!indicadores) return null;
@@ -967,7 +967,7 @@ function ResumenEjecutivo({ indicadores }) {
             margin: '0 auto',
             fontWeight: '300'
           }}>
-            Un análisis profundo del ecosistema comercial del ÁÂrea Metropolitana de Buenos Aires
+            Un análisis profundo del ecosistema comercial del Área Metropolitana de Buenos Aires
           </p>
         </div>
 
@@ -1300,7 +1300,7 @@ function ResumenEjecutivo({ indicadores }) {
                     margin: 0,
                     letterSpacing: '-0.01em'
                   }}>
-                    H1: Crimen alto + Sin crédito â†’ Â¿Menor expectativa de crecimiento?
+                    H1: Crimen alto + Sin crédito → ¿Menor expectativa de crecimiento?
                   </h4>
                 </div>
                 <span style={{
@@ -1336,7 +1336,7 @@ function ResumenEjecutivo({ indicadores }) {
                     Diferencia: <strong>1.9 puntos porcentuales</strong>
                   </li>
                   <li style={{ marginBottom: '8px' }}>
-                    Prueba Chi-cuadrado: Ï‡Â²=0.003, <strong>p=0.96</strong> (no significativo)
+                    Prueba Chi-cuadrado: χ²=0.003, <strong>p=0.96</strong> (no significativo)
                   </li>
                 </ul>
                 <p style={{ 
@@ -1395,7 +1395,7 @@ function ResumenEjecutivo({ indicadores }) {
                     margin: 0,
                     letterSpacing: '-0.01em'
                   }}>
-                    H2: Crimen bajo + Con crédito â†’ Â¿Mayor inversión tecnológica?
+                    H2: Crimen bajo + Con crédito → ¿Mayor inversión tecnológica?
                   </h4>
                 </div>
                 <span style={{
@@ -1458,7 +1458,7 @@ function ResumenEjecutivo({ indicadores }) {
             fontStyle: 'italic'
           }}>
             <strong>Metodología:</strong> Se aplicaron pruebas estadísticas rigurosas (Chi-cuadrado para H1, Mann-Whitney U para H2) 
-            con nivel de significancia Î±=0.05. Ambas hipótesis resultaron NO RECHAZADAS al no alcanzar significancia estadística 
+            con nivel de significancia α=0.05. Ambas hipótesis resultaron NO RECHAZADAS al no alcanzar significancia estadística 
             (p&gt;0.05), indicando que los patrones geoespaciales observados no generan diferencias sustanciales en los comportamientos 
             analizados. Estos resultados sugieren que otros factores no incluidos en el modelo podrían tener mayor peso explicativo.
           </p>
@@ -1741,7 +1741,7 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
   );
 }
 
-// === ANÁÂLISIS VISUAL CON GRÁÂFICOS SVG ===
+// === ANÁLISIS VISUAL CON GRÁFICOS SVG ===
 function AnalisisVisual({ data, indicadores }) {
   const [visibleItems, setVisibleItems] = useState(new Set());
   const sectionRef = useRef(null);
@@ -1810,8 +1810,8 @@ function AnalisisVisual({ data, indicadores }) {
         data-index="0"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '24px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+          gap: '40px',
           marginBottom: '40px',
           opacity: visibleItems.has('0') ? 1 : 0,
           transform: visibleItems.has('0') ? 'translateY(0)' : 'translateY(40px)',
@@ -1850,8 +1850,8 @@ function AnalisisVisual({ data, indicadores }) {
         data-index="2"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '24px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+          gap: '40px',
           opacity: visibleItems.has('2') ? 1 : 0,
           transform: visibleItems.has('2') ? 'translateY(0)' : 'translateY(40px)',
           transition: 'opacity 0.8s ease-out, transform 0.8s ease-out'
@@ -1879,16 +1879,9 @@ function AnalisisVisual({ data, indicadores }) {
 function GraficoDistribucion({ data }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-  
-  useEffect(() => {
+    // Trigger animation after component mounts
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
@@ -1915,14 +1908,14 @@ function GraficoDistribucion({ data }) {
   return (
     <div style={{
       backgroundColor: COLORS.surface,
-      padding: isMobile ? '20px 16px' : '40px',
+      padding: '40px',
       borderRadius: '4px',
       border: `1px solid ${COLORS.border}`,
       transition: 'all 0.3s ease'
     }}>
       <h3 style={{
         fontFamily: '"Crimson Pro", serif',
-        fontSize: isMobile ? '20px' : '24px',
+        fontSize: '24px',
         fontWeight: '400',
         color: COLORS.text,
         marginBottom: '10px'
@@ -1930,31 +1923,20 @@ function GraficoDistribucion({ data }) {
         Distribución por tipo
       </h3>
       <p style={{
-        fontSize: isMobile ? '12px' : '13px',
+        fontSize: '13px',
         color: COLORS.textSecondary,
-        marginBottom: isMobile ? '20px' : '30px'
+        marginBottom: '30px'
       }}>
         {total} comercios relevados
       </p>
       
-      <div style={{ 
-        display: 'flex', 
-        flexDirection: isMobile ? 'column' : 'row',
-        gap: isMobile ? '20px' : '40px', 
-        alignItems: 'center',
-        flexWrap: 'wrap' 
-      }}>
+      <div style={{ display: 'flex', gap: '40px', alignItems: 'center', flexWrap: 'wrap' }}>
         {/* SVG Donut Chart */}
-        <svg 
-          width={isMobile ? "160" : "200"} 
-          height={isMobile ? "160" : "200"} 
-          viewBox="0 0 200 200" 
-          style={{
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible ? 'rotate(0deg)' : 'rotate(-90deg)',
-            transition: 'opacity 1s ease-out, transform 1s ease-out'
-          }}
-        >
+        <svg width="200" height="200" viewBox="0 0 200 200" style={{
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'rotate(0deg)' : 'rotate(-90deg)',
+          transition: 'opacity 1s ease-out, transform 1s ease-out'
+        }}>
           {segments.map((seg, idx) => {
             const isHovered = hoveredIndex === idx;
             const radius = isHovered ? 75 : 70;
@@ -1997,59 +1979,44 @@ function GraficoDistribucion({ data }) {
                 }}
                 onMouseEnter={() => setHoveredIndex(idx)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                onClick={() => isMobile && setHoveredIndex(hoveredIndex === idx ? null : idx)}
               />
             );
           })}
         </svg>
         
         {/* Legend */}
-        <div style={{ 
-          flex: 1, 
-          minWidth: isMobile ? '100%' : '200px',
-          display: isMobile ? 'grid' : 'block',
-          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'none',
-          gap: isMobile ? '8px' : '0'
-        }}>
+        <div style={{ flex: 1, minWidth: '200px' }}>
           {segments.map((seg, idx) => (
             <div
               key={idx}
-              onMouseEnter={() => !isMobile && setHoveredIndex(idx)}
-              onMouseLeave={() => !isMobile && setHoveredIndex(null)}
-              onClick={() => isMobile && setHoveredIndex(hoveredIndex === idx ? null : idx)}
+              onMouseEnter={() => setHoveredIndex(idx)}
+              onMouseLeave={() => setHoveredIndex(null)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                marginBottom: isMobile ? '0' : '12px',
-                padding: isMobile ? '8px' : '0',
-                backgroundColor: isMobile && hoveredIndex === idx ? `${seg.color}20` : 'transparent',
-                borderRadius: '4px',
+                marginBottom: '12px',
                 cursor: 'pointer',
                 opacity: hoveredIndex !== null && hoveredIndex !== idx ? 0.5 : 1,
-                transition: 'all 0.3s'
+                transition: 'opacity 0.3s'
               }}
             >
               <div style={{
-                width: isMobile ? '10px' : '12px',
-                height: isMobile ? '10px' : '12px',
+                width: '12px',
+                height: '12px',
                 backgroundColor: seg.color,
-                marginRight: '8px',
-                borderRadius: '2px',
-                flexShrink: 0
+                marginRight: '10px',
+                borderRadius: '2px'
               }} />
-              <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ flex: 1 }}>
                 <div style={{
-                  fontSize: isMobile ? '11px' : '13px',
+                  fontSize: '13px',
                   color: COLORS.text,
-                  marginBottom: '1px',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis'
+                  marginBottom: '2px'
                 }}>
                   {seg.tipo}
                 </div>
                 <div style={{
-                  fontSize: isMobile ? '10px' : '11px',
+                  fontSize: '11px',
                   color: COLORS.textSecondary
                 }}>
                   {seg.cantidad} ({seg.percentage.toFixed(1)}%)
@@ -2066,111 +2033,14 @@ function GraficoDistribucion({ data }) {
 // Gráfico de barras
 function GraficoBarras({ data }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    const timer = setTimeout(() => setIsVisible(true), 200);
+    return () => clearTimeout(timer);
   }, []);
   
   const maxValue = Math.ceil(Math.max(...data.map(d => d.promedio)) * 1.15);
-  
-  // VERSIÓN MÓVIL: Layout vertical con etiquetas arriba de las barras
-  if (isMobile) {
-    return (
-      <div style={{
-        backgroundColor: COLORS.surface,
-        padding: '20px 16px',
-        borderRadius: '4px',
-        border: `1px solid ${COLORS.border}`
-      }}>
-        <h3 style={{
-          fontFamily: '"Crimson Pro", serif',
-          fontSize: '20px',
-          fontWeight: '400',
-          color: COLORS.text,
-          marginBottom: '8px'
-        }}>
-          Trabajadores por tipo
-        </h3>
-        <p style={{
-          fontSize: '12px',
-          color: COLORS.textSecondary,
-          marginBottom: '20px'
-        }}>
-          Promedio de empleados por categoría
-        </p>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-          {data.map((item, idx) => {
-            const percentage = (item.promedio / maxValue) * 100;
-            const isHovered = hoveredIndex === idx;
-            
-            return (
-              <div
-                key={idx}
-                onClick={() => setHoveredIndex(isHovered ? null : idx)}
-                style={{ cursor: 'pointer' }}
-              >
-                {/* Etiqueta arriba con valor */}
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: '6px'
-                }}>
-                  <span style={{
-                    fontSize: '12px',
-                    fontWeight: isHovered ? '600' : '400',
-                    color: isHovered ? COLORS.primary : COLORS.text,
-                    transition: 'all 0.3s',
-                    flex: 1,
-                    paddingRight: '8px',
-                    lineHeight: '1.3'
-                  }}>
-                    {item.tipo}
-                  </span>
-                  <span style={{
-                    fontSize: '14px',
-                    fontWeight: '700',
-                    color: isHovered ? COLORS.accent : COLORS.primary,
-                    transition: 'all 0.3s',
-                    minWidth: '36px',
-                    textAlign: 'right'
-                  }}>
-                    {item.promedio.toFixed(1)}
-                  </span>
-                </div>
-                
-                {/* Barra horizontal */}
-                <div style={{
-                  height: '20px',
-                  backgroundColor: COLORS.border,
-                  borderRadius: '4px',
-                  overflow: 'hidden'
-                }}>
-                  <div style={{
-                    height: '100%',
-                    width: `${percentage}%`,
-                    background: isHovered 
-                      ? `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.primaryLight})`
-                      : COLORS.primary,
-                    borderRadius: '4px',
-                    transition: 'all 0.4s ease-out',
-                    boxShadow: isHovered ? `0 2px 8px ${COLORS.primary}60` : 'none'
-                  }} />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    );
-  }
-  
-  // VERSIÓN DESKTOP: SVG con barras horizontales
   const barHeight = 35;
   const gap = 15;
   const labelWidth = 200;
@@ -2720,7 +2590,7 @@ function GraficoTierlist({ data }) {
                   transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                   color: config.color
                 }}>
-                  â–¼
+                  ▼
                 </div>
               </div>
               
@@ -2855,7 +2725,7 @@ function GraficoSalarios({ data }) {
                 color: COLORS.accent,
                 marginTop: '2px'
               }}>
-                âš 
+                ⚠
               </div>
               <div>
                 <div style={{
@@ -3215,7 +3085,7 @@ function GraficoSalarios({ data }) {
   );
 }
 
-// === SECCIÁ"N DE ANÁÂLISIS ===
+// === SECCIÁ“N DE ANÁLISIS ===
 function SeccionAnalisis() {
   return (
     <section id="analisis" style={{
@@ -3360,7 +3230,7 @@ function SeccionAnalisis() {
               color: COLORS.primary,
               fontWeight: '500'
             }}>
-              "” Equipo {TEAM_DATA.name}
+              — Equipo {TEAM_DATA.name}
             </div>
           </div>
         </div>
@@ -3370,7 +3240,7 @@ function SeccionAnalisis() {
   );
 }
 
-// === SECCIÁ"N MACHINE LEARNING ===
+// === SECCIÁ“N MACHINE LEARNING ===
 function SeccionMachineLearning() {
   const [resultadosML, setResultadosML] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -3467,7 +3337,7 @@ function SeccionMachineLearning() {
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase'
               }}>
-                Disclaimer "” Análisis Predictivo
+                Disclaimer — Análisis Predictivo
               </div>
             <div style={{
               fontSize: '14px',
@@ -3489,7 +3359,7 @@ function SeccionMachineLearning() {
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))',
         gap: '60px'
       }}>
         <AnimatedModelCard delay={0}>
@@ -3519,7 +3389,7 @@ function SeccionMachineLearning() {
             <strong style={{ color: COLORS.text }}>Metodología:</strong> Los modelos implementados 
             utilizan técnicas de machine learning supervisado (Random Forest, Gradient Boosting, K-Means) 
             entrenados sobre el conjunto de datos relevado. Las métricas de performance incluyen accuracy, 
-            precision, recall, AUC-ROC, RÂ² y RMSE con validación mediante train/test split (75%/25%).
+            precision, recall, AUC-ROC, R² y RMSE con validación mediante train/test split (75%/25%).
           </div>
         </div>
       </AnimatedModelCard>
@@ -3607,7 +3477,7 @@ function ModeloCrecimiento({ data }) {
         textAlign: 'center',
         marginBottom: '30px'
       }}>
-        Â¿Qué comercios tienen intención de expandirse?
+        ¿Qué comercios tienen intención de expandirse?
       </p>
 
       {/* Métricas principales */}
@@ -3782,7 +3652,7 @@ function ModeloCrecimiento({ data }) {
             color: COLORS.textSecondary,
             lineHeight: '1.7'
           }}>
-            <strong style={{ color: COLORS.text }}>Â¿Qué significa esto para tu comercio?</strong><br/>
+            <strong style={{ color: COLORS.text }}>¿Qué significa esto para tu comercio?</strong><br/>
             Si tu negocio tiene varios años funcionando y un equipo de trabajo estable, es más probable que estés pensando 
             en crecer. El modelo nos dice que {(data.metricas.accuracy * 100).toFixed(0)}% de las veces acierta quién quiere expandirse. 
             Las claves son: <strong style={{ color: COLORS.primary }}>experiencia en el rubro, equipo consolidado y expectativas positivas de ventas</strong>.
@@ -3836,7 +3706,7 @@ function ModeloFactoresExternos({ data }) {
         textAlign: 'center',
         marginBottom: '30px'
       }}>
-        Â¿Qué afecta más las ventas: crimen, precios, competencia o crédito?
+        ¿Qué afecta más las ventas: crimen, precios, competencia o crédito?
       </p>
 
       {/* Métricas */}
@@ -4028,7 +3898,7 @@ function ModeloFactoresExternos({ data }) {
             color: COLORS.textSecondary,
             lineHeight: '1.7'
           }}>
-            <strong style={{ color: COLORS.text }}>Â¿Qué está afectando tus ventas?</strong><br/>
+            <strong style={{ color: COLORS.text }}>¿Qué está afectando tus ventas?</strong><br/>
             El factor #1 que impacta las ventas son <strong style={{ color: COLORS.primary }}>los precios y la inflación</strong>. 
             Luego viene la competencia en tu zona. El crimen y el acceso a crédito también importan, pero menos. 
             Si tu negocio tiene varios años, probablemente ya sepas cómo adaptarte a estos cambios. Los comercios nuevos 
@@ -4841,7 +4711,7 @@ function Team() {
             fontWeight: '400',
             color: COLORS.text
           }}>
-            Â¿Quiénes somos?
+            ¿Quiénes somos?
           </h2>
         </div>
         
@@ -4992,7 +4862,7 @@ function TeamMember({ member, index }) {
           fontWeight: '500'
         }}
       >
-        LinkedIn â†’
+        LinkedIn →
       </a>
     </div>
   );
@@ -5021,7 +4891,7 @@ function Mapa({ datos }) {
     const map = window.L.map(mapRef.current).setView([-34.6037, -58.3816], 12);
 
     window.L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: 'Â© OpenStreetMap, Â© CartoDB',
+      attribution: '© OpenStreetMap, © CartoDB',
       maxZoom: 19
     }).addTo(map);
 
@@ -5437,7 +5307,7 @@ function Mapa({ datos }) {
               }
             }}
           >
-            PERCEPCIÁ“N DE CRIMEN
+            PERCEPCIÓN DE CRIMEN
           </button>
           <button
             onClick={() => setViewMode('credito')}
@@ -5466,7 +5336,7 @@ function Mapa({ datos }) {
               }
             }}
           >
-            ACCESO A CRÁ‰DITO
+            ACCESO A CRÉDITO
           </button>
         </div>
       </div>
@@ -5664,7 +5534,7 @@ function Mapa({ datos }) {
           flexWrap: 'wrap'
         }}>
           <div style={{ fontSize: '13px', fontWeight: '600', color: COLORS.textSecondary }}>
-            ACCESO A CRÁ‰DITO:
+            ACCESO A CRÉDITO:
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '20px', height: '20px', background: '#ff0000', borderRadius: '4px' }} />
@@ -5855,7 +5725,7 @@ function Footer() {
         color: COLORS.textSecondary
       }}>
         <div>
-          Â© 2025-2026 MIT LIFT Lab Â· Equipo {TEAM_DATA.name}
+          © 2025-2026 MIT LIFT Lab · Equipo {TEAM_DATA.name}
         </div>
         <div style={{
           display: 'flex',
