@@ -188,7 +188,6 @@ function App() {
         
         /* === RESPONSIVE MOBILE === */
         @media (max-width: 768px) {
-          /* Hero mobile */
           section[data-section="hero"] {
             padding: 80px 20px 60px !important;
             min-height: 90vh !important;
@@ -203,12 +202,10 @@ function App() {
             font-size: 16px !important;
           }
           
-          /* Secciones mobile */
           section {
             padding: 60px 20px !important;
           }
           
-          /* Títulos mobile */
           h2 {
             font-size: 32px !important;
             line-height: 1.2 !important;
@@ -218,12 +215,10 @@ function App() {
             font-size: 20px !important;
           }
           
-          /* Grids una columna */
           [style*="gridTemplateColumns"] {
             grid-template-columns: 1fr !important;
           }
           
-          /* Padding reducido */
           [style*="padding: '60px'"],
           [style*="padding: 60"] {
             padding: 30px !important;
@@ -244,7 +239,6 @@ function App() {
             padding: 20px !important;
           }
           
-          /* Margins reducidos */
           [style*="marginBottom: '80px'"],
           [style*="marginBottom: 80"] {
             margin-bottom: 40px !important;
@@ -255,7 +249,6 @@ function App() {
             margin-bottom: 30px !important;
           }
           
-          /* Gaps reducidos */
           [style*="gap: '80px'"],
           [style*="gap: 80"] {
             gap: 40px !important;
@@ -271,26 +264,96 @@ function App() {
             gap: 20px !important;
           }
           
-          /* Botones mobile */
           button {
             font-size: 13px !important;
             padding: 12px 20px !important;
           }
           
-          /* SVG responsive */
           svg {
             max-width: 100% !important;
             height: auto !important;
           }
           
-          /* Mapa mobile */
           [style*="height: '600px'"] {
             height: 400px !important;
           }
           
-          /* Footer mobile */
           footer {
             padding: 60px 20px !important;
+          }
+          
+          [style*="overflowX: 'auto'"],
+          div[style*="overflow"] {
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch;
+          }
+          
+          svg[viewBox] {
+            width: 100% !important;
+            height: auto !important;
+            min-width: 300px;
+          }
+          
+          svg[width="600"],
+          svg[width="700"],
+          svg[width="450"] {
+            width: 100% !important;
+            min-width: 320px !important;
+          }
+          
+          [style*="borderRadius: '8px'"][style*="border: '1px"] {
+            padding: 16px !important;
+            margin-bottom: 20px !important;
+          }
+          
+          [style*="gridTemplateColumns: 'repeat(2, 1fr)'"] {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+          }
+          
+          [style*="display: 'flex'"][style*="gap: '40px'"] {
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 20px !important;
+          }
+          
+          [style*="flex: 1"][style*="minWidth: '200px'"] {
+            width: 100% !important;
+            min-width: 100% !important;
+          }
+          
+          [style*="padding: '28px 32px'"] {
+            padding: 20px 16px !important;
+          }
+          
+          [style*="aspectRatio: '3/4'"] {
+            aspect-ratio: 4/5 !important;
+            max-height: 400px !important;
+          }
+          
+          [style*="maxWidth: '700px'"] {
+            max-width: 100% !important;
+            overflow-x: auto !important;
+            padding-right: 10px !important;
+          }
+          
+          [style*="gridTemplateColumns: 'repeat(auto-fit, minmax(150px"] {
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
+            gap: 8px !important;
+          }
+          
+          [style*="fontSize: '14px'"] {
+            font-size: 13px !important;
+            line-height: 1.6 !important;
+          }
+          
+          [style*="fontSize: '13px'"] {
+            font-size: 12px !important;
+          }
+          
+          div[style*="width: '100%'"] > svg {
+            max-width: 100% !important;
+            height: auto !important;
           }
         }
         
@@ -330,6 +393,30 @@ function App() {
           [style*="height: '600px'"],
           [style*="height: '400px'"] {
             height: 350px !important;
+          }
+          
+          svg {
+            min-width: 280px !important;
+          }
+          
+          [style*="borderRadius: '8px'"] {
+            padding: 12px !important;
+          }
+          
+          [style*="fontSize: '24px'"][style*="fontFamily"] {
+            font-size: 18px !important;
+          }
+          
+          [style*="aspectRatio"] {
+            max-height: 350px !important;
+          }
+          
+          [style*="padding: '20px'"][style*="textAlign: 'center'"] {
+            padding: 12px !important;
+          }
+          
+          [style*="fontSize: '32px'"] {
+            font-size: 24px !important;
           }
         }
         
