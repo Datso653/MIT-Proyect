@@ -168,150 +168,11 @@ function App() {
           width: 100%;
         }
         
-        /* RESPONSIVE STYLES */
-        @media (max-width: 768px) {
-          /* Hero section */
-          section[data-section="hero"] {
-            padding: 60px 20px !important;
-            min-height: 80vh !important;
-          }
-          
-          section[data-section="hero"] h1 {
-            font-size: 32px !important;
-            line-height: 1.2 !important;
-          }
-          
-          section[data-section="hero"] p {
-            font-size: 15px !important;
-          }
-          
-          /* General sections - reducir padding vacío */
-          section {
-            padding: 50px 20px !important;
-          }
-          
-          /* Títulos más compactos */
-          h2 {
-            font-size: 28px !important;
-            margin-bottom: 16px !important;
-          }
-          
-          h3 {
-            font-size: 18px !important;
-          }
-          
-          /* Grids - force single column */
-          [style*="gridTemplateColumns: repeat(auto-fit"] {
-            grid-template-columns: 1fr !important;
-            gap: 20px !important;
-          }
-          
-          [style*="gridTemplateColumns: '2fr 1fr 1fr'"] {
-            grid-template-columns: 1fr !important;
-            gap: 30px !important;
-          }
-          
-          /* ML Cards - más compactos */
-          [style*="padding: '40px'"][style*="borderRadius: '8px'"] {
-            padding: 20px !important;
-          }
-          
-          /* Footer - más compacto */
-          footer {
-            padding: 50px 20px !important;
-          }
-          
-          footer > div:first-child {
-            grid-template-columns: 1fr !important;
-            gap: 30px !important;
-          }
-          
-          /* SVG Charts - responsive */
-          svg {
-            max-width: 100% !important;
-            height: auto !important;
-          }
-          
-          svg[width="400"], svg[width="450"] {
-            width: 100% !important;
-            height: auto !important;
-          }
-          
-          /* Campus cards */
-          [style*="minmax(400px"] {
-            grid-template-columns: 1fr !important;
-          }
-          
-          /* Navbar */
-          nav {
-            padding: 16px 20px !important;
-          }
-          
-          /* Buttons */
-          button {
-            font-size: 12px !important;
-            padding: 10px 16px !important;
-          }
-          
-          /* Margin/Padding reducidos */
-          [style*="marginBottom: '60px'"] {
-            margin-bottom: 30px !important;
-          }
-          
-          [style*="marginBottom: '80px'"] {
-            margin-bottom: 40px !important;
-          }
-          
-          /* Cards más compactas */
-          [style*="padding: '30px'"] {
-            padding: 20px !important;
-          }
-          
-          [style*="padding: '60px'"] {
-            padding: 24px !important;
-          }
-        }
-        
-        @media (max-width: 480px) {
-          section[data-section="hero"] h1 {
-            font-size: 26px !important;
-          }
-          
-          section {
-            padding: 40px 16px !important;
-          }
-          
-          h2 {
-            font-size: 24px !important;
-          }
-          
-          /* Cards ultra-compactos */
-          [style*="padding: '24px'"] {
-            padding: 16px !important;
-          }
-          
-          [style*="padding: '20px'"] {
-            padding: 16px !important;
-          }
-          
-          /* Campus images */
-          [style*="height: '280px'"] {
-            height: 180px !important;
-          }
-          
-          /* Reduce gaps */
-          [style*="gap: '30px'"] {
-            gap: 16px !important;
-          }
-          
-          [style*="gap: '40px'"] {
-            gap: 20px !important;
-          }
-        }
-        
+        /* ANIMACIONES */
         .fade-in {
           animation: fadeIn 0.8s ease-out forwards;
           opacity: 0;
+          transform: translateY(20px);
         }
         
         .fade-in-delay-1 { animation-delay: 0.2s; }
@@ -325,8 +186,159 @@ function App() {
           }
         }
         
-        .fade-in {
-          transform: translateY(20px);
+        /* === RESPONSIVE MOBILE === */
+        @media (max-width: 768px) {
+          /* Hero mobile */
+          section[data-section="hero"] {
+            padding: 80px 20px 60px !important;
+            min-height: 90vh !important;
+          }
+          
+          section[data-section="hero"] h1 {
+            font-size: 36px !important;
+            line-height: 1.2 !important;
+          }
+          
+          section[data-section="hero"] p {
+            font-size: 16px !important;
+          }
+          
+          /* Secciones mobile */
+          section {
+            padding: 60px 20px !important;
+          }
+          
+          /* Títulos mobile */
+          h2 {
+            font-size: 32px !important;
+            line-height: 1.2 !important;
+          }
+          
+          h3 {
+            font-size: 20px !important;
+          }
+          
+          /* Grids una columna */
+          [style*="gridTemplateColumns"] {
+            grid-template-columns: 1fr !important;
+          }
+          
+          /* Padding reducido */
+          [style*="padding: '60px'"],
+          [style*="padding: 60"] {
+            padding: 30px !important;
+          }
+          
+          [style*="padding: '50px'"],
+          [style*="padding: 50"] {
+            padding: 25px !important;
+          }
+          
+          [style*="padding: '40px'"],
+          [style*="padding: 40"] {
+            padding: 20px !important;
+          }
+          
+          [style*="padding: '30px'"],
+          [style*="padding: 30"] {
+            padding: 20px !important;
+          }
+          
+          /* Margins reducidos */
+          [style*="marginBottom: '80px'"],
+          [style*="marginBottom: 80"] {
+            margin-bottom: 40px !important;
+          }
+          
+          [style*="marginBottom: '60px'"],
+          [style*="marginBottom: 60"] {
+            margin-bottom: 30px !important;
+          }
+          
+          /* Gaps reducidos */
+          [style*="gap: '80px'"],
+          [style*="gap: 80"] {
+            gap: 40px !important;
+          }
+          
+          [style*="gap: '60px'"],
+          [style*="gap: 60"] {
+            gap: 30px !important;
+          }
+          
+          [style*="gap: '40px'"],
+          [style*="gap: 40"] {
+            gap: 20px !important;
+          }
+          
+          /* Botones mobile */
+          button {
+            font-size: 13px !important;
+            padding: 12px 20px !important;
+          }
+          
+          /* SVG responsive */
+          svg {
+            max-width: 100% !important;
+            height: auto !important;
+          }
+          
+          /* Mapa mobile */
+          [style*="height: '600px'"] {
+            height: 400px !important;
+          }
+          
+          /* Footer mobile */
+          footer {
+            padding: 60px 20px !important;
+          }
+        }
+        
+        /* === SMARTPHONE === */
+        @media (max-width: 480px) {
+          section[data-section="hero"] {
+            padding: 70px 16px 50px !important;
+          }
+          
+          section[data-section="hero"] h1 {
+            font-size: 28px !important;
+          }
+          
+          section {
+            padding: 50px 16px !important;
+          }
+          
+          h2 {
+            font-size: 26px !important;
+          }
+          
+          h3 {
+            font-size: 18px !important;
+          }
+          
+          [style*="padding: '30px'"],
+          [style*="padding: '25px'"],
+          [style*="padding: '20px'"] {
+            padding: 16px !important;
+          }
+          
+          button {
+            font-size: 12px !important;
+            padding: 10px 16px !important;
+          }
+          
+          [style*="height: '600px'"],
+          [style*="height: '400px'"] {
+            height: 350px !important;
+          }
+        }
+        
+        /* === LANDSCAPE MOBILE === */
+        @media (max-width: 768px) and (orientation: landscape) {
+          section[data-section="hero"] {
+            min-height: auto !important;
+            padding: 60px 20px !important;
+          }
         }
       `}</style>
       <Navbar />
