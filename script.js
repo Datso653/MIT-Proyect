@@ -244,6 +244,62 @@ function App() {
           #mapa > div:last-of-type {
             height: 400px !important;
           }
+          
+          /* === SECCIÓN MACHINE LEARNING === */
+          #machine-learning {
+            padding: 60px 20px !important;
+          }
+          
+          /* Grid de modelos ML a 1 columna */
+          #machine-learning > div > div[style*="grid"] {
+            grid-template-columns: 1fr !important;
+            gap: 30px !important;
+          }
+          
+          /* Tarjetas de modelos ML */
+          #machine-learning div[style*="borderRadius: '8px'"] {
+            padding: 20px !important;
+          }
+          
+          /* Métricas dentro de ML (Accuracy, Precision, etc) */
+          #machine-learning div[style*="gridTemplateColumns: 'repeat(2, 1fr)'"] {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+          }
+          
+          /* Título de modelos ML */
+          #machine-learning h3 {
+            font-size: 20px !important;
+          }
+          
+          /* === GRÁFICO DE BARRAS TRABAJADORES === */
+          #analisis-visual {
+            padding: 60px 20px !important;
+          }
+          
+          /* Grid de gráficos a 1 columna */
+          #analisis-visual > div > div[style*="grid"] {
+            grid-template-columns: 1fr !important;
+            gap: 30px !important;
+          }
+          
+          /* Contenedor del gráfico de barras - permitir scroll horizontal */
+          #analisis-visual div[style*="overflowX: 'auto'"] {
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+          }
+          
+          /* SVG de barras más pequeño pero scrolleable */
+          #analisis-visual svg {
+            min-width: 500px !important;
+            max-width: none !important;
+            height: auto !important;
+          }
+          
+          /* Tarjetas de gráficos */
+          #analisis-visual > div > div > div {
+            padding: 20px !important;
+          }
         }
         
         /* === SMARTPHONE === */
@@ -275,6 +331,22 @@ function App() {
           
           #mapa > div:last-of-type {
             height: 350px !important;
+          }
+          
+          /* ML más compacto en smartphone */
+          #machine-learning,
+          #analisis-visual {
+            padding: 50px 16px !important;
+          }
+          
+          #machine-learning div[style*="borderRadius: '8px'"],
+          #analisis-visual > div > div > div {
+            padding: 16px !important;
+          }
+          
+          /* SVG barras aún más compacto */
+          #analisis-visual svg {
+            min-width: 400px !important;
           }
         }
         
