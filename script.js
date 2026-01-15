@@ -1300,6 +1300,122 @@ function ResumenEjecutivo({ indicadores }) {
             gap: '20px',
             marginTop: '30px'
           }}>
+            {/* Hipótesis 1 - SOLO PLANTEAMIENTO */}
+            <div style={{
+              padding: '30px',
+              backgroundColor: COLORS.background,
+              borderRadius: '12px',
+              border: `1px solid #ffa50040`,
+              borderLeft: `4px solid #ffa500`,
+              boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              cursor: 'default'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 165, 0, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
+            }}
+            >
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                marginBottom: '16px'
+              }}>
+                <div style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: '#ffa500',
+                  boxShadow: '0 0 12px #ffa500'
+                }} />
+                <h4 style={{
+                  fontSize: '19px',
+                  fontWeight: '600',
+                  color: '#ffa500',
+                  margin: 0,
+                  letterSpacing: '-0.01em'
+                }}>
+                  H1: Crimen alto + Sin crédito → ¿Menor expectativa de crecimiento?
+                </h4>
+              </div>
+              <p style={{ 
+                fontSize: '15px',
+                color: COLORS.textSecondary,
+                lineHeight: '1.8',
+                paddingLeft: '20px',
+                margin: 0
+              }}>
+                Los comercios ubicados en zonas con alta percepción de crimen Y sin acceso a crédito 
+                presentan menores expectativas de crecimiento comparados con el resto de comercios.
+              </p>
+            </div>
+
+            {/* Hipótesis 2 - SOLO PLANTEAMIENTO */}
+            <div style={{
+              padding: '30px',
+              backgroundColor: COLORS.background,
+              borderRadius: '12px',
+              border: `1px solid #ffa50040`,
+              borderLeft: `4px solid #ffa500`,
+              boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              cursor: 'default'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 165, 0, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
+            }}
+            >
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                marginBottom: '16px'
+              }}>
+                <div style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: '#ffa500',
+                  boxShadow: '0 0 12px #ffa500'
+                }} />
+                <h4 style={{
+                  fontSize: '19px',
+                  fontWeight: '600',
+                  color: '#ffa500',
+                  margin: 0,
+                  letterSpacing: '-0.01em'
+                }}>
+                  H2: Crimen bajo + Con crédito → ¿Mayor inversión tecnológica?
+                </h4>
+              </div>
+              <p style={{ 
+                fontSize: '15px',
+                color: COLORS.textSecondary,
+                lineHeight: '1.8',
+                paddingLeft: '20px',
+                margin: 0
+              }}>
+                Los comercios en zonas con baja percepción de crimen Y con acceso a crédito 
+                presentan mayor adopción de tecnología comparados con el resto de comercios.
+              </p>
+            </div>
+          </div>
+
+          <div style={{
+            display: 'grid',
+            gap: '20px',
+            marginTop: '30px'
+          }}>
             {/* Hipótesis 1 */}
             <div style={{
               padding: '30px',
