@@ -186,8 +186,9 @@ function App() {
           }
         }
         
-        /* === RESPONSIVE MOBILE === */
+        /* === MOBILE RESPONSIVE === */
         @media (max-width: 768px) {
+          /* Hero */
           section[data-section="hero"] {
             padding: 80px 20px 60px !important;
             min-height: 90vh !important;
@@ -202,10 +203,12 @@ function App() {
             font-size: 16px !important;
           }
           
+          /* Secciones generales */
           section {
             padding: 60px 20px !important;
           }
           
+          /* Títulos */
           h2 {
             font-size: 32px !important;
             line-height: 1.2 !important;
@@ -215,145 +218,31 @@ function App() {
             font-size: 20px !important;
           }
           
-          [style*="gridTemplateColumns"] {
+          /* Footer grid */
+          footer > div > div {
             grid-template-columns: 1fr !important;
-          }
-          
-          [style*="padding: '60px'"],
-          [style*="padding: 60"] {
-            padding: 30px !important;
-          }
-          
-          [style*="padding: '50px'"],
-          [style*="padding: 50"] {
-            padding: 25px !important;
-          }
-          
-          [style*="padding: '40px'"],
-          [style*="padding: 40"] {
-            padding: 20px !important;
-          }
-          
-          [style*="padding: '30px'"],
-          [style*="padding: 30"] {
-            padding: 20px !important;
-          }
-          
-          [style*="marginBottom: '80px'"],
-          [style*="marginBottom: 80"] {
-            margin-bottom: 40px !important;
-          }
-          
-          [style*="marginBottom: '60px'"],
-          [style*="marginBottom: 60"] {
-            margin-bottom: 30px !important;
-          }
-          
-          [style*="gap: '80px'"],
-          [style*="gap: 80"] {
             gap: 40px !important;
           }
           
-          [style*="gap: '60px'"],
-          [style*="gap: 60"] {
-            gap: 30px !important;
+          footer > div > div > div {
+            flex-direction: column !important;
+            text-align: center !important;
           }
           
-          [style*="gap: '40px'"],
-          [style*="gap: 40"] {
-            gap: 20px !important;
+          /* Navbar */
+          nav {
+            padding: 16px 20px !important;
           }
           
+          /* Botones */
           button {
             font-size: 13px !important;
             padding: 12px 20px !important;
           }
           
-          svg {
-            max-width: 100% !important;
-            height: auto !important;
-          }
-          
-          [style*="height: '600px'"] {
+          /* Mapa */
+          #mapa > div:last-of-type {
             height: 400px !important;
-          }
-          
-          footer {
-            padding: 60px 20px !important;
-          }
-          
-          [style*="overflowX: 'auto'"],
-          div[style*="overflow"] {
-            overflow-x: auto !important;
-            -webkit-overflow-scrolling: touch;
-          }
-          
-          svg[viewBox] {
-            width: 100% !important;
-            height: auto !important;
-            min-width: 300px;
-          }
-          
-          svg[width="600"],
-          svg[width="700"],
-          svg[width="450"] {
-            width: 100% !important;
-            min-width: 320px !important;
-          }
-          
-          [style*="borderRadius: '8px'"][style*="border: '1px"] {
-            padding: 16px !important;
-            margin-bottom: 20px !important;
-          }
-          
-          [style*="gridTemplateColumns: 'repeat(2, 1fr)'"] {
-            grid-template-columns: 1fr !important;
-            gap: 12px !important;
-          }
-          
-          [style*="display: 'flex'"][style*="gap: '40px'"] {
-            flex-direction: column !important;
-            align-items: center !important;
-            gap: 20px !important;
-          }
-          
-          [style*="flex: 1"][style*="minWidth: '200px'"] {
-            width: 100% !important;
-            min-width: 100% !important;
-          }
-          
-          [style*="padding: '28px 32px'"] {
-            padding: 20px 16px !important;
-          }
-          
-          [style*="aspectRatio: '3/4'"] {
-            aspect-ratio: 4/5 !important;
-            max-height: 400px !important;
-          }
-          
-          [style*="maxWidth: '700px'"] {
-            max-width: 100% !important;
-            overflow-x: auto !important;
-            padding-right: 10px !important;
-          }
-          
-          [style*="gridTemplateColumns: 'repeat(auto-fit, minmax(150px"] {
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
-            gap: 8px !important;
-          }
-          
-          [style*="fontSize: '14px'"] {
-            font-size: 13px !important;
-            line-height: 1.6 !important;
-          }
-          
-          [style*="fontSize: '13px'"] {
-            font-size: 12px !important;
-          }
-          
-          div[style*="width: '100%'"] > svg {
-            max-width: 100% !important;
-            height: auto !important;
           }
         }
         
@@ -379,48 +268,17 @@ function App() {
             font-size: 18px !important;
           }
           
-          [style*="padding: '30px'"],
-          [style*="padding: '25px'"],
-          [style*="padding: '20px'"] {
-            padding: 16px !important;
-          }
-          
           button {
             font-size: 12px !important;
             padding: 10px 16px !important;
           }
           
-          [style*="height: '600px'"],
-          [style*="height: '400px'"] {
+          #mapa > div:last-of-type {
             height: 350px !important;
-          }
-          
-          svg {
-            min-width: 280px !important;
-          }
-          
-          [style*="borderRadius: '8px'"] {
-            padding: 12px !important;
-          }
-          
-          [style*="fontSize: '24px'"][style*="fontFamily"] {
-            font-size: 18px !important;
-          }
-          
-          [style*="aspectRatio"] {
-            max-height: 350px !important;
-          }
-          
-          [style*="padding: '20px'"][style*="textAlign: 'center'"] {
-            padding: 12px !important;
-          }
-          
-          [style*="fontSize: '32px'"] {
-            font-size: 24px !important;
           }
         }
         
-        /* === LANDSCAPE MOBILE === */
+        /* === LANDSCAPE === */
         @media (max-width: 768px) and (orientation: landscape) {
           section[data-section="hero"] {
             min-height: auto !important;
