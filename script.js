@@ -5347,6 +5347,7 @@ function TeamMember({ member, index }) {
               width: '100%',
               height: '100%',
               objectFit: 'cover',
+              objectPosition: 'center 25%',
               filter: isHovered ? 'grayscale(0%)' : 'grayscale(100%)',
               transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
               transform: isHovered ? 'scale(1.05)' : 'scale(1)'
