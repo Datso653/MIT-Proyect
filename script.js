@@ -1912,11 +1912,42 @@ function AnalisisVisual({ data, indicadores, datos }) {
               Cargando datos para el análisis...
             </div>
           )}
+
+{/* Hipótesis 3 con gráficos */}
+{datos && datos.length > 0 ? (
+  <HipotesisConGraficos 
+    numero={3}
+    titulo="Alta demanda + Acceso a crédito + Baja competencia → ¿Mayor intención de expansión?"
+    datos={datos}
+    tipo="expansion"
+  />
+) : (
+  <div style={{ color: COLORS.textSecondary, textAlign: 'center', padding: '20px' }}>
+    Cargando datos para el análisis...
+  </div>
+)}
+
+{/* Hipótesis 4 con gráficos */}
+{datos && datos.length > 0 ? (
+  <HipotesisConGraficos 
+    numero={4}
+    titulo="Crimen, precios, competencia y crédito → ¿Qué factor explica mayor caída en ventas?"
+    subtitulo="Las variaciones en las ventas de los comercios están significativamente asociadas a factores externos, con impactos diferenciados según la zona geográfica."
+    datos={datos}
+    tipo="ventas"
+  />
+) : (
+  <div style={{ color: COLORS.textSecondary, textAlign: 'center', padding: '20px' }}>
+    Cargando datos para el análisis...
+  </div>
+)}
+
         </div>
       </div>
     </section>
   );
 }
+
 // Nuevo componente para mostrar las hipótesis con sus gráficos
 function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
   const [expanded, setExpanded] = useState(false);
