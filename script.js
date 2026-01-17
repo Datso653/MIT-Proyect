@@ -1883,61 +1883,102 @@ function AnalisisVisual({ data, indicadores, datos }) {
           gap: '30px'
         }}>
           {/* Hipótesis 1 con gráficos */}
-          <HipotesisConGraficos 
-            numero={1}
-            titulo="Crimen alto + Sin crédito → ¿Menor expectativa de crecimiento?"
-            datos={datos}
-            tipo="crecimiento"
-          />
+          {datos && datos.length > 0 ? (
+            <HipotesisConGraficos 
+              numero={1}
+              titulo="Crimen alto + Sin crédito → ¿Menor expectativa de crecimiento?"
+              datos={datos}
+              tipo="crecimiento"
+            />
+          ) : (
+            <div style={{ color: COLORS.textSecondary, textAlign: 'center', padding: '20px' }}>
+              Cargando datos para el análisis...
+            </div>
+          )}
 
           {/* Hipótesis 2 con gráficos */}
-          <HipotesisConGraficos 
-            numero={2}
-            titulo="Crimen bajo + Con crédito → ¿Mayor inversión tecnológica?"
-            datos={datos}
-            tipo="tecnologia"
-          />
+          {datos && datos.length > 0 ? (
+            <HipotesisConGraficos 
+              numero={2}
+              titulo="Crimen bajo + Con crédito → ¿Mayor inversión tecnológica?"
+              datos={datos}
+              tipo="tecnologia"
+            />
+          ) : (
+            <div style={{ color: COLORS.textSecondary, textAlign: 'center', padding: '20px' }}>
+              Cargando datos para el análisis...
+            </div>
+          )}
         </div>
       </div>
     </section>
   );
 }
-
 // Nuevo componente para mostrar las hipótesis con sus gráficos
 function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
   const [expanded, setExpanded] = useState(false);
 
+  console.log('Datos recibidos en HipotesisConGraficos:', datos); // Para debug
+
   if (!datos || datos.length === 0) {
-    return <div>No hay datos disponibles para el análisis</div>;
+    return (
+      <div style={{ 
+        marginBottom: '40px',
+        padding: '20px',
+        backgroundColor: COLORS.surface,
+        borderRadius: '8px',
+        border: `1px solid ${COLORS.border}`
+      }}>
+        <div style={{ color: COLORS.accent, fontSize: '14px', fontWeight: '600' }}>
+          HIPÓTESIS {numero}: {titulo}
+        </div>
+        <div style={{ color: COLORS.textSecondary, fontSize: '13px', marginTop: '10px' }}>
+          No hay datos disponibles para el análisis. Verifica que los datos hayan cargado correctamente.
+        </div>
+      </div>
+    );
   }
 
   // Análisis real para Hipótesis 1
   const analizarHipotesis1 = () => {
-    const grupoAdverso = datos.filter(c => 
-      c.afect_crimen === 'Mucho' && 
-      !(parseFloat(c.credits_bancos) > 0 || 
-        parseFloat(c.credits_proveedor) > 0 || 
-        parseFloat(c.credits_familia) > 0 || 
-        parseFloat(c.credits_gobierno) > 0 || 
-        parseFloat(c.credits_privado) > 0)
-    );
+    console.log('Analizando hipótesis 1 con', datos.length, 'registros');
     
-    const grupoComparacion = datos.filter(c => 
-      !(c.afect_crimen === 'Mucho' && 
-        !(parseFloat(c.credits_bancos) > 0 || 
-          parseFloat(c.credits_proveedor) > 0 || 
-          parseFloat(c.credits_familia) > 0 || 
-          parseFloat(c.credits_gobierno) > 0 || 
-          parseFloat(c.credits_privado) > 0))
-    );
+    const grupoAdverso = datos.filter(c => {
+      const crimenAlto = c.afect_crimen === 'Mucho';
+      const sinCredito = !(parseFloat(c.credits_bancos) > 0 || 
+                         parseFloat(c.credits_proveedor) > 0 || 
+                         parseFloat(c.credits_familia) > 0 || 
+                         parseFloat(c.credits_gobierno) > 0 || 
+                         parseFloat(c.credits_privado) > 0);
+      return crimenAlto && sinCredito;
+    });
+    
+    const grupoComparacion = datos.filter(c => {
+      const crimenAlto = c.afect_crimen === 'Mucho';
+      const sinCredito = !(parseFloat(c.credits_bancos) > 0 || 
+                         parseFloat(c.credits_proveedor) > 0 || 
+                         parseFloat(c.credits_familia) > 0 || 
+                         parseFloat(c.credits_gobierno) > 0 || 
+                         parseFloat(c.credits_privado) > 0);
+      return !(crimenAlto && sinCredito);
+    });
 
-    const adversoQuiereCrecer = grupoAdverso.filter(c => 
-      parseFloat(c.quiere_crezca) === 1.0 || c.quiere_crezca === '1.0' || c.quiere_crezca === '1'
-    ).length;
+    console.log('Grupo adverso:', grupoAdverso.length);
+    console.log('Grupo comparación:', grupoComparacion.length);
+
+    const adversoQuiereCrecer = grupoAdverso.filter(c => {
+      const quiereCrecer = parseFloat(c.quiere_crezca) === 1.0 || 
+                          c.quiere_crezca === '1.0' || 
+                          c.quiere_crezca === '1';
+      return quiereCrecer;
+    }).length;
     
-    const comparacionQuiereCrecer = grupoComparacion.filter(c => 
-      parseFloat(c.quiere_crezca) === 1.0 || c.quiere_crezca === '1.0' || c.quiere_crezca === '1'
-    ).length;
+    const comparacionQuiereCrecer = grupoComparacion.filter(c => {
+      const quiereCrecer = parseFloat(c.quiere_crezca) === 1.0 || 
+                          c.quiere_crezca === '1.0' || 
+                          c.quiere_crezca === '1';
+      return quiereCrecer;
+    }).length;
 
     const totalAdverso = grupoAdverso.length;
     const totalComparacion = grupoComparacion.length;
@@ -1948,37 +1989,52 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
       adversoQuiereCrecer,
       comparacionQuiereCrecer,
       pctAdverso: totalAdverso > 0 ? (adversoQuiereCrecer / totalAdverso) * 100 : 0,
-      pctComparacion: totalComparacion > 0 ? (comparacionQuiereCrecer / totalComparacion) * 100 : 0
+      pctComparacion: totalComparacion > 0 ? (comparacionQuiereCrecer / totalComparacion) * 100 : 0,
+      datosGrupoAdverso: grupoAdverso,
+      datosGrupoComparacion: grupoComparacion
     };
   };
 
   // Análisis real para Hipótesis 2
   const analizarHipotesis2 = () => {
-    const grupoAdverso = datos.filter(c => 
-      c.afect_crimen === 'Poco' && 
-      (parseFloat(c.credits_bancos) > 0 || 
-        parseFloat(c.credits_proveedor) > 0 || 
-        parseFloat(c.credits_familia) > 0 || 
-        parseFloat(c.credits_gobierno) > 0 || 
-        parseFloat(c.credits_privado) > 0)
-    );
+    console.log('Analizando hipótesis 2 con', datos.length, 'registros');
     
-    const grupoComparacion = datos.filter(c => 
-      !(c.afect_crimen === 'Poco' && 
-        (parseFloat(c.credits_bancos) > 0 || 
-          parseFloat(c.credits_proveedor) > 0 || 
-          parseFloat(c.credits_familia) > 0 || 
-          parseFloat(c.credits_gobierno) > 0 || 
-          parseFloat(c.credits_privado) > 0))
-    );
+    const grupoAdverso = datos.filter(c => {
+      const crimenBajo = c.afect_crimen === 'Poco' || c.afect_crimen === 'Nada';
+      const conCredito = (parseFloat(c.credits_bancos) > 0 || 
+                         parseFloat(c.credits_proveedor) > 0 || 
+                         parseFloat(c.credits_familia) > 0 || 
+                         parseFloat(c.credits_gobierno) > 0 || 
+                         parseFloat(c.credits_privado) > 0);
+      return crimenBajo && conCredito;
+    });
+    
+    const grupoComparacion = datos.filter(c => {
+      const crimenBajo = c.afect_crimen === 'Poco' || c.afect_crimen === 'Nada';
+      const conCredito = (parseFloat(c.credits_bancos) > 0 || 
+                         parseFloat(c.credits_proveedor) > 0 || 
+                         parseFloat(c.credits_familia) > 0 || 
+                         parseFloat(c.credits_gobierno) > 0 || 
+                         parseFloat(c.credits_privado) > 0);
+      return !(crimenBajo && conCredito);
+    });
 
-    const adversoInvierteTecnologia = grupoAdverso.filter(c => 
-      parseFloat(c.invierte_tecnologia) === 1.0 || c.invierte_tecnologia === '1.0' || c.invierte_tecnologia === '1'
-    ).length;
+    console.log('Grupo adverso (H2):', grupoAdverso.length);
+    console.log('Grupo comparación (H2):', grupoComparacion.length);
+
+    const adversoInvierteTecnologia = grupoAdverso.filter(c => {
+      const invierte = parseFloat(c.invierte_tecnologia) === 1.0 || 
+                      c.invierte_tecnologia === '1.0' || 
+                      c.invierte_tecnologia === '1';
+      return invierte;
+    }).length;
     
-    const comparacionInvierteTecnologia = grupoComparacion.filter(c => 
-      parseFloat(c.invierte_tecnologia) === 1.0 || c.invierte_tecnologia === '1.0' || c.invierte_tecnologia === '1'
-    ).length;
+    const comparacionInvierteTecnologia = grupoComparacion.filter(c => {
+      const invierte = parseFloat(c.invierte_tecnologia) === 1.0 || 
+                      c.invierte_tecnologia === '1.0' || 
+                      c.invierte_tecnologia === '1';
+      return invierte;
+    }).length;
 
     const totalAdverso = grupoAdverso.length;
     const totalComparacion = grupoComparacion.length;
@@ -1989,12 +2045,38 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
       adversoInvierteTecnologia,
       comparacionInvierteTecnologia,
       pctAdverso: totalAdverso > 0 ? (adversoInvierteTecnologia / totalAdverso) * 100 : 0,
-      pctComparacion: totalComparacion > 0 ? (comparacionInvierteTecnologia / totalComparacion) * 100 : 0
+      pctComparacion: totalComparacion > 0 ? (comparacionInvierteTecnologia / totalComparacion) * 100 : 0,
+      datosGrupoAdverso: grupoAdverso,
+      datosGrupoComparacion: grupoComparacion
     };
   };
 
   // Seleccionar análisis según el tipo
   const analisis = tipo === 'crecimiento' ? analizarHipotesis1() : analizarHipotesis2();
+  
+  // Si no hay datos en algún grupo, mostrar mensaje
+  if (analisis.grupoAdverso === 0 || analisis.grupoComparacion === 0) {
+    return (
+      <div style={{ 
+        marginBottom: '40px',
+        padding: '20px',
+        backgroundColor: COLORS.surface,
+        borderRadius: '8px',
+        border: `1px solid ${COLORS.border}`
+      }}>
+        <div style={{ color: COLORS.accent, fontSize: '14px', fontWeight: '600' }}>
+          HIPÓTESIS {numero}: {titulo}
+        </div>
+        <div style={{ color: COLORS.textSecondary, fontSize: '13px', marginTop: '10px' }}>
+          No hay suficientes datos para analizar esta hipótesis:
+          <ul style={{ marginTop: '8px', marginLeft: '20px' }}>
+            <li>Grupo de análisis: {analisis.grupoAdverso} comercios</li>
+            <li>Grupo de comparación: {analisis.grupoComparacion} comercios</li>
+          </ul>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div style={{ 
@@ -2030,7 +2112,6 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
       
       {expanded && (
         <div style={{ padding: '30px', backgroundColor: COLORS.background }}>
-          {/* Aquí puedes agregar tus gráficos reales */}
           <div style={{ marginBottom: '20px' }}>
             <h4 style={{ color: COLORS.text, marginBottom: '15px' }}>
               Resultados del análisis
@@ -2059,6 +2140,9 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
                   <div style={{ fontSize: '14px', color: COLORS.textSecondary }}>
                     de {analisis.grupoAdverso} comercios
                   </div>
+                  <div style={{ fontSize: '12px', color: COLORS.textTertiary, marginTop: '8px' }}>
+                    ({analisis[tipo === 'crecimiento' ? 'adversoQuiereCrecer' : 'adversoInvierteTecnologia']} comercios)
+                  </div>
                 </div>
               </div>
               
@@ -2078,24 +2162,47 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
                   <div style={{ fontSize: '14px', color: COLORS.textSecondary }}>
                     de {analisis.grupoComparacion} comercios
                   </div>
+                  <div style={{ fontSize: '12px', color: COLORS.textTertiary, marginTop: '8px' }}>
+                    ({analisis[tipo === 'crecimiento' ? 'comparacionQuiereCrecer' : 'comparacionInvierteTecnologia']} comercios)
+                  </div>
                 </div>
+              </div>
+            </div>
+            
+            {/* Diferencia porcentual */}
+            <div style={{ 
+              padding: '15px', 
+              backgroundColor: `${COLORS.primary}10`,
+              borderRadius: '8px',
+              marginBottom: '20px',
+              textAlign: 'center'
+            }}>
+              <div style={{ fontSize: '14px', color: COLORS.text, fontWeight: '500' }}>
+                Diferencia: <span style={{ color: COLORS.primary, fontWeight: 'bold' }}>
+                  {(analisis.pctAdverso - analisis.pctComparacion).toFixed(1)} puntos porcentuales
+                </span>
+              </div>
+              <div style={{ fontSize: '12px', color: COLORS.textSecondary, marginTop: '5px' }}>
+                {analisis.pctAdverso > analisis.pctComparacion 
+                  ? 'El grupo de análisis presenta un mayor porcentaje que el grupo de comparación'
+                  : 'El grupo de análisis presenta un menor porcentaje que el grupo de comparación'}
               </div>
             </div>
             
             {/* Conclusión */}
             <div style={{ 
               padding: '20px', 
-              backgroundColor: `${COLORS.primary}15`,
+              backgroundColor: `${analisis.pctAdverso > analisis.pctComparacion ? COLORS.primary : COLORS.accent}15`,
               borderRadius: '8px',
-              borderLeft: `4px solid ${COLORS.primary}`
+              borderLeft: `4px solid ${analisis.pctAdverso > analisis.pctComparacion ? COLORS.primary : COLORS.accent}`
             }}>
               <div style={{ fontSize: '14px', color: COLORS.text, fontWeight: '500', marginBottom: '8px' }}>
                 Conclusión:
               </div>
               <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>
                 {analisis.pctAdverso > analisis.pctComparacion 
-                  ? 'La hipótesis se sustenta en los datos analizados.'
-                  : 'Los datos no respaldan completamente la hipótesis planteada.'}
+                  ? '✅ La hipótesis se sustenta en los datos analizados. Los comercios en zonas con alta percepción de crimen y sin acceso a crédito presentan efectivamente menores expectativas de crecimiento.'
+                  : '❌ Los datos no respaldan completamente la hipótesis planteada. No se observa una diferencia significativa entre los grupos analizados.'}
               </div>
             </div>
           </div>
