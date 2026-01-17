@@ -1363,19 +1363,19 @@ function ResumenEjecutivo({ indicadores }) {
   padding: '30px',
   backgroundColor: COLORS.background,
   borderRadius: '12px',
-  border: `1px solid rgba(243, 6, 6, 0.76)`,
-  borderLeft: `4px solid rgba(243, 6, 6, 0.76)`,
-  boxShadow: '0 4px 16px rgba(243, 6, 6, 0.76)',
+  border: `1px solid #FF444440`,
+  borderLeft: `4px solid #FF4444`,
+  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
   cursor: 'default'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(243, 6, 6, 0.76)';
+  e.currentTarget.style.transform = 'translateY(-4px)';
+  e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 68, 68, 0.3)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
+  e.currentTarget.style.transform = 'translateY(0)';
+  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
             }}
             >
               <div style={{
@@ -1388,13 +1388,13 @@ function ResumenEjecutivo({ indicadores }) {
                   width: '8px',
                   height: '8px',
                   borderRadius: '50%',
-                  backgroundColor: '#ffa500',
-                  boxShadow: '0 0 12px #ffa500'
+      backgroundColor: '#FF4444',
+      boxShadow: '0 0 12px #FF4444'
                 }} />
                 <h4 style={{
                   fontSize: '19px',
                   fontWeight: '600',
-                  color: '#ffa500',
+                  color: '#FF4444',
                   margin: 0,
                   letterSpacing: '-0.01em'
                 }}>
