@@ -2522,6 +2522,303 @@ function GraficoDistribucion({ data }) {
   );
 }
 
+// Gráfico de barras - Trabajadores por tipo
+function GraficoBarras() {
+  return (
+    <div style={{
+      backgroundColor: COLORS.surface,
+      padding: '40px',
+      borderRadius: '4px',
+      border: `1px solid ${COLORS.border}`,
+      position: 'relative'
+    }}>
+      <h3 style={{
+        fontFamily: '"Crimson Pro", serif',
+        fontSize: '24px',
+        fontWeight: '400',
+        color: COLORS.text,
+        marginBottom: '10px'
+      }}>
+        Trabajadores por tipo
+      </h3>
+      <p style={{
+        fontSize: '13px',
+        color: COLORS.textSecondary,
+        marginBottom: '30px'
+      }}>
+        Promedio de empleados por categoría
+      </p>
+      
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '12px'
+      }}>
+        {/* BARES Y PEQUEÑOS RESTAURANTES */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 15px',
+          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+          borderRadius: '8px',
+          borderLeft: '4px solid #3b82f6'
+        }}>
+          <span style={{ color: COLORS.text, fontWeight: '500' }}>
+            BARES Y PEQUEÑOS RESTAURANTES
+          </span>
+          <span style={{
+            color: '#3b82f6',
+            fontWeight: '600',
+            fontSize: '16px',
+            backgroundColor: 'rgba(59, 130, 246, 0.15)',
+            padding: '4px 12px',
+            borderRadius: '20px'
+          }}>
+            5.3
+          </span>
+        </div>
+
+        {/* CONFITERÍA O PANADERÍA */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 15px',
+          backgroundColor: 'rgba(16, 185, 129, 0.1)',
+          borderRadius: '8px',
+          borderLeft: '4px solid #10b981'
+        }}>
+          <span style={{ color: COLORS.text, fontWeight: '500' }}>
+            CONFITERÍA O PANADERÍA
+          </span>
+          <span style={{
+            color: '#10b981',
+            fontWeight: '600',
+            fontSize: '16px',
+            backgroundColor: 'rgba(16, 185, 129, 0.15)',
+            padding: '4px 12px',
+            borderRadius: '20px'
+          }}>
+            4.6
+          </span>
+        </div>
+
+        {/* CAFETERÍAS */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 15px',
+          backgroundColor: 'rgba(245, 158, 11, 0.1)',
+          borderRadius: '8px',
+          borderLeft: '4px solid #f59e0b'
+        }}>
+          <span style={{ color: COLORS.text, fontWeight: '500' }}>
+            CAFETERÍAS
+          </span>
+          <span style={{
+            color: '#f59e0b',
+            fontWeight: '600',
+            fontSize: '16px',
+            backgroundColor: 'rgba(245, 158, 11, 0.15)',
+            padding: '4px 12px',
+            borderRadius: '20px'
+          }}>
+            4.4
+          </span>
+        </div>
+
+        {/* OTROS */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 15px',
+          backgroundColor: 'rgba(139, 92, 246, 0.1)',
+          borderRadius: '8px',
+          borderLeft: '4px solid #8b5cf6'
+        }}>
+          <span style={{ color: COLORS.text, fontWeight: '500' }}>
+            OTROS
+          </span>
+          <span style={{
+            color: '#8b5cf6',
+            fontWeight: '600',
+            fontSize: '16px',
+            backgroundColor: 'rgba(139, 92, 246, 0.15)',
+            padding: '4px 12px',
+            borderRadius: '20px'
+          }}>
+            3.7
+          </span>
+        </div>
+
+        {/* FIAMBRERÍA */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 15px',
+          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+          borderRadius: '8px',
+          borderLeft: '4px solid #ef4444'
+        }}>
+          <span style={{ color: COLORS.text, fontWeight: '500' }}>
+            FIAMBRERÍA
+          </span>
+          <span style={{
+            color: '#ef4444',
+            fontWeight: '600',
+            fontSize: '16px',
+            backgroundColor: 'rgba(239, 68, 68, 0.15)',
+            padding: '4px 12px',
+            borderRadius: '20px'
+          }}>
+            3.0
+          </span>
+        </div>
+
+        {/* ALMACÉN */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 15px',
+          backgroundColor: 'rgba(14, 165, 233, 0.1)',
+          borderRadius: '8px',
+          borderLeft: '4px solid #0ea5e9'
+        }}>
+          <span style={{ color: COLORS.text, fontWeight: '500' }}>
+            ALMACÉN
+          </span>
+          <span style={{
+            color: '#0ea5e9',
+            fontWeight: '600',
+            fontSize: '16px',
+            backgroundColor: 'rgba(14, 165, 233, 0.15)',
+            padding: '4px 12px',
+            borderRadius: '20px'
+          }}>
+            2.9
+          </span>
+        </div>
+
+        {/* DIETÉTICAS */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 15px',
+          backgroundColor: 'rgba(236, 72, 153, 0.1)',
+          borderRadius: '8px',
+          borderLeft: '4px solid #ec4899'
+        }}>
+          <span style={{ color: COLORS.text, fontWeight: '500' }}>
+            DIETÉTICAS
+          </span>
+          <span style={{
+            color: '#ec4899',
+            fontWeight: '600',
+            fontSize: '16px',
+            backgroundColor: 'rgba(236, 72, 153, 0.15)',
+            padding: '4px 12px',
+            borderRadius: '20px'
+          }}>
+            2.7
+          </span>
+        </div>
+
+        {/* CARNICERÍA */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 15px',
+          backgroundColor: 'rgba(20, 184, 166, 0.1)',
+          borderRadius: '8px',
+          borderLeft: '4px solid #14b8a6'
+        }}>
+          <span style={{ color: COLORS.text, fontWeight: '500' }}>
+            CARNICERÍA
+          </span>
+          <span style={{
+            color: '#14b8a6',
+            fontWeight: '600',
+            fontSize: '16px',
+            backgroundColor: 'rgba(20, 184, 166, 0.15)',
+            padding: '4px 12px',
+            borderRadius: '20px'
+          }}>
+            2.7
+          </span>
+        </div>
+
+        {/* GRANJA */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 15px',
+          backgroundColor: 'rgba(249, 115, 22, 0.1)',
+          borderRadius: '8px',
+          borderLeft: '4px solid #f97316'
+        }}>
+          <span style={{ color: COLORS.text, fontWeight: '500' }}>
+            GRANJA
+          </span>
+          <span style={{
+            color: '#f97316',
+            fontWeight: '600',
+            fontSize: '16px',
+            backgroundColor: 'rgba(249, 115, 22, 0.15)',
+            padding: '4px 12px',
+            borderRadius: '20px'
+          }}>
+            2.7
+          </span>
+        </div>
+
+        {/* KIOSKO */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 15px',
+          backgroundColor: 'rgba(168, 85, 247, 0.1)',
+          borderRadius: '8px',
+          borderLeft: '4px solid #a855f7'
+        }}>
+          <span style={{ color: COLORS.text, fontWeight: '500' }}>
+            KIOSKO
+          </span>
+          <span style={{
+            color: '#a855f7',
+            fontWeight: '600',
+            fontSize: '16px',
+            backgroundColor: 'rgba(168, 85, 247, 0.15)',
+            padding: '4px 12px',
+            borderRadius: '20px'
+          }}>
+            2.4
+          </span>
+        </div>
+      </div>
+
+      <div style={{
+        marginTop: '20px',
+        paddingTop: '15px',
+        borderTop: `1px dashed ${COLORS.border}`,
+        fontSize: '12px',
+        color: COLORS.textSecondary,
+        textAlign: 'center'
+      }}>
+        Fuente: Encuesta de comercios locales
+      </div>
+    </div>
+  );
+}
+
 // Gráfico de barras horizontales - Fuentes de crédito
 function GraficoBarrasHorizontales({ data, pctCredito }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
