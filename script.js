@@ -2523,14 +2523,32 @@ function GraficoDistribucion({ data }) {
 }
 
 // Gráfico de barras - Trabajadores por tipo
-function GraficoBarras() {
+function GraficoBarras({ data }) {
+  // Mapear los datos del gráfico a los valores específicos que proporcionaste
+  const trabajadoresData = [
+    { tipo: "BARES Y PEQUEÑOS RESTAURANTES", promedio: 5.3 },
+    { tipo: "CONFITERÍA O PANADERÍA", promedio: 4.6 },
+    { tipo: "CAFETERÍAS", promedio: 4.4 },
+    { tipo: "OTROS", promedio: 3.7 },
+    { tipo: "FIAMBRERÍA", promedio: 3.0 },
+    { tipo: "ALMACÉN", promedio: 2.9 },
+    { tipo: "DIETÉTICAS", promedio: 2.7 },
+    { tipo: "CARNICERÍA", promedio: 2.7 },
+    { tipo: "GRANJA", promedio: 2.7 },
+    { tipo: "KIOSKO", promedio: 2.4 }
+  ];
+
+  // Encontrar el valor máximo para calcular porcentajes
+  const maxValor = Math.max(...trabajadoresData.map(item => item.promedio));
+  
   return (
     <div style={{
       backgroundColor: COLORS.surface,
       padding: '40px',
       borderRadius: '4px',
       border: `1px solid ${COLORS.border}`,
-      position: 'relative'
+      position: 'relative',
+      transition: 'all 0.3s ease'
     }}>
       <h3 style={{
         fontFamily: '"Crimson Pro", serif',
@@ -2546,265 +2564,184 @@ function GraficoBarras() {
         color: COLORS.textSecondary,
         marginBottom: '30px'
       }}>
-        Promedio de empleados por categoría
+        Promedio de empleados por categoría • Pasa el mouse sobre las barras
       </p>
       
       <div style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '12px'
+        gap: '16px'
       }}>
-        {/* BARES Y PEQUEÑOS RESTAURANTES */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px 15px',
-          backgroundColor: 'rgba(59, 130, 246, 0.1)',
-          borderRadius: '8px',
-          borderLeft: '4px solid #3b82f6'
-        }}>
-          <span style={{ color: COLORS.text, fontWeight: '500' }}>
-            BARES Y PEQUEÑOS RESTAURANTES
-          </span>
-          <span style={{
-            color: '#3b82f6',
-            fontWeight: '600',
-            fontSize: '16px',
-            backgroundColor: 'rgba(59, 130, 246, 0.15)',
-            padding: '4px 12px',
-            borderRadius: '20px'
-          }}>
-            5.3
-          </span>
+        {trabajadoresData.map((item, idx) => {
+          const porcentaje = (item.promedio / maxValor) * 100;
+          const [isHovered, setIsHovered] = useState(false);
+          
+          return (
+            <div 
+              key={idx}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              style={{
+                position: 'relative',
+                cursor: 'pointer',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                transform: isHovered ? 'translateX(8px)' : 'translateX(0)'
+              }}
+            >
+              {/* Etiqueta del tipo */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '8px'
+              }}>
+                <span style={{ 
+                  color: COLORS.text, 
+                  fontWeight: '500',
+                  fontSize: '13px',
+                  transition: 'color 0.3s',
+                  color: isHovered ? COLORS.primary : COLORS.text
+                }}>
+                  {item.tipo}
+                </span>
+                <span style={{
+                  color: isHovered ? COLORS.accent : COLORS.primary,
+                  fontWeight: '600',
+                  fontSize: '15px',
+                  fontFamily: '"Crimson Pro", serif',
+                  transition: 'all 0.3s'
+                }}>
+                  {item.promedio.toFixed(1)}
+                </span>
+              </div>
+              
+              {/* Barra de progreso */}
+              <div style={{
+                position: 'relative',
+                height: '8px',
+                backgroundColor: COLORS.border,
+                borderRadius: '4px',
+                overflow: 'hidden'
+              }}>
+                {/* Barra de fondo completa */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: `${COLORS.border}40`
+                }} />
+                
+                {/* Barra de progreso con gradiente */}
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: `${porcentaje}%`,
+                  height: '100%',
+                  background: isHovered 
+                    ? `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.primaryLight})`
+                    : `linear-gradient(90deg, ${COLORS.primaryDark}, ${COLORS.primary})`,
+                  borderRadius: '4px',
+                  transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                  boxShadow: isHovered 
+                    ? `0 0 12px ${COLORS.primary}60` 
+                    : 'none',
+                  transformOrigin: 'left center',
+                  transform: isHovered ? 'scaleY(1.2)' : 'scaleY(1)'
+                }}>
+                  {/* Efecto de brillo en la barra */}
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    width: '30%',
+                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2))',
+                    borderRadius: '4px'
+                  }} />
+                </div>
+                
+                {/* Marcadores de valores */}
+                <div style={{
+                  position: 'absolute',
+                  top: '-20px',
+                  left: '0%',
+                  fontSize: '10px',
+                  color: COLORS.textSecondary,
+                  opacity: isHovered ? 1 : 0,
+                  transition: 'opacity 0.3s'
+                }}>
+                  0
+                </div>
+                <div style={{
+                  position: 'absolute',
+                  top: '-20px',
+                  left: '100%',
+                  transform: 'translateX(-100%)',
+                  fontSize: '10px',
+                  color: COLORS.textSecondary,
+                  opacity: isHovered ? 1 : 0,
+                  transition: 'opacity 0.3s'
+                }}>
+                  {maxValor.toFixed(1)}
+                </div>
+              </div>
+              
+              {/* Indicador de porcentaje */}
+              <div style={{
+                position: 'absolute',
+                right: '-40px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                fontSize: '11px',
+                fontWeight: '600',
+                color: COLORS.primary,
+                opacity: isHovered ? 1 : 0,
+                transition: 'opacity 0.3s',
+                backgroundColor: `${COLORS.primary}15`,
+                padding: '2px 6px',
+                borderRadius: '3px'
+              }}>
+                {porcentaje.toFixed(0)}%
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      
+      {/* Leyenda */}
+      <div style={{
+        marginTop: '30px',
+        paddingTop: '20px',
+        borderTop: `1px solid ${COLORS.border}`,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        fontSize: '11px',
+        color: COLORS.textSecondary
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{
+            width: '12px',
+            height: '4px',
+            background: `linear-gradient(90deg, ${COLORS.primaryDark}, ${COLORS.primary})`,
+            borderRadius: '2px'
+          }} />
+          <span>Menos trabajadores</span>
         </div>
-
-        {/* CONFITERÍA O PANADERÍA */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px 15px',
-          backgroundColor: 'rgba(16, 185, 129, 0.1)',
-          borderRadius: '8px',
-          borderLeft: '4px solid #10b981'
-        }}>
-          <span style={{ color: COLORS.text, fontWeight: '500' }}>
-            CONFITERÍA O PANADERÍA
-          </span>
-          <span style={{
-            color: '#10b981',
-            fontWeight: '600',
-            fontSize: '16px',
-            backgroundColor: 'rgba(16, 185, 129, 0.15)',
-            padding: '4px 12px',
-            borderRadius: '20px'
-          }}>
-            4.6
-          </span>
-        </div>
-
-        {/* CAFETERÍAS */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px 15px',
-          backgroundColor: 'rgba(245, 158, 11, 0.1)',
-          borderRadius: '8px',
-          borderLeft: '4px solid #f59e0b'
-        }}>
-          <span style={{ color: COLORS.text, fontWeight: '500' }}>
-            CAFETERÍAS
-          </span>
-          <span style={{
-            color: '#f59e0b',
-            fontWeight: '600',
-            fontSize: '16px',
-            backgroundColor: 'rgba(245, 158, 11, 0.15)',
-            padding: '4px 12px',
-            borderRadius: '20px'
-          }}>
-            4.4
-          </span>
-        </div>
-
-        {/* OTROS */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px 15px',
-          backgroundColor: 'rgba(139, 92, 246, 0.1)',
-          borderRadius: '8px',
-          borderLeft: '4px solid #8b5cf6'
-        }}>
-          <span style={{ color: COLORS.text, fontWeight: '500' }}>
-            OTROS
-          </span>
-          <span style={{
-            color: '#8b5cf6',
-            fontWeight: '600',
-            fontSize: '16px',
-            backgroundColor: 'rgba(139, 92, 246, 0.15)',
-            padding: '4px 12px',
-            borderRadius: '20px'
-          }}>
-            3.7
-          </span>
-        </div>
-
-        {/* FIAMBRERÍA */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px 15px',
-          backgroundColor: 'rgba(239, 68, 68, 0.1)',
-          borderRadius: '8px',
-          borderLeft: '4px solid #ef4444'
-        }}>
-          <span style={{ color: COLORS.text, fontWeight: '500' }}>
-            FIAMBRERÍA
-          </span>
-          <span style={{
-            color: '#ef4444',
-            fontWeight: '600',
-            fontSize: '16px',
-            backgroundColor: 'rgba(239, 68, 68, 0.15)',
-            padding: '4px 12px',
-            borderRadius: '20px'
-          }}>
-            3.0
-          </span>
-        </div>
-
-        {/* ALMACÉN */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px 15px',
-          backgroundColor: 'rgba(14, 165, 233, 0.1)',
-          borderRadius: '8px',
-          borderLeft: '4px solid #0ea5e9'
-        }}>
-          <span style={{ color: COLORS.text, fontWeight: '500' }}>
-            ALMACÉN
-          </span>
-          <span style={{
-            color: '#0ea5e9',
-            fontWeight: '600',
-            fontSize: '16px',
-            backgroundColor: 'rgba(14, 165, 233, 0.15)',
-            padding: '4px 12px',
-            borderRadius: '20px'
-          }}>
-            2.9
-          </span>
-        </div>
-
-        {/* DIETÉTICAS */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px 15px',
-          backgroundColor: 'rgba(236, 72, 153, 0.1)',
-          borderRadius: '8px',
-          borderLeft: '4px solid #ec4899'
-        }}>
-          <span style={{ color: COLORS.text, fontWeight: '500' }}>
-            DIETÉTICAS
-          </span>
-          <span style={{
-            color: '#ec4899',
-            fontWeight: '600',
-            fontSize: '16px',
-            backgroundColor: 'rgba(236, 72, 153, 0.15)',
-            padding: '4px 12px',
-            borderRadius: '20px'
-          }}>
-            2.7
-          </span>
-        </div>
-
-        {/* CARNICERÍA */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px 15px',
-          backgroundColor: 'rgba(20, 184, 166, 0.1)',
-          borderRadius: '8px',
-          borderLeft: '4px solid #14b8a6'
-        }}>
-          <span style={{ color: COLORS.text, fontWeight: '500' }}>
-            CARNICERÍA
-          </span>
-          <span style={{
-            color: '#14b8a6',
-            fontWeight: '600',
-            fontSize: '16px',
-            backgroundColor: 'rgba(20, 184, 166, 0.15)',
-            padding: '4px 12px',
-            borderRadius: '20px'
-          }}>
-            2.7
-          </span>
-        </div>
-
-        {/* GRANJA */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px 15px',
-          backgroundColor: 'rgba(249, 115, 22, 0.1)',
-          borderRadius: '8px',
-          borderLeft: '4px solid #f97316'
-        }}>
-          <span style={{ color: COLORS.text, fontWeight: '500' }}>
-            GRANJA
-          </span>
-          <span style={{
-            color: '#f97316',
-            fontWeight: '600',
-            fontSize: '16px',
-            backgroundColor: 'rgba(249, 115, 22, 0.15)',
-            padding: '4px 12px',
-            borderRadius: '20px'
-          }}>
-            2.7
-          </span>
-        </div>
-
-        {/* KIOSKO */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '10px 15px',
-          backgroundColor: 'rgba(168, 85, 247, 0.1)',
-          borderRadius: '8px',
-          borderLeft: '4px solid #a855f7'
-        }}>
-          <span style={{ color: COLORS.text, fontWeight: '500' }}>
-            KIOSKO
-          </span>
-          <span style={{
-            color: '#a855f7',
-            fontWeight: '600',
-            fontSize: '16px',
-            backgroundColor: 'rgba(168, 85, 247, 0.15)',
-            padding: '4px 12px',
-            borderRadius: '20px'
-          }}>
-            2.4
-          </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{
+            width: '12px',
+            height: '4px',
+            background: `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.primaryLight})`,
+            borderRadius: '2px'
+          }} />
+          <span>Más trabajadores</span>
         </div>
       </div>
-
+      
       <div style={{
         marginTop: '20px',
         paddingTop: '15px',
@@ -2813,7 +2750,7 @@ function GraficoBarras() {
         color: COLORS.textSecondary,
         textAlign: 'center'
       }}>
-        Fuente: Encuesta de comercios locales
+        Fuente: Encuesta de comercios locales • {trabajadoresData.length} tipos de comercio
       </div>
     </div>
   );
