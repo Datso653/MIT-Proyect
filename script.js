@@ -6276,7 +6276,7 @@ function Footer() {
           display: 'flex',
           gap: '30px'
         }}>
-          <span>Proyecto académico</span>
+          <span>Proyecto académico y Social </span>
           <span>Universidad de Buenos Aires</span>
         </div>
       </div>
