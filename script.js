@@ -1703,7 +1703,7 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
 }
 
 // === ANÁLISIS VISUAL CON GRÁFICOS SVG (MODIFICADO) ===
-function AnalisisVisual({ data, indicadores }) {
+function AnalisisVisual({ data, indicadores, datos }) {
   const [visibleItems, setVisibleItems] = useState(new Set());
   const sectionRef = useRef(null);
 
@@ -1833,10 +1833,284 @@ function AnalisisVisual({ data, indicadores }) {
           <GraficoSalarios data={data.salarioData} />
         </div>
       </div>
+
+      {/* NUEVA SECCIÓN: Validación de Hipótesis Geoespaciales */}
+      <div 
+        data-index="3"
+        style={{
+          marginTop: '80px',
+          opacity: visibleItems.has('3') ? 1 : 0,
+          transform: visibleItems.has('3') ? 'translateY(0)' : 'translateY(40px)',
+          transition: 'opacity 0.8s ease-out, transform 0.8s ease-out'
+        }}>
+        
+        <div style={{
+          marginBottom: '60px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '12px',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: COLORS.accent,
+            marginBottom: '20px',
+            fontWeight: '500'
+          }}>
+            Validación Estadística
+          </div>
+          <h3 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: 'clamp(32px, 3.5vw, 42px)',
+            fontWeight: '400',
+            color: COLORS.text,
+            marginBottom: '20px'
+          }}>
+            Análisis de Hipótesis Geoespaciales
+          </h3>
+          <p style={{
+            fontSize: '15px',
+            color: COLORS.textSecondary,
+            maxWidth: '800px',
+            margin: '0 auto'
+          }}>
+            Resultados del análisis estadístico de las hipótesis planteadas sobre la relación entre 
+            factores geográficos y comportamiento comercial
+          </p>
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gap: '30px'
+        }}>
+          {/* Hipótesis 1 con gráficos */}
+          {datos && datos.length > 0 ? (
+            <HipotesisConGraficos 
+              numero={1}
+              titulo="Crimen alto + Sin crédito → ¿Menor expectativa de crecimiento?"
+              datos={datos}
+              tipo="crecimiento"
+            />
+          ) : (
+            <div style={{ color: COLORS.textSecondary, textAlign: 'center', padding: '20px' }}>
+              Cargando datos para el análisis...
+            </div>
+          )}
+
+          {/* Hipótesis 2 con gráficos */}
+          {datos && datos.length > 0 ? (
+            <HipotesisConGraficos 
+              numero={2}
+              titulo="Crimen bajo + Con crédito → ¿Mayor inversión tecnológica?"
+              datos={datos}
+              tipo="tecnologia"
+            />
+          ) : (
+            <div style={{ color: COLORS.textSecondary, textAlign: 'center', padding: '20px' }}>
+              Cargando datos para el análisis...
+            </div>
+          )}
+        </div>
+      </div>
     </section>
   );
 }
+// Nuevo componente para mostrar las hipótesis con sus gráficos
+function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
+  const [expanded, setExpanded] = useState(false);
 
+  console.log('=== DEBUG Hipótesis ' + numero + ' ===');
+  console.log('Total datos recibidos:', datos?.length);
+  console.log('Primeros 5 registros:', datos?.slice(0, 5));
+  
+  // Imprimir algunos campos clave
+  if (datos && datos.length > 0) {
+    console.log('Campos disponibles:', Object.keys(datos[0]));
+    console.log('Valores únicos de afect_crimen:', [...new Set(datos.map(d => d.afect_crimen))]);
+    console.log('Valores únicos de invierte_tecnologia:', [...new Set(datos.map(d => d.invierte_tecnologia))]);
+    
+    // Verificar algunos créditos
+    const primerComercio = datos[0];
+    console.log('Primer comercio - credits_bancos:', primerComercio.credits_bancos);
+    console.log('Primer comercio - credits_proveedor:', primerComercio.credits_proveedor);
+    console.log('Primer comercio - credits_familia:', primerComercio.credits_familia);
+    console.log('Primer comercio - credits_gobierno:', primerComercio.credits_gobierno);
+    console.log('Primer comercio - credits_privado:', primerComercio.credits_privado);
+  }
+
+  if (!datos || datos.length === 0) {
+    return <div>No hay datos disponibles para el análisis</div>;
+  }
+
+  // Función mejorada para verificar crédito
+  const tieneCredito = (comercio) => {
+    const bancos = parseFloat(comercio.credits_bancos) || 0;
+    const proveedor = parseFloat(comercio.credits_proveedor) || 0;
+    const familia = parseFloat(comercio.credits_familia) || 0;
+    const gobierno = parseFloat(comercio.credits_gobierno) || 0;
+    const privado = parseFloat(comercio.credits_privado) || 0;
+    
+    const total = bancos + proveedor + familia + gobierno + privado;
+    console.log('Credito check:', { 
+      comercio: comercio.comercio,
+      bancos, proveedor, familia, gobierno, privado,
+      total, tieneCredito: total > 0 
+    });
+    
+    return total > 0;
+  };
+
+  // Función mejorada para verificar inversión en tecnología
+  const invierteEnTecnologia = (comercio) => {
+    const valor = comercio.invierte_tecnologia;
+    console.log('Tecnologia check:', {
+      comercio: comercio.comercio,
+      valor,
+      tipo: typeof valor,
+      esTrue: valor === 1 || valor === '1' || valor === '1.0' || valor === 1.0 || valor === 'Sí' || valor === 'sí' || valor === 'Si' || valor === 'si'
+    });
+    
+    // Prueba diferentes formatos
+    if (valor === 1 || valor === '1' || valor === '1.0' || valor === 1.0) return true;
+    if (valor === 'Sí' || valor === 'sí' || valor === 'Si' || valor === 'si') return true;
+    if (typeof valor === 'string' && valor.toLowerCase().includes('sí')) return true;
+    if (typeof valor === 'string' && valor.toLowerCase().includes('si')) return true;
+    
+    return false;
+  };
+
+  // Análisis mejorado para Hipótesis 2
+  const analizarHipotesis2 = () => {
+    console.log('=== Análisis Hipótesis 2 Iniciado ===');
+    
+    // Primero, mapear todos los valores de crimen para debug
+    const valoresCrimen = [...new Set(datos.map(d => d.afect_crimen))];
+    console.log('Todos los valores de afect_crimen:', valoresCrimen);
+    
+    // Mapear manualmente los valores posibles
+    const valoresBajos = ['Poco', 'poco', 'Nada', 'nada', 'POCA', 'NADA', 'Muy poco', 'muy poco'];
+    
+    const grupoAdverso = datos.filter(c => {
+      const crimenBajo = valoresBajos.includes(c.afect_crimen);
+      const conCredito = tieneCredito(c);
+      
+      if (crimenBajo && conCredito) {
+        console.log('Encontrado en grupo adverso:', {
+          comercio: c.comercio,
+          crimen: c.afect_crimen,
+          invierte: c.invierte_tecnologia
+        });
+      }
+      
+      return crimenBajo && conCredito;
+    });
+    
+    console.log('Grupo adverso encontrado:', grupoAdverso.length, 'comercios');
+    console.log('Muestra grupo adverso:', grupoAdverso.slice(0, 3));
+    
+    const grupoComparacion = datos.filter(c => {
+      const crimenBajo = valoresBajos.includes(c.afect_crimen);
+      const conCredito = tieneCredito(c);
+      return !(crimenBajo && conCredito);
+    });
+    
+    console.log('Grupo comparación encontrado:', grupoComparacion.length, 'comercios');
+
+    // Contar inversión en tecnología
+    const adversoInvierteTecnologia = grupoAdverso.filter(c => {
+      const invierte = invierteEnTecnologia(c);
+      if (invierte) {
+        console.log('ADVERSO invierte en tecnología:', c.comercio, c.invierte_tecnologia);
+      }
+      return invierte;
+    }).length;
+    
+    const comparacionInvierteTecnologia = grupoComparacion.filter(c => {
+      const invierte = invierteEnTecnologia(c);
+      if (invierte) {
+        console.log('COMPARACIÓN invierte en tecnología:', c.comercio, c.invierte_tecnologia);
+      }
+      return invierte;
+    }).length;
+
+    const totalAdverso = grupoAdverso.length;
+    const totalComparacion = grupoComparacion.length;
+    
+    console.log('Resultados H2:', {
+      totalAdverso,
+      totalComparacion,
+      adversoInvierteTecnologia,
+      comparacionInvierteTecnologia,
+      pctAdverso: totalAdverso > 0 ? (adversoInvierteTecnologia / totalAdverso) * 100 : 0,
+      pctComparacion: totalComparacion > 0 ? (comparacionInvierteTecnologia / totalComparacion) * 100 : 0
+    });
+    
+    return {
+      grupoAdverso: totalAdverso,
+      grupoComparacion: totalComparacion,
+      adversoInvierteTecnologia,
+      comparacionInvierteTecnologia,
+      pctAdverso: totalAdverso > 0 ? (adversoInvierteTecnologia / totalAdverso) * 100 : 0,
+      pctComparacion: totalComparacion > 0 ? (comparacionInvierteTecnologia / totalComparacion) * 100 : 0,
+      datosGrupoAdverso: grupoAdverso,
+      datosGrupoComparacion: grupoComparacion
+    };
+  };
+
+  // También mejora la Hipótesis 1 similarmente
+  const analizarHipotesis1 = () => {
+    console.log('=== Análisis Hipótesis 1 Iniciado ===');
+    
+    const valoresAltos = ['Mucho', 'mucho', 'MUCHO', 'Alto', 'alto', 'ALTO'];
+    
+    const grupoAdverso = datos.filter(c => {
+      const crimenAlto = valoresAltos.includes(c.afect_crimen);
+      const sinCredito = !tieneCredito(c);
+      return crimenAlto && sinCredito;
+    });
+    
+    const grupoComparacion = datos.filter(c => {
+      const crimenAlto = valoresAltos.includes(c.afect_crimen);
+      const sinCredito = !tieneCredito(c);
+      return !(crimenAlto && sinCredito);
+    });
+
+    const quiereCrecer = (comercio) => {
+      const valor = comercio.quiere_crezca;
+      if (valor === 1 || valor === '1' || valor === '1.0' || valor === 1.0) return true;
+      if (valor === 'Sí' || valor === 'sí' || valor === 'Si' || valor === 'si') return true;
+      if (typeof valor === 'string' && valor.toLowerCase().includes('sí')) return true;
+      if (typeof valor === 'string' && valor.toLowerCase().includes('si')) return true;
+      return false;
+    };
+
+    const adversoQuiereCrecer = grupoAdverso.filter(c => quiereCrecer(c)).length;
+    const comparacionQuiereCrecer = grupoComparacion.filter(c => quiereCrecer(c)).length;
+
+    const totalAdverso = grupoAdverso.length;
+    const totalComparacion = grupoComparacion.length;
+    
+    console.log('Resultados H1:', {
+      totalAdverso,
+      totalComparacion,
+      adversoQuiereCrecer,
+      comparacionQuiereCrecer
+    });
+    
+    return {
+      grupoAdverso: totalAdverso,
+      grupoComparacion: totalComparacion,
+      adversoQuiereCrecer,
+      comparacionQuiereCrecer,
+      pctAdverso: totalAdverso > 0 ? (adversoQuiereCrecer / totalAdverso) * 100 : 0,
+      pctComparacion: totalComparacion > 0 ? (comparacionQuiereCrecer / totalComparacion) * 100 : 0
+    };
+  };
+
+  // Seleccionar análisis según el tipo
+  const analisis = tipo === 'crecimiento' ? analizarHipotesis1() : analizarHipotesis2();
+  
+  // [El resto del componente igual que antes...]
+}
   
   // Si no hay datos en algún grupo, mostrar mensaje
   if (analisis.grupoAdverso === 0 || analisis.grupoComparacion === 0) {
