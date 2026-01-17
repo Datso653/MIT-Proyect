@@ -1360,14 +1360,14 @@ function ResumenEjecutivo({ indicadores }) {
 
             {/* Hipótesis 2 - SOLO PLANTEAMIENTO */}
             <div style={{
-              padding: '30px',
-              backgroundColor: COLORS.background,
-              borderRadius: '12px',
-              border: `1px solid #ffa50040`,
-              borderLeft: `4px solid #ffa500`,
-              boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
-              transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-              cursor: 'default'
+  padding: '30px',
+  backgroundColor: COLORS.background,
+  borderRadius: '12px',
+  border: `1px solid #e0111140`,
+  borderLeft: `4px solid #b26e20`,
+  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  cursor: 'default'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-4px)';
