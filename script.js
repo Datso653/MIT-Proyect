@@ -997,7 +997,7 @@ function ResumenEjecutivo({ indicadores }) {
             margin: '0 auto',
             fontWeight: '300'
           }}>
-            Un análisis profundo del ecosistema comercial del Área Metropolitana de Buenos Aires
+            Un análisis profundo del ecosistema comercial del Área Metropolitana de Buenos Aires
           </p>
         </div>
         </AnimatedModelCard>
