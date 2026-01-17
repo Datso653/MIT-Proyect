@@ -365,7 +365,7 @@ function App() {
       {datos.length > 0 && <Mapa datos={datos} />}
       {indicadores && <ResumenEjecutivo indicadores={indicadores} />}
       {indicadores && <Indicadores data={indicadores} />}
-      {datosGraficos && indicadores && <AnalisisVisual data={datosGraficos} indicadores={indicadores} />}
+      {datosGraficos && indicadores && <AnalisisVisual data={datosGraficos} indicadores={indicadores} datos={datos} />}
       <SeccionMachineLearning />
       <SeccionAnalisis />
       <Team />
