@@ -3284,12 +3284,13 @@ function GraficoSalarios({ data }) {
             marginBottom: '10px'
           }}>
             Salario mínimo a percibir
+          </h3>
           <p style={{
             fontSize: '13px',
             color: COLORS.textSecondary,
             marginBottom: '16px'
           }}>
-            Rango salarial que los comerciantes están dispuestos a cobrar (100k - 5M ARS)
+            Rango salarial que los comerciantes están dispuestos a ofrecer (100k - 5M ARS)
           </p>
           
           {/* Disclaimer de calidad de datos */}
