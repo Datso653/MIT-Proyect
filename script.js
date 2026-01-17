@@ -1703,7 +1703,7 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
 }
 
 // === ANÁLISIS VISUAL CON GRÁFICOS SVG (MODIFICADO) ===
-function AnalisisVisual({ data, indicadores, datos }) {
+function AnalisisVisual({ data, indicadores }) {
   const [visibleItems, setVisibleItems] = useState(new Set());
   const sectionRef = useRef(null);
 
@@ -1831,84 +1831,6 @@ function AnalisisVisual({ data, indicadores, datos }) {
           transition: 'opacity 0.8s ease-out 0.4s, transform 0.8s ease-out 0.4s'
         }}>
           <GraficoSalarios data={data.salarioData} />
-        </div>
-      </div>
-
-      {/* NUEVA SECCIÓN: Validación de Hipótesis Geoespaciales */}
-      <div 
-        data-index="3"
-        style={{
-          marginTop: '80px',
-          opacity: visibleItems.has('3') ? 1 : 0,
-          transform: visibleItems.has('3') ? 'translateY(0)' : 'translateY(40px)',
-          transition: 'opacity 0.8s ease-out, transform 0.8s ease-out'
-        }}>
-        
-        <div style={{
-          marginBottom: '60px',
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '12px',
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: COLORS.accent,
-            marginBottom: '20px',
-            fontWeight: '500'
-          }}>
-            Validación Estadística
-          </div>
-          <h3 style={{
-            fontFamily: '"Crimson Pro", serif',
-            fontSize: 'clamp(32px, 3.5vw, 42px)',
-            fontWeight: '400',
-            color: COLORS.text,
-            marginBottom: '20px'
-          }}>
-            Análisis de Hipótesis Geoespaciales
-          </h3>
-          <p style={{
-            fontSize: '15px',
-            color: COLORS.textSecondary,
-            maxWidth: '800px',
-            margin: '0 auto'
-          }}>
-            Resultados del análisis estadístico de las hipótesis planteadas sobre la relación entre 
-            factores geográficos y comportamiento comercial
-          </p>
-        </div>
-
-        <div style={{
-          display: 'grid',
-          gap: '30px'
-        }}>
-          {/* Hipótesis 1 con gráficos */}
-          {datos && datos.length > 0 ? (
-            <HipotesisConGraficos 
-              numero={1}
-              titulo="Crimen alto + Sin crédito → ¿Menor expectativa de crecimiento?"
-              datos={datos}
-              tipo="crecimiento"
-            />
-          ) : (
-            <div style={{ color: COLORS.textSecondary, textAlign: 'center', padding: '20px' }}>
-              Cargando datos para el análisis...
-            </div>
-          )}
-
-          {/* Hipótesis 2 con gráficos */}
-          {datos && datos.length > 0 ? (
-            <HipotesisConGraficos 
-              numero={2}
-              titulo="Crimen bajo + Con crédito → ¿Mayor inversión tecnológica?"
-              datos={datos}
-              tipo="tecnologia"
-            />
-          ) : (
-            <div style={{ color: COLORS.textSecondary, textAlign: 'center', padding: '20px' }}>
-              Cargando datos para el análisis...
-            </div>
-          )}
         </div>
       </div>
     </section>
