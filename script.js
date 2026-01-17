@@ -1416,7 +1416,7 @@ function ResumenEjecutivo({ indicadores }) {
             </div>
           </div>
 
-{/* Hipótesis 3 - CON MODELO PREDICTIVO */}
+{/* Hipótesis 3 - SOLO PLANTEAMIENTO */}
 <div style={{
   padding: '30px',
   backgroundColor: COLORS.background,
@@ -1425,8 +1425,7 @@ function ResumenEjecutivo({ indicadores }) {
   borderLeft: `4px solid #20B2AA`,
   boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-  cursor: 'default',
-  marginBottom: '20px'
+  cursor: 'default'
 }}
 onMouseEnter={(e) => {
   e.currentTarget.style.transform = 'translateY(-4px)';
@@ -1465,286 +1464,10 @@ onMouseLeave={(e) => {
     color: COLORS.textSecondary,
     lineHeight: '1.8',
     paddingLeft: '20px',
-    margin: '0 0 20px 0'
+    margin: 0
   }}>
     Los comercios ubicados en zonas con alta demanda potencial, acceso a crédito y baja presión competitiva presentan una mayor intención de expandirse (apertura de nuevas sucursales, ampliación de capacidad o incremento de inversión) en comparación con el resto de los comercios.
   </p>
-  
-  {/* SECCIÓN DEL MODELO PREDICTIVO */}
-  <div style={{
-    marginTop: '24px',
-    padding: '20px',
-    backgroundColor: 'rgba(32, 178, 170, 0.05)',
-    borderRadius: '8px',
-    border: '1px solid rgba(32, 178, 170, 0.2)'
-  }}>
-    <div style={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: '16px',
-      cursor: 'pointer',
-      padding: '12px 16px',
-      backgroundColor: 'rgba(32, 178, 170, 0.1)',
-      borderRadius: '6px',
-      transition: 'all 0.3s ease'
-    }}
-    onClick={() => setShowModelDetails(!showModelDetails)}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.backgroundColor = 'rgba(32, 178, 170, 0.15)';
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.backgroundColor = 'rgba(32, 178, 170, 0.1)';
-    }}
-    >
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px'
-      }}>
-        <div style={{
-          width: '24px',
-          height: '24px',
-          backgroundColor: '#20B2AA',
-          borderRadius: '4px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-          fontSize: '14px',
-          fontWeight: 'bold'
-        }}>
-          📈
-        </div>
-        <div>
-          <h5 style={{
-            margin: 0,
-            fontSize: '16px',
-            fontWeight: '600',
-            color: '#20B2AA'
-          }}>
-            Modelo Predictivo de Expansión Comercial
-          </h5>
-          <p style={{
-            margin: '4px 0 0 0',
-            fontSize: '13px',
-            color: COLORS.textSecondary
-          }}>
-            ¿Qué comercios tienen intención de expandirse?
-          </p>
-        </div>
-      </div>
-      <div style={{
-        fontSize: '20px',
-        color: '#20B2AA',
-        transform: showModelDetails ? 'rotate(180deg)' : 'rotate(0)',
-        transition: 'transform 0.3s ease'
-      }}>
-        ▼
-      </div>
-    </div>
-    
-    {/* CONTENIDO DESPLEGABLE DEL MODELO */}
-    {showModelDetails && (
-      <div style={{
-        padding: '20px',
-        backgroundColor: 'rgba(255, 255, 255, 0.05)',
-        borderRadius: '8px',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        animation: 'fadeIn 0.3s ease'
-      }}>
-        {/* MÉTRICAS DEL MODELO */}
-        <div style={{ marginBottom: '30px' }}>
-          <h4 style={{ 
-            color: '#32CD32', 
-            marginBottom: '20px',
-            fontSize: '16px',
-            fontWeight: '600'
-          }}>
-            MÉTRICAS DEL MODELO
-          </h4>
-          
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '15px',
-            margin: '20px 0'
-          }}>
-            <div style={{ 
-              textAlign: 'center', 
-              padding: '20px', 
-              backgroundColor: 'rgba(33, 150, 243, 0.1)', 
-              borderRadius: '8px',
-              border: '1px solid rgba(33, 150, 243, 0.2)'
-            }}>
-              <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>ACCURACY</div>
-              <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#2196F3' }}>77.3%</div>
-            </div>
-            
-            <div style={{ 
-              textAlign: 'center', 
-              padding: '20px', 
-              backgroundColor: 'rgba(76, 175, 80, 0.1)', 
-              borderRadius: '8px',
-              border: '1px solid rgba(76, 175, 80, 0.2)'
-            }}>
-              <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>AUC-ROC</div>
-              <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#4CAF50' }}>0.591</div>
-            </div>
-            
-            <div style={{ 
-              textAlign: 'center', 
-              padding: '20px', 
-              backgroundColor: 'rgba(255, 152, 0, 0.1)', 
-              borderRadius: '8px',
-              border: '1px solid rgba(255, 152, 0, 0.2)'
-            }}>
-              <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>PRECISION</div>
-              <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#FF9800' }}>78.6%</div>
-            </div>
-            
-            <div style={{ 
-              textAlign: 'center', 
-              padding: '20px', 
-              backgroundColor: 'rgba(156, 39, 176, 0.1)', 
-              borderRadius: '8px',
-              border: '1px solid rgba(156, 39, 176, 0.2)'
-            }}>
-              <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>RECALL</div>
-              <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#9C27B0' }}>97.6%</div>
-            </div>
-          </div>
-        </div>
-        
-        {/* VARIABLES IMPORTANTES */}
-        <div style={{ marginBottom: '30px' }}>
-          <h4 style={{ 
-            color: '#32CD32', 
-            marginBottom: '20px',
-            fontSize: '16px',
-            fontWeight: '600'
-          }}>
-            VARIABLES MÁS IMPORTANTES
-          </h4>
-          
-          <div style={{ margin: '20px 0' }}>
-            <div style={{ marginBottom: '20px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span style={{ fontSize: '14px', color: COLORS.text }}>Antigüedad del Comercio</span>
-                <span style={{ fontWeight: 'bold', color: '#2196F3' }}>41.9%</span>
-              </div>
-              <div style={{ 
-                height: '8px', 
-                backgroundColor: 'rgba(0, 0, 0, 0.1)', 
-                borderRadius: '4px',
-                overflow: 'hidden'
-              }}>
-                <div style={{ 
-                  width: '41.9%', 
-                  height: '100%', 
-                  backgroundColor: '#2196F3',
-                  borderRadius: '4px'
-                }}></div>
-              </div>
-            </div>
-            
-            <div style={{ marginBottom: '20px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span style={{ fontSize: '14px', color: COLORS.text }}>Cantidad de Trabajadores</span>
-                <span style={{ fontWeight: 'bold', color: '#4CAF50' }}>19.2%</span>
-              </div>
-              <div style={{ 
-                height: '8px', 
-                backgroundColor: 'rgba(0, 0, 0, 0.1)', 
-                borderRadius: '4px',
-                overflow: 'hidden'
-              }}>
-                <div style={{ 
-                  width: '19.2%', 
-                  height: '100%', 
-                  backgroundColor: '#4CAF50',
-                  borderRadius: '4px'
-                }}></div>
-              </div>
-            </div>
-            
-            <div style={{ marginBottom: '20px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span style={{ fontSize: '14px', color: COLORS.text }}>Expectativas de Ventas</span>
-                <span style={{ fontWeight: 'bold', color: '#FF9800' }}>12.4%</span>
-              </div>
-              <div style={{ 
-                height: '8px', 
-                backgroundColor: 'rgba(0, 0, 0, 0.1)', 
-                borderRadius: '4px',
-                overflow: 'hidden'
-              }}>
-                <div style={{ 
-                  width: '12.4%', 
-                  height: '100%', 
-                  backgroundColor: '#FF9800',
-                  borderRadius: '4px'
-                }}></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* BOTONES DE ACCIÓN */}
-        <div style={{ 
-          display: 'flex', 
-          gap: '12px',
-          marginTop: '24px'
-        }}>
-          <button style={{
-            padding: '12px 24px',
-            backgroundColor: 'rgba(32, 178, 170, 0.2)',
-            color: '#20B2AA',
-            border: '1px solid #20B2AA',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            flex: 1,
-            fontSize: '14px',
-            fontWeight: '600',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(32, 178, 170, 0.3)';
-            e.currentTarget.style.transform = 'translateY(-2px)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(32, 178, 170, 0.2)';
-            e.currentTarget.style.transform = 'translateY(0)';
-          }}>
-            VER GRÁFICOS DEL MODELO
-          </button>
-          
-          <button style={{
-            padding: '12px 24px',
-            backgroundColor: 'rgba(50, 205, 50, 0.2)',
-            color: '#32CD32',
-            border: '1px solid #32CD32',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            flex: 1,
-            fontSize: '14px',
-            fontWeight: '600',
-            transition: 'all 0.3s ease'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(50, 205, 50, 0.3)';
-            e.currentTarget.style.transform = 'translateY(-2px)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(50, 205, 50, 0.2)';
-            e.currentTarget.style.transform = 'translateY(0)';
-          }}>
-            VER EXPLICACIÓN DETALLADA
-          </button>
-        </div>
-      </div>
-    )}
-  </div>
 </div>
 
 {/* Hipótesis 4 - SOLO PLANTEAMIENTO */}
@@ -2351,6 +2074,9 @@ function AnalisisVisual({ data, indicadores, datos }) {
 // Nuevo componente para mostrar las hipótesis con sus gráficos
 function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
   const [expanded, setExpanded] = useState(false);
+  
+  // Estado específico para el modelo predictivo de la Hipótesis 3
+  const [showModelDetails, setShowModelDetails] = useState(false);
 
   console.log('Datos recibidos en HipotesisConGraficos:', datos); // Para debug
 
@@ -2372,6 +2098,64 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
       </div>
     );
   }
+
+  // Análisis real para Hipótesis 3 (expansión)
+  const analizarHipotesis3 = () => {
+    console.log('Analizando hipótesis 3 con', datos.length, 'registros');
+    
+    const grupoExpansion = datos.filter(c => {
+      const altaDemanda = c.afect_precios_num !== 'Mucho'; // Demanda alta si precios no son problema
+      const conCredito = (parseFloat(c.credits_bancos) > 0 || 
+                         parseFloat(c.credits_proveedor) > 0 || 
+                         parseFloat(c.credits_familia) > 0 || 
+                         parseFloat(c.credits_gobierno) > 0 || 
+                         parseFloat(c.credits_privado) > 0);
+      const bajaCompetencia = c.afect_compe_num !== 'Mucho'; // Competencia baja si no es problema
+      return altaDemanda && conCredito && bajaCompetencia;
+    });
+    
+    const grupoComparacion = datos.filter(c => {
+      const altaDemanda = c.afect_precios_num !== 'Mucho';
+      const conCredito = (parseFloat(c.credits_bancos) > 0 || 
+                         parseFloat(c.credits_proveedor) > 0 || 
+                         parseFloat(c.credits_familia) > 0 || 
+                         parseFloat(c.credits_gobierno) > 0 || 
+                         parseFloat(c.credits_privado) > 0);
+      const bajaCompetencia = c.afect_compe_num !== 'Mucho';
+      return !(altaDemanda && conCredito && bajaCompetencia);
+    });
+
+    console.log('Grupo expansión (H3):', grupoExpansion.length);
+    console.log('Grupo comparación (H3):', grupoComparacion.length);
+
+    const expansionQuiereCrecer = grupoExpansion.filter(c => {
+      const quiereCrecer = parseFloat(c.quiere_crezca) === 1.0 || 
+                          c.quiere_crezca === '1.0' || 
+                          c.quiere_crezca === '1';
+      return quiereCrecer;
+    }).length;
+    
+    const comparacionQuiereCrecer = grupoComparacion.filter(c => {
+      const quiereCrecer = parseFloat(c.quiere_crezca) === 1.0 || 
+                          c.quiere_crezca === '1.0' || 
+                          c.quiere_crezca === '1';
+      return quiereCrecer;
+    }).length;
+
+    const totalExpansion = grupoExpansion.length;
+    const totalComparacion = grupoComparacion.length;
+    
+    return {
+      grupoExpansion: totalExpansion,
+      grupoComparacion: totalComparacion,
+      expansionQuiereCrecer,
+      comparacionQuiereCrecer,
+      pctExpansion: totalExpansion > 0 ? (expansionQuiereCrecer / totalExpansion) * 100 : 0,
+      pctComparacion: totalComparacion > 0 ? (comparacionQuiereCrecer / totalComparacion) * 100 : 0,
+      datosGrupoExpansion: grupoExpansion,
+      datosGrupoComparacion: grupoComparacion
+    };
+  };
 
   // Análisis real para Hipótesis 1
   const analizarHipotesis1 = () => {
@@ -2486,10 +2270,17 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
   };
 
   // Seleccionar análisis según el tipo
-  const analisis = tipo === 'crecimiento' ? analizarHipotesis1() : analizarHipotesis2();
+  let analisis;
+  if (tipo === 'crecimiento') {
+    analisis = analizarHipotesis1();
+  } else if (tipo === 'tecnologia') {
+    analisis = analizarHipotesis2();
+  } else if (tipo === 'expansion') {
+    analisis = analizarHipotesis3();
+  }
   
   // Si no hay datos en algún grupo, mostrar mensaje
-  if (analisis.grupoAdverso === 0 || analisis.grupoComparacion === 0) {
+  if (!analisis || analisis.grupoAdverso === 0 || analisis.grupoComparacion === 0) {
     return (
       <div style={{ 
         marginBottom: '40px',
@@ -2504,18 +2295,28 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
         <div style={{ color: COLORS.textSecondary, fontSize: '13px', marginTop: '10px' }}>
           No hay suficientes datos para analizar esta hipótesis:
           <ul style={{ marginTop: '8px', marginLeft: '20px' }}>
-            <li>Grupo de análisis: {analisis.grupoAdverso} comercios</li>
-            <li>Grupo de comparación: {analisis.grupoComparacion} comercios</li>
+            <li>Grupo de análisis: {analisis?.grupoAdverso || 0} comercios</li>
+            <li>Grupo de comparación: {analisis?.grupoComparacion || 0} comercios</li>
           </ul>
         </div>
       </div>
     );
   }
   
+  // COLORES ESPECÍFICOS PARA CADA HIPÓTESIS
+  const colores = {
+    1: { principal: '#ffa500', secundario: '#FFD54F', borde: '#ffa500' },
+    2: { principal: '#FF4444', secundario: '#FF8A80', borde: '#FF4444' },
+    3: { principal: '#20B2AA', secundario: '#64FFDA', borde: '#20B2AA' },
+    4: { principal: '#9370DB', secundario: '#B388FF', borde: '#9370DB' }
+  };
+  
+  const color = colores[numero] || { principal: COLORS.primary, secundario: COLORS.primaryLight, borde: COLORS.primary };
+  
   return (
     <div style={{ 
       marginBottom: '40px',
-      border: `1px solid ${COLORS.border}`,
+      border: `1px solid ${color.borde}`,
       borderRadius: '12px',
       overflow: 'hidden'
     }}>
@@ -2532,14 +2333,14 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
         }}
       >
         <div>
-          <div style={{ fontSize: '13px', color: COLORS.primary, fontWeight: '600', marginBottom: '4px' }}>
+          <div style={{ fontSize: '13px', color: color.principal, fontWeight: '600', marginBottom: '4px' }}>
             HIPÓTESIS {numero}
           </div>
           <div style={{ fontSize: '18px', color: COLORS.text, fontWeight: '500' }}>
             {titulo}
           </div>
         </div>
-        <div style={{ fontSize: '20px', color: COLORS.primary }}>
+        <div style={{ fontSize: '20px', color: color.principal }}>
           {expanded ? '−' : '+'}
         </div>
       </div>
@@ -2566,16 +2367,16 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
                   padding: '15px', 
                   backgroundColor: COLORS.surface, 
                   borderRadius: '8px',
-                  borderLeft: `4px solid ${COLORS.primary}`
+                  borderLeft: `4px solid ${color.principal}`
                 }}>
-                  <div style={{ fontSize: '24px', color: COLORS.primary, fontWeight: 'bold' }}>
-                    {analisis.pctAdverso.toFixed(1)}%
+                  <div style={{ fontSize: '24px', color: color.principal, fontWeight: 'bold' }}>
+                    {analisis.pctAdverso ? analisis.pctAdverso.toFixed(1) : analisis.pctExpansion.toFixed(1)}%
                   </div>
                   <div style={{ fontSize: '14px', color: COLORS.textSecondary }}>
-                    de {analisis.grupoAdverso} comercios
+                    de {analisis.grupoAdverso || analisis.grupoExpansion} comercios
                   </div>
                   <div style={{ fontSize: '12px', color: COLORS.textTertiary, marginTop: '8px' }}>
-                    ({analisis[tipo === 'crecimiento' ? 'adversoQuiereCrecer' : 'adversoInvierteTecnologia']} comercios)
+                    ({(analisis.adversoQuiereCrecer || analisis.expansionQuiereCrecer || analisis.adversoInvierteTecnologia)} comercios)
                   </div>
                 </div>
               </div>
@@ -2588,16 +2389,16 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
                   padding: '15px', 
                   backgroundColor: COLORS.surface, 
                   borderRadius: '8px',
-                  borderLeft: `4px solid ${COLORS.accent}`
+                  borderLeft: `4px solid ${color.secundario}`
                 }}>
-                  <div style={{ fontSize: '24px', color: COLORS.accent, fontWeight: 'bold' }}>
+                  <div style={{ fontSize: '24px', color: color.secundario, fontWeight: 'bold' }}>
                     {analisis.pctComparacion.toFixed(1)}%
                   </div>
                   <div style={{ fontSize: '14px', color: COLORS.textSecondary }}>
                     de {analisis.grupoComparacion} comercios
                   </div>
                   <div style={{ fontSize: '12px', color: COLORS.textTertiary, marginTop: '8px' }}>
-                    ({analisis[tipo === 'crecimiento' ? 'comparacionQuiereCrecer' : 'comparacionInvierteTecnologia']} comercios)
+                    ({(analisis.comparacionQuiereCrecer || analisis.comparacionInvierteTecnologia)} comercios)
                   </div>
                 </div>
               </div>
@@ -2606,36 +2407,315 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
             {/* Diferencia porcentual */}
             <div style={{ 
               padding: '15px', 
-              backgroundColor: `${COLORS.primary}10`,
+              backgroundColor: `${color.principal}10`,
               borderRadius: '8px',
               marginBottom: '20px',
               textAlign: 'center'
             }}>
               <div style={{ fontSize: '14px', color: COLORS.text, fontWeight: '500' }}>
-                Diferencia: <span style={{ color: COLORS.primary, fontWeight: 'bold' }}>
-                  {(analisis.pctAdverso - analisis.pctComparacion).toFixed(1)} puntos porcentuales
+                Diferencia: <span style={{ color: color.principal, fontWeight: 'bold' }}>
+                  {((analisis.pctAdverso || analisis.pctExpansion) - analisis.pctComparacion).toFixed(1)} puntos porcentuales
                 </span>
               </div>
               <div style={{ fontSize: '12px', color: COLORS.textSecondary, marginTop: '5px' }}>
-                {analisis.pctAdverso > analisis.pctComparacion 
+                {(analisis.pctAdverso || analisis.pctExpansion) > analisis.pctComparacion 
                   ? 'El grupo de análisis presenta un mayor porcentaje que el grupo de comparación'
                   : 'El grupo de análisis presenta un menor porcentaje que el grupo de comparación'}
               </div>
             </div>
             
+            {/* SECCIÓN ESPECIAL PARA HIPÓTESIS 3 - MODELO PREDICTIVO */}
+            {numero === 3 && tipo === 'expansion' && (
+              <div style={{
+                marginTop: '30px',
+                padding: '20px',
+                backgroundColor: 'rgba(32, 178, 170, 0.05)',
+                borderRadius: '8px',
+                border: '1px solid rgba(32, 178, 170, 0.2)'
+              }}>
+                <div 
+                  onClick={() => setShowModelDetails(!showModelDetails)}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '16px',
+                    cursor: 'pointer',
+                    padding: '12px 16px',
+                    backgroundColor: 'rgba(32, 178, 170, 0.1)',
+                    borderRadius: '6px',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(32, 178, 170, 0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(32, 178, 170, 0.1)';
+                  }}
+                >
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px'
+                  }}>
+                    <div style={{
+                      width: '24px',
+                      height: '24px',
+                      backgroundColor: '#20B2AA',
+                      borderRadius: '4px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'white',
+                      fontSize: '14px',
+                      fontWeight: 'bold'
+                    }}>
+                      📈
+                    </div>
+                    <div>
+                      <h5 style={{
+                        margin: 0,
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        color: '#20B2AA'
+                      }}>
+                        Modelo Predictivo de Expansión Comercial
+                      </h5>
+                      <p style={{
+                        margin: '4px 0 0 0',
+                        fontSize: '13px',
+                        color: COLORS.textSecondary
+                      }}>
+                        ¿Qué comercios tienen intención de expandirse?
+                      </p>
+                    </div>
+                  </div>
+                  <div style={{
+                    fontSize: '20px',
+                    color: '#20B2AA',
+                    transform: showModelDetails ? 'rotate(180deg)' : 'rotate(0)',
+                    transition: 'transform 0.3s ease'
+                  }}>
+                    ▼
+                  </div>
+                </div>
+                
+                {/* CONTENIDO DESPLEGABLE DEL MODELO */}
+                {showModelDetails && (
+                  <div style={{
+                    padding: '20px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    borderRadius: '8px',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    animation: 'fadeIn 0.3s ease'
+                  }}>
+                    {/* MÉTRICAS DEL MODELO */}
+                    <div style={{ marginBottom: '30px' }}>
+                      <h4 style={{ 
+                        color: '#32CD32', 
+                        marginBottom: '20px',
+                        fontSize: '16px',
+                        fontWeight: '600'
+                      }}>
+                        MÉTRICAS DEL MODELO
+                      </h4>
+                      
+                      <div style={{ 
+                        display: 'grid', 
+                        gridTemplateColumns: 'repeat(2, 1fr)',
+                        gap: '15px',
+                        margin: '20px 0'
+                      }}>
+                        <div style={{ 
+                          textAlign: 'center', 
+                          padding: '20px', 
+                          backgroundColor: 'rgba(33, 150, 243, 0.1)', 
+                          borderRadius: '8px',
+                          border: '1px solid rgba(33, 150, 243, 0.2)'
+                        }}>
+                          <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>ACCURACY</div>
+                          <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#2196F3' }}>77.3%</div>
+                        </div>
+                        
+                        <div style={{ 
+                          textAlign: 'center', 
+                          padding: '20px', 
+                          backgroundColor: 'rgba(76, 175, 80, 0.1)', 
+                          borderRadius: '8px',
+                          border: '1px solid rgba(76, 175, 80, 0.2)'
+                        }}>
+                          <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>AUC-ROC</div>
+                          <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#4CAF50' }}>0.591</div>
+                        </div>
+                        
+                        <div style={{ 
+                          textAlign: 'center', 
+                          padding: '20px', 
+                          backgroundColor: 'rgba(255, 152, 0, 0.1)', 
+                          borderRadius: '8px',
+                          border: '1px solid rgba(255, 152, 0, 0.2)'
+                        }}>
+                          <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>PRECISION</div>
+                          <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#FF9800' }}>78.6%</div>
+                        </div>
+                        
+                        <div style={{ 
+                          textAlign: 'center', 
+                          padding: '20px', 
+                          backgroundColor: 'rgba(156, 39, 176, 0.1)', 
+                          borderRadius: '8px',
+                          border: '1px solid rgba(156, 39, 176, 0.2)'
+                        }}>
+                          <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>RECALL</div>
+                          <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#9C27B0' }}>97.6%</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* VARIABLES IMPORTANTES */}
+                    <div style={{ marginBottom: '30px' }}>
+                      <h4 style={{ 
+                        color: '#32CD32', 
+                        marginBottom: '20px',
+                        fontSize: '16px',
+                        fontWeight: '600'
+                      }}>
+                        VARIABLES MÁS IMPORTANTES
+                      </h4>
+                      
+                      <div style={{ margin: '20px 0' }}>
+                        <div style={{ marginBottom: '20px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                            <span style={{ fontSize: '14px', color: COLORS.text }}>Antigüedad del Comercio</span>
+                            <span style={{ fontWeight: 'bold', color: '#2196F3' }}>41.9%</span>
+                          </div>
+                          <div style={{ 
+                            height: '8px', 
+                            backgroundColor: 'rgba(0, 0, 0, 0.1)', 
+                            borderRadius: '4px',
+                            overflow: 'hidden'
+                          }}>
+                            <div style={{ 
+                              width: '41.9%', 
+                              height: '100%', 
+                              backgroundColor: '#2196F3',
+                              borderRadius: '4px'
+                            }}></div>
+                          </div>
+                        </div>
+                        
+                        <div style={{ marginBottom: '20px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                            <span style={{ fontSize: '14px', color: COLORS.text }}>Cantidad de Trabajadores</span>
+                            <span style={{ fontWeight: 'bold', color: '#4CAF50' }}>19.2%</span>
+                          </div>
+                          <div style={{ 
+                            height: '8px', 
+                            backgroundColor: 'rgba(0, 0, 0, 0.1)', 
+                            borderRadius: '4px',
+                            overflow: 'hidden'
+                          }}>
+                            <div style={{ 
+                              width: '19.2%', 
+                              height: '100%', 
+                              backgroundColor: '#4CAF50',
+                              borderRadius: '4px'
+                            }}></div>
+                          </div>
+                        </div>
+                        
+                        <div style={{ marginBottom: '20px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                            <span style={{ fontSize: '14px', color: COLORS.text }}>Expectativas de Ventas</span>
+                            <span style={{ fontWeight: 'bold', color: '#FF9800' }}>12.4%</span>
+                          </div>
+                          <div style={{ 
+                            height: '8px', 
+                            backgroundColor: 'rgba(0, 0, 0, 0.1)', 
+                            borderRadius: '4px',
+                            overflow: 'hidden'
+                          }}>
+                            <div style={{ 
+                              width: '12.4%', 
+                              height: '100%', 
+                              backgroundColor: '#FF9800',
+                              borderRadius: '4px'
+                            }}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* BOTONES DE ACCIÓN */}
+                    <div style={{ 
+                      display: 'flex', 
+                      gap: '12px',
+                      marginTop: '24px'
+                    }}>
+                      <button style={{
+                        padding: '12px 24px',
+                        backgroundColor: 'rgba(32, 178, 170, 0.2)',
+                        color: '#20B2AA',
+                        border: '1px solid #20B2AA',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        flex: 1,
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = 'rgba(32, 178, 170, 0.3)';
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'rgba(32, 178, 170, 0.2)';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                      }}>
+                        VER GRÁFICOS DEL MODELO
+                      </button>
+                      
+                      <button style={{
+                        padding: '12px 24px',
+                        backgroundColor: 'rgba(50, 205, 50, 0.2)',
+                        color: '#32CD32',
+                        border: '1px solid #32CD32',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        flex: 1,
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = 'rgba(50, 205, 50, 0.3)';
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'rgba(50, 205, 50, 0.2)';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                      }}>
+                        VER EXPLICACIÓN DETALLADA
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            
             {/* Conclusión */}
             <div style={{ 
               padding: '20px', 
-              backgroundColor: `${analisis.pctAdverso > analisis.pctComparacion ? COLORS.primary : COLORS.accent}15`,
+              backgroundColor: `${((analisis.pctAdverso || analisis.pctExpansion) > analisis.pctComparacion) ? color.principal : color.secundario}15`,
               borderRadius: '8px',
-              borderLeft: `4px solid ${analisis.pctAdverso > analisis.pctComparacion ? COLORS.primary : COLORS.accent}`
+              borderLeft: `4px solid ${((analisis.pctAdverso || analisis.pctExpansion) > analisis.pctComparacion) ? color.principal : color.secundario}`
             }}>
               <div style={{ fontSize: '14px', color: COLORS.text, fontWeight: '500', marginBottom: '8px' }}>
                 Conclusión:
               </div>
               <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>
-                {analisis.pctAdverso > analisis.pctComparacion 
-                  ? '✅ La hipótesis se sustenta en los datos analizados. Los comercios en zonas con alta percepción de crimen y sin acceso a crédito presentan efectivamente menores expectativas de crecimiento.'
+                {(analisis.pctAdverso || analisis.pctExpansion) > analisis.pctComparacion 
+                  ? '✅ La hipótesis se sustenta en los datos analizados. Los comercios en las condiciones analizadas presentan efectivamente la característica esperada.'
                   : '❌ Los datos no respaldan completamente la hipótesis planteada. No se observa una diferencia significativa entre los grupos analizados.'}
               </div>
             </div>
