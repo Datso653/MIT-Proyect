@@ -2522,7 +2522,6 @@ function GraficoDistribucion({ data }) {
   );
 }
 
-GraficoBarras
 // Gráfico de barras horizontales - Fuentes de crédito
 function GraficoBarrasHorizontales({ data, pctCredito }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
