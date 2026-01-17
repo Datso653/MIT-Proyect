@@ -2033,6 +2033,7 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
   
   // [El resto del componente igual que antes...]
 }
+
   
   // Si no hay datos en algún grupo, mostrar mensaje
   if (analisis.grupoAdverso === 0 || analisis.grupoComparacion === 0) {
