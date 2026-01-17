@@ -850,7 +850,7 @@ function UniversidadesParticipantes() {
           100% { transform: translateX(-50%); }
         }
         .logos-container {
-          animation: scroll 40s linear infinite;
+          animation: scroll 20s linear infinite;
         }
         .logos-container:hover {
           animation-play-state: paused;
