@@ -3283,14 +3283,13 @@ function GraficoSalarios({ data }) {
             color: COLORS.text,
             marginBottom: '10px'
           }}>
-            Salario mínimo dispuesto a pagar
-          </h3>
+            Salario mínimo a percibir
           <p style={{
             fontSize: '13px',
             color: COLORS.textSecondary,
             marginBottom: '16px'
           }}>
-            Rango salarial que los comerciantes están dispuestos a ofrecer (100k - 1.3M ARS)
+            Rango salarial que los comerciantes están dispuestos a cobrar (100k - 5M ARS)
           </p>
           
           {/* Disclaimer de calidad de datos */}
@@ -6622,8 +6621,8 @@ function procesarDatosGraficos(datos) {
       const cleaned = sal.toString().replace(/\$/g, "").replace(/\./g, "").replace(/,/g, "").replace(/ /g, "");
       const num = parseFloat(cleaned);
       
-      // RANGO AJUSTADO: Filtrar solo valores entre 100k - 1.3M ARS (eliminando outliers extremos)
-      if (isNaN(num) || num < 100000 || num > 1300000) return null;
+      // RANGO AJUSTADO: Filtrar solo valores entre 100k - 5M ARS (eliminando outliers extremos)
+      if (isNaN(num) || num < 100000 || num > 5000000) return null;
       
       return { valor: num, tipo: c.tipo_comercio || 'Sin categoría' };
     })
