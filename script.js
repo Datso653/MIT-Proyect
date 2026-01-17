@@ -1414,6 +1414,128 @@ function ResumenEjecutivo({ indicadores }) {
             </div>
           </div>
 
+{/* Hipótesis 3 - SOLO PLANTEAMIENTO */}
+<div style={{
+  padding: '30px',
+  backgroundColor: COLORS.background,
+  borderRadius: '12px',
+  border: `1px solid #32CD3240`,
+  borderLeft: `4px solid #32CD32`,
+  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  cursor: 'default',
+  marginTop: '20px'
+}}
+onMouseEnter={(e) => {
+  e.currentTarget.style.transform = 'translateY(-4px)';
+  e.currentTarget.style.boxShadow = '0 8px 24px rgba(50, 205, 50, 0.3)';
+}}
+onMouseLeave={(e) => {
+  e.currentTarget.style.transform = 'translateY(0)';
+  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
+}}
+>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    marginBottom: '16px'
+  }}>
+    <div style={{
+      width: '8px',
+      height: '8px',
+      borderRadius: '50%',
+      backgroundColor: '#32CD32',
+      boxShadow: '0 0 12px #32CD32'
+    }} />
+    <h4 style={{
+      fontSize: '19px',
+      fontWeight: '600',
+      color: '#32CD32',
+      margin: 0,
+      letterSpacing: '-0.01em'
+    }}>
+      H3: Alta demanda + Acceso a crédito + Baja competencia → ¿Mayor intención de expansión?
+    </h4>
+  </div>
+  <p style={{ 
+    fontSize: '15px',
+    color: COLORS.textSecondary,
+    lineHeight: '1.8',
+    paddingLeft: '20px',
+    margin: 0
+  }}>
+    Los comercios ubicados en zonas con alta demanda potencial, acceso a crédito y baja presión competitiva presentan una mayor intención de expandirse (apertura de nuevas sucursales, ampliación de capacidad o incremento de inversión) en comparación con el resto de los comercios.
+  </p>
+</div>
+
+{/* Hipótesis 4 - SOLO PLANTEAMIENTO */}
+<div style={{
+  padding: '30px',
+  backgroundColor: COLORS.background,
+  borderRadius: '12px',
+  border: `1px solid #9370DB40`,
+  borderLeft: `4px solid #9370DB`,
+  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  cursor: 'default',
+  marginTop: '20px'
+}}
+onMouseEnter={(e) => {
+  e.currentTarget.style.transform = 'translateY(-4px)';
+  e.currentTarget.style.boxShadow = '0 8px 24px rgba(147, 112, 219, 0.3)';
+}}
+onMouseLeave={(e) => {
+  e.currentTarget.style.transform = 'translateY(0)';
+  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
+}}
+>
+  <div style={{
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    marginBottom: '16px'
+  }}>
+    <div style={{
+      width: '8px',
+      height: '8px',
+      borderRadius: '50%',
+      backgroundColor: '#9370DB',
+      boxShadow: '0 0 12px #9370DB'
+    }} />
+    <h4 style={{
+      fontSize: '19px',
+      fontWeight: '600',
+      color: '#9370DB',
+      margin: 0,
+      letterSpacing: '-0.01em'
+    }}>
+      H4: Crimen, precios, competencia y crédito → ¿Qué factor explica mayor caída en ventas?
+    </h4>
+  </div>
+  <p style={{ 
+    fontSize: '15px',
+    color: COLORS.textSecondary,
+    lineHeight: '1.8',
+    paddingLeft: '20px',
+    margin: 0
+  }}>
+    Las variaciones en las ventas de los comercios están significativamente asociadas a factores externos, siendo el crimen percibido, los precios relativos, la intensidad de la competencia y el acceso al crédito determinantes clave, con impactos diferenciados según la zona geográfica.
+  </p>
+  <div style={{ 
+    fontSize: '14px',
+    color: '#aaa',
+    fontStyle: 'italic',
+    lineHeight: '1.6',
+    paddingLeft: '20px',
+    marginTop: '10px',
+    paddingTop: '10px',
+    borderTop: '1px dashed rgba(147, 112, 219, 0.3)'
+  }}>
+    <strong>Nota:</strong> Esta hipótesis se puede contrastar comparando elasticidades o efectos marginales entre factores.
+  </div>
+</div>
+
           <p style={{ 
             marginTop: '30px',
             marginBottom: '24px', 
