@@ -1414,7 +1414,7 @@ function ResumenEjecutivo({ indicadores }) {
             </div>
           </div>
 
-{/* Hipótesis 3 - SOLO PLANTEAMIENTO */}
+{/* Hipótesis 3 - CON MODELO PREDICTIVO */}
 <div style={{
   padding: '30px',
   backgroundColor: COLORS.background,
@@ -1423,7 +1423,8 @@ function ResumenEjecutivo({ indicadores }) {
   borderLeft: `4px solid #20B2AA`,
   boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-  cursor: 'default'
+  cursor: 'default',
+  marginBottom: '20px'
 }}
 onMouseEnter={(e) => {
   e.currentTarget.style.transform = 'translateY(-4px)';
@@ -1462,10 +1463,286 @@ onMouseLeave={(e) => {
     color: COLORS.textSecondary,
     lineHeight: '1.8',
     paddingLeft: '20px',
-    margin: 0
+    margin: '0 0 20px 0'
   }}>
     Los comercios ubicados en zonas con alta demanda potencial, acceso a crédito y baja presión competitiva presentan una mayor intención de expandirse (apertura de nuevas sucursales, ampliación de capacidad o incremento de inversión) en comparación con el resto de los comercios.
   </p>
+  
+  {/* SECCIÓN DEL MODELO PREDICTIVO */}
+  <div style={{
+    marginTop: '24px',
+    padding: '20px',
+    backgroundColor: 'rgba(32, 178, 170, 0.05)',
+    borderRadius: '8px',
+    border: '1px solid rgba(32, 178, 170, 0.2)'
+  }}>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '16px',
+      cursor: 'pointer',
+      padding: '12px 16px',
+      backgroundColor: 'rgba(32, 178, 170, 0.1)',
+      borderRadius: '6px',
+      transition: 'all 0.3s ease'
+    }}
+    onClick={() => setShowModelDetails(!showModelDetails)}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.backgroundColor = 'rgba(32, 178, 170, 0.15)';
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.backgroundColor = 'rgba(32, 178, 170, 0.1)';
+    }}
+    >
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px'
+      }}>
+        <div style={{
+          width: '24px',
+          height: '24px',
+          backgroundColor: '#20B2AA',
+          borderRadius: '4px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          fontSize: '14px',
+          fontWeight: 'bold'
+        }}>
+          📈
+        </div>
+        <div>
+          <h5 style={{
+            margin: 0,
+            fontSize: '16px',
+            fontWeight: '600',
+            color: '#20B2AA'
+          }}>
+            Modelo Predictivo de Expansión Comercial
+          </h5>
+          <p style={{
+            margin: '4px 0 0 0',
+            fontSize: '13px',
+            color: COLORS.textSecondary
+          }}>
+            ¿Qué comercios tienen intención de expandirse?
+          </p>
+        </div>
+      </div>
+      <div style={{
+        fontSize: '20px',
+        color: '#20B2AA',
+        transform: showModelDetails ? 'rotate(180deg)' : 'rotate(0)',
+        transition: 'transform 0.3s ease'
+      }}>
+        ▼
+      </div>
+    </div>
+    
+    {/* CONTENIDO DESPLEGABLE DEL MODELO */}
+    {showModelDetails && (
+      <div style={{
+        padding: '20px',
+        backgroundColor: 'rgba(255, 255, 255, 0.05)',
+        borderRadius: '8px',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        animation: 'fadeIn 0.3s ease'
+      }}>
+        {/* MÉTRICAS DEL MODELO */}
+        <div style={{ marginBottom: '30px' }}>
+          <h4 style={{ 
+            color: '#32CD32', 
+            marginBottom: '20px',
+            fontSize: '16px',
+            fontWeight: '600'
+          }}>
+            MÉTRICAS DEL MODELO
+          </h4>
+          
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '15px',
+            margin: '20px 0'
+          }}>
+            <div style={{ 
+              textAlign: 'center', 
+              padding: '20px', 
+              backgroundColor: 'rgba(33, 150, 243, 0.1)', 
+              borderRadius: '8px',
+              border: '1px solid rgba(33, 150, 243, 0.2)'
+            }}>
+              <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>ACCURACY</div>
+              <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#2196F3' }}>77.3%</div>
+            </div>
+            
+            <div style={{ 
+              textAlign: 'center', 
+              padding: '20px', 
+              backgroundColor: 'rgba(76, 175, 80, 0.1)', 
+              borderRadius: '8px',
+              border: '1px solid rgba(76, 175, 80, 0.2)'
+            }}>
+              <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>AUC-ROC</div>
+              <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#4CAF50' }}>0.591</div>
+            </div>
+            
+            <div style={{ 
+              textAlign: 'center', 
+              padding: '20px', 
+              backgroundColor: 'rgba(255, 152, 0, 0.1)', 
+              borderRadius: '8px',
+              border: '1px solid rgba(255, 152, 0, 0.2)'
+            }}>
+              <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>PRECISION</div>
+              <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#FF9800' }}>78.6%</div>
+            </div>
+            
+            <div style={{ 
+              textAlign: 'center', 
+              padding: '20px', 
+              backgroundColor: 'rgba(156, 39, 176, 0.1)', 
+              borderRadius: '8px',
+              border: '1px solid rgba(156, 39, 176, 0.2)'
+            }}>
+              <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>RECALL</div>
+              <div style={{ fontSize: '28px', fontWeight: 'bold', color: '#9C27B0' }}>97.6%</div>
+            </div>
+          </div>
+        </div>
+        
+        {/* VARIABLES IMPORTANTES */}
+        <div style={{ marginBottom: '30px' }}>
+          <h4 style={{ 
+            color: '#32CD32', 
+            marginBottom: '20px',
+            fontSize: '16px',
+            fontWeight: '600'
+          }}>
+            VARIABLES MÁS IMPORTANTES
+          </h4>
+          
+          <div style={{ margin: '20px 0' }}>
+            <div style={{ marginBottom: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ fontSize: '14px', color: COLORS.text }}>Antigüedad del Comercio</span>
+                <span style={{ fontWeight: 'bold', color: '#2196F3' }}>41.9%</span>
+              </div>
+              <div style={{ 
+                height: '8px', 
+                backgroundColor: 'rgba(0, 0, 0, 0.1)', 
+                borderRadius: '4px',
+                overflow: 'hidden'
+              }}>
+                <div style={{ 
+                  width: '41.9%', 
+                  height: '100%', 
+                  backgroundColor: '#2196F3',
+                  borderRadius: '4px'
+                }}></div>
+              </div>
+            </div>
+            
+            <div style={{ marginBottom: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ fontSize: '14px', color: COLORS.text }}>Cantidad de Trabajadores</span>
+                <span style={{ fontWeight: 'bold', color: '#4CAF50' }}>19.2%</span>
+              </div>
+              <div style={{ 
+                height: '8px', 
+                backgroundColor: 'rgba(0, 0, 0, 0.1)', 
+                borderRadius: '4px',
+                overflow: 'hidden'
+              }}>
+                <div style={{ 
+                  width: '19.2%', 
+                  height: '100%', 
+                  backgroundColor: '#4CAF50',
+                  borderRadius: '4px'
+                }}></div>
+              </div>
+            </div>
+            
+            <div style={{ marginBottom: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ fontSize: '14px', color: COLORS.text }}>Expectativas de Ventas</span>
+                <span style={{ fontWeight: 'bold', color: '#FF9800' }}>12.4%</span>
+              </div>
+              <div style={{ 
+                height: '8px', 
+                backgroundColor: 'rgba(0, 0, 0, 0.1)', 
+                borderRadius: '4px',
+                overflow: 'hidden'
+              }}>
+                <div style={{ 
+                  width: '12.4%', 
+                  height: '100%', 
+                  backgroundColor: '#FF9800',
+                  borderRadius: '4px'
+                }}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* BOTONES DE ACCIÓN */}
+        <div style={{ 
+          display: 'flex', 
+          gap: '12px',
+          marginTop: '24px'
+        }}>
+          <button style={{
+            padding: '12px 24px',
+            backgroundColor: 'rgba(32, 178, 170, 0.2)',
+            color: '#20B2AA',
+            border: '1px solid #20B2AA',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            flex: 1,
+            fontSize: '14px',
+            fontWeight: '600',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(32, 178, 170, 0.3)';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(32, 178, 170, 0.2)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}>
+            VER GRÁFICOS DEL MODELO
+          </button>
+          
+          <button style={{
+            padding: '12px 24px',
+            backgroundColor: 'rgba(50, 205, 50, 0.2)',
+            color: '#32CD32',
+            border: '1px solid #32CD32',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            flex: 1,
+            fontSize: '14px',
+            fontWeight: '600',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(50, 205, 50, 0.3)';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(50, 205, 50, 0.2)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}>
+            VER EXPLICACIÓN DETALLADA
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
 </div>
 
 {/* Hipótesis 4 - SOLO PLANTEAMIENTO */}
@@ -3290,7 +3567,7 @@ function GraficoSalarios({ data }) {
             color: COLORS.textSecondary,
             marginBottom: '16px'
           }}>
-            Rango salarial que los comerciantes están dispuestos a ofrecer (100k - 5M ARS)
+            Rango salarial que los comerciantes están dispuestos a percibir (100k - 5M ARS)
           </p>
           
           {/* Disclaimer de calidad de datos */}
