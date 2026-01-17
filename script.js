@@ -1363,9 +1363,9 @@ function ResumenEjecutivo({ indicadores }) {
   padding: '30px',
   backgroundColor: COLORS.background,
   borderRadius: '12px',
-  border: `1px solid #e0111140`,
-  borderLeft: `4px solid #b26e20`,
-  boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+  border: `1px solid rgba(243, 6, 6, 0.76)`,
+  borderLeft: `4px solid rgba(243, 6, 6, 0.76)`,
+  boxShadow: '0 4px 16px rgba(243, 6, 6, 0.76)',
   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
   cursor: 'default'
             }}
