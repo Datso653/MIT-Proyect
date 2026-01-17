@@ -1371,7 +1371,7 @@ function ResumenEjecutivo({ indicadores }) {
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 165, 0, 0.3)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(243, 6, 6, 0.76)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
