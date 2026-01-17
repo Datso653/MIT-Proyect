@@ -1419,12 +1419,11 @@ function ResumenEjecutivo({ indicadores }) {
   padding: '30px',
   backgroundColor: COLORS.background,
   borderRadius: '12px',
-  border: `1px solid #32CD3240`,
-  borderLeft: `4px solid #32CD32`,
+  border: `1px solid #20B2AA40`,
+  borderLeft: `4px solid #20B2AA`,
   boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-  cursor: 'default',
-  marginTop: '20px'
+  cursor: 'default'
 }}
 onMouseEnter={(e) => {
   e.currentTarget.style.transform = 'translateY(-4px)';
