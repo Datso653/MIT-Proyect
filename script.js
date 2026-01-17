@@ -919,9 +919,17 @@ function UniversidadesParticipantes() {
   );
 }
 
+
+import { useState } from 'react'; // Asegúrate de tener esta importación
+
 // === INDICADORES CON GRÁFICOS CIRCULARES ===
 // === RESUMEN EJECUTIVO PARA COMERCIANTES (MODIFICADO) ===
 function ResumenEjecutivo({ indicadores }) {
+
+  // ESTADO PARA CONTROLAR EL ACORDEÓN DEL MODELO
+  const [showModelDetails, setShowModelDetails] = useState(false);
+
+
   if (!indicadores) return null;
   
   return (
