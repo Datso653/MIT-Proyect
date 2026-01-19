@@ -4,32 +4,11 @@ const { useState, useEffect } = React;
 // APP PRINCIPAL - Ensambla componentes de Part1 y Part2
 // ═══════════════════════════════════════════════════════════
 
-// Importar desde Part1
-import { 
-  TEAM_DATA, 
-  COLORS,
-  Navbar, 
-  Hero, 
-  ProjectIntro, 
-  UniversidadesParticipantes,
-  ResumenEjecutivo,
-  Indicadores,
-  AnalisisVisual
-} from './App-Part1.js';
-
-// Importar desde Part2
-import {
-  SeccionMachineLearning,
-  SeccionAnalisis,
-  Team,
-  Mapa,
-  Footer,
-  calcularIndicadores,
-  procesarDatosGraficos
-} from './App-Part2.js';
+// NOTA: Todos los componentes están disponibles globalmente
+// desde App-Part1.js y App-Part2.js
 
 // === COMPONENTE PRINCIPAL ===
-export default function App() {
+function App() {
   const [datos, setDatos] = useState([]);
   const [indicadores, setIndicadores] = useState(null);
   const [datosGraficos, setDatosGraficos] = useState(null);
@@ -133,25 +112,7 @@ export default function App() {
           background-color: #0a0a0a;
           width: 100%;
         }
-        
-        .fade-in {
-          animation: fadeIn 0.8s ease-out forwards;
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        
-        .fade-in-delay-1 { animation-delay: 0.2s; }
-        .fade-in-delay-2 { animation-delay: 0.4s; }
-        .fade-in-delay-3 { animation-delay: 0.6s; }
-        
-        @keyframes fadeIn {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
       `}</style>
-      
       <Navbar />
       <Hero scrollY={scrollY} />
       <ProjectIntro />
