@@ -7,18 +7,18 @@ const { useState, useEffect, useRef } = React;
 // === DATOS DEL PROYECTO ===
 const TEAM_DATA = {
   name: "GreenThunder",
-  tagline: "Análisis basado en datos para la transformación de negocios locales",
+  tagline: "AnÃ¡lisis basado en datos para la transformaciÃ³n de negocios locales",
   members: [
     {
       name: "Gina Marrazzo",
-      role: "Lic. en Economía",
+      role: "Lic. en EconomÃ­a",
       university: "UBA",
       linkedin: "https://www.linkedin.com/in/gina-marrazzo-15a8a523b",
       image: "./Gina.jpg"
     },
     {
-      name: "Sofía Gálvez",
-      role: "Lic. en Administración de Empresas",
+      name: "SofÃ­a GÃ¡lvez",
+      role: "Lic. en AdministraciÃ³n de Empresas",
       university: "UNSAM",
       linkedin: "https://www.linkedin.com/in/sofiagalvez0910",
       image: "./Sofia.jpg"
@@ -3785,7 +3785,6 @@ function SeccionAnalisis() {
       </div>
     </section>
   );
-
 }
 
 // === EXPORTS DE PART 1 ===
