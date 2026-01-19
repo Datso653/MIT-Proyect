@@ -1,8 +1,8 @@
 const { useState, useEffect, useRef } = React;
 
-// ═══════════════════════════════════════════════════════════
-// PARTE 2: MACHINE LEARNING, ANÁLISIS, MAPA, EQUIPO, FOOTER
-// ═══════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// PARTE 2: MACHINE LEARNING, ANLISIS, MAPA, EQUIPO, FOOTER
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 // Importar constantes de Part1
 import { TEAM_DATA, COLORS } from './App-Part1.js';
@@ -71,7 +71,7 @@ function SeccionMachineLearning() {
             color: COLORS.text,
             marginBottom: '30px'
           }}>
-            Predicciones estadÃ­sticas
+            Predicciones estadísticas
           </h2>
           
           {/* Disclaimer prominente */}
@@ -103,20 +103,20 @@ function SeccionMachineLearning() {
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase'
               }}>
-                Disclaimer â€” AnÃ¡lisis Predictivo
+                Disclaimer — Análisis Predictivo
               </div>
             <div style={{
               fontSize: '14px',
               lineHeight: '1.7',
               color: COLORS.textSecondary
             }}>
-              Los siguientes modelos representan <strong style={{ color: COLORS.text }}>anÃ¡lisis 
-              estadÃ­sticos predictivos</strong> basados en patrones histÃ³ricos identificados en los datos. 
-              Estas proyecciones <strong style={{ color: COLORS.text }}>no constituyen garantÃ­as</strong> de 
-              comportamiento futuro y deben interpretarse como estimaciones probabilÃ­sticas sujetas a variabilidad 
-              contextual, cambios macroeconÃ³micos y factores externos no capturados en el modelo. 
+              Los siguientes modelos representan <strong style={{ color: COLORS.text }}>análisis 
+              estadísticos predictivos</strong> basados en patrones históricos identificados en los datos. 
+              Estas proyecciones <strong style={{ color: COLORS.text }}>no constituyen garantías</strong> de 
+              comportamiento futuro y deben interpretarse como estimaciones probabilísticas sujetas a variabilidad 
+              contextual, cambios macroeconómicos y factores externos no capturados en el modelo. 
               <strong style={{ color: COLORS.primary }}> Los resultados no aseguran que los eventos 
-              proyectados ocurrirÃ¡n en la realidad.</strong>
+              proyectados ocurrirán en la realidad.</strong>
             </div>
           </div>
         </div>
@@ -152,10 +152,10 @@ function SeccionMachineLearning() {
             maxWidth: '800px',
             margin: '0 auto'
           }}>
-            <strong style={{ color: COLORS.text }}>MetodologÃ­a:</strong> Los modelos implementados 
-            utilizan tÃ©cnicas de machine learning supervisado (Random Forest, Gradient Boosting, K-Means) 
-            entrenados sobre el conjunto de datos relevado. Las mÃ©tricas de performance incluyen accuracy, 
-            precision, recall, AUC-ROC, RÂ² y RMSE con validaciÃ³n mediante train/test split (75%/25%).
+            <strong style={{ color: COLORS.text }}>Metodología:</strong> Los modelos implementados 
+            utilizan técnicas de machine learning supervisado (Random Forest, Gradient Boosting, K-Means) 
+            entrenados sobre el conjunto de datos relevado. Las métricas de performance incluyen accuracy, 
+            precision, recall, AUC-ROC, R² y RMSE con validación mediante train/test split (75%/25%).
           </div>
         </div>
       </AnimatedModelCard>
@@ -163,7 +163,7 @@ function SeccionMachineLearning() {
   );
 }
 
-// Componente con animaciÃ³n fade-in para modelos
+// Componente con animación fade-in para modelos
 function AnimatedModelCard({ children, delay = 0 }) {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef(null);
@@ -234,7 +234,7 @@ function ModeloCrecimiento({ data }) {
         marginBottom: '12px',
         textAlign: 'center'
       }}>
-        PredicciÃ³n de Crecimiento Comercial
+        Predicción de Crecimiento Comercial
       </h3>
       
       <p style={{
@@ -243,10 +243,10 @@ function ModeloCrecimiento({ data }) {
         textAlign: 'center',
         marginBottom: '30px'
       }}>
-        Â¿QuÃ© comercios tienen intenciÃ³n de expandirse?
+        ¿Qué comercios tienen intención de expandirse?
       </p>
 
-      {/* MÃ©tricas principales */}
+      {/* Métricas principales */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(2, 1fr)',
@@ -257,25 +257,25 @@ function ModeloCrecimiento({ data }) {
           label="Accuracy" 
           value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} 
           color={COLORS.primary}
-          tooltip="Porcentaje de predicciones correctas del total. Indica quÃ© tan bien el modelo clasifica en general."
+          tooltip="Porcentaje de predicciones correctas del total. Indica qué tan bien el modelo clasifica en general."
         />
         <MetricaCard 
           label="AUC-ROC" 
           value={data.metricas.auc_roc.toFixed(3)} 
           color="#4FC3F7"
-          tooltip="Ãrea bajo la curva ROC (0-1). Mide la capacidad del modelo para distinguir entre clases. Valores cercanos a 1 indican excelente desempeÃ±o."
+          tooltip="rea bajo la curva ROC (0-1). Mide la capacidad del modelo para distinguir entre clases. Valores cercanos a 1 indican excelente desempeño."
         />
         <MetricaCard 
           label="Precision" 
           value={`${(data.metricas.precision * 100).toFixed(1)}%`} 
           color={COLORS.accent}
-          tooltip="De todos los comercios que predijimos que crecerÃ¡n, quÃ© porcentaje realmente tiene esa intenciÃ³n. Mide cuÃ¡n confiables son las predicciones positivas."
+          tooltip="De todos los comercios que predijimos que crecerán, qué porcentaje realmente tiene esa intención. Mide cuán confiables son las predicciones positivas."
         />
         <MetricaCard 
           label="Recall" 
           value={`${(data.metricas.recall * 100).toFixed(1)}%`} 
           color={COLORS.accentDark}
-          tooltip="De todos los comercios que realmente quieren crecer, quÃ© porcentaje logramos identificar. Mide quÃ© tan completo es el modelo al detectar casos positivos."
+          tooltip="De todos los comercios que realmente quieren crecer, qué porcentaje logramos identificar. Mide qué tan completo es el modelo al detectar casos positivos."
         />
       </div>
 
@@ -294,7 +294,7 @@ function ModeloCrecimiento({ data }) {
           letterSpacing: '0.05em',
           textTransform: 'uppercase'
         }}>
-          Variables mÃ¡s importantes
+          Variables más importantes
         </div>
         {data.feature_importance.slice(0, 3).map((f, idx) => (
           <div key={idx} style={{ marginBottom: '12px' }}>
@@ -326,7 +326,7 @@ function ModeloCrecimiento({ data }) {
         ))}
       </div>
 
-      {/* BotÃ³n para mostrar grÃ¡ficos */}
+      {/* Botón para mostrar gráficos */}
       <button
         onClick={() => setShowCharts(!showCharts)}
         style={{
@@ -347,7 +347,7 @@ function ModeloCrecimiento({ data }) {
         onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
         onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
       >
-        {showCharts ? 'Ocultar grÃ¡ficos' : 'Ver grÃ¡ficos del modelo'}
+        {showCharts ? 'Ocultar gráficos' : 'Ver gráficos del modelo'}
       </button>
 
       {showCharts && (
@@ -358,7 +358,7 @@ function ModeloCrecimiento({ data }) {
           borderRadius: '6px',
           border: `1px solid ${COLORS.border}`
         }}>
-          <ConfusionMatrix data={data.confusion_matrix} labels={['No crece', 'SÃ­ crece']} />
+          <ConfusionMatrix data={data.confusion_matrix} labels={['No crece', 'Sí crece']} />
           
           <div style={{ height: '40px' }} />
           
@@ -393,7 +393,7 @@ function ModeloCrecimiento({ data }) {
         onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
         onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
       >
-        {expanded ? 'Ver menos' : 'Ver explicaciÃ³n'}
+        {expanded ? 'Ver menos' : 'Ver explicación'}
       </button>
 
       {expanded && (
@@ -410,7 +410,7 @@ function ModeloCrecimiento({ data }) {
             color: COLORS.text,
             marginBottom: '12px'
           }}>
-            ExplicaciÃ³n AcadÃ©mica
+            Explicación Académica
           </div>
           <p style={{
             fontSize: '13px',
@@ -418,11 +418,11 @@ function ModeloCrecimiento({ data }) {
             lineHeight: '1.7',
             marginBottom: '20px'
           }}>
-            Este modelo de clasificaciÃ³n binaria utiliza <strong style={{ color: COLORS.text }}>Random Forest</strong> para 
+            Este modelo de clasificación binaria utiliza <strong style={{ color: COLORS.text }}>Random Forest</strong> para 
             predecir la probabilidad de que un comercio desee expandirse. Con un accuracy de {(data.metricas.accuracy * 100).toFixed(1)}% 
-            y un recall de {(data.metricas.recall * 100).toFixed(1)}%, el modelo identifica correctamente la mayorÃ­a de los comercios 
-            con intenciÃ³n de crecimiento. Las variables mÃ¡s predictivas son la antigÃ¼edad del negocio ({(data.feature_importance[0].importance * 100).toFixed(1)}% 
-            de importancia) y la cantidad de trabajadores, sugiriendo que comercios mÃ¡s establecidos y con mayor personal tienden a buscar expansiÃ³n.
+            y un recall de {(data.metricas.recall * 100).toFixed(1)}%, el modelo identifica correctamente la mayoría de los comercios 
+            con intención de crecimiento. Las variables más predictivas son la antigüedad del negocio ({(data.feature_importance[0].importance * 100).toFixed(1)}% 
+            de importancia) y la cantidad de trabajadores, sugiriendo que comercios más establecidos y con mayor personal tienden a buscar expansión.
           </p>
 
           <div style={{
@@ -431,16 +431,16 @@ function ModeloCrecimiento({ data }) {
             color: COLORS.text,
             marginBottom: '12px'
           }}>
-            En TÃ©rminos Simples
+            En Términos Simples
           </div>
           <p style={{
             fontSize: '13px',
             color: COLORS.textSecondary,
             lineHeight: '1.7'
           }}>
-            <strong style={{ color: COLORS.text }}>Â¿QuÃ© significa esto para tu comercio?</strong><br/>
-            Si tu negocio tiene varios aÃ±os funcionando y un equipo de trabajo estable, es mÃ¡s probable que estÃ©s pensando 
-            en crecer. El modelo nos dice que {(data.metricas.accuracy * 100).toFixed(0)}% de las veces acierta quiÃ©n quiere expandirse. 
+            <strong style={{ color: COLORS.text }}>¿Qué significa esto para tu comercio?</strong><br/>
+            Si tu negocio tiene varios años funcionando y un equipo de trabajo estable, es más probable que estés pensando 
+            en crecer. El modelo nos dice que {(data.metricas.accuracy * 100).toFixed(0)}% de las veces acierta quién quiere expandirse. 
             Las claves son: <strong style={{ color: COLORS.primary }}>experiencia en el rubro, equipo consolidado y expectativas positivas de ventas</strong>.
           </p>
         </div>
@@ -492,10 +492,10 @@ function ModeloFactoresExternos({ data }) {
         textAlign: 'center',
         marginBottom: '30px'
       }}>
-        Â¿QuÃ© afecta mÃ¡s las ventas: crimen, precios, competencia o crÃ©dito?
+        ¿Qué afecta más las ventas: crimen, precios, competencia o crédito?
       </p>
 
-      {/* MÃ©tricas */}
+      {/* Métricas */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(2, 1fr)',
@@ -506,17 +506,17 @@ function ModeloFactoresExternos({ data }) {
           label="Accuracy" 
           value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} 
           color={COLORS.accent}
-          tooltip="Porcentaje de predicciones correctas del total. Indica quÃ© tan bien el modelo clasifica las tendencias de ventas (peor/igual/mejor)."
+          tooltip="Porcentaje de predicciones correctas del total. Indica qué tan bien el modelo clasifica las tendencias de ventas (peor/igual/mejor)."
         />
         <MetricaCard 
           label="F1-Score" 
           value={`${(data.metricas.f1_weighted * 100).toFixed(1)}%`} 
           color="#4FC3F7"
-          tooltip="Promedio ponderado de precisiÃ³n y recall. Balance entre identificar correctamente las tendencias y no generar falsos positivos. Ãštil en clasificaciÃ³n multiclase."
+          tooltip="Promedio ponderado de precisión y recall. Balance entre identificar correctamente las tendencias y no generar falsos positivos. Útil en clasificación multiclase."
         />
       </div>
 
-      {/* Factores de afectaciÃ³n */}
+      {/* Factores de afectación */}
       <div style={{
         marginBottom: '20px',
         padding: '20px',
@@ -537,7 +537,7 @@ function ModeloFactoresExternos({ data }) {
           const labelMap = {
             'afect_precios_num': 'Precios',
             'afect_compe_num': 'Competencia',
-            'afect_credito_num': 'CrÃ©dito',
+            'afect_credito_num': 'Crédito',
             'afect_crimen_num': 'Crimen'
           };
           return (
@@ -571,7 +571,7 @@ function ModeloFactoresExternos({ data }) {
         })}
       </div>
 
-      {/* BotÃ³n para mostrar grÃ¡ficos */}
+      {/* Botón para mostrar gráficos */}
       <button
         onClick={() => setShowCharts(!showCharts)}
         style={{
@@ -592,7 +592,7 @@ function ModeloFactoresExternos({ data }) {
         onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
         onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
       >
-        {showCharts ? 'Ocultar grÃ¡ficos' : 'Ver grÃ¡ficos del modelo'}
+        {showCharts ? 'Ocultar gráficos' : 'Ver gráficos del modelo'}
       </button>
 
       {showCharts && (
@@ -649,7 +649,7 @@ function ModeloFactoresExternos({ data }) {
         onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
         onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
       >
-        {expanded ? 'Ver menos' : 'Ver explicaciÃ³n'}
+        {expanded ? 'Ver menos' : 'Ver explicación'}
       </button>
 
       {expanded && (
@@ -666,7 +666,7 @@ function ModeloFactoresExternos({ data }) {
             color: COLORS.text,
             marginBottom: '12px'
           }}>
-            ExplicaciÃ³n AcadÃ©mica
+            Explicación Académica
           </div>
           <p style={{
             fontSize: '13px',
@@ -675,10 +675,10 @@ function ModeloFactoresExternos({ data }) {
             marginBottom: '20px'
           }}>
             Clasificador multiclase <strong style={{ color: COLORS.text }}>Random Forest</strong> que predice si las ventas 
-            empeorarÃ¡n, se mantendrÃ¡n o mejorarÃ¡n segÃºn factores externos. Con {(data.metricas.accuracy * 100).toFixed(1)}% de accuracy, 
-            el modelo identifica que <strong style={{ color: COLORS.text }}>los precios</strong> son el factor mÃ¡s determinante, 
-            seguido por la competencia. Interesantemente, la antigÃ¼edad del negocio tambiÃ©n es altamente predictiva, sugiriendo 
-            que comercios mÃ¡s establecidos manejan mejor las adversidades externas.
+            empeorarán, se mantendrán o mejorarán según factores externos. Con {(data.metricas.accuracy * 100).toFixed(1)}% de accuracy, 
+            el modelo identifica que <strong style={{ color: COLORS.text }}>los precios</strong> son el factor más determinante, 
+            seguido por la competencia. Interesantemente, la antigüedad del negocio también es altamente predictiva, sugiriendo 
+            que comercios más establecidos manejan mejor las adversidades externas.
           </p>
 
           <div style={{
@@ -687,18 +687,18 @@ function ModeloFactoresExternos({ data }) {
             color: COLORS.text,
             marginBottom: '12px'
           }}>
-            En TÃ©rminos Simples
+            En Términos Simples
           </div>
           <p style={{
             fontSize: '13px',
             color: COLORS.textSecondary,
             lineHeight: '1.7'
           }}>
-            <strong style={{ color: COLORS.text }}>Â¿QuÃ© estÃ¡ afectando tus ventas?</strong><br/>
-            El factor #1 que impacta las ventas son <strong style={{ color: COLORS.primary }}>los precios y la inflaciÃ³n</strong>. 
-            Luego viene la competencia en tu zona. El crimen y el acceso a crÃ©dito tambiÃ©n importan, pero menos. 
-            Si tu negocio tiene varios aÃ±os, probablemente ya sepas cÃ³mo adaptarte a estos cambios. Los comercios nuevos 
-            sufren mÃ¡s con factores externos porque aÃºn no tienen la experiencia ni la base de clientes fiel.
+            <strong style={{ color: COLORS.text }}>¿Qué está afectando tus ventas?</strong><br/>
+            El factor #1 que impacta las ventas son <strong style={{ color: COLORS.primary }}>los precios y la inflación</strong>. 
+            Luego viene la competencia en tu zona. El crimen y el acceso a crédito también importan, pero menos. 
+            Si tu negocio tiene varios años, probablemente ya sepas cómo adaptarte a estos cambios. Los comercios nuevos 
+            sufren más con factores externos porque aún no tienen la experiencia ni la base de clientes fiel.
           </p>
         </div>
       )}
@@ -707,7 +707,7 @@ function ModeloFactoresExternos({ data }) {
 }
 
 
-// Componente auxiliar para mÃ©tricas
+// Componente auxiliar para métricas
 function MetricaCard({ label, value, color, tooltip }) {
   const [showTooltip, setShowTooltip] = useState(false);
   
@@ -879,7 +879,7 @@ function ConfusionMatrix({ data, labels }) {
         letterSpacing: '0.05em',
         textTransform: 'uppercase'
       }}>
-        Matriz de ConfusiÃ³n
+        Matriz de Confusión
       </h4>
       
       <div style={{
@@ -994,13 +994,13 @@ function FeatureImportanceChart({ features, color, title }) {
 function ROCCurve({ data, auc }) {
   // Generar puntos para la curva ROC desde la confusion matrix
   const generateROCPoints = () => {
-    // SimulaciÃ³n de curva ROC basada en el AUC
+    // Simulación de curva ROC basada en el AUC
     const points = [];
     const steps = 50;
     
     for (let i = 0; i <= steps; i++) {
       const x = i / steps;
-      // AproximaciÃ³n de curva ROC basada en AUC
+      // Aproximación de curva ROC basada en AUC
       let y;
       if (auc > 0.5) {
         y = Math.pow(x, 1 / (2 * auc));
@@ -1151,7 +1151,7 @@ function ROCCurve({ data, auc }) {
   );
 }
 
-// Componente Scatter Plot (PredicciÃ³n vs Real) para Modelo 2
+// Componente Scatter Plot (Predicción vs Real) para Modelo 2
 function ScatterPlot({ realValues, predictions, title }) {
   const width = 400;
   const height = 300;
@@ -1245,7 +1245,7 @@ function ScatterPlot({ realValues, predictions, title }) {
   );
 }
 
-// Componente de DistribuciÃ³n de Predicciones (Bar Chart)
+// Componente de Distribución de Predicciones (Bar Chart)
 function DistribucionPredicciones({ distribucion, labels, colors }) {
   const maxCount = Math.max(...Object.values(distribucion));
   const width = 400;
@@ -1263,7 +1263,7 @@ function DistribucionPredicciones({ distribucion, labels, colors }) {
         letterSpacing: '0.05em',
         textTransform: 'uppercase'
       }}>
-        DistribuciÃ³n de Predicciones
+        Distribución de Predicciones
       </h4>
       
       <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -1353,7 +1353,7 @@ function AfectacionesChart() {
   // Datos simulados basados en la imagen
   const data = [
     { factor: 'Crimen', Peor: 0.7, Igual: 0.55, Mejor: 0.5 },
-    { factor: 'CrÃ©dito', Peor: 0.57, Igual: 0.48, Mejor: 0.5 },
+    { factor: 'Crédito', Peor: 0.57, Igual: 0.48, Mejor: 0.5 },
     { factor: 'Precios', Peor: 1.75, Igual: 1.35, Mejor: 1.3 },
     { factor: 'Competencia', Peor: 1.3, Igual: 1.05, Mejor: 0.97 }
   ];
@@ -1492,7 +1492,7 @@ function AfectacionesChart() {
             textAnchor="middle"
             transform={`rotate(-90 15 ${height / 2})`}
           >
-            Nivel de AfectaciÃ³n (0-3)
+            Nivel de Afectación (0-3)
           </text>
         </svg>
       </div>
@@ -1573,7 +1573,7 @@ function Team() {
             fontWeight: '400',
             color: COLORS.text
           }}>
-            Â¿QuiÃ©nes somos?
+            ¿Quiénes somos?
           </h2>
         </div>
         
@@ -1601,7 +1601,7 @@ function TeamMember({ member, index }) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), index * 100); // Delay mÃ¡s corto
+          setTimeout(() => setIsVisible(true), index * 100); // Delay más corto
           observer.disconnect();
         }
       },
@@ -1725,7 +1725,7 @@ function TeamMember({ member, index }) {
           fontWeight: '500'
         }}
       >
-        LinkedIn â†’
+        LinkedIn ¢â€ â€™
       </a>
     </div>
   );
@@ -1754,7 +1754,7 @@ function Mapa({ datos }) {
     const map = window.L.map(mapRef.current).setView([-34.6037, -58.3816], 12);
 
     window.L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: 'Â© OpenStreetMap, Â© CartoDB',
+      attribution: '© OpenStreetMap, © CartoDB',
       maxZoom: 19
     }).addTo(map);
 
@@ -1834,7 +1834,7 @@ function Mapa({ datos }) {
       });
 
     } else if (viewMode === 'crimen') {
-      // Vista de calor de percepciÃ³n de crimen
+      // Vista de calor de percepción de crimen
       const crimenToIntensity = {
         'Mucho': 1.0,
         'Moderado': 0.7,
@@ -1867,7 +1867,7 @@ function Mapa({ datos }) {
         }).addTo(map);
       }
 
-      // Agregar marcadores con color segÃºn percepciÃ³n
+      // Agregar marcadores con color según percepción
       markersLayerRef.current = window.L.layerGroup().addTo(map);
 
       comerciosConCoords.forEach(comercio => {
@@ -1904,7 +1904,7 @@ function Mapa({ datos }) {
             border-radius: 4px;
           ">
             <strong style="color: ${intensityColor}; display: block; margin-bottom: 8px;">
-              PercepciÃ³n: ${comercio.afect_crimen}
+              Percepción: ${comercio.afect_crimen}
             </strong>
             <div style="font-size: 13px; color: ${COLORS.textSecondary};">
               Tipo: ${comercio.tipo_comercio || 'N/A'}<br>
@@ -1916,7 +1916,7 @@ function Mapa({ datos }) {
       });
 
     } else if (viewMode === 'credito') {
-      // Vista de acceso a crÃ©dito
+      // Vista de acceso a crédito
       const contarFuentes = (c) => {
         let count = 0;
         if (parseFloat(c.credits_bancos) > 0) count++;
@@ -1935,7 +1935,7 @@ function Mapa({ datos }) {
           return [
             parseFloat(c.lat),
             parseFloat(c.long),
-            numFuentes / 5 // Normalizar entre 0-1 (mÃ¡ximo 5 fuentes)
+            numFuentes / 5 // Normalizar entre 0-1 (máximo 5 fuentes)
           ];
         })
         .filter(p => p !== null);
@@ -1956,7 +1956,7 @@ function Mapa({ datos }) {
         }).addTo(map);
       }
 
-      // Marcadores con color segÃºn acceso
+      // Marcadores con color según acceso
       markersLayerRef.current = window.L.layerGroup().addTo(map);
 
       comerciosConCoords.forEach(comercio => {
@@ -2004,7 +2004,7 @@ function Mapa({ datos }) {
             border-radius: 4px;
           ">
             <strong style="color: ${color}; display: block; margin-bottom: 8px;">
-              ${numFuentes === 0 ? 'Sin acceso a crÃ©dito' : `${numFuentes} fuente${numFuentes > 1 ? 's' : ''} de crÃ©dito`}
+              ${numFuentes === 0 ? 'Sin acceso a crédito' : `${numFuentes} fuente${numFuentes > 1 ? 's' : ''} de crédito`}
             </strong>
             <div style="font-size: 13px; color: ${COLORS.textSecondary};">
               Tipo: ${comercio.tipo_comercio || 'N/A'}<br>
@@ -2017,7 +2017,7 @@ function Mapa({ datos }) {
     }
   }, [viewMode, datos]);
 
-  // Calcular estadÃ­sticas de crimen
+  // Calcular estadísticas de crimen
   const statscrimen = React.useMemo(() => {
     const comerciosConCrimen = datos.filter(c => c.afect_crimen);
     const total = comerciosConCrimen.length;
@@ -2036,7 +2036,7 @@ function Mapa({ datos }) {
     return { distribucion, total, pctAfectados };
   }, [datos]);
 
-  // Calcular estadÃ­sticas de crÃ©dito
+  // Calcular estadísticas de crédito
   const statscredito = React.useMemo(() => {
     const contarFuentes = (c) => {
       let count = 0;
@@ -2081,7 +2081,7 @@ function Mapa({ datos }) {
           marginBottom: '20px',
           fontWeight: '500'
         }}>
-          DistribuciÃ³n geogrÃ¡fica
+          Distribución geográfica
         </div>
         <h2 style={{
           fontFamily: '"Crimson Pro", serif',
@@ -2099,7 +2099,7 @@ function Mapa({ datos }) {
           margin: '0 auto 30px',
           lineHeight: '1.6'
         }}>
-          Explora la ubicaciÃ³n de los comercios, percepciÃ³n de seguridad y acceso a crÃ©dito en el AMBA
+          Explora la ubicación de los comercios, percepción de seguridad y acceso a crédito en el AMBA
         </p>
 
         {/* Toggle de vista con 3 opciones */}
@@ -2170,7 +2170,7 @@ function Mapa({ datos }) {
               }
             }}
           >
-            PERCEPCIÃ“N DE CRIMEN
+            PERCEPCIÓN DE CRIMEN
           </button>
           <button
             onClick={() => setViewMode('credito')}
@@ -2199,12 +2199,12 @@ function Mapa({ datos }) {
               }
             }}
           >
-            ACCESO A CRÃ‰DITO
+            ACCESO A CRÉDITO
           </button>
         </div>
       </div>
 
-      {/* EstadÃ­sticas de crimen cuando estÃ¡ en modo crimen */}
+      {/* Estadísticas de crimen cuando está en modo crimen */}
       {viewMode === 'crimen' && (
         <div style={{
           marginBottom: '30px',
@@ -2260,13 +2260,13 @@ function Mapa({ datos }) {
           }}>
             <div style={{ fontSize: '14px', color: COLORS.text }}>
               <strong style={{ fontSize: '20px', color: COLORS.accent }}>{statscrimen.pctAfectados}%</strong> de los comercios 
-              reportan afectaciÃ³n significativa por crimen (Algo/Moderado/Mucho)
+              reportan afectación significativa por crimen (Algo/Moderado/Mucho)
             </div>
           </div>
         </div>
       )}
       
-      {/* EstadÃ­sticas de crÃ©dito cuando estÃ¡ en modo crÃ©dito */}
+      {/* Estadísticas de crédito cuando está en modo crédito */}
       {viewMode === 'credito' && (
         <div style={{
           marginBottom: '30px',
@@ -2328,7 +2328,7 @@ function Mapa({ datos }) {
           }}>
             <div style={{ fontSize: '14px', color: COLORS.text }}>
               <strong style={{ fontSize: '20px', color: '#00cc00' }}>{statscredito.pctConCredito}%</strong> de los comercios 
-              tienen acceso a al menos una fuente de crÃ©dito ({statscredito.conCredito} comercios)
+              tienen acceso a al menos una fuente de crédito ({statscredito.conCredito} comercios)
             </div>
           </div>
         </div>
@@ -2382,7 +2382,7 @@ function Mapa({ datos }) {
         </div>
       )}
 
-      {/* Leyenda para mapa de crÃ©dito */}
+      {/* Leyenda para mapa de crédito */}
       {viewMode === 'credito' && (
         <div style={{
           marginTop: '20px',
@@ -2397,7 +2397,7 @@ function Mapa({ datos }) {
           flexWrap: 'wrap'
         }}>
           <div style={{ fontSize: '13px', fontWeight: '600', color: COLORS.textSecondary }}>
-            ACCESO A CRÃ‰DITO:
+            ACCESO A CRÉDITO:
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '20px', height: '20px', background: '#ff0000', borderRadius: '4px' }} />
@@ -2465,7 +2465,7 @@ function Footer() {
             maxWidth: '400px'
           }}>
             Laboratory for Innovation Science and Policy. 
-            InvestigaciÃ³n aplicada para el desarrollo de ecosistemas 
+            Investigación aplicada para el desarrollo de ecosistemas 
             emprendedores en mercados emergentes.
           </p>
         </div>
@@ -2588,13 +2588,13 @@ function Footer() {
         color: COLORS.textSecondary
       }}>
         <div>
-          Â© 2025-2026 MIT LIFT Lab Â· Equipo {TEAM_DATA.name}
+          © 2025-2026 MIT LIFT Lab · Equipo {TEAM_DATA.name}
         </div>
         <div style={{
           display: 'flex',
           gap: '30px'
         }}>
-          <span>Proyecto acadÃ©mico y Social </span>
+          <span>Proyecto académico y Social </span>
           <span>Universidad de Buenos Aires</span>
         </div>
       </div>
@@ -2605,7 +2605,7 @@ function Footer() {
 
 // === FUNCIONES AUXILIARES ===
 
-// FunciÃ³n para filtrar outliers usando IQR (Interquartile Range)
+// Función para filtrar outliers usando IQR (Interquartile Range)
 function filtrarOutliers(datos, campo, factor = 1.5) {
   const valores = datos
     .map(d => parseFloat(d[campo]))
@@ -2630,26 +2630,26 @@ function filtrarOutliers(datos, campo, factor = 1.5) {
   });
 }
 
-// FunciÃ³n para limpiar y validar datos
+// Función para limpiar y validar datos
 function limpiarDatos(datos) {
   return datos.map(d => ({
     ...d,
     cantidad_trabajadores: validarNumero(d.cantidad_trabajadores),
     trabajadores_salario_fijo: validarNumero(d.trabajadores_salario_fijo),
     consumo_kw: validarNumero(d.consumo_kw),
-    anio_apertura: validarNumero(d.anio_apertura),
+    ano_apertura: validarNumero(d.ano_apertura),
     lat: validarNumero(d.lat),
     long: validarNumero(d.long)
   }));
 }
 
-// FunciÃ³n para validar nÃºmeros
+// Función para validar números
 function validarNumero(valor) {
   const num = parseFloat(valor);
   return (!isNaN(num) && num !== null && num !== undefined && isFinite(num)) ? num : null;
 }
 
-// FunciÃ³n para obtener estadÃ­sticas robustas
+// Función para obtener estadísticas robustas
 function obtenerEstadisticas(valores) {
   const validos = valores.filter(v => v !== null && v !== undefined && !isNaN(v) && v > 0);
   if (validos.length === 0) return { promedio: 0, mediana: 0, min: 0, max: 0, count: 0 };
@@ -2724,12 +2724,12 @@ function calcularIndicadores(datos) {
 
   const anioActual = new Date().getFullYear();
   const sumaAnios = datos.reduce((acc, c) => {
-    const anioApertura = parseFloat(c.anio_apertura);
+    const anioApertura = parseFloat(c.ano_apertura);
     if (isNaN(anioApertura) || anioApertura > anioActual) return acc;
     return acc + (anioActual - anioApertura);
   }, 0);
   const conteoAnios = datos.filter(c => {
-    const anio = parseFloat(c.anio_apertura);
+    const anio = parseFloat(c.ano_apertura);
     return !isNaN(anio) && anio <= anioActual;
   }).length;
   const promAniosOperacion = conteoAnios > 0 ? sumaAnios / conteoAnios : 0;
@@ -2747,10 +2747,10 @@ function calcularIndicadores(datos) {
 }
 
 function procesarDatosGraficos(datos) {
-  // DistribuciÃ³n por tipo de comercio
+  // Distribución por tipo de comercio
   const tiposCount = {};
   datos.forEach(c => {
-    const tipo = c.tipo_comercio || 'Sin categorÃ­a';
+    const tipo = c.tipo_comercio || 'Sin categoría';
     tiposCount[tipo] = (tiposCount[tipo] || 0) + 1;
   });
   
@@ -2764,7 +2764,7 @@ function procesarDatosGraficos(datos) {
   const countPorTipo = {};
   
   datos.forEach(c => {
-    const tipo = c.tipo_comercio || 'Sin categorÃ­a';
+    const tipo = c.tipo_comercio || 'Sin categoría';
     const trabajadores = parseFloat(c.cantidad_trabajadores);
     
     if (!isNaN(trabajadores)) {
@@ -2781,7 +2781,7 @@ function procesarDatosGraficos(datos) {
     .sort((a, b) => b.promedio - a.promedio)
     .slice(0, 10);
 
-  // Acceso a crÃ©dito por fuente
+  // Acceso a crédito por fuente
   const fuentesCredito = [
     { fuente: 'Bancos', key: 'credits_bancos' },
     { fuente: 'Proveedores', key: 'credits_proveedor' },
@@ -2790,7 +2790,7 @@ function procesarDatosGraficos(datos) {
     { fuente: 'Privado', key: 'credits_privado' }
   ];
 
-  // Comercios con acceso a crÃ©dito
+  // Comercios con acceso a crédito
   const comerciosConCredito = datos.filter(c => 
     (parseFloat(c.credits_bancos) > 0) ||
     (parseFloat(c.credits_proveedor) > 0) ||
@@ -2801,7 +2801,7 @@ function procesarDatosGraficos(datos) {
 
   const creditoPorFuente = fuentesCredito.map(({ fuente, key }) => {
     const cantidad = datos.filter(c => parseFloat(c[key]) > 0).length;
-    // Porcentaje sobre el total de comercios CON crÃ©dito, no sobre el total general
+    // Porcentaje sobre el total de comercios CON crédito, no sobre el total general
     const porcentaje = comerciosConCredito > 0 ? (cantidad / comerciosConCredito) * 100 : 0;
     return {
       fuente,
@@ -2810,17 +2810,17 @@ function procesarDatosGraficos(datos) {
     };
   }).sort((a, b) => b.cantidad - a.cantidad);
 
-  // AdopciÃ³n tecnolÃ³gica por nivel
+  // Adopción tecnológica por nivel
   const nivelesMap = {
-    'BÃ¡sico': 0,
+    'Básico': 0,
     'Moderado': 0,
     'Alto': 0
   };
 
   datos.forEach(c => {
     const tech = c.tecnologia || '';
-    if (tech.toLowerCase().includes('bÃ¡sico')) {
-      nivelesMap['BÃ¡sico']++;
+    if (tech.toLowerCase().includes('básico')) {
+      nivelesMap['Básico']++;
     } else if (tech.toLowerCase().includes('moderado')) {
       nivelesMap['Moderado']++;
     } else if (tech.toLowerCase().includes('alto') || tech.toLowerCase().includes('avanzado')) {
@@ -2834,21 +2834,21 @@ function procesarDatosGraficos(datos) {
     porcentaje: parseFloat(((cantidad / datos.length) * 100).toFixed(1))
   }));
 
-  // Salario mÃ­nimo dispuesto a pagar (con limpieza de datos)
+  // Salario mínimo dispuesto a pagar (con limpieza de datos)
   const salarios = datos
     .map(c => {
       const sal = c.min_salario;
       // Intentar parsear diferentes formatos
       if (!sal) return null;
       
-      // Remover sÃ­mbolos y espacios
+      // Remover símbolos y espacios
       const cleaned = sal.toString().replace(/\$/g, "").replace(/\./g, "").replace(/,/g, "").replace(/ /g, "");
       const num = parseFloat(cleaned);
       
       // RANGO AJUSTADO: Filtrar solo valores entre 100k - 5M ARS (eliminando outliers extremos)
       if (isNaN(num) || num < 100000 || num > 5000000) return null;
       
-      return { valor: num, tipo: c.tipo_comercio || 'Sin categorÃ­a' };
+      return { valor: num, tipo: c.tipo_comercio || 'Sin categoría' };
     })
     .filter(s => s !== null);
   
@@ -2859,7 +2859,7 @@ function procesarDatosGraficos(datos) {
   const minSalario = salarios.length > 0 ? Math.min(...salarios.map(s => s.valor)) : 0;
   const maxSalario = salarios.length > 0 ? Math.max(...salarios.map(s => s.valor)) : 0;
   
-  // DistribuciÃ³n de salarios en rangos
+  // Distribución de salarios en rangos
   const rangos = [
     { min: 0, max: 200000, label: '< $200k' },
     { min: 200000, max: 300000, label: '$200k - $300k' },
@@ -2915,13 +2915,3 @@ function procesarDatosGraficos(datos) {
     }
   };
 }
-
-// === RENDERIZAR ===
-
-// === EXPORTS DE PART 2 ===
-export { SeccionMachineLearning, SeccionAnalisis };
-export { Team, TeamMember };
-export { Mapa };
-export { Footer };
-export { filtrarOutliers, limpiarDatos, validarNumero, obtenerEstadisticas };
-export { calcularIndicadores, procesarDatosGraficos };
