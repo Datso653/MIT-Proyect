@@ -10,21 +10,21 @@ const TEAM_DATA = {
       role: "Lic. en Economía",
       university: "UBA",
       linkedin: "https://www.linkedin.com/in/gina-marrazzo-15a8a523b",
-      image: "./Gina.jpg"
+      image: "./img/Gina.jpg"
     },
     {
       name: "Sofía Gálvez",
       role: "Lic. en Administración de Empresas",
       university: "UNSAM",
       linkedin: "https://www.linkedin.com/in/sofiagalvez0910",
-      image: "./Sofia.jpg"
+      image: "./img/Sofia.jpg"
     },
     {
       name: "Juan Da Torre",
       role: "Lic. en Economía",
       university: "UBA",
       linkedin: "https://www.linkedin.com/in/juan-da-torre-a3b120262",
-      image: "./Juan.jpg"
+      image: "./img/Juan.jpg"
     }
   ],
   universities: [
@@ -783,32 +783,32 @@ function UniversidadesParticipantes() {
     { 
       nombre: 'MIT', 
       fullName: 'Massachusetts Institute of Technology',
-      logo: './mit.png'
+      logo: './img/mit.png'
     },
     { 
       nombre: 'UBA', 
       fullName: 'Universidad de Buenos Aires',
-      logo: './uba.jpg'
+      logo: './img/uba.jpg'
     },
     { 
       nombre: 'UNSAM', 
       fullName: 'Universidad Nacional de San Martín',
-      logo: './unsam.jpg'
+      logo: './img/unsam.jpg'
     },
     { 
       nombre: 'UP', 
       fullName: 'Universidad de Palermo',
-      logo: './up.png'
+      logo: './img/up.png'
     },
     { 
       nombre: 'ITBA', 
       fullName: 'Instituto Tecnológico de Buenos Aires',
-      logo: './itba.jpg'
+      logo: './img/itba.jpg'
     },
     { 
       nombre: 'UNICEN', 
       fullName: 'Universidad Nacional del Centro',
-      logo: './tandil.jpg'
+      logo: './img/tandil.jpg'
     }
   ];
 
