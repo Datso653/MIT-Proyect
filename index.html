@@ -2,290 +2,35 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.65">
+    <meta name="viewport" content="width=device-width, initial-scale=0.65, maximum-scale=5.0, user-scalable=yes">
     <meta name="theme-color" content="#0a0a0a">
     <title>MIT LIFT Lab - Análisis Comercios AMBA | Equipo Greenthunder</title>
     <link rel="stylesheet" href="styles.css">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     
-    <!-- Leaflet -->
+    <!-- Leaflet para mapas -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.min.js"></script>
     
-    <!-- Librerías -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Leaflet heatmap plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.heat@0.2.0/dist/leaflet-heat.min.js"></script>
 </head>
 <body>
     <div id="root"></div>
     
-    <script type="text/babel">
-        // ============================================
-        // TODO EN UN SOLO ARCHIVO - LA SOLUCIÓN SIMPLE
-        // ============================================
-        
-        const { useState, useEffect } = React;
-        const { createRoot } = ReactDOM;
-        
-        // === CONSTANTES ===
-        const COLORS = {
-            background: '#0a0a0a',
-            primary: '#00ff88',
-            secondary: '#0088ff',
-            accent: '#ff0088',
-            text: '#e0e0e0',
-            cardBg: '#1a1a1a',
-            border: '#333'
-        };
-        
-        // === COMPONENTES BÁSICOS ===
-        function Navbar() {
-            return (
-                <nav style={{
-                    position: 'fixed',
-                    top: 0,
-                    width: '100%',
-                    backgroundColor: 'rgba(10, 10, 10, 0.9)',
-                    backdropFilter: 'blur(10px)',
-                    padding: '15px 30px',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    zIndex: 1000,
-                    borderBottom: '1px solid #333'
-                }}>
-                    <div style={{ fontSize: '20px', fontWeight: 'bold', color: COLORS.primary }}>
-                        MIT LIFT Lab
-                    </div>
-                    <div style={{ display: 'flex', gap: '20px' }}>
-                        <a href="#inicio" style={{ color: COLORS.text, textDecoration: 'none' }}>Inicio</a>
-                        <a href="#mapa" style={{ color: COLORS.text, textDecoration: 'none' }}>Mapa</a>
-                        <a href="#analisis" style={{ color: COLORS.text, textDecoration: 'none' }}>Análisis</a>
-                    </div>
-                </nav>
-            );
-        }
-        
-        function Hero() {
-            return (
-                <section style={{
-                    minHeight: '100vh',
-                    background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '100px 20px 50px',
-                    textAlign: 'center'
-                }}>
-                    <h1 style={{
-                        fontSize: '3.5rem',
-                        color: COLORS.primary,
-                        marginBottom: '20px',
-                        fontFamily: '"Crimson Pro", serif'
-                    }}>
-                        Análisis Comercios AMBA
-                    </h1>
-                    <p style={{
-                        fontSize: '1.2rem',
-                        color: COLORS.text,
-                        maxWidth: '800px',
-                        lineHeight: 1.6
-                    }}>
-                        Estudio cuantitativo sobre la distribución y características 
-                        de comercios en el Área Metropolitana de Buenos Aires
-                    </p>
-                </section>
-            );
-        }
-        
-        function Loading() {
-            return (
-                <div style={{
-                    minHeight: '100vh',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: COLORS.background,
-                    color: COLORS.primary,
-                    fontSize: '18px'
-                }}>
-                    Cargando análisis de comercios...
-                </div>
-            );
-        }
-        
-        function ErrorMessage({ message }) {
-            return (
-                <div style={{
-                    minHeight: '100vh',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: COLORS.background,
-                    color: '#ff6b6b',
-                    fontSize: '16px',
-                    padding: '40px',
-                    textAlign: 'center'
-                }}>
-                    Error: {message}
-                </div>
-            );
-        }
-        
-        // === APP PRINCIPAL ===
-        function App() {
-            const [datos, setDatos] = useState([]);
-            const [loading, setLoading] = useState(true);
-            const [error, setError] = useState(null);
-            
-            useEffect(() => {
-                fetch('datos_comercios.json')
-                    .then(response => {
-                        if (!response.ok) throw new Error('No se pudo cargar los datos');
-                        return response.json();
-                    })
-                    .then(data => {
-                        setDatos(data);
-                        setLoading(false);
-                    })
-                    .catch(err => {
-                        setError(err.message);
-                        setLoading(false);
-                    });
-            }, []);
-            
-            if (loading) return <Loading />;
-            if (error) return <ErrorMessage message={error} />;
-            
-            return (
-                <div style={{
-                    fontFamily: '"Inter", sans-serif',
-                    color: COLORS.text,
-                    backgroundColor: COLORS.background,
-                    minHeight: '100vh'
-                }}>
-                    <Navbar />
-                    <Hero />
-                    
-                    {/* Sección de datos */}
-                    <section style={{
-                        padding: '60px 20px',
-                        maxWidth: '1200px',
-                        margin: '0 auto'
-                    }}>
-                        <h2 style={{ 
-                            color: COLORS.primary, 
-                            marginBottom: '30px',
-                            textAlign: 'center'
-                        }}>
-                            Resumen de Datos
-                        </h2>
-                        
-                        <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                            gap: '20px',
-                            marginTop: '30px'
-                        }}>
-                            <div style={{
-                                backgroundColor: COLORS.cardBg,
-                                padding: '25px',
-                                borderRadius: '10px',
-                                border: `1px solid ${COLORS.border}`
-                            }}>
-                                <h3 style={{ color: COLORS.secondary, marginBottom: '10px' }}>
-                                    Total de Comercios
-                                </h3>
-                                <p style={{ fontSize: '2rem', color: COLORS.primary }}>
-                                    {datos.length}
-                                </p>
-                            </div>
-                            
-                            <div style={{
-                                backgroundColor: COLORS.cardBg,
-                                padding: '25px',
-                                borderRadius: '10px',
-                                border: `1px solid ${COLORS.border}`
-                            }}>
-                                <h3 style={{ color: COLORS.secondary, marginBottom: '10px' }}>
-                                    Localidades
-                                </h3>
-                                <p style={{ fontSize: '2rem', color: COLORS.primary }}>
-                                    {new Set(datos.map(d => d.localidad)).size}
-                                </p>
-                            </div>
-                            
-                            <div style={{
-                                backgroundColor: COLORS.cardBg,
-                                padding: '25px',
-                                borderRadius: '10px',
-                                border: `1px solid ${COLORS.border}`
-                            }}>
-                                <h3 style={{ color: COLORS.secondary, marginBottom: '10px' }}>
-                                    Rubros
-                                </h3>
-                                <p style={{ fontSize: '2rem', color: COLORS.primary }}>
-                                    {new Set(datos.map(d => d.rubro)).size}
-                                </p>
-                            </div>
-                        </div>
-                        
-                        {/* Mapa simple si hay coordenadas */}
-                        {datos.some(d => d.lat && d.lng) && (
-                            <div style={{ marginTop: '50px' }}>
-                                <h3 style={{ color: COLORS.primary, marginBottom: '20px' }}>
-                                    Distribución Geográfica
-                                </h3>
-                                <div id="map" style={{
-                                    height: '500px',
-                                    width: '100%',
-                                    borderRadius: '10px',
-                                    overflow: 'hidden',
-                                    border: `2px solid ${COLORS.border}`
-                                }}></div>
-                            </div>
-                        )}
-                    </section>
-                    
-                    {/* Footer */}
-                    <footer style={{
-                        backgroundColor: '#111',
-                        padding: '40px 20px',
-                        textAlign: 'center',
-                        marginTop: '60px',
-                        borderTop: `1px solid ${COLORS.border}`
-                    }}>
-                        <p style={{ color: COLORS.text }}>
-                            © {new Date().getFullYear()} Equipo Greenthunder - MIT LIFT Lab
-                        </p>
-                        <p style={{ color: '#888', marginTop: '10px', fontSize: '0.9rem' }}>
-                            Análisis de comercios del Área Metropolitana de Buenos Aires
-                        </p>
-                    </footer>
-                </div>
-            );
-        }
-        
-        // === INICIALIZAR ===
-        const root = createRoot(document.getElementById('root'));
-        root.render(<App />);
-        
-        // === INICIALIZAR MAPA DESPUÉS DE CARGAR ===
-        setTimeout(() => {
-            if (window.L && document.getElementById('map')) {
-                const map = L.map('map').setView([-34.6037, -58.3816], 12);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap'
-                }).addTo(map);
-            }
-        }, 1000);
-    </script>
+    <!-- Librerías -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/recharts@2.10.3/dist/Recharts.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Script principal MODULAR (3 partes) -->
+    <script type="text/babel" data-type="module" src="./js/main.js"></script>
 </body>
 </html>
