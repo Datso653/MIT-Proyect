@@ -3,7 +3,6 @@ const { useState, useEffect, useRef } = React;
 // ═══════════════════════════════════════════════════════════
 // PARTE 1: CONFIGURACIÓN, NAVEGACIÓN, Y ANÁLISIS VISUAL
 // ═══════════════════════════════════════════════════════════
-const { useState, useEffect, useRef } = React;
 
 // === DATOS DEL PROYECTO ===
 const TEAM_DATA = {
@@ -3786,6 +3785,7 @@ function SeccionAnalisis() {
       </div>
     </section>
   );
+}
 
 // === EXPORTS DE PART 1 ===
 export { TEAM_DATA, COLORS };

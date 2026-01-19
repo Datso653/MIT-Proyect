@@ -2637,7 +2637,7 @@ function limpiarDatos(datos) {
     cantidad_trabajadores: validarNumero(d.cantidad_trabajadores),
     trabajadores_salario_fijo: validarNumero(d.trabajadores_salario_fijo),
     consumo_kw: validarNumero(d.consumo_kw),
-    aÃ±o_apertura: validarNumero(d.aÃ±o_apertura),
+    anio_apertura: validarNumero(d.anio_apertura),
     lat: validarNumero(d.lat),
     long: validarNumero(d.long)
   }));
@@ -2724,12 +2724,12 @@ function calcularIndicadores(datos) {
 
   const anioActual = new Date().getFullYear();
   const sumaAnios = datos.reduce((acc, c) => {
-    const anioApertura = parseFloat(c.aÃ±o_apertura);
+    const anioApertura = parseFloat(c.anio_apertura);
     if (isNaN(anioApertura) || anioApertura > anioActual) return acc;
     return acc + (anioActual - anioApertura);
   }, 0);
   const conteoAnios = datos.filter(c => {
-    const anio = parseFloat(c.aÃ±o_apertura);
+    const anio = parseFloat(c.anio_apertura);
     return !isNaN(anio) && anio <= anioActual;
   }).length;
   const promAniosOperacion = conteoAnios > 0 ? sumaAnios / conteoAnios : 0;
