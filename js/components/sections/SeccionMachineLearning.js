@@ -22,7 +22,7 @@ function SeccionMachineLearning({ datos }) {
 
   if (loading) {
     return (
-      <section style={{
+      <section id="machine-learning" style={{
         padding: '120px 60px',
         backgroundColor: COLORS.surface,
         textAlign: 'center'
@@ -37,7 +37,7 @@ function SeccionMachineLearning({ datos }) {
   }
 
   return (
-    <section style={{
+    <section id="machine-learning" style={{
       padding: '120px 60px',
       maxWidth: '1400px',
       margin: '0 auto',

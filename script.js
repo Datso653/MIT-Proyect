@@ -384,12 +384,15 @@ function Navbar() {
 
   const sections = [
     { id: 'hero', label: 'Inicio' },
+    { id: 'sobre-plataforma', label: 'Accede a la plataforma' },
     { id: 'intro', label: 'Introducción' },
+    { id: 'universidades', label: 'Universidades Participantes' },
     { id: 'mapa', label: 'Mapa' },
-    { id: 'resumen', label: 'Hipótesis y Primeras Impresiones' },
     { id: 'indicadores', label: 'Indicadores' },
+    { id: 'hipotesis', label: 'Hipótesis Geoespaciales' },
     { id: 'analisis-visual', label: 'Análisis Visual' },
-    { id: 'machine-learning', label: 'Machine Learning' },
+    { id: 'hallazgos', label: 'Hallazgos Principales' },
+    { id: 'machine-learning', label: 'Análisis de Hipótesis Geoespaciales' },
     { id: 'analisis', label: 'Conclusiones' },
     { id: 'equipo', label: '¿Quiénes somos?' }
   ];
@@ -806,7 +809,7 @@ function UniversidadesParticipantes() {
   const universidadesDuplicadas = [...universidades, ...universidades];
 
   return (
-    <section style={{
+    <section id="universidades" style={{
       padding: '80px 0',
       backgroundColor: COLORS.surface,
       borderTop: `1px solid ${COLORS.border}`,
