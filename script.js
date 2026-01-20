@@ -571,7 +571,7 @@ function Navbar() {
     { id: 'hipotesis', label: 'Hipótesis Geoespaciales' },
     { id: 'analisis-visual', label: 'Análisis Visual' },
     { id: 'hallazgos', label: 'Hallazgos Principales' },
-    { id: 'machine-learning', label: 'Análisis de Hipótesis Geoespaciales' },
+    { id: 'machine-learning', label: 'Análisis de Hipótesis Geoespaciales & Hallazgos Adicionales' },
     { id: 'analisis', label: 'Conclusiones' },
     { id: 'equipo', label: '¿Quiénes somos?' }
   ];
