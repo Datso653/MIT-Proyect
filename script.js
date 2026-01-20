@@ -183,58 +183,115 @@ function App() {
             height: 400px !important;
           }
           
+          /* === SOBRE PLATAFORMA (QR CODES) === */
+          #sobre-plataforma {
+            padding: 60px 20px !important;
+          }
+          
+          #sobre-plataforma > div > div[style*="grid"] {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+          
+          /* === PROJECT INTRO === */
+          #intro {
+            padding: 60px 20px !important;
+          }
+          
+          #intro > div {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+          
+          /* === INDICADORES === */
+          #indicadores {
+            padding: 60px 20px !important;
+          }
+          
+          #indicadores > div > div[style*="grid"] {
+            grid-template-columns: 1fr !important;
+            gap: 30px !important;
+          }
+          
+          /* === UNIVERSIDADES PARTICIPANTES === */
+          .logos-container {
+            animation: none !important;
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            -webkit-overflow-scrolling: touch !important;
+            scroll-behavior: smooth !important;
+            padding: 0 20px !important;
+          }
+          
+          .logos-container::-webkit-scrollbar {
+            display: none;
+          }
+          
+          .logos-container > div {
+            min-width: 200px !important;
+            height: 160px !important;
+            padding: 24px !important;
+          }
+          
+          .logos-container > div img {
+            max-width: 100px !important;
+            max-height: 70px !important;
+          }
+          
+          /* === TEAM === */
+          #equipo {
+            padding: 60px 20px !important;
+          }
+          
+          #equipo > div > div[style*="grid"] {
+            grid-template-columns: 1fr !important;
+            gap: 30px !important;
+          }
+          
           /* === SECCIÓN MACHINE LEARNING === */
           #machine-learning {
             padding: 60px 20px !important;
           }
           
-          /* Grid de modelos ML a 1 columna */
           #machine-learning > div > div[style*="grid"] {
             grid-template-columns: 1fr !important;
             gap: 30px !important;
           }
           
-          /* Tarjetas de modelos ML */
           #machine-learning div[style*="borderRadius: '8px'"] {
             padding: 20px !important;
           }
           
-          /* Métricas dentro de ML (Accuracy, Precision, etc) */
           #machine-learning div[style*="gridTemplateColumns: 'repeat(2, 1fr)'"] {
             grid-template-columns: 1fr !important;
             gap: 12px !important;
           }
           
-          /* Título de modelos ML */
           #machine-learning h3 {
             font-size: 20px !important;
           }
           
-          /* === GRÁFICO DE BARRAS TRABAJADORES === */
+          /* === ANÁLISIS VISUAL === */
           #analisis-visual {
             padding: 60px 20px !important;
           }
           
-          /* Grid de gráficos a 1 columna */
           #analisis-visual > div > div[style*="grid"] {
             grid-template-columns: 1fr !important;
             gap: 30px !important;
           }
           
-          /* Contenedor del gráfico de barras - permitir scroll horizontal */
           #analisis-visual div[style*="overflowX: 'auto'"] {
             overflow-x: auto !important;
             -webkit-overflow-scrolling: touch !important;
           }
           
-          /* SVG de barras más pequeño pero scrolleable */
           #analisis-visual svg {
             min-width: 500px !important;
             max-width: none !important;
             height: auto !important;
           }
           
-          /* Tarjetas de gráficos */
           #analisis-visual > div > div > div {
             padding: 20px !important;
           }
@@ -271,7 +328,6 @@ function App() {
             height: 350px !important;
           }
           
-          /* ML más compacto en smartphone */
           #machine-learning,
           #analisis-visual {
             padding: 50px 16px !important;
@@ -282,47 +338,6 @@ function App() {
             padding: 16px !important;
           }
           
-
-          /* === SOBRE PLATAFORMA (QR CODES) === */
-          #sobre-plataforma {
-            padding: 60px 20px !important;
-          }
-          
-          #sobre-plataforma > div > div[style*="grid"] {
-            grid-template-columns: 1fr !important;
-            gap: 40px !important;
-          }
-          
-          /* === PROJECT INTRO === */
-          #intro {
-            padding: 60px 20px !important;
-          }
-          
-          #intro > div {
-            grid-template-columns: 1fr !important;
-            gap: 40px !important;
-          }
-          
-          /* === INDICADORES === */
-          #indicadores {
-            padding: 60px 20px !important;
-          }
-          
-          #indicadores > div > div[style*="grid"] {
-            grid-template-columns: 1fr !important;
-            gap: 30px !important;
-          }
-          
-          /* === TEAM === */
-          #equipo {
-            padding: 60px 20px !important;
-          }
-          
-          #equipo > div > div[style*="grid"] {
-            grid-template-columns: 1fr !important;
-            gap: 30px !important;
-          }
-          /* SVG barras aún más compacto */
           #analisis-visual svg {
             min-width: 400px !important;
           }
