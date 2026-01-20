@@ -67,7 +67,7 @@ function AnalisisVisual({ data, indicadores, datos }) {
         data-index="0"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+          gridTemplateColumns: '1fr 1fr',
           gap: '40px',
           marginBottom: '40px',
           opacity: visibleItems.has('0') ? 1 : 0,
@@ -89,25 +89,12 @@ function AnalisisVisual({ data, indicadores, datos }) {
           <GraficoBarras data={data.trabajadoresPorTipo} />
         </div>
       </div>
-
-      {/* Segunda fila: Fuentes de crédito (barras horizontales) */}
-      <div 
-        data-index="1"
-        style={{ 
-          marginBottom: '40px',
-          opacity: visibleItems.has('1') ? 1 : 0,
-          transform: visibleItems.has('1') ? 'scale(1)' : 'scale(0.95)',
-          transition: 'opacity 0.8s ease-out, transform 0.8s ease-out'
-        }}>
-        <GraficoBarrasHorizontales data={data.creditoPorFuente} pctCredito={indicadores?.pctCredito || 0} />
-      </div>
-
       {/* Tercera fila: Adopción tecnológica y Salarios */}
       <div 
         data-index="2"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+          gridTemplateColumns: '1fr 1fr',
           gap: '40px',
           marginBottom: '60px',
           opacity: visibleItems.has('2') ? 1 : 0,
@@ -127,6 +114,22 @@ function AnalisisVisual({ data, indicadores, datos }) {
           transition: 'opacity 0.8s ease-out 0.4s, transform 0.8s ease-out 0.4s'
         }}>
           <GraficoSalarios data={data.salarioData} />
+        </div>
+      </div>
+      {/* Segunda fila: Fuentes de crédito (barras horizontales) */}
+      <div
+        data-index="1"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '40px',
+          marginBottom: '60px',
+          opacity: visibleItems.has('1') ? 1 : 0,
+          transform: visibleItems.has('1') ? 'scale(1)' : 'scale(0.95)',
+          transition: 'opacity 0.8s ease-out, transform 0.8s ease-out'
+        }}>
+        <div style={{ gridColumn: '1 / -1' }}>
+          <GraficoBarrasHorizontales data={data.creditoPorFuente} pctCredito={indicadores?.pctCredito || 0} />
         </div>
       </div>
     </section>
@@ -187,63 +190,58 @@ function GraficoDistribucion({ data }) {
       }}>
         {total} comercios relevados
       </p>
-      
-      <div style={{ display: 'flex', gap: '40px', alignItems: 'center', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
         {/* SVG Donut Chart */}
-        <svg width="200" height="200" viewBox="0 0 200 200" style={{
-          opacity: isVisible ? 1 : 0,
-          transform: isVisible ? 'rotate(0deg)' : 'rotate(-90deg)',
-          transition: 'opacity 1s ease-out, transform 1s ease-out'
-        }}>
-          {segments.map((seg, idx) => {
-            const isHovered = hoveredIndex === idx;
-            const radius = isHovered ? 75 : 70;
-            const innerRadius = 40;
-            
-            const x1 = 100 + radius * Math.cos((seg.startAngle - 90) * Math.PI / 180);
-            const y1 = 100 + radius * Math.sin((seg.startAngle - 90) * Math.PI / 180);
-            const x2 = 100 + radius * Math.cos((seg.endAngle - 90) * Math.PI / 180);
-            const y2 = 100 + radius * Math.sin((seg.endAngle - 90) * Math.PI / 180);
-            
-            const x3 = 100 + innerRadius * Math.cos((seg.endAngle - 90) * Math.PI / 180);
-            const y3 = 100 + innerRadius * Math.sin((seg.endAngle - 90) * Math.PI / 180);
-            const x4 = 100 + innerRadius * Math.cos((seg.startAngle - 90) * Math.PI / 180);
-            const y4 = 100 + innerRadius * Math.sin((seg.startAngle - 90) * Math.PI / 180);
-            
-            const largeArc = seg.endAngle - seg.startAngle > 180 ? 1 : 0;
-            
-            const pathData = [
-              `M ${x1} ${y1}`,
-              `A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}`,
-              `L ${x3} ${y3}`,
-              `A ${innerRadius} ${innerRadius} 0 ${largeArc} 0 ${x4} ${y4}`,
-              'Z'
-            ].join(' ');
-            
-            return (
-              <path
-                key={idx}
-                d={pathData}
-                fill={seg.color}
-                stroke={COLORS.background}
-                strokeWidth="2"
-                style={{
-                  cursor: 'pointer',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  opacity: isVisible ? (hoveredIndex !== null && hoveredIndex !== idx ? 0.5 : 1) : 0,
-                  transformOrigin: '100px 100px',
-                  animationDelay: `${idx * 0.1}s`,
-                  animation: isVisible ? `segmentFadeIn 0.6s ease-out forwards ${idx * 0.1}s` : 'none'
-                }}
-                onMouseEnter={() => setHoveredIndex(idx)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              />
-            );
-          })}
-        </svg>
-        
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <svg width="280" height="280" viewBox="0 0 280 280" style={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible ? 'rotate(0deg)' : 'rotate(-90deg)',
+            transition: 'opacity 1s ease-out, transform 1s ease-out'
+          }}>
+            {segments.map((seg, idx) => {
+              const isHovered = hoveredIndex === idx;
+              const radius = isHovered ? 110 : 105;
+              const innerRadius = 60;
+              const x1 = 140 + radius * Math.cos((seg.startAngle - 90) * Math.PI / 180);
+              const y1 = 140 + radius * Math.sin((seg.startAngle - 90) * Math.PI / 180);
+              const x2 = 140 + radius * Math.cos((seg.endAngle - 90) * Math.PI / 180);
+              const y2 = 140 + radius * Math.sin((seg.endAngle - 90) * Math.PI / 180);
+              const x3 = 140 + innerRadius * Math.cos((seg.endAngle - 90) * Math.PI / 180);
+              const y3 = 140 + innerRadius * Math.sin((seg.endAngle - 90) * Math.PI / 180);
+              const x4 = 140 + innerRadius * Math.cos((seg.startAngle - 90) * Math.PI / 180);
+              const y4 = 140 + innerRadius * Math.sin((seg.startAngle - 90) * Math.PI / 180);
+              const largeArc = seg.endAngle - seg.startAngle > 180 ? 1 : 0;
+              const pathData = [
+                `M ${x1} ${y1}`,
+                `A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}`,
+                `L ${x3} ${y3}`,
+                `A ${innerRadius} ${innerRadius} 0 ${largeArc} 0 ${x4} ${y4}`,
+                'Z'
+              ].join(' ');
+              return (
+                <path
+                  key={idx}
+                  d={pathData}
+                  fill={seg.color}
+                  stroke={COLORS.background}
+                  strokeWidth="3"
+                  style={{
+                    cursor: 'pointer',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    opacity: isVisible ? (hoveredIndex !== null && hoveredIndex !== idx ? 0.5 : 1) : 0,
+                    transformOrigin: '140px 140px',
+                    animationDelay: `${idx * 0.1}s`,
+                    animation: isVisible ? `segmentFadeIn 0.6s ease-out forwards ${idx * 0.1}s` : 'none'
+                  }}
+                  onMouseEnter={() => setHoveredIndex(idx)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                />
+              );
+            })}
+          </svg>
+        </div>
         {/* Legend */}
-        <div style={{ flex: 1, minWidth: '200px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
           {segments.map((seg, idx) => (
             <div
               key={idx}
@@ -252,31 +250,17 @@ function GraficoDistribucion({ data }) {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                marginBottom: '12px',
                 cursor: 'pointer',
                 opacity: hoveredIndex !== null && hoveredIndex !== idx ? 0.5 : 1,
                 transition: 'opacity 0.3s'
               }}
             >
-              <div style={{
-                width: '12px',
-                height: '12px',
-                backgroundColor: seg.color,
-                marginRight: '10px',
-                borderRadius: '2px'
-              }} />
+              <div style={{ width: '12px', height: '12px', backgroundColor: seg.color, marginRight: '10px', borderRadius: '2px' }} />
               <div style={{ flex: 1 }}>
-                <div style={{
-                  fontSize: '13px',
-                  color: COLORS.text,
-                  marginBottom: '2px'
-                }}>
+                <div style={{ fontSize: '13px', color: COLORS.text, marginBottom: '2px' }}>
                   {seg.tipo}
                 </div>
-                <div style={{
-                  fontSize: '11px',
-                  color: COLORS.textSecondary
-                }}>
+                <div style={{ fontSize: '11px', color: COLORS.textSecondary }}>
                   {seg.cantidad} ({seg.percentage.toFixed(1)}%)
                 </div>
               </div>
@@ -290,7 +274,8 @@ function GraficoDistribucion({ data }) {
 
 // Gráfico de barras - Trabajadores por tipo
 function GraficoBarras({ data }) {
-  // Mapear los datos del gráfico a los valores específicos que proporcionaste
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+
   const trabajadoresData = [
     { tipo: "BARES Y PEQUEÑOS RESTAURANTES", promedio: 5.3 },
     { tipo: "CONFITERÍA O PANADERÍA", promedio: 4.6 },
@@ -304,16 +289,14 @@ function GraficoBarras({ data }) {
     { tipo: "KIOSKO", promedio: 2.4 }
   ];
 
-  // Encontrar el valor máximo para calcular porcentajes
   const maxValor = Math.max(...trabajadoresData.map(item => item.promedio));
-  
+
   return (
     <div style={{
       backgroundColor: COLORS.surface,
       padding: '40px',
       borderRadius: '4px',
       border: `1px solid ${COLORS.border}`,
-      position: 'relative',
       transition: 'all 0.3s ease'
     }}>
       <h3 style={{
@@ -332,21 +315,15 @@ function GraficoBarras({ data }) {
       }}>
         Promedio de empleados por categoría • Pasa el mouse sobre las barras
       </p>
-      
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px'
-      }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {trabajadoresData.map((item, idx) => {
           const porcentaje = (item.promedio / maxValor) * 100;
-          const [isHovered, setIsHovered] = useState(false);
-          
+          const isHovered = hoveredIndex === idx;
           return (
-            <div 
+            <div
               key={idx}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+              onMouseEnter={() => setHoveredIndex(idx)}
+              onMouseLeave={() => setHoveredIndex(null)}
               style={{
                 position: 'relative',
                 cursor: 'pointer',
@@ -354,174 +331,24 @@ function GraficoBarras({ data }) {
                 transform: isHovered ? 'translateX(8px)' : 'translateX(0)'
               }}
             >
-              {/* Etiqueta del tipo */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '8px'
-              }}>
-                <span style={{ 
-                  color: COLORS.text, 
-                  fontWeight: '500',
-                  fontSize: '13px',
-                  transition: 'color 0.3s',
-                  color: isHovered ? COLORS.primary : COLORS.text
-                }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <span style={{ color: isHovered ? COLORS.primary : COLORS.text, fontWeight: '500', fontSize: '13px', transition: 'color 0.3s' }}>
                   {item.tipo}
                 </span>
-                <span style={{
-                  color: isHovered ? COLORS.accent : COLORS.primary,
-                  fontWeight: '600',
-                  fontSize: '15px',
-                  fontFamily: '"Crimson Pro", serif',
-                  transition: 'all 0.3s'
-                }}>
+                <span style={{ color: isHovered ? COLORS.accent : COLORS.primary, fontWeight: '600', fontSize: '15px', fontFamily: '"Crimson Pro", serif', transition: 'all 0.3s' }}>
                   {item.promedio.toFixed(1)}
                 </span>
               </div>
-              
-              {/* Barra de progreso */}
-              <div style={{
-                position: 'relative',
-                height: '8px',
-                backgroundColor: COLORS.border,
-                borderRadius: '4px',
-                overflow: 'hidden'
-              }}>
-                {/* Barra de fondo completa */}
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  backgroundColor: `${COLORS.border}40`
-                }} />
-                
-                {/* Barra de progreso con gradiente */}
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: `${porcentaje}%`,
-                  height: '100%',
-                  background: isHovered 
-                    ? `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.primaryLight})`
-                    : `linear-gradient(90deg, ${COLORS.primaryDark}, ${COLORS.primary})`,
-                  borderRadius: '4px',
-                  transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-                  boxShadow: isHovered 
-                    ? `0 0 12px ${COLORS.primary}60` 
-                    : 'none',
-                  transformOrigin: 'left center',
-                  transform: isHovered ? 'scaleY(1.2)' : 'scaleY(1)'
-                }}>
-                  {/* Efecto de brillo en la barra */}
-                  <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    width: '30%',
-                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2))',
-                    borderRadius: '4px'
-                  }} />
-                </div>
-                
-                {/* Marcadores de valores */}
-                <div style={{
-                  position: 'absolute',
-                  top: '-20px',
-                  left: '0%',
-                  fontSize: '10px',
-                  color: COLORS.textSecondary,
-                  opacity: isHovered ? 1 : 0,
-                  transition: 'opacity 0.3s'
-                }}>
-                  0
-                </div>
-                <div style={{
-                  position: 'absolute',
-                  top: '-20px',
-                  left: '100%',
-                  transform: 'translateX(-100%)',
-                  fontSize: '10px',
-                  color: COLORS.textSecondary,
-                  opacity: isHovered ? 1 : 0,
-                  transition: 'opacity 0.3s'
-                }}>
-                  {maxValor.toFixed(1)}
-                </div>
-              </div>
-              
-              {/* Indicador de porcentaje */}
-              <div style={{
-                position: 'absolute',
-                right: '-40px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                fontSize: '11px',
-                fontWeight: '600',
-                color: COLORS.primary,
-                opacity: isHovered ? 1 : 0,
-                transition: 'opacity 0.3s',
-                backgroundColor: `${COLORS.primary}15`,
-                padding: '2px 6px',
-                borderRadius: '3px'
-              }}>
-                {porcentaje.toFixed(0)}%
+              <div style={{ position: 'relative', height: '8px', backgroundColor: COLORS.border, borderRadius: '4px', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, height: '100%', width: `${porcentaje}%`, backgroundColor: COLORS.primary, borderRadius: '4px', transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)' }} />
               </div>
             </div>
           );
         })}
       </div>
-      
-      {/* Leyenda */}
-      <div style={{
-        marginTop: '30px',
-        paddingTop: '20px',
-        borderTop: `1px solid ${COLORS.border}`,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        fontSize: '11px',
-        color: COLORS.textSecondary
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{
-            width: '12px',
-            height: '4px',
-            background: `linear-gradient(90deg, ${COLORS.primaryDark}, ${COLORS.primary})`,
-            borderRadius: '2px'
-          }} />
-          <span>Menos trabajadores</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{
-            width: '12px',
-            height: '4px',
-            background: `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.primaryLight})`,
-            borderRadius: '2px'
-          }} />
-          <span>Más trabajadores</span>
-        </div>
-      </div>
-      
-      <div style={{
-        marginTop: '20px',
-        paddingTop: '15px',
-        borderTop: `1px dashed ${COLORS.border}`,
-        fontSize: '12px',
-        color: COLORS.textSecondary,
-        textAlign: 'center'
-      }}>
-        Fuente: Encuesta de comercios locales • {trabajadoresData.length} tipos de comercio
-      </div>
     </div>
   );
 }
-
 // Gráfico de barras horizontales - Fuentes de crédito
 function GraficoBarrasHorizontales({ data, pctCredito }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
