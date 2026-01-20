@@ -107,7 +107,7 @@ function SeccionMachineLearning({ datos }) {
               }}>
                 Análisis riguroso de <strong style={{ color: COLORS.text }}>cuatro hipótesis geoespaciales</strong> sobre el ecosistema comercial de AMBA. 
                 Las primeras dos hipótesis utilizan <strong style={{ color: COLORS.text }}>pruebas estadísticas no paramétricas</strong> (Chi-cuadrado, Mann-Whitney U), 
-                mientras que las hipótesis 3 y 4 emplean <strong style={{ color: COLORS.text }}>modelos predictivos de Machine Learning</strong> (Random Forest) 
+                mientras que las hipótesis 3 y 4 emplean <strong style={{ color: COLORS.text }}>modelos  de Machine Learning</strong> (Random Forest) 
                 para identificar patrones de crecimiento y factores de impacto externo.
               </div>
             </div>
@@ -140,7 +140,45 @@ function SeccionMachineLearning({ datos }) {
         )}
       </div>
 
-      {/* HIPÓTESIS 3 Y 4 - Modelos Predictivos */}
+
+      {/* Título Hallazgos Adicionales */}
+      <AnimatedModelCard delay={250}>
+        <div style={{
+          marginTop: '80px',
+          marginBottom: '60px',
+          textAlign: 'center'
+        }}>
+          <div style={{
+            fontSize: '12px',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: COLORS.accent,
+            marginBottom: '20px',
+            fontWeight: '500'
+          }}>
+            Análisis Complementario
+          </div>
+          <h2 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: 'clamp(32px, 3.5vw, 44px)',
+            fontWeight: '400',
+            color: COLORS.text,
+            marginBottom: '20px'
+          }}>
+            Hallazgos Adicionales
+          </h2>
+          <p style={{
+            maxWidth: '800px',
+            margin: '0 auto',
+            fontSize: '15px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7'
+          }}>
+            Exploracion sobre intenciones de crecimiento y factores externos que impactan el rendimiento comercial.
+          </p>
+        </div>
+      </AnimatedModelCard>
+      {/* CURIOSIDADES - Modelos Predictivos */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))',
@@ -515,7 +553,7 @@ function ModeloCrecimiento({ data }) {
               letterSpacing: '0.05em',
               textTransform: 'uppercase'
             }}>
-              HIPÓTESIS 3
+              CURIOSIDAD 1
             </div>
             <div style={{ fontSize: '18px', color: COLORS.text, fontWeight: '500' }}>
               ¿Qué comercios tienen intención de expandirse?
@@ -747,7 +785,7 @@ function ModeloFactoresExternos({ data }) {
             letterSpacing: '0.05em',
             textTransform: 'uppercase'
           }}>
-            HIPÓTESIS 4
+            CURIOSIDAD 2
           </div>
           <div style={{ fontSize: '18px', color: COLORS.text, fontWeight: '500' }}>
             ¿Qué afecta más las ventas: crimen, precios, competencia o crédito?
