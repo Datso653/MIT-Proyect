@@ -7,7 +7,7 @@ function SeccionMachineLearning() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('ml_results.json')
+    fetch('datos/ml_results.json')
       .then(res => res.json())
       .then(data => {
         setResultadosML(data);

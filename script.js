@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     const timestamp = new Date().getTime();
-    fetch(`datos_comercios.json?v=${timestamp}`)
+    fetch(`datos/datos_comercios.json?v=${timestamp}`)
       .then(response => {
         if (!response.ok) throw new Error('Error al cargar datos');
         return response.json();
