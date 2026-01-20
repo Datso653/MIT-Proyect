@@ -154,29 +154,6 @@ function SeccionMachineLearning({ datos }) {
         </AnimatedModelCard>
       </div>
 
-      <AnimatedModelCard delay={500}>
-        <div style={{
-          marginTop: '60px',
-          textAlign: 'center',
-          padding: '40px',
-          backgroundColor: COLORS.background,
-          borderRadius: '4px',
-          border: `1px solid ${COLORS.border}`
-        }}>
-          <div style={{
-            fontSize: '14px',
-            color: COLORS.textSecondary,
-            lineHeight: '1.8',
-            maxWidth: '800px',
-            margin: '0 auto'
-          }}>
-            <strong style={{ color: COLORS.text }}>Metodología:</strong> Los modelos implementados 
-            utilizan técnicas de machine learning supervisado (Random Forest, Gradient Boosting, K-Means) 
-            entrenados sobre el conjunto de datos relevado. Las métricas de performance incluyen accuracy, 
-            precision, recall, AUC-ROC, R² y RMSE con validación mediante train/test split (75%/25%).
-          </div>
-        </div>
-      </AnimatedModelCard>
     </section>
   );
 }
@@ -345,7 +322,8 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
           cursor: 'pointer',
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
+          borderLeft: `4px solid ${numero === 1 ? COLORS.primary : COLORS.accent}`
         }}
       >
         <div>
@@ -528,39 +506,31 @@ function ModeloCrecimiento({ data }) {
           borderLeft: `4px solid ${COLORS.primary}`
         }}
       >
-        <div>
-          <div style={{
-            fontSize: '13px',
-            color: COLORS.primary,
-            marginBottom: '4px',
-            fontWeight: '600',
-            letterSpacing: '0.05em',
-            textTransform: 'uppercase'
-          }}>
-            HIPÓTESIS 3
+          <div>
+            <div style={{
+              fontSize: '13px',
+              color: COLORS.primary,
+              marginBottom: '4px',
+              fontWeight: '600',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase'
+            }}>
+              HIPÓTESIS 3
+            </div>
+            <div style={{ fontSize: '18px', color: COLORS.text, fontWeight: '500' }}>
+              ¿Qué comercios tienen intención de expandirse?
+            </div>
           </div>
-          <div style={{ fontSize: '18px', color: COLORS.text, fontWeight: '500' }}>
-            Predicción de Crecimiento Comercial
-          </div>
-          <div style={{
-            fontSize: '14px',
-            color: COLORS.textSecondary,
-            marginTop: '4px'
-          }}>
-            ¿Qué comercios tienen intención de expandirse?
+          <div style={{ fontSize: '20px', color: COLORS.primary }}>
+            {expanded ? '−' : '+'}
           </div>
         </div>
-        <div style={{ fontSize: '20px', color: COLORS.primary }}>
-          {expanded ? '−' : '+'}
-        </div>
-      </div>
-
-      {/* Contenido expandible */}
-      {expanded && (
-        <div style={{
-          padding: '40px',
-          backgroundColor: COLORS.background
-        }}>
+  
+        {expanded && (
+          <div style={{
+            padding: '40px',
+            backgroundColor: COLORS.background
+          }}>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
@@ -780,13 +750,6 @@ function ModeloFactoresExternos({ data }) {
             HIPÓTESIS 4
           </div>
           <div style={{ fontSize: '18px', color: COLORS.text, fontWeight: '500' }}>
-            Impacto de Factores Externos
-          </div>
-          <div style={{
-            fontSize: '14px',
-            color: COLORS.textSecondary,
-            marginTop: '4px'
-          }}>
             ¿Qué afecta más las ventas: crimen, precios, competencia o crédito?
           </div>
         </div>
