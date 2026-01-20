@@ -297,12 +297,12 @@ function App() {
         }
       `}</style>
       <Navbar />
-      <Hero scrollY={scrollY} />
+<Hero scrollY={scrollY} />
       <ProjectIntro />
       <UniversidadesParticipantes />
+      {indicadores && <Indicadores data={indicadores} />}
       {datos.length > 0 && <Mapa datos={datos} />}
       {indicadores && <ResumenEjecutivo indicadores={indicadores} />}
-      {indicadores && <Indicadores data={indicadores} />}
       {datosGraficos && indicadores && <AnalisisVisual data={datosGraficos} indicadores={indicadores} datos={datos} />}
       <SeccionMachineLearning />
       <SeccionAnalisis />
