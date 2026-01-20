@@ -384,7 +384,7 @@ function Navbar() {
 
   const sections = [
     { id: 'hero', label: 'Inicio' },
-    { id: 'sobre-plataforma', label: 'Accede a la plataforma' },
+    { id: 'sobre-plataforma', label: 'Acerca de la página' },
     { id: 'intro', label: 'Introducción' },
     { id: 'universidades', label: 'Universidades Participantes' },
     { id: 'mapa', label: 'Mapa' },
