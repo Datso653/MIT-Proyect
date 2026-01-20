@@ -298,6 +298,7 @@ function App() {
       `}</style>
       <Navbar />
 <Hero scrollY={scrollY} />
+      <SobrePlataforma />
       <ProjectIntro />
       <UniversidadesParticipantes />
       {indicadores && <Indicadores data={indicadores} />}
