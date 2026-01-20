@@ -610,7 +610,7 @@ function Navbar() {
       }}>
         {/* Botón hamburguesa */}
         <div style={{ position: 'relative' }}>
-          <button
+          <button aria-label="Abrir menú de navegación"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             style={{
               padding: '14px 16px',

@@ -968,7 +968,7 @@ function GraficoSalarios({ data }) {
           borderRadius: '6px',
           border: `1px solid ${COLORS.border}`
         }}>
-          <button
+          <button aria-label="Ver vista general"
             onClick={() => setViewMode('general')}
             style={{
               padding: '8px 16px',
@@ -985,7 +985,7 @@ function GraficoSalarios({ data }) {
           >
             GENERAL
           </button>
-          <button
+          <button aria-label="Ver por tipo de comercio"
             onClick={() => setViewMode('porComercio')}
             style={{
               padding: '8px 16px',

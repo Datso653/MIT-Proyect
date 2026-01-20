@@ -381,7 +381,7 @@ function Mapa({ datos }) {
           justifyContent: 'center',
           boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
         }}>
-          <button
+          <button aria-label="Ver mapa general"
             onClick={() => setViewMode('general')}
             style={{
               padding: '14px 28px',
@@ -410,7 +410,7 @@ function Mapa({ datos }) {
           >
             UBICACIONES
           </button>
-          <button
+          <button aria-label="Ver mapa de impacto del crimen"
             onClick={() => setViewMode('crimen')}
             style={{
               padding: '14px 28px',
@@ -439,7 +439,7 @@ function Mapa({ datos }) {
           >
             PERCEPCIÓN DE CRIMEN
           </button>
-          <button
+          <button aria-label="Ver mapa de acceso a crédito"
             onClick={() => setViewMode('credito')}
             style={{
               padding: '14px 28px',
