@@ -282,6 +282,46 @@ function App() {
             padding: 16px !important;
           }
           
+
+          /* === SOBRE PLATAFORMA (QR CODES) === */
+          #sobre-plataforma {
+            padding: 60px 20px !important;
+          }
+          
+          #sobre-plataforma > div > div[style*="grid"] {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+          
+          /* === PROJECT INTRO === */
+          #intro {
+            padding: 60px 20px !important;
+          }
+          
+          #intro > div {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+          
+          /* === INDICADORES === */
+          #indicadores {
+            padding: 60px 20px !important;
+          }
+          
+          #indicadores > div > div[style*="grid"] {
+            grid-template-columns: 1fr !important;
+            gap: 30px !important;
+          }
+          
+          /* === TEAM === */
+          #equipo {
+            padding: 60px 20px !important;
+          }
+          
+          #equipo > div > div[style*="grid"] {
+            grid-template-columns: 1fr !important;
+            gap: 30px !important;
+          }
           /* SVG barras aún más compacto */
           #analisis-visual svg {
             min-width: 400px !important;
