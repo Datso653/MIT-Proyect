@@ -37,7 +37,7 @@ function ResumenEjecutivo({ indicadores }) {
       }} />
       
       <div style={{
-        maxWidth: '1200px',
+        maxWidth: '1400px',
         margin: '0 auto',
         position: 'relative',
         zIndex: 2

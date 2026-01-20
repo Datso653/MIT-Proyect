@@ -8,7 +8,7 @@ function SobrePlataforma() {
       borderBottom: `1px solid ${COLORS.border}`
     }}>
       <div style={{
-        maxWidth: '1200px',
+        maxWidth: '1400px',
         margin: '0 auto'
       }}>
         
