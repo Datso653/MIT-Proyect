@@ -25,14 +25,40 @@ function AnalisisVisual({ data, indicadores, datos }) {
     <section id="analisis-visual" ref={sectionRef} style={{
       padding: '120px 60px',
       maxWidth: '1400px',
-      margin: '0 auto'
+      margin: '0 auto',
+      position: 'relative'
     }}>
+      {/* Imagen de fondo - Análisis de datos */}
       <div style={{
-        marginBottom: '80px',
-        textAlign: 'center',
-        opacity: 0,
-        animation: 'fadeInUp 0.8s ease-out forwards'
-      }}>
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: 'url(https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&q=85&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.12,
+        filter: 'grayscale(50%) brightness(0.7)',
+        zIndex: 0
+      }} />
+      {/* Overlay gradient */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `linear-gradient(135deg, ${COLORS.background}fa 0%, ${COLORS.background}f0 50%, ${COLORS.background}fa 100%)`,
+        zIndex: 1
+      }} />
+      <div style={{ position: 'relative', zIndex: 2 }}>
+        <div style={{
+          marginBottom: '80px',
+          textAlign: 'center',
+          opacity: 0,
+          animation: 'fadeInUp 0.8s ease-out forwards'
+        }}>
         <div style={{
           fontSize: '12px',
           letterSpacing: '0.15em',
@@ -131,6 +157,7 @@ function AnalisisVisual({ data, indicadores, datos }) {
         <div style={{ gridColumn: '1 / -1' }}>
           <GraficoBarrasHorizontales data={data.creditoPorFuente} pctCredito={indicadores?.pctCredito || 0} />
         </div>
+      </div>
       </div>
     </section>
   );

@@ -5,12 +5,42 @@ function ResumenEjecutivo({ indicadores }) {
   return (
     <section id="hipotesis" style={{
       padding: '120px 60px',
+      position: 'relative',
+      overflow: 'hidden',
       backgroundColor: COLORS.background,
       borderTop: `1px solid ${COLORS.border}`
     }}>
+      {/* Imagen de fondo - Análisis geoespacial */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: 'url(https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1600&q=85&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.75,
+        filter: 'grayscale(10%) brightness(1.0)',
+        zIndex: 0
+      }} />
+      
+      {/* Overlay gradient */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `linear-gradient(135deg, ${COLORS.background}f8 0%, ${COLORS.background}ea 50%, ${COLORS.background}f8 100%)`,
+        zIndex: 1
+      }} />
+      
       <div style={{
         maxWidth: '1200px',
-        margin: '0 auto'
+        margin: '0 auto',
+        position: 'relative',
+        zIndex: 2
       }}>
         
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
