@@ -73,7 +73,7 @@ function SobrePlataforma() {
             }}
             onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-8px)'}
             onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-              <img 
+              <img loading="lazy" 
                 src="img/CodigoQRPAG.png" 
                 alt="QR Dashboard"
                 style={{
@@ -121,7 +121,7 @@ function SobrePlataforma() {
             }}
             onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-8px)'}
             onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-              <img 
+              <img loading="lazy" 
                 src="img/QRREPO.png" 
                 alt="QR Repositorio"
                 style={{

@@ -1067,7 +1067,7 @@ function UniversidadesParticipantes() {
               e.currentTarget.style.boxShadow = 'none';
             }}
           >
-            <img 
+            <img loading="lazy" 
               src={uni.logo}
               alt={uni.nombre}
               style={{
