@@ -1,8 +1,9 @@
-// === SECCIÓN MACHINE LEARNING ===
-// Incluye: SeccionMachineLearning, AnimatedModelCard, ModeloCrecimiento,
+// === SECCIÓN ANÁLISIS DE HIPÓTESIS GEOESPACIALES ===
+// Incluye: SeccionMachineLearning, HipotesisConGraficos, AnimatedModelCard, ModeloCrecimiento,
 // ModeloFactoresExternos, MetricaCard, ConfusionMatrix, FeatureImportanceChart,
 // ROCCurve, ScatterPlot, DistribucionPredicciones, AfectacionesChart
-function SeccionMachineLearning() {
+
+function SeccionMachineLearning({ datos }) {
   const [resultadosML, setResultadosML] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -26,7 +27,7 @@ function SeccionMachineLearning() {
         backgroundColor: COLORS.surface,
         textAlign: 'center'
       }}>
-        <div style={{ color: COLORS.primary }}>Cargando modelos predictivos...</div>
+        <div style={{ color: COLORS.primary }}>Cargando análisis de hipótesis...</div>
       </section>
     );
   }
@@ -53,11 +54,11 @@ function SeccionMachineLearning() {
             fontSize: '12px',
             letterSpacing: '0.15em',
             textTransform: 'uppercase',
-            color: COLORS.primary,
+            color: COLORS.accent,
             marginBottom: '20px',
             fontWeight: '500'
           }}>
-            Modelos predictivos
+            Validación Estadística
           </div>
           <h2 style={{
             fontFamily: '"Crimson Pro", serif',
@@ -66,10 +67,9 @@ function SeccionMachineLearning() {
             color: COLORS.text,
             marginBottom: '30px'
           }}>
-            Predicciones estadísticas
+            Análisis de Hipótesis Geoespaciales
           </h2>
           
-          {/* Disclaimer prominente */}
           <div style={{
             maxWidth: '900px',
             margin: '0 auto',
@@ -98,40 +98,63 @@ function SeccionMachineLearning() {
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase'
               }}>
-                Disclaimer — Análisis Predictivo
+                Metodología de Análisis
               </div>
-            <div style={{
-              fontSize: '14px',
-              lineHeight: '1.7',
-              color: COLORS.textSecondary
-            }}>
-              Los siguientes modelos representan <strong style={{ color: COLORS.text }}>análisis 
-              estadísticos predictivos</strong> basados en patrones históricos identificados en los datos. 
-              Estas proyecciones <strong style={{ color: COLORS.text }}>no constituyen garantías</strong> de 
-              comportamiento futuro y deben interpretarse como estimaciones probabilísticas sujetas a variabilidad 
-              contextual, cambios macroeconómicos y factores externos no capturados en el modelo. 
-              <strong style={{ color: COLORS.primary }}> Los resultados no aseguran que los eventos 
-              proyectados ocurrirán en la realidad.</strong>
+              <div style={{
+                fontSize: '14px',
+                lineHeight: '1.7',
+                color: COLORS.textSecondary
+              }}>
+                Análisis riguroso de <strong style={{ color: COLORS.text }}>cuatro hipótesis geoespaciales</strong> sobre el ecosistema comercial de AMBA. 
+                Las primeras dos hipótesis utilizan <strong style={{ color: COLORS.text }}>pruebas estadísticas no paramétricas</strong> (Chi-cuadrado, Mann-Whitney U), 
+                mientras que las hipótesis 3 y 4 emplean <strong style={{ color: COLORS.text }}>modelos predictivos de Machine Learning</strong> (Random Forest) 
+                para identificar patrones de crecimiento y factores de impacto externo.
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </AnimatedModelCard>
 
+      {/* HIPÓTESIS 1 Y 2 - Análisis Estadístico */}
+      <div style={{ marginBottom: '60px' }}>
+        {datos && datos.length > 0 && (
+          <>
+            <AnimatedModelCard delay={100}>
+              <HipotesisConGraficos
+                numero={1}
+                titulo="Crimen alto + Sin crédito → ¿Menor expectativa de crecimiento?"
+                datos={datos}
+                tipo="crecimiento"
+              />
+            </AnimatedModelCard>
+            
+            <AnimatedModelCard delay={200}>
+              <HipotesisConGraficos
+                numero={2}
+                titulo="Crimen bajo + Con crédito → ¿Mayor inversión tecnológica?"
+                datos={datos}
+                tipo="tecnologia"
+              />
+            </AnimatedModelCard>
+          </>
+        )}
+      </div>
+
+      {/* HIPÓTESIS 3 Y 4 - Modelos Predictivos */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))',
         gap: '60px'
       }}>
-        <AnimatedModelCard delay={0}>
+        <AnimatedModelCard delay={300}>
           <ModeloCrecimiento data={resultadosML.modelos.modelo_1_crecimiento} />
         </AnimatedModelCard>
-        <AnimatedModelCard delay={200}>
+        <AnimatedModelCard delay={400}>
           <ModeloFactoresExternos data={resultadosML.modelos.modelo_3_factores_externos} />
         </AnimatedModelCard>
       </div>
 
-      <AnimatedModelCard delay={400}>
+      <AnimatedModelCard delay={500}>
         <div style={{
           marginTop: '60px',
           textAlign: 'center',
@@ -158,7 +181,289 @@ function SeccionMachineLearning() {
   );
 }
 
-// Componente con animación fade-in para modelos
+// Componente HipotesisConGraficos (H1 y H2)
+function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
+  const [expanded, setExpanded] = useState(false);
+
+  if (!datos || datos.length === 0) {
+    return (
+      <div style={{
+        marginBottom: '40px',
+        padding: '20px',
+        backgroundColor: COLORS.surface,
+        borderRadius: '8px',
+        border: `1px solid ${COLORS.border}`
+      }}>
+        <div style={{ color: COLORS.accent, fontSize: '14px', fontWeight: '600' }}>
+          HIPÓTESIS {numero}: {titulo}
+        </div>
+        <div style={{ color: COLORS.textSecondary, fontSize: '13px', marginTop: '10px' }}>
+          No hay datos disponibles para el análisis. Verifica que los datos hayan cargado correctamente.
+        </div>
+      </div>
+    );
+  }
+
+  // Análisis real para Hipótesis 1
+  const analizarHipotesis1 = () => {
+    const grupoAdverso = datos.filter(c => {
+      const crimenAlto = c.afect_crimen === 'Mucho';
+      const sinCredito = !(parseFloat(c.credits_bancos) > 0 ||
+                         parseFloat(c.credits_proveedor) > 0 ||
+                         parseFloat(c.credits_familia) > 0 ||
+                         parseFloat(c.credits_gobierno) > 0 ||
+                         parseFloat(c.credits_privado) > 0);
+      return crimenAlto && sinCredito;
+    });
+
+    const grupoComparacion = datos.filter(c => {
+      const crimenAlto = c.afect_crimen === 'Mucho';
+      const sinCredito = !(parseFloat(c.credits_bancos) > 0 ||
+                         parseFloat(c.credits_proveedor) > 0 ||
+                         parseFloat(c.credits_familia) > 0 ||
+                         parseFloat(c.credits_gobierno) > 0 ||
+                         parseFloat(c.credits_privado) > 0);
+      return !(crimenAlto && sinCredito);
+    });
+
+    const adversoQuiereCrecer = grupoAdverso.filter(c => {
+      const quiereCrecer = parseFloat(c.quiere_crezca) === 1.0 ||
+                          c.quiere_crezca === '1.0' ||
+                          c.quiere_crezca === '1';
+      return quiereCrecer;
+    }).length;
+
+    const comparacionQuiereCrecer = grupoComparacion.filter(c => {
+      const quiereCrecer = parseFloat(c.quiere_crezca) === 1.0 ||
+                          c.quiere_crezca === '1.0' ||
+                          c.quiere_crezca === '1';
+      return quiereCrecer;
+    }).length;
+
+    const totalAdverso = grupoAdverso.length;
+    const totalComparacion = grupoComparacion.length;
+
+    return {
+      grupoAdverso: totalAdverso,
+      grupoComparacion: totalComparacion,
+      adversoQuiereCrecer,
+      comparacionQuiereCrecer,
+      pctAdverso: totalAdverso > 0 ? (adversoQuiereCrecer / totalAdverso) * 100 : 0,
+      pctComparacion: totalComparacion > 0 ? (comparacionQuiereCrecer / totalComparacion) * 100 : 0,
+      datosGrupoAdverso: grupoAdverso,
+      datosGrupoComparacion: grupoComparacion
+    };
+  };
+
+  // Análisis real para Hipótesis 2
+  const analizarHipotesis2 = () => {
+    const grupoAdverso = datos.filter(c => {
+      const crimenBajo = c.afect_crimen === 'Poco' || c.afect_crimen === 'Nada';
+      const conCredito = (parseFloat(c.credits_bancos) > 0 ||
+                         parseFloat(c.credits_proveedor) > 0 ||
+                         parseFloat(c.credits_familia) > 0 ||
+                         parseFloat(c.credits_gobierno) > 0 ||
+                         parseFloat(c.credits_privado) > 0);
+      return crimenBajo && conCredito;
+    });
+
+    const grupoComparacion = datos.filter(c => {
+      const crimenBajo = c.afect_crimen === 'Poco' || c.afect_crimen === 'Nada';
+      const conCredito = (parseFloat(c.credits_bancos) > 0 ||
+                         parseFloat(c.credits_proveedor) > 0 ||
+                         parseFloat(c.credits_familia) > 0 ||
+                         parseFloat(c.credits_gobierno) > 0 ||
+                         parseFloat(c.credits_privado) > 0);
+      return !(crimenBajo && conCredito);
+    });
+
+    const adversoInvierteTecnologia = grupoAdverso.filter(c => {
+      const tech = c.tecnologia || '';
+      return tech.toLowerCase().includes('alto') || tech.toLowerCase().includes('avanzado');
+    }).length;
+
+    const comparacionInvierteTecnologia = grupoComparacion.filter(c => {
+      const tech = c.tecnologia || '';
+      return tech.toLowerCase().includes('alto') || tech.toLowerCase().includes('avanzado');
+    }).length;
+
+    const totalAdverso = grupoAdverso.length;
+    const totalComparacion = grupoComparacion.length;
+
+    return {
+      grupoAdverso: totalAdverso,
+      grupoComparacion: totalComparacion,
+      adversoInvierteTecnologia,
+      comparacionInvierteTecnologia,
+      pctAdverso: totalAdverso > 0 ? (adversoInvierteTecnologia / totalAdverso) * 100 : 0,
+      pctComparacion: totalComparacion > 0 ? (comparacionInvierteTecnologia / totalComparacion) * 100 : 0,
+      datosGrupoAdverso: grupoAdverso,
+      datosGrupoComparacion: grupoComparacion
+    };
+  };
+
+  // Seleccionar análisis según el tipo
+  const analisis = tipo === 'crecimiento' ? analizarHipotesis1() : analizarHipotesis2();
+
+  // Si no hay datos en algún grupo, mostrar mensaje
+  if (analisis.grupoAdverso === 0 || analisis.grupoComparacion === 0) {
+    return (
+      <div style={{
+        marginBottom: '40px',
+        padding: '20px',
+        backgroundColor: COLORS.surface,
+        borderRadius: '8px',
+        border: `1px solid ${COLORS.border}`
+      }}>
+        <div style={{ color: COLORS.accent, fontSize: '14px', fontWeight: '600' }}>
+          HIPÓTESIS {numero}: {titulo}
+        </div>
+        <div style={{ color: COLORS.textSecondary, fontSize: '13px', marginTop: '10px' }}>
+          No hay suficientes datos para analizar esta hipótesis:
+          <ul style={{ marginTop: '8px', marginLeft: '20px' }}>
+            <li>Grupo de análisis: {analisis.grupoAdverso} comercios</li>
+            <li>Grupo de comparación: {analisis.grupoComparacion} comercios</li>
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      marginBottom: '40px',
+      border: `1px solid ${COLORS.border}`,
+      borderRadius: '12px',
+      overflow: 'hidden'
+    }}>
+      {/* Encabezado de la hipótesis */}
+      <div
+        onClick={() => setExpanded(!expanded)}
+        style={{
+          padding: '20px 30px',
+          backgroundColor: COLORS.surface,
+          cursor: 'pointer',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
+        <div>
+          <div style={{ fontSize: '13px', color: COLORS.primary, fontWeight: '600', marginBottom: '4px' }}>
+            HIPÓTESIS {numero}
+          </div>
+          <div style={{ fontSize: '18px', color: COLORS.text, fontWeight: '500' }}>
+            {titulo}
+          </div>
+        </div>
+        <div style={{ fontSize: '20px', color: COLORS.primary }}>
+          {expanded ? '−' : '+'}
+        </div>
+      </div>
+
+      {expanded && (
+        <div style={{ padding: '30px', backgroundColor: COLORS.background }}>
+          <div style={{ marginBottom: '20px' }}>
+            <h4 style={{ color: COLORS.text, marginBottom: '15px' }}>
+              Resultados del análisis
+            </h4>
+
+            {/* Gráfico de barras comparativo */}
+            <div style={{
+              display: 'flex',
+              gap: '20px',
+              marginBottom: '30px',
+              flexWrap: 'wrap'
+            }}>
+              <div style={{ flex: 1, minWidth: '300px' }}>
+                <h5 style={{ color: COLORS.textSecondary, marginBottom: '10px' }}>
+                  Grupo de análisis
+                </h5>
+                <div style={{
+                  padding: '15px',
+                  backgroundColor: COLORS.surface,
+                  borderRadius: '8px',
+                  borderLeft: `4px solid ${COLORS.primary}`
+                }}>
+                  <div style={{ fontSize: '24px', color: COLORS.primary, fontWeight: 'bold' }}>
+                    {analisis.pctAdverso.toFixed(1)}%
+                  </div>
+                  <div style={{ fontSize: '14px', color: COLORS.textSecondary }}>
+                    de {analisis.grupoAdverso} comercios
+                  </div>
+                  <div style={{ fontSize: '12px', color: COLORS.textTertiary, marginTop: '8px' }}>
+                    ({analisis[tipo === 'crecimiento' ? 'adversoQuiereCrecer' : 'adversoInvierteTecnologia']} comercios)
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ flex: 1, minWidth: '300px' }}>
+                <h5 style={{ color: COLORS.textSecondary, marginBottom: '10px' }}>
+                  Grupo de comparación
+                </h5>
+                <div style={{
+                  padding: '15px',
+                  backgroundColor: COLORS.surface,
+                  borderRadius: '8px',
+                  borderLeft: `4px solid ${COLORS.accent}`
+                }}>
+                  <div style={{ fontSize: '24px', color: COLORS.accent, fontWeight: 'bold' }}>
+                    {analisis.pctComparacion.toFixed(1)}%
+                  </div>
+                  <div style={{ fontSize: '14px', color: COLORS.textSecondary }}>
+                    de {analisis.grupoComparacion} comercios
+                  </div>
+                  <div style={{ fontSize: '12px', color: COLORS.textTertiary, marginTop: '8px' }}>
+                    ({analisis[tipo === 'crecimiento' ? 'comparacionQuiereCrecer' : 'comparacionInvierteTecnologia']} comercios)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Diferencia porcentual */}
+            <div style={{
+              padding: '15px',
+              backgroundColor: `${COLORS.primary}10`,
+              borderRadius: '8px',
+              marginBottom: '20px',
+              textAlign: 'center'
+            }}>
+              <div style={{ fontSize: '14px', color: COLORS.text, fontWeight: '500' }}>
+                Diferencia: <span style={{ color: COLORS.primary, fontWeight: 'bold' }}>
+                  {(analisis.pctAdverso - analisis.pctComparacion).toFixed(1)} puntos porcentuales
+                </span>
+              </div>
+              <div style={{ fontSize: '12px', color: COLORS.textSecondary, marginTop: '5px' }}>
+                {analisis.pctAdverso > analisis.pctComparacion
+                  ? 'El grupo de análisis presenta un mayor porcentaje que el grupo de comparación'
+                  : 'El grupo de análisis presenta un menor porcentaje que el grupo de comparación'}
+              </div>
+            </div>
+
+            {/* Conclusión */}
+            <div style={{
+              padding: '20px',
+              backgroundColor: `${analisis.pctAdverso > analisis.pctComparacion ? COLORS.primary : COLORS.accent}15`,
+              borderRadius: '8px',
+              borderLeft: `4px solid ${analisis.pctAdverso > analisis.pctComparacion ? COLORS.primary : COLORS.accent}`
+            }}>
+              <div style={{ fontSize: '14px', color: COLORS.text, fontWeight: '500', marginBottom: '8px' }}>
+                Conclusión:
+              </div>
+              <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>
+                {analisis.pctAdverso > analisis.pctComparacion
+                  ? '❌ Los datos no respaldan completamente la hipótesis planteada. No se observa una diferencia significativa entre los grupos analizados.'
+                  : '✅ La hipótesis se sustenta en los datos analizados según los grupos comparados.'}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Componente con animación fade-in
 function AnimatedModelCard({ children, delay = 0 }) {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef(null);
@@ -195,7 +500,7 @@ function AnimatedModelCard({ children, delay = 0 }) {
   );
 }
 
-// Modelo 1: Crecimiento
+// Hipótesis 3: Modelo de Crecimiento
 function ModeloCrecimiento({ data }) {
   const [expanded, setExpanded] = useState(false);
   const [showCharts, setShowCharts] = useState(false);
@@ -206,245 +511,236 @@ function ModeloCrecimiento({ data }) {
   
   return (
     <div style={{
-      backgroundColor: COLORS.background,
-      padding: '40px',
-      borderRadius: '8px',
       border: `1px solid ${COLORS.border}`,
-      position: 'relative'
+      borderRadius: '12px',
+      overflow: 'hidden'
     }}>
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '4px',
-        height: '100%',
-        backgroundColor: COLORS.primary
-      }} />
-      
-      <h3 style={{
-        fontFamily: '"Crimson Pro", serif',
-        fontSize: '24px',
-        fontWeight: '600',
-        color: COLORS.text,
-        marginBottom: '12px',
-        textAlign: 'center'
-      }}>
-        Predicción de Crecimiento Comercial
-      </h3>
-      
-      <p style={{
-        fontSize: '14px',
-        color: COLORS.textSecondary,
-        textAlign: 'center',
-        marginBottom: '30px'
-      }}>
-        ¿Qué comercios tienen intención de expandirse?
-      </p>
-
-      {/* Métricas principales */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
-        gap: '16px',
-        marginBottom: '30px'
-      }}>
-        <MetricaCard 
-          label="Accuracy" 
-          value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} 
-          color={COLORS.primary}
-          tooltip="Porcentaje de predicciones correctas del total. Indica qué tan bien el modelo clasifica en general."
-        />
-        <MetricaCard 
-          label="AUC-ROC" 
-          value={data.metricas.auc_roc.toFixed(3)} 
-          color="#4FC3F7"
-          tooltip="Área bajo la curva ROC (0-1). Mide la capacidad del modelo para distinguir entre clases. Valores cercanos a 1 indican excelente desempeño."
-        />
-        <MetricaCard 
-          label="Precision" 
-          value={`${(data.metricas.precision * 100).toFixed(1)}%`} 
-          color={COLORS.accent}
-          tooltip="De todos los comercios que predijimos que crecerán, qué porcentaje realmente tiene esa intención. Mide cuán confiables son las predicciones positivas."
-        />
-        <MetricaCard 
-          label="Recall" 
-          value={`${(data.metricas.recall * 100).toFixed(1)}%`} 
-          color={COLORS.accentDark}
-          tooltip="De todos los comercios que realmente quieren crecer, qué porcentaje logramos identificar. Mide qué tan completo es el modelo al detectar casos positivos."
-        />
-      </div>
-
-      {/* Top 3 Features */}
-      <div style={{
-        marginBottom: '20px',
-        padding: '20px',
-        backgroundColor: COLORS.surface,
-        borderRadius: '6px'
-      }}>
-        <div style={{
-          fontSize: '13px',
-          fontWeight: '600',
-          color: COLORS.primary,
-          marginBottom: '16px',
-          letterSpacing: '0.05em',
-          textTransform: 'uppercase'
-        }}>
-          Variables más importantes
-        </div>
-        {data.feature_importance.slice(0, 3).map((f, idx) => (
-          <div key={idx} style={{ marginBottom: '12px' }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '12px',
-              marginBottom: '4px'
-            }}>
-              <span style={{ color: COLORS.text }}>{f.feature}</span>
-              <span style={{ color: COLORS.primary, fontWeight: '600' }}>
-                {(f.importance * 100).toFixed(1)}%
-              </span>
-            </div>
-            <div style={{
-              height: '6px',
-              backgroundColor: COLORS.border,
-              borderRadius: '3px',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                height: '100%',
-                width: `${f.importance * 100}%`,
-                backgroundColor: COLORS.primary,
-                transition: 'width 1s ease-out'
-              }} />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Botón para mostrar gráficos */}
-      <button
-        onClick={() => setShowCharts(!showCharts)}
-        style={{
-          width: '100%',
-          padding: '12px',
-          backgroundColor: COLORS.surface,
-          color: COLORS.primary,
-          border: `1px solid ${COLORS.border}`,
-          borderRadius: '6px',
-          cursor: 'pointer',
-          fontSize: '13px',
-          fontWeight: '600',
-          letterSpacing: '0.05em',
-          textTransform: 'uppercase',
-          transition: 'all 0.3s',
-          marginBottom: '12px'
-        }}
-        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
-        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
-      >
-        {showCharts ? 'Ocultar gráficos' : 'Ver gráficos del modelo'}
-      </button>
-
-      {showCharts && (
-        <div style={{
-          marginTop: '20px',
-          padding: '24px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          border: `1px solid ${COLORS.border}`
-        }}>
-          <ConfusionMatrix data={data.confusion_matrix} labels={['No crece', 'Sí crece']} />
-          
-          <div style={{ height: '40px' }} />
-          
-          <ROCCurve auc={data.metricas.auc_roc} />
-          
-          <div style={{ height: '40px' }} />
-          
-          <FeatureImportanceChart 
-            features={data.feature_importance.slice(0, 5)} 
-            color={COLORS.primary}
-            title="Top 5 Variables Predictivas"
-          />
-        </div>
-      )}
-
-      <button
+      {/* Header clickeable */}
+      <div
         onClick={() => setExpanded(!expanded)}
         style={{
-          width: '100%',
-          padding: '12px',
+          padding: '20px 30px',
           backgroundColor: COLORS.surface,
-          color: COLORS.primary,
-          border: `1px solid ${COLORS.border}`,
-          borderRadius: '6px',
           cursor: 'pointer',
-          fontSize: '13px',
-          fontWeight: '600',
-          letterSpacing: '0.05em',
-          textTransform: 'uppercase',
-          transition: 'all 0.3s'
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderLeft: `4px solid ${COLORS.primary}`
         }}
-        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
-        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
       >
-        {expanded ? 'Ver menos' : 'Ver explicación'}
-      </button>
+        <div>
+          <div style={{
+            fontSize: '13px',
+            color: COLORS.primary,
+            marginBottom: '4px',
+            fontWeight: '600',
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase'
+          }}>
+            HIPÓTESIS 3
+          </div>
+          <div style={{ fontSize: '18px', color: COLORS.text, fontWeight: '500' }}>
+            Predicción de Crecimiento Comercial
+          </div>
+          <div style={{
+            fontSize: '14px',
+            color: COLORS.textSecondary,
+            marginTop: '4px'
+          }}>
+            ¿Qué comercios tienen intención de expandirse?
+          </div>
+        </div>
+        <div style={{ fontSize: '20px', color: COLORS.primary }}>
+          {expanded ? '−' : '+'}
+        </div>
+      </div>
 
+      {/* Contenido expandible */}
       {expanded && (
         <div style={{
-          marginTop: '20px',
-          padding: '24px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          borderLeft: `3px solid COLORS.primary`
+          padding: '40px',
+          backgroundColor: COLORS.background
         }}>
           <div style={{
-            fontSize: '14px',
-            fontWeight: '600',
-            color: COLORS.text,
-            marginBottom: '12px'
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '16px',
+            marginBottom: '30px'
           }}>
-            Explicación Académica
+            <MetricaCard 
+              label="Accuracy" 
+              value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} 
+              color={COLORS.primary}
+              tooltip="Porcentaje de predicciones correctas del total."
+            />
+            <MetricaCard 
+              label="AUC-ROC" 
+              value={data.metricas.auc_roc.toFixed(3)} 
+              color="#4FC3F7"
+              tooltip="Área bajo la curva ROC. Valores cercanos a 1 indican excelente desempeño."
+            />
+            <MetricaCard 
+              label="Precision" 
+              value={`${(data.metricas.precision * 100).toFixed(1)}%`} 
+              color={COLORS.accent}
+              tooltip="De todos los comercios que predijimos que crecerán, qué porcentaje realmente tiene esa intención."
+            />
+            <MetricaCard 
+              label="Recall" 
+              value={`${(data.metricas.recall * 100).toFixed(1)}%`} 
+              color={COLORS.accentDark}
+              tooltip="De todos los comercios que realmente quieren crecer, qué porcentaje logramos identificar."
+            />
           </div>
-          <p style={{
-            fontSize: '13px',
-            color: COLORS.textSecondary,
-            lineHeight: '1.7',
-            marginBottom: '20px'
-          }}>
-            Este modelo de clasificación binaria utiliza <strong style={{ color: COLORS.text }}>Random Forest</strong> para 
-            predecir la probabilidad de que un comercio desee expandirse. Con un accuracy de {(data.metricas.accuracy * 100).toFixed(1)}% 
-            y un recall de {(data.metricas.recall * 100).toFixed(1)}%, el modelo identifica correctamente la mayoría de los comercios 
-            con intención de crecimiento. Las variables más predictivas son la antigüedad del negocio ({(data.feature_importance[0].importance * 100).toFixed(1)}% 
-            de importancia) y la cantidad de trabajadores, sugiriendo que comercios más establecidos y con mayor personal tienden a buscar expansión.
-          </p>
 
           <div style={{
-            fontSize: '14px',
-            fontWeight: '600',
-            color: COLORS.text,
-            marginBottom: '12px'
+            marginBottom: '20px',
+            padding: '20px',
+            backgroundColor: COLORS.surface,
+            borderRadius: '6px'
           }}>
-            En Términos Simples
+            <div style={{
+              fontSize: '13px',
+              fontWeight: '600',
+              color: COLORS.primary,
+              marginBottom: '16px',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase'
+            }}>
+              Variables más importantes
+            </div>
+            {data.feature_importance.slice(0, 3).map((f, idx) => (
+              <div key={idx} style={{ marginBottom: '12px' }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  fontSize: '12px',
+                  marginBottom: '4px'
+                }}>
+                  <span style={{ color: COLORS.text }}>{f.feature}</span>
+                  <span style={{ color: COLORS.primary, fontWeight: '600' }}>
+                    {(f.importance * 100).toFixed(1)}%
+                  </span>
+                </div>
+                <div style={{
+                  height: '6px',
+                  backgroundColor: COLORS.border,
+                  borderRadius: '3px',
+                  overflow: 'hidden'
+                }}>
+                  <div style={{
+                    height: '100%',
+                    width: `${f.importance * 100}%`,
+                    backgroundColor: COLORS.primary,
+                    transition: 'width 1s ease-out'
+                  }} />
+                </div>
+              </div>
+            ))}
           </div>
-          <p style={{
-            fontSize: '13px',
-            color: COLORS.textSecondary,
-            lineHeight: '1.7'
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowCharts(!showCharts);
+            }}
+            style={{
+              width: '100%',
+              padding: '12px',
+              backgroundColor: COLORS.surface,
+              color: COLORS.primary,
+              border: `1px solid ${COLORS.border}`,
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '13px',
+              fontWeight: '600',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              transition: 'all 0.3s',
+              marginBottom: '12px'
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
+            onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
+          >
+            {showCharts ? 'Ocultar gráficos' : 'Ver gráficos del modelo'}
+          </button>
+
+          {showCharts && (
+            <div style={{
+              marginTop: '20px',
+              padding: '24px',
+              backgroundColor: COLORS.surface,
+              borderRadius: '6px',
+              border: `1px solid ${COLORS.border}`
+            }}>
+              <ConfusionMatrix data={data.confusion_matrix} labels={['No crece', 'Sí crece']} />
+              
+              <div style={{ height: '40px' }} />
+              
+              <ROCCurve auc={data.metricas.auc_roc} />
+              
+              <div style={{ height: '40px' }} />
+              
+              <FeatureImportanceChart 
+                features={data.feature_importance.slice(0, 5)} 
+                color={COLORS.primary}
+                title="Top 5 Variables Predictivas"
+              />
+            </div>
+          )}
+
+          <div style={{
+            marginTop: '20px',
+            padding: '24px',
+            backgroundColor: COLORS.surface,
+            borderRadius: '6px',
+            borderLeft: `3px solid ${COLORS.primary}`
           }}>
-            <strong style={{ color: COLORS.text }}>¿Qué significa esto para tu comercio?</strong><br/>
-            Si tu negocio tiene varios años funcionando y un equipo de trabajo estable, es más probable que estés pensando 
-            en crecer. El modelo nos dice que {(data.metricas.accuracy * 100).toFixed(0)}% de las veces acierta quién quiere expandirse. 
-            Las claves son: <strong style={{ color: COLORS.primary }}>experiencia en el rubro, equipo consolidado y expectativas positivas de ventas</strong>.
-          </p>
+            <div style={{
+              fontSize: '14px',
+              fontWeight: '600',
+              color: COLORS.text,
+              marginBottom: '12px'
+            }}>
+              Explicación Académica
+            </div>
+            <p style={{
+              fontSize: '13px',
+              color: COLORS.textSecondary,
+              lineHeight: '1.7',
+              marginBottom: '20px'
+            }}>
+              Este modelo de clasificación binaria utiliza <strong style={{ color: COLORS.text }}>Random Forest</strong> para 
+              predecir la probabilidad de que un comercio desee expandirse. Con un accuracy de {(data.metricas.accuracy * 100).toFixed(1)}% 
+              y un recall de {(data.metricas.recall * 100).toFixed(1)}%, el modelo identifica correctamente la mayoría de los comercios 
+              con intención de crecimiento.
+            </p>
+
+            <div style={{
+              fontSize: '14px',
+              fontWeight: '600',
+              color: COLORS.text,
+              marginBottom: '12px'
+            }}>
+              En Términos Simples
+            </div>
+            <p style={{
+              fontSize: '13px',
+              color: COLORS.textSecondary,
+              lineHeight: '1.7'
+            }}>
+              <strong style={{ color: COLORS.text }}>¿Qué significa esto para tu comercio?</strong><br/>
+              Si tu negocio tiene varios años funcionando y un equipo de trabajo estable, es más probable que estés pensando 
+              en crecer. Las claves son: <strong style={{ color: COLORS.primary }}>experiencia en el rubro, equipo consolidado y expectativas positivas de ventas</strong>.
+            </p>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-// Modelo 3: Factores Externos
+// Hipótesis 4: Modelo de Factores Externos
 function ModeloFactoresExternos({ data }) {
   const [expanded, setExpanded] = useState(false);
   const [showCharts, setShowCharts] = useState(false);
@@ -455,252 +751,240 @@ function ModeloFactoresExternos({ data }) {
   
   return (
     <div style={{
-      backgroundColor: COLORS.background,
-      padding: '40px',
-      borderRadius: '8px',
       border: `1px solid ${COLORS.border}`,
-      position: 'relative'
+      borderRadius: '12px',
+      overflow: 'hidden'
     }}>
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '4px',
-        height: '100%',
-        backgroundColor: COLORS.accent
-      }} />
-      
-      <h3 style={{
-        fontFamily: '"Crimson Pro", serif',
-        fontSize: '24px',
-        fontWeight: '600',
-        color: COLORS.text,
-        marginBottom: '12px',
-        textAlign: 'center'
-      }}>
-        Impacto de Factores Externos
-      </h3>
-      
-      <p style={{
-        fontSize: '14px',
-        color: COLORS.textSecondary,
-        textAlign: 'center',
-        marginBottom: '30px'
-      }}>
-        ¿Qué afecta más las ventas: crimen, precios, competencia o crédito?
-      </p>
-
-      {/* Métricas */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
-        gap: '16px',
-        marginBottom: '30px'
-      }}>
-        <MetricaCard 
-          label="Accuracy" 
-          value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} 
-          color={COLORS.accent}
-          tooltip="Porcentaje de predicciones correctas del total. Indica qué tan bien el modelo clasifica las tendencias de ventas (peor/igual/mejor)."
-        />
-        <MetricaCard 
-          label="F1-Score" 
-          value={`${(data.metricas.f1_weighted * 100).toFixed(1)}%`} 
-          color="#4FC3F7"
-          tooltip="Promedio ponderado de precisión y recall. Balance entre identificar correctamente las tendencias y no generar falsos positivos. Útil en clasificación multiclase."
-        />
-      </div>
-
-      {/* Factores de afectación */}
-      <div style={{
-        marginBottom: '20px',
-        padding: '20px',
-        backgroundColor: COLORS.surface,
-        borderRadius: '6px'
-      }}>
-        <div style={{
-          fontSize: '13px',
-          fontWeight: '600',
-          color: COLORS.primary,
-          marginBottom: '16px',
-          letterSpacing: '0.05em',
-          textTransform: 'uppercase'
-        }}>
-          Factores de impacto (por importancia)
-        </div>
-        {data.feature_importance.slice(0, 4).filter(f => f.feature.includes('afect')).map((f, idx) => {
-          const labelMap = {
-            'afect_precios_num': 'Precios',
-            'afect_compe_num': 'Competencia',
-            'afect_credito_num': 'Crédito',
-            'afect_crimen_num': 'Crimen'
-          };
-          return (
-            <div key={idx} style={{ marginBottom: '12px' }}>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                fontSize: '12px',
-                marginBottom: '4px'
-              }}>
-                <span style={{ color: COLORS.text }}>{labelMap[f.feature] || f.feature}</span>
-                <span style={{ color: COLORS.primary, fontWeight: '600' }}>
-                  {(f.importance * 100).toFixed(1)}%
-                </span>
-              </div>
-              <div style={{
-                height: '6px',
-                backgroundColor: COLORS.border,
-                borderRadius: '3px',
-                overflow: 'hidden'
-              }}>
-                <div style={{
-                  height: '100%',
-                  width: `${f.importance * 100}%`,
-                  backgroundColor: COLORS.accent,
-                  transition: 'width 1s ease-out'
-                }} />
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Botón para mostrar gráficos */}
-      <button
-        onClick={() => setShowCharts(!showCharts)}
-        style={{
-          width: '100%',
-          padding: '12px',
-          backgroundColor: COLORS.surface,
-          color: COLORS.primary,
-          border: `1px solid ${COLORS.border}`,
-          borderRadius: '6px',
-          cursor: 'pointer',
-          fontSize: '13px',
-          fontWeight: '600',
-          letterSpacing: '0.05em',
-          textTransform: 'uppercase',
-          transition: 'all 0.3s',
-          marginBottom: '12px'
-        }}
-        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
-        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
-      >
-        {showCharts ? 'Ocultar gráficos' : 'Ver gráficos del modelo'}
-      </button>
-
-      {showCharts && (
-        <div style={{
-          marginTop: '20px',
-          padding: '24px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          border: `1px solid ${COLORS.border}`
-        }}>
-          <ConfusionMatrix 
-            data={data.confusion_matrix} 
-            labels={['Peor', 'Igual', 'Mejor']} 
-          />
-          
-          <div style={{ height: '40px' }} />
-          
-          <AfectacionesChart />
-          
-          <div style={{ height: '40px' }} />
-          
-          <DistribucionPredicciones
-            distribucion={data.distribucion_clases}
-            labels={['Peor', 'Igual', 'Mejor']}
-            colors={[COLORS.accentDark, COLORS.accent, COLORS.primary]}
-          />
-          
-          <div style={{ height: '40px' }} />
-          
-          <FeatureImportanceChart 
-            features={data.feature_importance.slice(0, 6)} 
-            color={COLORS.accent}
-            title="Top 6 Variables Predictivas"
-          />
-        </div>
-      )}
-
-      <button
+      {/* Header clickeable */}
+      <div
         onClick={() => setExpanded(!expanded)}
         style={{
-          width: '100%',
-          padding: '12px',
+          padding: '20px 30px',
           backgroundColor: COLORS.surface,
-          color: COLORS.primary,
-          border: `1px solid ${COLORS.border}`,
-          borderRadius: '6px',
           cursor: 'pointer',
-          fontSize: '13px',
-          fontWeight: '600',
-          letterSpacing: '0.05em',
-          textTransform: 'uppercase',
-          transition: 'all 0.3s'
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderLeft: `4px solid ${COLORS.accent}`
         }}
-        onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
-        onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
       >
-        {expanded ? 'Ver menos' : 'Ver explicación'}
-      </button>
+        <div>
+          <div style={{
+            fontSize: '13px',
+            color: COLORS.primary,
+            marginBottom: '4px',
+            fontWeight: '600',
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase'
+          }}>
+            HIPÓTESIS 4
+          </div>
+          <div style={{ fontSize: '18px', color: COLORS.text, fontWeight: '500' }}>
+            Impacto de Factores Externos
+          </div>
+          <div style={{
+            fontSize: '14px',
+            color: COLORS.textSecondary,
+            marginTop: '4px'
+          }}>
+            ¿Qué afecta más las ventas: crimen, precios, competencia o crédito?
+          </div>
+        </div>
+        <div style={{ fontSize: '20px', color: COLORS.primary }}>
+          {expanded ? '−' : '+'}
+        </div>
+      </div>
 
+      {/* Contenido expandible */}
       {expanded && (
         <div style={{
-          marginTop: '20px',
-          padding: '24px',
-          backgroundColor: COLORS.surface,
-          borderRadius: '6px',
-          borderLeft: `3px solid COLORS.accent`
+          padding: '40px',
+          backgroundColor: COLORS.background
         }}>
           <div style={{
-            fontSize: '14px',
-            fontWeight: '600',
-            color: COLORS.text,
-            marginBottom: '12px'
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '16px',
+            marginBottom: '30px'
           }}>
-            Explicación Académica
+            <MetricaCard 
+              label="Accuracy" 
+              value={`${(data.metricas.accuracy * 100).toFixed(1)}%`} 
+              color={COLORS.accent}
+              tooltip="Porcentaje de predicciones correctas del total."
+            />
+            <MetricaCard 
+              label="F1-Score" 
+              value={`${(data.metricas.f1_weighted * 100).toFixed(1)}%`} 
+              color="#4FC3F7"
+              tooltip="Balance entre precisión y recall. Útil en clasificación multiclase."
+            />
           </div>
-          <p style={{
-            fontSize: '13px',
-            color: COLORS.textSecondary,
-            lineHeight: '1.7',
-            marginBottom: '20px'
-          }}>
-            Clasificador multiclase <strong style={{ color: COLORS.text }}>Random Forest</strong> que predice si las ventas 
-            empeorarán, se mantendrán o mejorarán según factores externos. Con {(data.metricas.accuracy * 100).toFixed(1)}% de accuracy, 
-            el modelo identifica que <strong style={{ color: COLORS.text }}>los precios</strong> son el factor más determinante, 
-            seguido por la competencia. Interesantemente, la antigüedad del negocio también es altamente predictiva, sugiriendo 
-            que comercios más establecidos manejan mejor las adversidades externas.
-          </p>
 
           <div style={{
-            fontSize: '14px',
-            fontWeight: '600',
-            color: COLORS.text,
-            marginBottom: '12px'
+            marginBottom: '20px',
+            padding: '20px',
+            backgroundColor: COLORS.surface,
+            borderRadius: '6px'
           }}>
-            En Términos Simples
+            <div style={{
+              fontSize: '13px',
+              fontWeight: '600',
+              color: COLORS.primary,
+              marginBottom: '16px',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase'
+            }}>
+              Factores de impacto (por importancia)
+            </div>
+            {data.feature_importance.slice(0, 4).filter(f => f.feature.includes('afect')).map((f, idx) => {
+              const labelMap = {
+                'afect_precios_num': 'Precios',
+                'afect_compe_num': 'Competencia',
+                'afect_credito_num': 'Crédito',
+                'afect_crimen_num': 'Crimen'
+              };
+              return (
+                <div key={idx} style={{ marginBottom: '12px' }}>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontSize: '12px',
+                    marginBottom: '4px'
+                  }}>
+                    <span style={{ color: COLORS.text }}>{labelMap[f.feature] || f.feature}</span>
+                    <span style={{ color: COLORS.primary, fontWeight: '600' }}>
+                      {(f.importance * 100).toFixed(1)}%
+                    </span>
+                  </div>
+                  <div style={{
+                    height: '6px',
+                    backgroundColor: COLORS.border,
+                    borderRadius: '3px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      height: '100%',
+                      width: `${f.importance * 100}%`,
+                      backgroundColor: COLORS.accent,
+                      transition: 'width 1s ease-out'
+                    }} />
+                  </div>
+                </div>
+              );
+            })}
           </div>
-          <p style={{
-            fontSize: '13px',
-            color: COLORS.textSecondary,
-            lineHeight: '1.7'
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowCharts(!showCharts);
+            }}
+            style={{
+              width: '100%',
+              padding: '12px',
+              backgroundColor: COLORS.surface,
+              color: COLORS.primary,
+              border: `1px solid ${COLORS.border}`,
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '13px',
+              fontWeight: '600',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              transition: 'all 0.3s',
+              marginBottom: '12px'
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
+            onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
+          >
+            {showCharts ? 'Ocultar gráficos' : 'Ver gráficos del modelo'}
+          </button>
+
+          {showCharts && (
+            <div style={{
+              marginTop: '20px',
+              padding: '24px',
+              backgroundColor: COLORS.surface,
+              borderRadius: '6px',
+              border: `1px solid ${COLORS.border}`
+            }}>
+              <ConfusionMatrix 
+                data={data.confusion_matrix} 
+                labels={['Peor', 'Igual', 'Mejor']} 
+              />
+              
+              <div style={{ height: '40px' }} />
+              
+              <AfectacionesChart />
+              
+              <div style={{ height: '40px' }} />
+              
+              <DistribucionPredicciones
+                distribucion={data.distribucion_clases}
+                labels={['Peor', 'Igual', 'Mejor']}
+                colors={[COLORS.accentDark, COLORS.accent, COLORS.primary]}
+              />
+              
+              <div style={{ height: '40px' }} />
+              
+              <FeatureImportanceChart 
+                features={data.feature_importance.slice(0, 6)} 
+                color={COLORS.accent}
+                title="Top 6 Variables Predictivas"
+              />
+            </div>
+          )}
+
+          <div style={{
+            marginTop: '20px',
+            padding: '24px',
+            backgroundColor: COLORS.surface,
+            borderRadius: '6px',
+            borderLeft: `3px solid ${COLORS.accent}`
           }}>
-            <strong style={{ color: COLORS.text }}>¿Qué está afectando tus ventas?</strong><br/>
-            El factor #1 que impacta las ventas son <strong style={{ color: COLORS.primary }}>los precios y la inflación</strong>. 
-            Luego viene la competencia en tu zona. El crimen y el acceso a crédito también importan, pero menos. 
-            Si tu negocio tiene varios años, probablemente ya sepas cómo adaptarte a estos cambios. Los comercios nuevos 
-            sufren más con factores externos porque aún no tienen la experiencia ni la base de clientes fiel.
-          </p>
+            <div style={{
+              fontSize: '14px',
+              fontWeight: '600',
+              color: COLORS.text,
+              marginBottom: '12px'
+            }}>
+              Explicación Académica
+            </div>
+            <p style={{
+              fontSize: '13px',
+              color: COLORS.textSecondary,
+              lineHeight: '1.7',
+              marginBottom: '20px'
+            }}>
+              Clasificador multiclase <strong style={{ color: COLORS.text }}>Random Forest</strong> que predice si las ventas 
+              empeorarán, se mantendrán o mejorarán según factores externos. Con {(data.metricas.accuracy * 100).toFixed(1)}% de accuracy, 
+              el modelo identifica que <strong style={{ color: COLORS.text }}>los precios</strong> son el factor más determinante.
+            </p>
+
+            <div style={{
+              fontSize: '14px',
+              fontWeight: '600',
+              color: COLORS.text,
+              marginBottom: '12px'
+            }}>
+              En Términos Simples
+            </div>
+            <p style={{
+              fontSize: '13px',
+              color: COLORS.textSecondary,
+              lineHeight: '1.7'
+            }}>
+              <strong style={{ color: COLORS.text }}>¿Qué está afectando tus ventas?</strong><br/>
+              El factor #1 que impacta las ventas son <strong style={{ color: COLORS.primary }}>los precios y la inflación</strong>. 
+              Luego viene la competencia en tu zona. El crimen y el acceso a crédito también importan, pero menos.
+            </p>
+          </div>
         </div>
       )}
     </div>
   );
 }
-
 
 // Componente auxiliar para métricas
 function MetricaCard({ label, value, color, tooltip }) {
@@ -738,7 +1022,6 @@ function MetricaCard({ label, value, color, tooltip }) {
         {value}
       </div>
       
-      {/* Tooltip */}
       {showTooltip && tooltip && (
         <div style={{
           position: 'absolute',
@@ -750,46 +1033,16 @@ function MetricaCard({ label, value, color, tooltip }) {
           backgroundColor: COLORS.background,
           border: `1px solid ${color}`,
           borderRadius: '8px',
-          boxShadow: `0 8px 24px rgba(0,0,0,0.4)`,
+          boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
           zIndex: 1000,
           minWidth: '250px',
-          maxWidth: '300px',
-          animation: 'fadeIn 0.2s ease-out'
+          maxWidth: '300px'
         }}>
-          <style>{`
-            @keyframes fadeIn {
-              from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-5px);
-              }
-              to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-              }
-            }
-          `}</style>
-          
-          {/* Flecha del tooltip */}
-          <div style={{
-            position: 'absolute',
-            bottom: '-6px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '12px',
-            height: '12px',
-            backgroundColor: COLORS.background,
-            border: `1px solid ${color}`,
-            borderTop: 'none',
-            borderLeft: 'none',
-            transform: 'translateX(-50%) rotate(45deg)'
-          }} />
-          
           <div style={{
             fontSize: '13px',
             color: COLORS.textSecondary,
             lineHeight: '1.6',
-            textAlign: 'left',
-            position: 'relative'
+            textAlign: 'left'
           }}>
             {tooltip}
           </div>
@@ -803,13 +1056,10 @@ function MetricaCard({ label, value, color, tooltip }) {
 function ConfusionMatrix({ data, labels }) {
   const maxValue = Math.max(...data.flat());
   
-  // Aplanar los datos en un solo array para el grid
   const gridItems = [];
   
-  // Empty corner
   gridItems.push(<div key="corner" />);
   
-  // Column headers
   labels.forEach((label, idx) => {
     gridItems.push(
       <div key={`col-${idx}`} style={{
@@ -823,9 +1073,7 @@ function ConfusionMatrix({ data, labels }) {
     );
   });
   
-  // Rows with cells
   data.forEach((row, i) => {
-    // Row label
     gridItems.push(
       <div key={`row-label-${i}`} style={{
         fontSize: '11px',
@@ -840,7 +1088,6 @@ function ConfusionMatrix({ data, labels }) {
       </div>
     );
     
-    // Cells
     row.forEach((value, j) => {
       const intensity = value / maxValue;
       const isCorrect = i === j;
@@ -856,7 +1103,7 @@ function ConfusionMatrix({ data, labels }) {
           fontSize: '18px',
           fontWeight: '700',
           color: COLORS.text,
-          border: isCorrect ? '2px solid COLORS.primary' : '1px solid ' + COLORS.border
+          border: isCorrect ? `2px solid ${COLORS.primary}` : `1px solid ${COLORS.border}`
         }}>
           {value}
         </div>
@@ -894,8 +1141,7 @@ function ConfusionMatrix({ data, labels }) {
         textAlign: 'center',
         lineHeight: '1.6'
       }}>
-        La diagonal (verde) representa las predicciones correctas.<br/>
-        Valores fuera de la diagonal son errores del modelo.
+        La diagonal (verde) representa las predicciones correctas.
       </div>
     </div>
   );
@@ -955,27 +1201,15 @@ function FeatureImportanceChart({ features, color, title }) {
                 height: '10px',
                 backgroundColor: COLORS.border,
                 borderRadius: '5px',
-                overflow: 'hidden',
-                position: 'relative'
+                overflow: 'hidden'
               }}>
                 <div style={{
                   height: '100%',
                   width: `${percentage}%`,
                   backgroundColor: color,
                   borderRadius: '5px',
-                  transition: 'width 1s ease-out',
-                  position: 'relative'
-                }}>
-                  <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    width: '30%',
-                    background: `linear-gradient(90deg, transparent, rgba(255,255,255,0.2))`,
-                    borderRadius: '5px'
-                  }} />
-                </div>
+                  transition: 'width 1s ease-out'
+                }} />
               </div>
             </div>
           );
@@ -985,17 +1219,16 @@ function FeatureImportanceChart({ features, color, title }) {
   );
 }
 
-// Componente ROC Curve usando SVG
-function ROCCurve({ data, auc }) {
-  // Generar puntos para la curva ROC desde la confusion matrix
+// CONTINÚA EN PARTE 3...
+
+// Componente ROC Curve
+function ROCCurve({ auc }) {
   const generateROCPoints = () => {
-    // Simulación de curva ROC basada en el AUC
     const points = [];
     const steps = 50;
     
     for (let i = 0; i <= steps; i++) {
       const x = i / steps;
-      // Aproximación de curva ROC basada en AUC
       let y;
       if (auc > 0.5) {
         y = Math.pow(x, 1 / (2 * auc));
@@ -1040,7 +1273,6 @@ function ROCCurve({ data, auc }) {
             maxWidth: '400px',
             height: 'auto'
           }}>
-          {/* Grid lines */}
           {[0, 0.25, 0.5, 0.75, 1].map((val, idx) => {
             const x = padding + val * (width - 2 * padding);
             const y = height - padding - val * (height - 2 * padding);
@@ -1084,7 +1316,6 @@ function ROCCurve({ data, auc }) {
             );
           })}
           
-          {/* Diagonal line (random classifier) */}
           <line
             x1={padding}
             y1={height - padding}
@@ -1095,7 +1326,6 @@ function ROCCurve({ data, auc }) {
             strokeDasharray="4 4"
           />
           
-          {/* ROC Curve */}
           <path
             d={points.map((p, i) => {
               const x = padding + p.fpr * (width - 2 * padding);
@@ -1107,7 +1337,6 @@ function ROCCurve({ data, auc }) {
             strokeWidth="3"
           />
           
-          {/* Axes labels */}
           <text
             x={width / 2}
             y={height - 5}
@@ -1129,7 +1358,6 @@ function ROCCurve({ data, auc }) {
             True Positive Rate
           </text>
           
-          {/* AUC Label */}
           <text
             x={width - padding - 10}
             y={padding + 20}
@@ -1146,101 +1374,7 @@ function ROCCurve({ data, auc }) {
   );
 }
 
-// Componente Scatter Plot (Predicción vs Real) para Modelo 2
-function ScatterPlot({ realValues, predictions, title }) {
-  const width = 400;
-  const height = 300;
-  const padding = 50;
-  
-  const maxVal = Math.max(...realValues, ...predictions);
-  const minVal = Math.min(...realValues, ...predictions);
-  
-  const scaleX = (val) => padding + ((val - minVal) / (maxVal - minVal)) * (width - 2 * padding);
-  const scaleY = (val) => height - padding - ((val - minVal) / (maxVal - minVal)) * (height - 2 * padding);
-  
-  return (
-    <div>
-      <h4 style={{
-        fontSize: '14px',
-        fontWeight: '600',
-        color: COLORS.primary,
-        marginBottom: '20px',
-        letterSpacing: '0.05em',
-        textTransform: 'uppercase'
-      }}>
-        {title}
-      </h4>
-      
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <svg 
-          viewBox={`0 0 ${width} ${height}`}
-          style={{ 
-            backgroundColor: COLORS.surface, 
-            borderRadius: '8px',
-            width: '100%',
-            maxWidth: `${width}px`,
-            height: 'auto'
-          }}>
-          {/* Grid */}
-          {[0, 0.25, 0.5, 0.75, 1].map((val, idx) => {
-            const scaledVal = minVal + val * (maxVal - minVal);
-            const x = scaleX(scaledVal);
-            const y = scaleY(scaledVal);
-            return (
-              <g key={idx}>
-                <line x1={padding} y1={y} x2={width - padding} y2={y} stroke={COLORS.border} strokeDasharray="2 2" />
-                <line x1={x} y1={padding} x2={x} y2={height - padding} stroke={COLORS.border} strokeDasharray="2 2" />
-              </g>
-            );
-          })}
-          
-          {/* Perfect prediction line */}
-          <line
-            x1={scaleX(minVal)}
-            y1={scaleY(minVal)}
-            x2={scaleX(maxVal)}
-            y2={scaleY(maxVal)}
-            stroke={COLORS.accentDark}
-            strokeWidth="2"
-            strokeDasharray="4 4"
-          />
-          
-          {/* Data points */}
-          {realValues.map((real, idx) => {
-            const pred = predictions[idx];
-            return (
-              <circle
-                key={idx}
-                cx={scaleX(real)}
-                cy={scaleY(pred)}
-                r="4"
-                fill="#4FC3F7"
-                opacity="0.6"
-              />
-            );
-          })}
-          
-          {/* Axes labels */}
-          <text x={width / 2} y={height - 10} fill={COLORS.text} fontSize="11" textAnchor="middle">
-            Salario Real (ARS)
-          </text>
-          <text
-            x={15}
-            y={height / 2}
-            fill={COLORS.text}
-            fontSize="11"
-            textAnchor="middle"
-            transform={`rotate(-90 15 ${height / 2})`}
-          >
-            Salario Predicho (ARS)
-          </text>
-        </svg>
-      </div>
-    </div>
-  );
-}
-
-// Componente de Distribución de Predicciones (Bar Chart)
+// Componente de Distribución de Predicciones
 function DistribucionPredicciones({ distribucion, labels, colors }) {
   const maxCount = Math.max(...Object.values(distribucion));
   const width = 400;
@@ -1271,7 +1405,6 @@ function DistribucionPredicciones({ distribucion, labels, colors }) {
             maxWidth: `${width}px`,
             height: 'auto'
           }}>
-          {/* Grid lines */}
           {[0, 0.25, 0.5, 0.75, 1].map((val, idx) => {
             const y = height - padding - val * (height - 2 * padding);
             return (
@@ -1297,7 +1430,6 @@ function DistribucionPredicciones({ distribucion, labels, colors }) {
             );
           })}
           
-          {/* Bars */}
           {Object.entries(distribucion).map(([key, count], idx) => {
             const barHeight = (count / maxCount) * (height - 2 * padding);
             const x = padding + idx * (barWidth + 10) + 20;
@@ -1343,9 +1475,8 @@ function DistribucionPredicciones({ distribucion, labels, colors }) {
   );
 }
 
-// Componente Afectaciones por Tendencia (Grouped Bar Chart)
+// Componente Afectaciones por Tendencia
 function AfectacionesChart() {
-  // Datos simulados basados en la imagen
   const data = [
     { factor: 'Crimen', Peor: 0.7, Igual: 0.55, Mejor: 0.5 },
     { factor: 'Crédito', Peor: 0.57, Igual: 0.48, Mejor: 0.5 },
@@ -1389,7 +1520,6 @@ function AfectacionesChart() {
             maxWidth: `${width}px`,
             height: 'auto'
           }}>
-          {/* Grid lines */}
           {[0, 0.5, 1.0, 1.5, 2.0].map((val, idx) => {
             const y = height - padding.bottom - (val / maxValue) * (height - padding.top - padding.bottom);
             return (
@@ -1415,13 +1545,11 @@ function AfectacionesChart() {
             );
           })}
           
-          {/* Bars */}
           {data.map((item, groupIdx) => {
             const groupX = padding.left + groupIdx * groupWidth;
             
             return (
               <g key={item.factor}>
-                {/* Peor */}
                 <rect
                   x={groupX + barWidth * 0.5}
                   y={height - padding.bottom - (item.Peor / maxValue) * (height - padding.top - padding.bottom)}
@@ -1432,7 +1560,6 @@ function AfectacionesChart() {
                   opacity="0.85"
                 />
                 
-                {/* Igual */}
                 <rect
                   x={groupX + barWidth * 1.5}
                   y={height - padding.bottom - (item.Igual / maxValue) * (height - padding.top - padding.bottom)}
@@ -1443,7 +1570,6 @@ function AfectacionesChart() {
                   opacity="0.85"
                 />
                 
-                {/* Mejor */}
                 <rect
                   x={groupX + barWidth * 2.5}
                   y={height - padding.bottom - (item.Mejor / maxValue) * (height - padding.top - padding.bottom)}
@@ -1454,7 +1580,6 @@ function AfectacionesChart() {
                   opacity="0.85"
                 />
                 
-                {/* Label */}
                 <text
                   x={groupX + groupWidth / 2}
                   y={height - padding.bottom + 20}
@@ -1468,7 +1593,6 @@ function AfectacionesChart() {
             );
           })}
           
-          {/* Legend */}
           {Object.entries(colors).map(([label, color], idx) => (
             <g key={label} transform={`translate(${width - padding.right + 10}, ${padding.top + idx * 25})`}>
               <rect x="0" y="0" width="15" height="15" fill={color} rx="2" />
@@ -1478,7 +1602,6 @@ function AfectacionesChart() {
             </g>
           ))}
           
-          {/* Y-axis label */}
           <text
             x={15}
             y={height / 2}
@@ -1506,5 +1629,3 @@ function AfectacionesChart() {
     </div>
   );
 }
-
-// === TEAM ===
