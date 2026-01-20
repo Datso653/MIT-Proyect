@@ -172,6 +172,7 @@ function SobrePlataforma() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
             gap: '24px'
           }}>
+
             
             {/* Vibecoding */}
             <div style={{
@@ -245,6 +246,7 @@ function SobrePlataforma() {
                 lineHeight: '1.6'
               }}>
                 <strong style={{ color: COLORS.text }}>Frontend:</strong> React, JavaScript, HTML/CSS<br/>
+                <strong style={{ color: COLORS.text }}>Análisis de datos:</strong> Python<br/>
                 <strong style={{ color: COLORS.text }}>Deployment:</strong> Vercel con integración continua<br/>
                 <strong style={{ color: COLORS.text }}>Control de versiones:</strong> GitHub
               </div>
