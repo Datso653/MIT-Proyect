@@ -331,7 +331,7 @@ function Mapa({ datos }) {
   }, [datos]);
 
   return (
-    <section id="mapa" style={{
+    <section id="mapa" className="fade-up" style={{
       padding: '120px 60px',
       maxWidth: '1400px',
       margin: '0 auto'

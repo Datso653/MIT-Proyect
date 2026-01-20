@@ -42,6 +42,31 @@ function App() {
     }
   }, [datos]);
 
+  // === INTERSECTION OBSERVER PARA ANIMACIONES ===
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.15,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Opcional: dejar de observar después de animar
+          // observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observar todas las secciones y elementos animables
+    const animatedElements = document.querySelectorAll('.animate-on-scroll, .fade-up, .fade-left, .fade-right, .scale-in');
+    animatedElements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [datos, indicadores, datosGraficos]);
+
+
   if (loading) {
     return (
       <div style={{
@@ -124,6 +149,160 @@ function App() {
           }
         }
         
+        /* === ANIMACIONES MEJORADAS === */
+        
+        /* Fade in desde abajo */
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        /* Fade in desde izquierda */
+        @keyframes fadeInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        /* Fade in desde derecha */
+        @keyframes fadeInRight {
+          from {
+            opacity: 0;
+            transform: translateX(40px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        /* Scale in */
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        
+        /* Gradient shift */
+        @keyframes gradientShift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+        
+        /* Pulse glow */
+        @keyframes pulseGlow {
+          0%, 100% {
+            box-shadow: 0 0 20px rgba(79, 195, 247, 0.3);
+          }
+          50% {
+            box-shadow: 0 0 40px rgba(79, 195, 247, 0.6);
+          }
+        }
+        
+        /* Floating */
+        @keyframes floating {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-15px);
+          }
+        }
+        
+        /* === CLASES DE ANIMACIÓN === */
+        
+        .animate-on-scroll {
+          opacity: 0;
+          transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .animate-on-scroll.visible {
+          opacity: 1;
+        }
+        
+        .fade-up {
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .fade-left {
+          animation: fadeInLeft 0.8s ease-out forwards;
+        }
+        
+        .fade-right {
+          animation: fadeInRight 0.8s ease-out forwards;
+        }
+        
+        .scale-in {
+          animation: scaleIn 0.6s ease-out forwards;
+        }
+        
+        /* Stagger delays */
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+        .stagger-6 { animation-delay: 0.6s; }
+        
+        /* === TRANSICIONES GLOBALES MEJORADAS === */
+        
+        * {
+          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        button, a {
+          transition: all 0.3s ease;
+        }
+        
+        img {
+          transition: transform 0.5s ease, filter 0.3s ease;
+        }
+        
+        section {
+          transition: opacity 0.6s ease;
+        }
+        
+        /* Hover effects mejorados */
+        .hover-lift {
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+        }
+        
+        .hover-glow:hover {
+          animation: pulseGlow 2s infinite;
+        }
+        
+        /* Smooth scroll */
+        html {
+          scroll-behavior: smooth;
+        }
         /* === MOBILE RESPONSIVE === */
         @media (max-width: 768px) {
           /* Hero */
@@ -706,7 +885,7 @@ function Hero({ scrollY }) {
 // === PROJECT INTRO ===
 function ProjectIntro() {
   return (
-    <section id="intro" style={{
+    <section id="intro" className="fade-up" style={{
       padding: '120px 60px',
       maxWidth: '1400px',
       margin: '0 auto'
@@ -862,6 +1041,7 @@ function UniversidadesParticipantes() {
         {universidadesDuplicadas.map((uni, idx) => (
           <div
             key={idx}
+            className={`fade-up stagger-${(idx % 6) + 1}`}
             style={{
               minWidth: '260px',
               height: '200px',
@@ -976,7 +1156,7 @@ function Indicadores({ data }) {
   ];
 
   return (
-    <section id="indicadores" style={{
+    <section id="indicadores" className="fade-up" style={{
       padding: '120px 60px',
       backgroundColor: COLORS.surface,
       borderTop: `1px solid ${COLORS.border}`,
@@ -1190,7 +1370,7 @@ function IndicadorCardConGrafico({ label, value, max, suffix, description, index
 
 function SeccionAnalisis() {
   return (
-    <section id="analisis" style={{
+    <section id="analisis" className="fade-up" style={{
       padding: '120px 60px',
       margin: '0 auto',
       position: 'relative',
@@ -1349,7 +1529,7 @@ function SeccionAnalisis() {
 // === SECCIÁ“N MACHINE LEARNING ===
 function Team() {
   return (
-    <section id="equipo" style={{
+    <section id="equipo" className="scale-in" style={{
       padding: '120px 60px',
       margin: '0 auto',
       position: 'relative',

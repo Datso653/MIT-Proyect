@@ -3,7 +3,7 @@ function ResumenEjecutivo({ indicadores }) {
   if (!indicadores) return null;
   
   return (
-    <section id="hipotesis" style={{
+    <section id="hipotesis" className="fade-up" style={{
       padding: '120px 60px',
       position: 'relative',
       overflow: 'hidden',

@@ -3,7 +3,7 @@ function HallazgosPrincipales({ indicadores }) {
   if (!indicadores) return null;
   
   return (
-    <section id="hallazgos" style={{
+    <section id="hallazgos" className="fade-up" style={{
       padding: '120px 60px',
       position: 'relative',
       overflow: 'hidden',

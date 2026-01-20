@@ -1,7 +1,7 @@
 // === SOBRE LA PLATAFORMA ===
 function SobrePlataforma() {
   return (
-    <section id="sobre-plataforma" style={{
+    <section id="sobre-plataforma" className="fade-up" style={{
       padding: '120px 60px',
       backgroundColor: COLORS.background,
       borderTop: `1px solid ${COLORS.border}`,

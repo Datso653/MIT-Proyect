@@ -22,7 +22,7 @@ function AnalisisVisual({ data, indicadores, datos }) {
   }, []);
 
   return (
-    <section id="analisis-visual" ref={sectionRef} style={{
+    <section id="analisis-visual" className="fade-up" ref={sectionRef} style={{
       padding: '120px 60px',
       maxWidth: '1400px',
       margin: '0 auto',
