@@ -72,7 +72,7 @@ function ResumenEjecutivo({ indicadores }) {
             maxWidth: '800px',
             margin: '0 auto'
           }}>
-            Análisis riguroso de cuatro hipótesis sobre el ecosistema comercial de AMBA mediante pruebas estadísticas y modelos de Machine Learning.
+            Análisis riguroso de dos hipótesis geoespaciales sobre el ecosistema comercial de AMBA mediante pruebas estadísticas y modelos de Machine Learning.
           </p>
         </div>
 

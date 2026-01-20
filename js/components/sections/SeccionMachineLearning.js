@@ -105,9 +105,9 @@ function SeccionMachineLearning({ datos }) {
                 lineHeight: '1.7',
                 color: COLORS.textSecondary
               }}>
-                Análisis riguroso de <strong style={{ color: COLORS.text }}>cuatro hipótesis geoespaciales</strong> sobre el ecosistema comercial de AMBA. 
-                Las primeras dos hipótesis utilizan <strong style={{ color: COLORS.text }}>pruebas estadísticas no paramétricas</strong> (Chi-cuadrado, Mann-Whitney U), 
-                mientras que las hipótesis 3 y 4 emplean <strong style={{ color: COLORS.text }}>modelos  de Machine Learning</strong> (Random Forest) 
+                Análisis riguroso de <strong style={{ color: COLORS.text }}>dos hipótesis geoespaciales</strong> sobre el ecosistema comercial de AMBA. 
+                Estas hipótesis utilizan <strong style={{ color: COLORS.text }}>pruebas estadísticas no paramétricas</strong> (Chi-cuadrado, Mann-Whitney U), 
+                Adicionalmente, se presentan hallazgos complementarios mediante <strong style={{ color: COLORS.text }}>modelos  de Machine Learning</strong> (Random Forest) 
                 para identificar patrones de crecimiento y factores de impacto externo.
               </div>
             </div>
