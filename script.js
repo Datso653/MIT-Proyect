@@ -8,6 +8,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [scrollY, setScrollY] = useState(0);
+  const [language, setLanguage] = useState('es');
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -80,7 +81,7 @@ function App() {
         fontFamily: '"Crimson Pro", serif',
         letterSpacing: '0.05em'
       }}>
-        Cargando análisis...
+        {getTranslation(language, 'loading')}
       </div>
     );
   }
@@ -104,13 +105,14 @@ function App() {
   }
 
   return (
-    <div style={{
+    <div key={language} style={{
       fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif',
       color: COLORS.text,
       backgroundColor: COLORS.background,
       minHeight: '100vh',
       width: '100%'
     }}>
+      <LanguageSwitcher language={language} setLanguage={setLanguage} />
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap');
         
@@ -530,28 +532,30 @@ function App() {
           }
         }
       `}</style>
-      <Navbar />
-<Hero scrollY={scrollY} />
-      <SobrePlataforma />
-      <ProjectIntro />
-      <UniversidadesParticipantes />
-      {indicadores && <Indicadores data={indicadores} />}
-      {datos.length > 0 && <Mapa datos={datos} />}
-      {indicadores && <ResumenEjecutivo indicadores={indicadores} />}
-      {datosGraficos && indicadores && <AnalisisVisual data={datosGraficos} indicadores={indicadores} datos={datos} />}
-      {indicadores && <HallazgosPrincipales indicadores={indicadores} />}
-      <SeccionMachineLearning datos={datos} />
-      <Team />
-      <Footer />
+      <Navbar language={language} />
+      <Hero scrollY={scrollY} language={language} />
+      <SobrePlataforma language={language} />
+      <ProjectIntro language={language} />
+      <UniversidadesParticipantes language={language} />
+      {indicadores && <Indicadores data={indicadores} language={language} />}
+      {datos.length > 0 && <Mapa datos={datos} language={language} />}
+      {indicadores && <ResumenEjecutivo indicadores={indicadores} language={language} />}
+      {datosGraficos && indicadores && <AnalisisVisual data={datosGraficos} indicadores={indicadores} datos={datos} language={language} />}
+      {indicadores && <HallazgosPrincipales indicadores={indicadores} language={language} />}
+      <SeccionMachineLearning datos={datos} language={language} />
+      <ProximosPasos language={language} />
+      <Team language={language} />
+      <Footer language={language} />
     </div>
   );
 }
 
 // === HERO SECTION ===
 // === NAVBAR CON MENÚ DESPLEGABLE ===
-function Navbar() {
+function Navbar({ language = 'es' }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const t = (key) => getTranslation(language, key);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -562,18 +566,19 @@ function Navbar() {
   }, []);
 
   const sections = [
-    { id: 'hero', label: 'Inicio' },
-    { id: 'sobre-plataforma', label: 'Acerca de la página' },
-    { id: 'intro', label: 'Introducción' },
-    { id: 'universidades', label: 'Universidades Participantes' },
-    { id: 'mapa', label: 'Mapa' },
-    { id: 'indicadores', label: 'Indicadores' },
-    { id: 'hipotesis', label: 'Hipótesis Geoespaciales' },
-    { id: 'analisis-visual', label: 'Análisis Visual' },
-    { id: 'hallazgos', label: 'Hallazgos Principales' },
-    { id: 'machine-learning', label: 'Análisis de Hipótesis Geoespaciales & Hallazgos Adicionales' },
-    { id: 'analisis', label: 'Conclusiones' },
-    { id: 'equipo', label: '¿Quiénes somos?' }
+    { id: 'hero', label: t('navHome') },
+    { id: 'sobre-plataforma', label: t('navAbout') },
+    { id: 'intro', label: t('navIntro') },
+    { id: 'universidades', label: t('navUniversities') },
+    { id: 'mapa', label: t('navMap') },
+    { id: 'indicadores', label: t('navIndicators') },
+    { id: 'hipotesis', label: t('navHypothesis') },
+    { id: 'analisis-visual', label: t('navAnalysis') },
+    { id: 'hallazgos', label: t('navFindings') },
+    { id: 'machine-learning', label: t('navML') },
+    { id: 'analisis', label: t('navConclusions') },
+    { id: 'proximos-pasos', label: t('navNextSteps') },
+    { id: 'equipo', label: t('navTeam') }
   ];
 
   const scrollToSection = (sectionId) => {
@@ -728,7 +733,7 @@ function Navbar() {
   );
 }
 
-function Hero({ scrollY }) {
+function Hero({ scrollY, language = 'es' }) {
   const parallaxOffset = scrollY * 0.5;
   
   return (
@@ -811,21 +816,22 @@ function Hero({ scrollY }) {
           marginBottom: '30px',
           fontWeight: '500'
         }}>
-          MIT LIFT Lab — Buenos Aires
+          {getTranslation(language, 'heroSubtitle')}
         </div>
         
         <h1 className="fade-in fade-in-delay-1" style={{
           fontFamily: '"Crimson Pro", serif',
-          fontSize: 'clamp(48px, 7vw, 96px)',
+          fontSize: 'clamp(48px, 6vw, 72px)',
           fontWeight: '300',
-          lineHeight: '1.1',
+          color: COLORS.text,
           marginBottom: '30px',
-          color: COLORS.text
+          lineHeight: '1.2',
+          letterSpacing: '-0.02em'
         }}>
-          Análisis de Comercios
+          {getTranslation(language, "heroTitle")}
           <br />
           <span style={{ fontWeight: '600', fontStyle: 'italic' }}>
-            Buenos Aires
+            {getTranslation(language, "heroLocation")}
           </span>
         </h1>
         
@@ -837,9 +843,9 @@ function Hero({ scrollY }) {
           margin: '0 auto 50px',
           fontWeight: '300'
         }}>
-          {TEAM_DATA.tagline}
+          {getTranslation(language, 'heroDescription')}
         </p>
-        
+
         <div className="fade-in fade-in-delay-3" style={{
           fontSize: '13px',
           letterSpacing: '0.1em',
@@ -850,9 +856,9 @@ function Hero({ scrollY }) {
           justifyContent: 'center',
           gap: '20px'
         }}>
-          <span>Equipo {TEAM_DATA.name}</span>
+          <span>{getTranslation(language, 'heroTeam')} {TEAM_DATA.name}</span>
           <span style={{ color: COLORS.primary }}>•</span>
-          <span>2025-2026</span>
+          <span>{getTranslation(language, 'heroYear')}</span>
         </div>
       </div>
       
@@ -883,7 +889,9 @@ function Hero({ scrollY }) {
 }
 
 // === PROJECT INTRO ===
-function ProjectIntro() {
+function ProjectIntro({ language = 'es' }) {
+  const t = (key) => getTranslation(language, key);
+  
   return (
     <section id="intro" className="fade-up" style={{
       padding: '120px 60px',
@@ -905,7 +913,7 @@ function ProjectIntro() {
             marginBottom: '20px',
             fontWeight: '500'
           }}>
-            Sobre el proyecto
+            {t('projectIntroSubtitle')}
           </div>
           <h2 style={{
             fontFamily: '"Crimson Pro", serif',
@@ -915,14 +923,13 @@ function ProjectIntro() {
             marginBottom: '30px',
             color: COLORS.text
           }}>
-            Mapeo integral del
+            {t('projectIntroTitle')}
             <br />
             <span style={{ fontStyle: 'italic', fontWeight: '600' }}>
-              ecosistema comercial
+              {t('projectIntroTitleItalic')}
             </span>
           </h2>
         </div>
-        
         <div>
           <p style={{
             fontSize: '16px',
@@ -930,19 +937,14 @@ function ProjectIntro() {
             color: COLORS.textSecondary,
             marginBottom: '20px'
           }}>
-            Análisis exhaustivo de comercios locales en Buenos Aires, 
-            combinando metodologías de campo del MIT LIFT Lab con 
-            machine learning para identificar patrones de crecimiento 
-            y oportunidades de desarrollo.
+            {t('projectIntroP1')}
           </p>
           <p style={{
             fontSize: '16px',
             lineHeight: '1.8',
             color: COLORS.textSecondary
           }}>
-            Este proyecto forma parte de una iniciativa más amplia 
-            para comprender y potenciar el emprendedorismo en 
-            mercados emergentes.
+            {t('projectIntroP2')}
           </p>
         </div>
       </div>
@@ -951,7 +953,7 @@ function ProjectIntro() {
 }
 
 // === UNIVERSIDADES PARTICIPANTES ===
-function UniversidadesParticipantes() {
+function UniversidadesParticipantes({ language = 'es' }) {
   const universidades = [
     { 
       nombre: 'MIT', 
@@ -1008,7 +1010,7 @@ function UniversidadesParticipantes() {
           marginBottom: '16px',
           fontWeight: '500'
         }}>
-          Instituciones Participantes
+            {getTranslation(language, 'universitiesSubtitle')}
         </div>
         <h3 style={{
           fontFamily: '"Crimson Pro", serif',
@@ -1016,7 +1018,7 @@ function UniversidadesParticipantes() {
           fontWeight: '400',
           color: COLORS.text
         }}>
-          Colaboración Interinstitucional
+            {getTranslation(language, 'universitiesTitle')}
         </h3>
       </div>
 
@@ -1095,76 +1097,106 @@ function UniversidadesParticipantes() {
 
 // === INDICADORES CON GRÁFICOS CIRCULARES ===
 // === RESUMEN EJECUTIVO PARA COMERCIANTES (MODIFICADO) ===
-function Indicadores({ data }) {
+function Indicadores({ data, language = 'es' }) {
   const indicadores = [
     { 
-      label: 'Comercios Analizados', 
+      label: getTranslation(language, 'indicator1'), 
       value: data.total, 
       max: data.total,
       suffix: '',
-      description: 'Total de comercios relevados'
+      description: getTranslation(language, 'indicator1Sub')
     },
     { 
-      label: 'Trabajadores Promedio', 
+      label: getTranslation(language, 'indicator2'), 
       value: parseFloat(data.promTrabajadores), 
       max: 10,
       suffix: '',
-      description: 'Por establecimiento'
+      description: getTranslation(language, 'indicator2Sub')
     },
     { 
-      label: 'Horas de Operación', 
+      label: getTranslation(language, 'indicator3'), 
       value: parseFloat(data.promHoras), 
       max: 24,
       suffix: 'hs',
-      description: 'Promedio diario'
+      description: getTranslation(language, 'indicator3Sub')
     },
     { 
-      label: 'Acceso a Crédito', 
+      label: getTranslation(language, 'indicator4'), 
       value: parseFloat(data.pctCredito), 
       max: 100,
       suffix: '%',
-      description: 'Comercios con financiamiento'
+      description: getTranslation(language, 'indicator4Sub')
     },
     { 
-      label: 'Expectativas Positivas', 
+      label: getTranslation(language, 'indicator5'), 
       value: parseFloat(data.pctExpectativas), 
       max: 100,
       suffix: '%',
-      description: 'Esperan ventas mayores'
+      description: getTranslation(language, 'indicator5Sub')
     },
     { 
-      label: 'Deseo de Crecimiento', 
+      label: getTranslation(language, 'indicator6'), 
       value: parseFloat(data.pctCrecimiento), 
       max: 100,
       suffix: '%',
-      description: 'Quieren expandir su negocio'
+      description: getTranslation(language, 'indicator6Sub')
     },
     { 
-      label: 'Local Propio', 
+      label: getTranslation(language, 'indicator7'), 
       value: parseFloat(data.pctLocalPropio), 
       max: 100,
       suffix: '%',
-      description: 'Propiedad del establecimiento'
+      description: getTranslation(language, 'indicator7Sub')
     },
     { 
-      label: 'Años en Operación', 
+      label: getTranslation(language, 'indicator8'), 
       value: parseFloat(data.promAniosOperacion), 
       max: 50,
       suffix: '',
-      description: 'Antigüedad promedio'
+      description: getTranslation(language, 'indicator8Sub')
     }
   ];
 
   return (
     <section id="indicadores" className="fade-up" style={{
       padding: '120px 60px',
+      position: 'relative',
+      overflow: 'hidden',
       backgroundColor: COLORS.surface,
       borderTop: `1px solid ${COLORS.border}`,
       borderBottom: `1px solid ${COLORS.border}`
     }}>
-      <div style={{ 
-        maxWidth: '1400px', 
-        margin: '0 auto'
+      {/* Imagen de fondo - Productos y comercios */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: 'url(https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=1600&q=85&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.5,
+        filter: 'grayscale(0%) brightness(1.15)',
+        zIndex: 0
+      }} />
+
+      {/* Overlay gradient */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `linear-gradient(135deg, ${COLORS.surface}b0 0%, ${COLORS.surface}70 50%, ${COLORS.surface}b0 100%)`,
+        zIndex: 1
+      }} />
+
+      <div style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        position: 'relative',
+        zIndex: 2
       }}>
         <div style={{
           marginBottom: '80px',
@@ -1178,7 +1210,7 @@ function Indicadores({ data }) {
             marginBottom: '20px',
             fontWeight: '500'
           }}>
-            Indicadores clave
+            {getTranslation(language, 'indicatorsSubtitle')}
           </div>
           <h2 style={{
             fontFamily: '"Crimson Pro", serif',
@@ -1186,7 +1218,7 @@ function Indicadores({ data }) {
             fontWeight: '400',
             color: COLORS.text
           }}>
-            Datos del relevamiento
+            {getTranslation(language, 'indicatorsTitle')}
           </h2>
         </div>
         
@@ -1383,14 +1415,14 @@ function SeccionAnalisis() {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundImage: 'url(https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1600&q=85&auto=format&fit=crop)',
+        backgroundImage: 'url(https://images.unsplash.com/photo-1556740758-90de374c12ad?w=1600&q=85&auto=format&fit=crop)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        opacity: 0.65,
-        filter: 'grayscale(0%) brightness(0.6)',
+        opacity: 0.55,
+        filter: 'grayscale(0%) brightness(1.15)',
         zIndex: 0
       }} />
-      
+
       {/* Overlay gradient */}
       <div style={{
         position: 'absolute',
@@ -1398,7 +1430,7 @@ function SeccionAnalisis() {
         left: 0,
         right: 0,
         bottom: 0,
-        background: `linear-gradient(135deg, ${COLORS.background}70 0%, ${COLORS.background}50 50%, ${COLORS.background}70 100%)`,
+        background: `linear-gradient(135deg, ${COLORS.background}a8 0%, ${COLORS.background}60 50%, ${COLORS.background}a8 100%)`,
         zIndex: 1
       }} />
       
@@ -1421,7 +1453,7 @@ function SeccionAnalisis() {
             marginBottom: '20px',
             fontWeight: '500'
           }}>
-            Insights del equipo
+            {getTranslation(language, 'analysisSubtitleConclusion')}
           </div>
           <h2 style={{
             fontFamily: '"Crimson Pro", serif',
@@ -1430,7 +1462,7 @@ function SeccionAnalisis() {
             color: COLORS.text,
             marginBottom: '20px'
           }}>
-            Análisis y conclusiones
+            {getTranslation(language, 'analysisTitleConclusion')}
           </h2>
         </div>
 
@@ -1526,8 +1558,140 @@ function SeccionAnalisis() {
   );
 }
 
-// === SECCIÁ“N MACHINE LEARNING ===
-function Team() {
+// === PRÓXIMOS PASOS ===
+function ProximosPasos({ language = 'es' }) {
+  const t = (key) => getTranslation(language, key);
+
+  const steps = [
+    {
+      number: '01',
+      title: t('nextStep1Title'),
+      text: t('nextStep1Text')
+    },
+    {
+      number: '02',
+      title: t('nextStep2Title'),
+      text: t('nextStep2Text')
+    },
+    {
+      number: '03',
+      title: t('nextStep3Title'),
+      text: t('nextStep3Text')
+    }
+  ];
+
+  return (
+    <section id="proximos-pasos" className="fade-up" style={{
+      padding: '120px 60px',
+      backgroundColor: COLORS.background,
+      borderTop: `1px solid ${COLORS.border}`,
+      borderBottom: `1px solid ${COLORS.border}`
+    }}>
+      <div style={{
+        maxWidth: '1400px',
+        margin: '0 auto'
+      }}>
+        <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <div style={{
+            fontSize: '12px',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: COLORS.accent,
+            marginBottom: '20px',
+            fontWeight: '500'
+          }}>
+            {t('nextStepsSubtitle')}
+          </div>
+          <h2 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: 'clamp(36px, 4vw, 52px)',
+            fontWeight: '400',
+            color: COLORS.text,
+            marginBottom: '24px',
+            lineHeight: '1.2'
+          }}>
+            {t('nextStepsTitle')}
+          </h2>
+          <p style={{
+            fontSize: '16px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7',
+            maxWidth: '800px',
+            margin: '0 auto'
+          }}>
+            {t('nextStepsIntro')}
+          </p>
+        </div>
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '40px',
+          marginTop: '60px'
+        }}>
+          {steps.map((step, index) => (
+            <AnimatedModelCard key={index} delay={index * 100}>
+              <div style={{
+                padding: '40px',
+                backgroundColor: COLORS.surface,
+                border: `1px solid ${COLORS.border}`,
+                borderRadius: '12px',
+                borderLeft: `4px solid ${index === 0 ? COLORS.primary : index === 1 ? COLORS.accent : COLORS.primaryLight}`,
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                transition: 'all 0.3s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-8px)';
+                e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}>
+                <div style={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: index === 0 ? COLORS.primary : index === 1 ? COLORS.accent : COLORS.primaryLight,
+                  marginBottom: '12px',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase'
+                }}>
+                  {step.number}
+                </div>
+
+                <h3 style={{
+                  fontFamily: '"Crimson Pro", serif',
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  color: COLORS.text,
+                  marginBottom: '16px',
+                  lineHeight: '1.3'
+                }}>
+                  {step.title}
+                </h3>
+
+                <p style={{
+                  fontSize: '14px',
+                  color: COLORS.textSecondary,
+                  lineHeight: '1.7',
+                  margin: 0
+                }}>
+                  {step.text}
+                </p>
+              </div>
+            </AnimatedModelCard>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// === TEAM SECTION ===
+function Team({ language = 'es' }) {
   return (
     <section id="equipo" className="scale-in" style={{
       padding: '120px 60px',
@@ -1579,7 +1743,7 @@ function Team() {
             marginBottom: '20px',
             fontWeight: '500'
           }}>
-            Sobre nosotros
+            {getTranslation(language, 'teamSubtitle')}
           </div>
           <h2 style={{
             fontFamily: '"Crimson Pro", serif',
@@ -1587,7 +1751,7 @@ function Team() {
             fontWeight: '400',
             color: COLORS.text
           }}>
-            ¿Quiénes somos?
+            {getTranslation(language, 'teamTitle')}
           </h2>
         </div>
         

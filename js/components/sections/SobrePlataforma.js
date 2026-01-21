@@ -1,5 +1,7 @@
 // === SOBRE LA PLATAFORMA ===
-function SobrePlataforma() {
+function SobrePlataforma({ language = 'es' }) {
+  const t = (key) => getTranslation(language, key);
+  
   return (
     <section id="sobre-plataforma" className="fade-up" style={{
       padding: '120px 60px',
@@ -11,7 +13,6 @@ function SobrePlataforma() {
         maxWidth: '1400px',
         margin: '0 auto'
       }}>
-        
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
           <div style={{
             fontSize: '12px',
@@ -21,9 +22,8 @@ function SobrePlataforma() {
             marginBottom: '20px',
             fontWeight: '500'
           }}>
-            Plataforma Interactiva
+            {t('aboutSubtitle')}
           </div>
-          
           <h2 style={{
             fontFamily: '"Crimson Pro", serif',
             fontSize: 'clamp(36px, 4vw, 52px)',
@@ -32,9 +32,8 @@ function SobrePlataforma() {
             marginBottom: '24px',
             lineHeight: '1.2'
           }}>
-            Acerca de la página
+            {t('aboutTitle')}
           </h2>
-          
           <p style={{
             fontSize: '16px',
             color: COLORS.textSecondary,
@@ -42,11 +41,10 @@ function SobrePlataforma() {
             maxWidth: '700px',
             margin: '0 auto 40px'
           }}>
-            Escanea los códigos QR para acceder al dashboard o explorar el código fuente
+            {t('aboutDescription')}
           </p>
         </div>
 
-        {/* Grid de 2 QR Codes */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -55,8 +53,6 @@ function SobrePlataforma() {
           maxWidth: '800px',
           margin: '0 auto 80px'
         }}>
-          
-          {/* QR Plataforma */}
           <div style={{
             display: 'flex',
             justifyContent: 'center',
@@ -73,8 +69,8 @@ function SobrePlataforma() {
             }}
             onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-8px)'}
             onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-              <img loading="lazy" 
-                src="img/CodigoQRPAG.png" 
+              <img loading="lazy"
+                src="img/QRREPO.png"
                 alt="QR Dashboard"
                 style={{
                   width: '220px',
@@ -92,19 +88,18 @@ function SobrePlataforma() {
                   color: COLORS.primary,
                   marginBottom: '4px'
                 }}>
-                  Dashboard Interactivo
+                  {t('aboutDashboard')}
                 </div>
                 <div style={{
                   fontSize: '13px',
                   color: COLORS.textSecondary
                 }}>
-                  Explorar análisis
+                  {t('aboutViewOnline')}
                 </div>
               </div>
             </div>
           </div>
 
-          {/* QR Repositorio */}
           <div style={{
             display: 'flex',
             justifyContent: 'center',
@@ -121,9 +116,9 @@ function SobrePlataforma() {
             }}
             onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-8px)'}
             onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-              <img loading="lazy" 
-                src="img/QRREPO.png" 
-                alt="QR Repositorio"
+              <img loading="lazy"
+                src="img/QRREPO.png"
+                alt="QR GitHub"
                 style={{
                   width: '220px',
                   height: '220px',
@@ -140,118 +135,183 @@ function SobrePlataforma() {
                   color: COLORS.accent,
                   marginBottom: '4px'
                 }}>
-                  Repositorio GitHub
+                  {t('aboutGithub')}
                 </div>
                 <div style={{
                   fontSize: '13px',
                   color: COLORS.textSecondary
                 }}>
-                  Ver código fuente
+                  {t('aboutSourceCode')}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Sección sobre el desarrollo técnico */}
+        <div style={{
+          maxWidth: '900px',
+          margin: '0 auto',
+          padding: '40px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '12px',
+          border: `1px solid ${COLORS.border}`
+        }}>
+          <h3 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: '28px',
+            fontWeight: '400',
+            color: COLORS.text,
+            marginBottom: '24px',
+            textAlign: 'center'
+          }}>
+            {t('aboutTechTitle')}
+          </h3>
+
+          <div style={{
+            fontSize: '14px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.8',
+            marginBottom: '30px'
+          }}>
+            <p style={{ marginBottom: '16px' }}>
+              {t('aboutTechIntro')}
+            </p>
+          </div>
+
+          {/* Stack técnico */}
+          <div style={{
+            padding: '24px',
+            backgroundColor: COLORS.background,
+            borderRadius: '8px',
+            marginBottom: '24px'
+          }}>
+            <h4 style={{
+              fontSize: '16px',
+              fontWeight: '600',
+              color: COLORS.primary,
+              marginBottom: '16px',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase'
+            }}>
+              {t('aboutTechStackTitle')}
+            </h4>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '16px'
+            }}>
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: '600', color: COLORS.text, marginBottom: '8px' }}>
+                  {t('aboutTechFrontend')}
+                </div>
+                <div style={{ fontSize: '12px', color: COLORS.textSecondary, lineHeight: '1.6' }}>
+                  React 18, Babel Standalone, JSX
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: '600', color: COLORS.text, marginBottom: '8px' }}>
+                  {t('aboutTechData')}
+                </div>
+                <div style={{ fontSize: '12px', color: COLORS.textSecondary, lineHeight: '1.6' }}>
+                  Python, Pandas, Scikit-learn
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: '600', color: COLORS.text, marginBottom: '8px' }}>
+                  {t('aboutTechMaps')}
+                </div>
+                <div style={{ fontSize: '12px', color: COLORS.textSecondary, lineHeight: '1.6' }}>
+                  Leaflet.js, OpenStreetMap
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: '600', color: COLORS.text, marginBottom: '8px' }}>
+                  {t('aboutTechML')}
+                </div>
+                <div style={{ fontSize: '12px', color: COLORS.textSecondary, lineHeight: '1.6' }}>
+                  Random Forest, Statistical Tests
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: '600', color: COLORS.text, marginBottom: '8px' }}>
+                  {t('aboutTechDeployment')}
+                </div>
+                <div style={{ fontSize: '12px', color: COLORS.textSecondary, lineHeight: '1.6' }}>
+                  Vercel con integración continua
+                </div>
+              </div>
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: '600', color: COLORS.text, marginBottom: '8px' }}>
+                  {t('aboutTechVersionControl')}
+                </div>
+                <div style={{ fontSize: '12px', color: COLORS.textSecondary, lineHeight: '1.6' }}>
+                  GitHub
                 </div>
               </div>
             </div>
           </div>
 
-        </div>
-
-        {/* Sección: Cómo construimos esta plataforma */}
-        <div>
-          <h3 style={{
-            fontFamily: '"Crimson Pro", serif',
-            fontSize: '28px',
-            fontWeight: '500',
-            color: COLORS.text,
-            marginBottom: '30px',
-            textAlign: 'center'
-          }}>
-            Cómo construimos esta plataforma
-          </h3>
-          
+          {/* Formación Académica */}
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '24px'
+            padding: '24px',
+            backgroundColor: `${COLORS.accent}08`,
+            borderRadius: '8px',
+            borderLeft: `4px solid ${COLORS.accent}`,
+            marginBottom: '24px'
           }}>
-
-            
-            {/* Vibecoding */}
-            <div style={{
-              padding: '20px',
-              backgroundColor: COLORS.surface,
-              border: `1px solid ${COLORS.border}`,
-              borderLeft: `4px solid ${COLORS.primary}`,
-              borderRadius: '6px'
+            <h4 style={{
+              fontSize: '16px',
+              fontWeight: '600',
+              color: COLORS.accent,
+              marginBottom: '12px',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase'
             }}>
-              <div style={{
-                fontSize: '14px',
-                fontWeight: '600',
-                color: COLORS.primary,
-                marginBottom: '8px'
-              }}>
-                Vibecoding & Learning by Doing
-              </div>
-              <div style={{
-                fontSize: '13px',
-                color: COLORS.textSecondary,
-                lineHeight: '1.6'
-              }}>
-                Desarrollo iterativo y aprendizaje continuo mediante la práctica directa con tecnologías web modernas.
-              </div>
-            </div>
-
-            {/* Formación académica */}
-            <div style={{
-              padding: '20px',
-              backgroundColor: COLORS.surface,
-              border: `1px solid ${COLORS.border}`,
-              borderLeft: `4px solid ${COLORS.accent}`,
-              borderRadius: '6px'
+              {t('aboutAcademicTitle')}
+            </h4>
+            <p style={{
+              fontSize: '13px',
+              color: COLORS.textSecondary,
+              lineHeight: '1.7',
+              margin: 0
             }}>
-              <div style={{
-                fontSize: '14px',
-                fontWeight: '600',
-                color: COLORS.accent,
-                marginBottom: '8px'
-              }}>
-                Formación Académica
-              </div>
-              <div style={{
-                fontSize: '13px',
-                color: COLORS.textSecondary,
-                lineHeight: '1.6'
-              }}>
-                Cursos y metodologías de MIT, UBA, UNSAM fundamentales para el análisis de datos y visualización.
-              </div>
-            </div>
+              {t('aboutAcademicText')}
+            </p>
+          </div>
 
-            {/* Stack tecnológico */}
-            <div style={{
-              padding: '20px',
-              backgroundColor: COLORS.surface,
-              border: `1px solid ${COLORS.border}`,
-              borderLeft: `4px solid ${COLORS.primaryLight}`,
-              borderRadius: '6px'
+          {/* Metodología de desarrollo */}
+          <div style={{
+            padding: '24px',
+            backgroundColor: `${COLORS.primary}08`,
+            borderRadius: '8px',
+            borderLeft: `4px solid ${COLORS.primary}`
+          }}>
+            <h4 style={{
+              fontSize: '16px',
+              fontWeight: '600',
+              color: COLORS.primary,
+              marginBottom: '12px',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase'
             }}>
-              <div style={{
-                fontSize: '14px',
-                fontWeight: '600',
-                color: COLORS.primaryLight,
-                marginBottom: '8px'
-              }}>
-                Stack Tecnológico
-              </div>
-              <div style={{
-                fontSize: '13px',
-                color: COLORS.textSecondary,
-                lineHeight: '1.6'
-              }}>
-                <strong style={{ color: COLORS.text }}>Frontend:</strong> React, JavaScript, HTML/CSS<br/>
-                <strong style={{ color: COLORS.text }}>Análisis de datos:</strong> Python<br/>
-                <strong style={{ color: COLORS.text }}>Deployment:</strong> Vercel con integración continua<br/>
-                <strong style={{ color: COLORS.text }}>Control de versiones:</strong> GitHub
-              </div>
+              {t('aboutTechMethodTitle')}
+            </h4>
+            <p style={{
+              fontSize: '13px',
+              color: COLORS.textSecondary,
+              lineHeight: '1.7',
+              marginBottom: '12px'
+            }}>
+              {t('aboutTechMethodText')}
+            </p>
+            <div style={{
+              fontSize: '12px',
+              color: COLORS.textTertiary,
+              fontStyle: 'italic'
+            }}>
+              {t('aboutTechMethodNote')}
             </div>
-
           </div>
         </div>
       </div>

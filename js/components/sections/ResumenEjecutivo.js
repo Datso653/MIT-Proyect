@@ -1,6 +1,9 @@
 // === HIPÓTESIS GEOESPACIALES ===
-function ResumenEjecutivo({ indicadores }) {
+function ResumenEjecutivo({ indicadores, language = 'es' }) {
   if (!indicadores) return null;
+  
+  const t = (key) => getTranslation(language, key);
+  console.log("ResumenEjecutivo render - language:", language);
   
   return (
     <section id="hipotesis" className="fade-up" style={{
@@ -10,7 +13,7 @@ function ResumenEjecutivo({ indicadores }) {
       backgroundColor: COLORS.background,
       borderTop: `1px solid ${COLORS.border}`
     }}>
-      {/* Imagen de fondo - Análisis geoespacial */}
+      {/* Imagen de fondo - Mapa de Argentina */}
       <div style={{
         position: 'absolute',
         top: 0,
@@ -20,11 +23,11 @@ function ResumenEjecutivo({ indicadores }) {
         backgroundImage: 'url(https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1600&q=85&auto=format&fit=crop)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        opacity: 0.75,
-        filter: 'grayscale(10%) brightness(1.0)',
+        opacity: 0.4,
+        filter: 'grayscale(0%) brightness(1.2)',
         zIndex: 0
       }} />
-      
+
       {/* Overlay gradient */}
       <div style={{
         position: 'absolute',
@@ -32,7 +35,7 @@ function ResumenEjecutivo({ indicadores }) {
         left: 0,
         right: 0,
         bottom: 0,
-        background: `linear-gradient(135deg, ${COLORS.background}f8 0%, ${COLORS.background}ea 50%, ${COLORS.background}f8 100%)`,
+        background: `linear-gradient(135deg, ${COLORS.background}b0 0%, ${COLORS.background}70 50%, ${COLORS.background}b0 100%)`,
         zIndex: 1
       }} />
       
@@ -44,17 +47,6 @@ function ResumenEjecutivo({ indicadores }) {
       }}>
         
         <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-          <div style={{
-            fontSize: '12px',
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: COLORS.accent,
-            marginBottom: '20px',
-            fontWeight: '500'
-          }}>
-            Validación Estadística
-          </div>
-          
           <h2 style={{
             fontFamily: '"Crimson Pro", serif',
             fontSize: 'clamp(32px, 3.5vw, 44px)',
@@ -62,9 +54,9 @@ function ResumenEjecutivo({ indicadores }) {
             color: COLORS.text,
             marginBottom: '24px'
           }}>
-            Hipótesis Geoespaciales
+            {t('hypothesesTitle')}
           </h2>
-          
+
           <p style={{
             fontSize: '14px',
             lineHeight: '1.7',
@@ -72,7 +64,7 @@ function ResumenEjecutivo({ indicadores }) {
             maxWidth: '800px',
             margin: '0 auto'
           }}>
-            Análisis riguroso de dos hipótesis geoespaciales sobre el ecosistema comercial de AMBA mediante pruebas estadísticas y modelos de Machine Learning.
+            {t('hypothesesDescription')}
           </p>
         </div>
 
@@ -99,7 +91,7 @@ function ResumenEjecutivo({ indicadores }) {
               letterSpacing: '0.05em',
               textTransform: 'uppercase'
             }}>
-              Hipótesis 1
+              {t('hypothesis1Title')}
             </div>
             <h4 style={{
               fontSize: '16px',
@@ -108,7 +100,7 @@ function ResumenEjecutivo({ indicadores }) {
               marginBottom: '12px',
               lineHeight: '1.4'
             }}>
-              Crimen alto + Sin crédito → ¿Menor expectativa de crecimiento?
+              {t('hypothesis1Question')}
             </h4>
             <p style={{
               fontSize: '13px',
@@ -116,7 +108,7 @@ function ResumenEjecutivo({ indicadores }) {
               lineHeight: '1.6',
               margin: 0
             }}>
-              Comercios en zonas con alta percepción de crimen y sin acceso a crédito.
+              {t('hypothesis1Description')}
             </p>
           </div>
 
@@ -136,7 +128,7 @@ function ResumenEjecutivo({ indicadores }) {
               letterSpacing: '0.05em',
               textTransform: 'uppercase'
             }}>
-              Hipótesis 2
+              {t('hypothesis2Title')}
             </div>
             <h4 style={{
               fontSize: '16px',
@@ -145,7 +137,7 @@ function ResumenEjecutivo({ indicadores }) {
               marginBottom: '12px',
               lineHeight: '1.4'
             }}>
-              Crimen bajo + Con crédito → ¿Mayor inversión tecnológica?
+              {t('hypothesis2Question')}
             </h4>
             <p style={{
               fontSize: '13px',
@@ -153,7 +145,7 @@ function ResumenEjecutivo({ indicadores }) {
               lineHeight: '1.6',
               margin: 0
             }}>
-              Comercios en zonas favorables con acceso a financiamiento.
+              {t('hypothesis2Description')}
             </p>
           </div>
 
@@ -174,7 +166,7 @@ function ResumenEjecutivo({ indicadores }) {
             margin: 0,
             textAlign: 'center'
           }}>
-            <strong style={{ color: COLORS.text }}>Nota:</strong> Los resultados detallados del análisis estadístico se presentan en las secciones expandibles a continuación, con métricas de validación y visualizaciones interactivas.
+            <strong style={{ color: COLORS.text }}>{t('noteLabel')}</strong> {t('noteText')}
           </p>
         </div>
       </div>

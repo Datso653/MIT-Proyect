@@ -1,6 +1,8 @@
 // === COMPONENTE FOOTER ===
 
-function Footer() {
+function Footer({ language = 'es' }) {
+  const t = (key) => getTranslation(language, key);
+
   return (
     <footer style={{
       borderTop: `1px solid ${COLORS.border}`,
@@ -34,9 +36,7 @@ function Footer() {
             color: COLORS.textSecondary,
             maxWidth: '400px'
           }}>
-            Laboratory for Innovation Science and Policy.
-            Investigación aplicada para el desarrollo de ecosistemas
-            emprendedores en mercados emergentes.
+            {t('footerDescription')}
           </p>
         </div>
 
@@ -49,7 +49,7 @@ function Footer() {
             marginBottom: '20px',
             fontWeight: '500'
           }}>
-            Equipo
+            {t('footerTeam')}
           </h4>
           {TEAM_DATA.members.map((member, index) => (
             <div key={index} style={{
@@ -71,7 +71,7 @@ function Footer() {
             marginBottom: '20px',
             fontWeight: '500'
           }}>
-            Instituciones
+            {t('footerInstitutions')}
           </h4>
           {TEAM_DATA.universities.map((uni, index) => (
             <div key={index} style={{
@@ -93,7 +93,7 @@ function Footer() {
             marginBottom: '20px',
             fontWeight: '500'
           }}>
-            Contacto
+            {t('footerContact')}
           </h4>
           <div style={{
             fontSize: '13px',
@@ -157,13 +157,13 @@ function Footer() {
         color: COLORS.textSecondary
       }}>
         <div>
-          © 2025-2026 MIT LIFT Lab · Equipo {TEAM_DATA.name}
+          © 2025-2026 MIT LIFT Lab · {t('footerTeam')} {TEAM_DATA.name}
         </div>
         <div style={{
           display: 'flex',
           gap: '30px'
         }}>
-          <span>Proyecto académico y Social </span>
+          <span>{t('footerAcademicProject')}</span>
           <span>Universidad de Buenos Aires</span>
         </div>
       </div>

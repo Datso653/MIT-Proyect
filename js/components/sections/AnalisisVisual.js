@@ -1,5 +1,5 @@
 // === ANÁLISIS VISUAL ===
-function AnalisisVisual({ data, indicadores, datos }) {
+function AnalisisVisual({ data, indicadores, datos, language = 'es' }) {
   const [visibleItems, setVisibleItems] = useState(new Set());
   const sectionRef = useRef(null);
 
@@ -67,7 +67,7 @@ function AnalisisVisual({ data, indicadores, datos }) {
           marginBottom: '20px',
           fontWeight: '500'
         }}>
-          Análisis detallado
+          {getTranslation(language, 'analysisSubtitle')}
         </div>
         <h2 style={{
           fontFamily: '"Crimson Pro", serif',
@@ -76,7 +76,7 @@ function AnalisisVisual({ data, indicadores, datos }) {
           color: COLORS.text,
           marginBottom: '20px'
         }}>
-          Distribución y composición
+          {getTranslation(language, 'analysisTitle')}
         </h2>
         <p style={{
           fontSize: '16px',
@@ -84,7 +84,7 @@ function AnalisisVisual({ data, indicadores, datos }) {
           maxWidth: '700px',
           margin: '0 auto'
         }}>
-          Desglose visual de tipos de comercio y estructura laboral del ecosistema relevado
+          {getTranslation(language, 'analysisDescription')}
         </p>
       </div>
 
@@ -105,14 +105,14 @@ function AnalisisVisual({ data, indicadores, datos }) {
           transform: visibleItems.has('0') ? 'translateX(0)' : 'translateX(-40px)',
           transition: 'opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s'
         }}>
-          <GraficoDistribucion data={data.distribucionComercios} />
+          <GraficoDistribucion data={data.distribucionComercios} language={language} />
         </div>
         <div style={{
           opacity: visibleItems.has('0') ? 1 : 0,
           transform: visibleItems.has('0') ? 'translateX(0)' : 'translateX(40px)',
           transition: 'opacity 0.8s ease-out 0.4s, transform 0.8s ease-out 0.4s'
         }}>
-          <GraficoBarras data={data.trabajadoresPorTipo} />
+          <GraficoBarras data={data.trabajadoresPorTipo} language={language} />
         </div>
       </div>
       {/* Tercera fila: Adopción tecnológica y Salarios */}
@@ -132,14 +132,14 @@ function AnalisisVisual({ data, indicadores, datos }) {
           transform: visibleItems.has('2') ? 'translateX(0)' : 'translateX(-40px)',
           transition: 'opacity 0.8s ease-out 0.2s, transform 0.8s ease-out 0.2s'
         }}>
-          <GraficoTierlist data={data.adopcionTecnologica} />
+          <GraficoTierlist data={data.adopcionTecnologica} language={language} />
         </div>
         <div style={{
           opacity: visibleItems.has('2') ? 1 : 0,
           transform: visibleItems.has('2') ? 'translateX(0)' : 'translateX(40px)',
           transition: 'opacity 0.8s ease-out 0.4s, transform 0.8s ease-out 0.4s'
         }}>
-          <GraficoSalarios data={data.salarioData} />
+          <GraficoSalarios data={data.salarioData} language={language} />
         </div>
       </div>
       {/* Segunda fila: Fuentes de crédito (barras horizontales) */}
@@ -155,7 +155,7 @@ function AnalisisVisual({ data, indicadores, datos }) {
           transition: 'opacity 0.8s ease-out, transform 0.8s ease-out'
         }}>
         <div style={{ gridColumn: '1 / -1' }}>
-          <GraficoBarrasHorizontales data={data.creditoPorFuente} pctCredito={indicadores?.pctCredito || 0} />
+          <GraficoBarrasHorizontales data={data.creditoPorFuente} pctCredito={indicadores?.pctCredito || 0} language={language} />
         </div>
       </div>
       </div>
@@ -164,16 +164,17 @@ function AnalisisVisual({ data, indicadores, datos }) {
 }
 
 
-function GraficoDistribucion({ data }) {
+function GraficoDistribucion({ data, language = 'es' }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
-  
+  const t = (key) => getTranslation(language, key);
+
   useEffect(() => {
     // Trigger animation after component mounts
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
-  
+
   const total = data.reduce((acc, d) => acc + d.cantidad, 0);
   let currentAngle = 0;
   
@@ -208,14 +209,14 @@ function GraficoDistribucion({ data }) {
         color: COLORS.text,
         marginBottom: '10px'
       }}>
-        Distribución por tipo
+        {t('analysisDistribution')}
       </h3>
       <p style={{
         fontSize: '13px',
         color: COLORS.textSecondary,
         marginBottom: '30px'
       }}>
-        {total} comercios relevados
+        {t('analysisDistributionSub').replace('{count}', total)}
       </p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
         {/* SVG Donut Chart */}
@@ -300,8 +301,9 @@ function GraficoDistribucion({ data }) {
 }
 
 // Gráfico de barras - Trabajadores por tipo
-function GraficoBarras({ data }) {
+function GraficoBarras({ data, language = 'es' }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const t = (key) => getTranslation(language, key);
 
   const trabajadoresData = [
     { tipo: "BARES Y PEQUEÑOS RESTAURANTES", promedio: 5.3 },
@@ -333,14 +335,14 @@ function GraficoBarras({ data }) {
         color: COLORS.text,
         marginBottom: '10px'
       }}>
-        Trabajadores por tipo
+        {t('analysisWorkers')}
       </h3>
       <p style={{
         fontSize: '13px',
         color: COLORS.textSecondary,
         marginBottom: '30px'
       }}>
-        Promedio de empleados por categoría • Pasa el mouse sobre las barras
+        {t('analysisWorkersSub')}
       </p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {trabajadoresData.map((item, idx) => {
@@ -377,9 +379,10 @@ function GraficoBarras({ data }) {
   );
 }
 // Gráfico de barras horizontales - Fuentes de crédito
-function GraficoBarrasHorizontales({ data, pctCredito }) {
+function GraficoBarrasHorizontales({ data, pctCredito, language = 'es' }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  
+  const t = (key) => getTranslation(language, key);
+
   const maxValue = Math.max(...data.map(d => d.cantidad));
   const barHeight = 45;
   const gap = 16;
@@ -400,7 +403,7 @@ function GraficoBarrasHorizontales({ data, pctCredito }) {
         color: COLORS.text,
         marginBottom: '10px'
       }}>
-        Fuentes de financiamiento
+        {t('analysisFinancing')}
       </h3>
       <p style={{
         fontSize: '14px',
@@ -408,8 +411,7 @@ function GraficoBarrasHorizontales({ data, pctCredito }) {
         marginBottom: '16px',
         lineHeight: '1.6'
       }}>
-        Del <strong style={{ color: COLORS.accent, fontSize: '16px' }}>{pctCredito}%</strong> de comercios que acceden a crédito, 
-        estas son sus fuentes de financiamiento
+        {t('analysisFinancingDescription').replace('{pct}', pctCredito)}
       </p>
       
       {/* Aclaración destacada */}
@@ -448,16 +450,14 @@ function GraficoBarrasHorizontales({ data, pctCredito }) {
               color: COLORS.text,
               marginBottom: '6px'
             }}>
-              Múltiples fuentes simultáneas
+              {t('analysisFinancingNote')}
             </div>
             <div style={{
               fontSize: '13px',
               color: COLORS.textSecondary,
               lineHeight: '1.6'
             }}>
-              Los porcentajes suman más de 100% porque <strong style={{ color: COLORS.text }}>un mismo comercio 
-              puede acceder a varias fuentes de crédito al mismo tiempo</strong>. Por ejemplo, un comercio puede 
-              tener crédito de proveedores y también préstamos familiares simultáneamente.
+              {t('analysisFinancingNoteText')}
             </div>
           </div>
         </div>
@@ -495,7 +495,7 @@ function GraficoBarrasHorizontales({ data, pctCredito }) {
                   color: COLORS.textSecondary,
                   fontWeight: '400'
                 }}>
-                  {item.cantidad} comercios
+                  {item.cantidad} {t('analysisFinancingCommerces')}
                 </span>
               </div>
               
@@ -563,63 +563,64 @@ function GraficoBarrasHorizontales({ data, pctCredito }) {
 }
 
 // Gráfico tierlist - Adopción tecnológica
-function GraficoTierlist({ data }) {
+function GraficoTierlist({ data, language = 'es' }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [expandedIndex, setExpandedIndex] = useState(null);
-  
+  const t = (key) => getTranslation(language, key);
+
   const tierConfig = {
     'Alto': {
       color: COLORS.primary,
       gradient: `linear-gradient(135deg, ${COLORS.primary}, ${COLORS.primaryDark})`,
-      label: 'Nivel Avanzado',
-      badge: 'Alto'
+      label: t('analysisTechLevelAdvanced'),
+      badge: t('analysisTechBadgeHigh')
     },
     'Moderado': {
       color: COLORS.accent,
       gradient: `linear-gradient(135deg, ${COLORS.accent}, ${COLORS.accentDark})`,
-      label: 'Nivel Intermedio',
-      badge: 'Moderado'
+      label: t('analysisTechLevelIntermediate'),
+      badge: t('analysisTechBadgeMod')
     },
     'Básico': {
       color: COLORS.primaryLight,
       gradient: `linear-gradient(135deg, ${COLORS.primaryLight}, ${COLORS.primary})`,
-      label: 'Nivel Inicial',
-      badge: 'Básico'
+      label: t('analysisTechLevelInitial'),
+      badge: t('analysisTechBadgeBasic')
     }
   };
   
   const tierDetails = {
     'Alto': {
-      titulo: 'Digitalización Avanzada',
+      titulo: t('analysisTechAdvancedTitle'),
       items: [
-        { texto: 'Presencia activa en redes sociales (Instagram, Facebook, TikTok)' },
-        { texto: 'E-commerce funcional con catálogo online y pagos digitales' },
-        { texto: 'Software de gestión de stock y inventario' },
-        { texto: 'Sistema POS integrado con múltiples métodos de pago' },
-        { texto: 'Analytics y métricas de ventas digitales' },
-        { texto: 'Automatización de procesos (facturación, recordatorios)' }
+        { texto: t('techAdvancedItem1') },
+        { texto: t('techAdvancedItem2') },
+        { texto: t('techAdvancedItem3') },
+        { texto: t('techAdvancedItem4') },
+        { texto: t('techAdvancedItem5') },
+        { texto: t('techAdvancedItem6') }
       ]
     },
     'Moderado': {
-      titulo: 'Digitalización Intermedia',
+      titulo: t('analysisTechIntermediateTitle'),
       items: [
-        { texto: 'WhatsApp Business para atención al cliente' },
-        { texto: 'Apps de mensajería para pedidos y consultas' },
-        { texto: 'Códigos QR para pagos (Mercado Pago, Modo, etc.)' },
-        { texto: 'Aceptación de transferencias bancarias' },
-        { texto: 'Catálogo digital básico (PDF o fotos)' },
-        { texto: 'Email para comunicación con clientes' }
+        { texto: t('techModerateItem1') },
+        { texto: t('techModerateItem2') },
+        { texto: t('techModerateItem3') },
+        { texto: t('techModerateItem4') },
+        { texto: t('techModerateItem5') },
+        { texto: t('techModerateItem6') }
       ]
     },
     'Básico': {
-      titulo: 'Digitalización Inicial',
+      titulo: t('analysisTechBasicTitle'),
       items: [
-        { texto: 'Teléfono celular para contacto' },
-        { texto: 'Tarjeta de débito/crédito física' },
-        { texto: 'Registro manual o digital simple de ventas' },
-        { texto: 'Calculadora para operaciones básicas' },
-        { texto: 'Línea telefónica fija o móvil' },
-        { texto: 'Facturación tradicional sin sistema integrado' }
+        { texto: t('techBasicItem1') },
+        { texto: t('techBasicItem2') },
+        { texto: t('techBasicItem3') },
+        { texto: t('techBasicItem4') },
+        { texto: t('techBasicItem5') },
+        { texto: t('techBasicItem6') }
       ]
     }
   };
@@ -643,7 +644,7 @@ function GraficoTierlist({ data }) {
         color: COLORS.text,
         marginBottom: '10px'
       }}>
-        Adopción tecnológica
+        {t('analysisTech')}
       </h3>
       <p style={{
         fontSize: '14px',
@@ -651,7 +652,7 @@ function GraficoTierlist({ data }) {
         marginBottom: '40px',
         lineHeight: '1.6'
       }}>
-        Clasificación de comercios según nivel de digitalización • Click para ver detalles
+        {t('analysisTechDescription')}
       </p>
       
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -789,7 +790,7 @@ function GraficoTierlist({ data }) {
                   color: config.color,
                   fontWeight: '600'
                 }}>
-                  {isExpanded ? 'Ocultar detalles' : 'Ver qué incluye'}
+                  {isExpanded ? t('analysisTechHideDetails') : t('analysisTechViewDetails')}
                 </span>
                 <div style={{
                   fontSize: '12px',
@@ -874,10 +875,11 @@ function GraficoTierlist({ data }) {
   );
 }
 // Gráfico de salarios
-function GraficoSalarios({ data }) {
+function GraficoSalarios({ data, language = 'es' }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [viewMode, setViewMode] = useState('general'); // 'general' o 'porComercio'
-  
+  const t = (key) => getTranslation(language, key);
+
   const formatCurrency = (num) => {
     return new Intl.NumberFormat('es-AR', {
       style: 'currency',
@@ -903,14 +905,14 @@ function GraficoSalarios({ data }) {
             color: COLORS.text,
             marginBottom: '10px'
           }}>
-            Salario mínimo a percibir
+            {t('analysisSalary')}
           </h3>
           <p style={{
             fontSize: '13px',
             color: COLORS.textSecondary,
             marginBottom: '16px'
           }}>
-            Rango salarial que los comerciantes están dispuestos a ofrecer (100k - 5M ARS)
+            {t('analysisSalaryDescription')}
           </p>
           
           {/* Disclaimer de calidad de datos */}

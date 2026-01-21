@@ -3,9 +3,10 @@
 // ModeloFactoresExternos, MetricaCard, ConfusionMatrix, FeatureImportanceChart,
 // ROCCurve, ScatterPlot, DistribucionPredicciones, AfectacionesChart
 
-function SeccionMachineLearning({ datos }) {
+function SeccionMachineLearning({ datos, language = 'es' }) {
   const [resultadosML, setResultadosML] = useState(null);
   const [loading, setLoading] = useState(true);
+  const t = (key) => getTranslation(language, key);
 
   useEffect(() => {
     fetch('datos/ml_results.json')
@@ -27,7 +28,7 @@ function SeccionMachineLearning({ datos }) {
         backgroundColor: COLORS.surface,
         textAlign: 'center'
       }}>
-        <div style={{ color: COLORS.primary }}>Cargando análisis de hipótesis...</div>
+        <div style={{ color: COLORS.primary }}>{t('mlLoading')}</div>
       </section>
     );
   }
@@ -58,7 +59,7 @@ function SeccionMachineLearning({ datos }) {
             marginBottom: '20px',
             fontWeight: '500'
           }}>
-            Validación Estadística
+            {t('mlSubtitle')}
           </div>
           <h2 style={{
             fontFamily: '"Crimson Pro", serif',
@@ -67,9 +68,9 @@ function SeccionMachineLearning({ datos }) {
             color: COLORS.text,
             marginBottom: '30px'
           }}>
-            Análisis de Hipótesis Geoespaciales
+            {t('mlTitle')}
           </h2>
-          
+
           <div style={{
             maxWidth: '900px',
             margin: '0 auto',
@@ -88,7 +89,7 @@ function SeccionMachineLearning({ datos }) {
               height: '3px',
               background: `linear-gradient(90deg, ${COLORS.primary}, ${COLORS.primaryDark})`
             }} />
-            
+
             <div style={{ textAlign: 'left', paddingLeft: '20px' }}>
               <div style={{
                 fontSize: '13px',
@@ -98,17 +99,14 @@ function SeccionMachineLearning({ datos }) {
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase'
               }}>
-                Metodología de Análisis
+                {t('mlMethodology')}
               </div>
               <div style={{
                 fontSize: '14px',
                 lineHeight: '1.7',
                 color: COLORS.textSecondary
               }}>
-                Análisis riguroso de <strong style={{ color: COLORS.text }}>dos hipótesis geoespaciales</strong> sobre el ecosistema comercial de AMBA. 
-                Estas hipótesis utilizan <strong style={{ color: COLORS.text }}>pruebas estadísticas no paramétricas</strong> (Chi-cuadrado, Mann-Whitney U), 
-                Adicionalmente, se presentan hallazgos complementarios mediante <strong style={{ color: COLORS.text }}>modelos  de Machine Learning</strong> (Random Forest) 
-                para identificar patrones de crecimiento y factores de impacto externo.
+                {t('mlMethodologyText')}
               </div>
             </div>
           </div>
@@ -122,18 +120,20 @@ function SeccionMachineLearning({ datos }) {
             <AnimatedModelCard delay={100}>
               <HipotesisConGraficos
                 numero={1}
-                titulo="Crimen alto + Sin crédito → ¿Menor expectativa de crecimiento?"
+                titulo={t('mlH1Question')}
                 datos={datos}
                 tipo="crecimiento"
+                language={language}
               />
             </AnimatedModelCard>
-            
+
             <AnimatedModelCard delay={200}>
               <HipotesisConGraficos
                 numero={2}
-                titulo="Crimen bajo + Con crédito → ¿Mayor inversión tecnológica?"
+                titulo={t('mlH2Question')}
                 datos={datos}
                 tipo="tecnologia"
+                language={language}
               />
             </AnimatedModelCard>
           </>
@@ -156,7 +156,7 @@ function SeccionMachineLearning({ datos }) {
             marginBottom: '20px',
             fontWeight: '500'
           }}>
-            Análisis Complementario
+            {t('mlAdditionalTitle')}
           </div>
           <h2 style={{
             fontFamily: '"Crimson Pro", serif',
@@ -165,7 +165,7 @@ function SeccionMachineLearning({ datos }) {
             color: COLORS.text,
             marginBottom: '20px'
           }}>
-            Hallazgos Adicionales
+            {t('mlAdditionalSubtitle')}
           </h2>
           <p style={{
             maxWidth: '800px',
@@ -174,7 +174,7 @@ function SeccionMachineLearning({ datos }) {
             color: COLORS.textSecondary,
             lineHeight: '1.7'
           }}>
-            Exploracion sobre intenciones de crecimiento y factores externos que impactan el rendimiento comercial.
+            {t('mlAdditionalDescription')}
           </p>
         </div>
       </AnimatedModelCard>
@@ -185,10 +185,10 @@ function SeccionMachineLearning({ datos }) {
         gap: '60px'
       }}>
         <AnimatedModelCard delay={300}>
-          <ModeloCrecimiento data={resultadosML.modelos.modelo_1_crecimiento} />
+          <ModeloCrecimiento data={resultadosML.modelos.modelo_1_crecimiento} language={language} />
         </AnimatedModelCard>
         <AnimatedModelCard delay={400}>
-          <ModeloFactoresExternos data={resultadosML.modelos.modelo_3_factores_externos} />
+          <ModeloFactoresExternos data={resultadosML.modelos.modelo_3_factores_externos} language={language} />
         </AnimatedModelCard>
       </div>
 
@@ -197,8 +197,9 @@ function SeccionMachineLearning({ datos }) {
 }
 
 // Componente HipotesisConGraficos (H1 y H2)
-function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
+function HipotesisConGraficos({ numero, titulo, datos, tipo, language = 'es' }) {
   const [expanded, setExpanded] = useState(false);
+  const t = (key) => getTranslation(language, key);
 
   if (!datos || datos.length === 0) {
     return (
@@ -213,7 +214,7 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
           HIPÓTESIS {numero}: {titulo}
         </div>
         <div style={{ color: COLORS.textSecondary, fontSize: '13px', marginTop: '10px' }}>
-          No hay datos disponibles para el análisis. Verifica que los datos hayan cargado correctamente.
+          {t('mlNoData')}
         </div>
       </div>
     );
@@ -334,10 +335,10 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
           HIPÓTESIS {numero}: {titulo}
         </div>
         <div style={{ color: COLORS.textSecondary, fontSize: '13px', marginTop: '10px' }}>
-          No hay suficientes datos para analizar esta hipótesis:
+          {t('mlInsufficientData')}
           <ul style={{ marginTop: '8px', marginLeft: '20px' }}>
-            <li>Grupo de análisis: {analisis.grupoAdverso} comercios</li>
-            <li>Grupo de comparación: {analisis.grupoComparacion} comercios</li>
+            <li>{t('mlAnalysisGroup')}: {analisis.grupoAdverso} {t('mlBusinesses')}</li>
+            <li>{t('mlComparisonGroup')}: {analisis.grupoComparacion} {t('mlBusinesses')}</li>
           </ul>
         </div>
       </div>
@@ -381,7 +382,7 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
         <div style={{ padding: '30px', backgroundColor: COLORS.background }}>
           <div style={{ marginBottom: '20px' }}>
             <h4 style={{ color: COLORS.text, marginBottom: '15px' }}>
-              Resultados del análisis
+              {t('mlHypothesisResults')}
             </h4>
 
             {/* Gráfico de barras comparativo */}
@@ -393,7 +394,7 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
             }}>
               <div style={{ flex: 1, minWidth: '300px' }}>
                 <h5 style={{ color: COLORS.textSecondary, marginBottom: '10px' }}>
-                  Grupo de análisis
+                  {t('mlAnalysisGroup')}
                 </h5>
                 <div style={{
                   padding: '15px',
@@ -405,17 +406,17 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
                     {analisis.pctAdverso.toFixed(1)}%
                   </div>
                   <div style={{ fontSize: '14px', color: COLORS.textSecondary }}>
-                    de {analisis.grupoAdverso} comercios
+                    de {analisis.grupoAdverso} {t('mlBusinesses')}
                   </div>
                   <div style={{ fontSize: '12px', color: COLORS.textTertiary, marginTop: '8px' }}>
-                    ({analisis[tipo === 'crecimiento' ? 'adversoQuiereCrecer' : 'adversoInvierteTecnologia']} comercios)
+                    ({analisis[tipo === 'crecimiento' ? 'adversoQuiereCrecer' : 'adversoInvierteTecnologia']} {t('mlBusinesses')})
                   </div>
                 </div>
               </div>
 
               <div style={{ flex: 1, minWidth: '300px' }}>
                 <h5 style={{ color: COLORS.textSecondary, marginBottom: '10px' }}>
-                  Grupo de comparación
+                  {t('mlComparisonGroup')}
                 </h5>
                 <div style={{
                   padding: '15px',
@@ -427,10 +428,10 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
                     {analisis.pctComparacion.toFixed(1)}%
                   </div>
                   <div style={{ fontSize: '14px', color: COLORS.textSecondary }}>
-                    de {analisis.grupoComparacion} comercios
+                    de {analisis.grupoComparacion} {t('mlBusinesses')}
                   </div>
                   <div style={{ fontSize: '12px', color: COLORS.textTertiary, marginTop: '8px' }}>
-                    ({analisis[tipo === 'crecimiento' ? 'comparacionQuiereCrecer' : 'comparacionInvierteTecnologia']} comercios)
+                    ({analisis[tipo === 'crecimiento' ? 'comparacionQuiereCrecer' : 'comparacionInvierteTecnologia']} {t('mlBusinesses')})
                   </div>
                 </div>
               </div>
@@ -445,14 +446,14 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
               textAlign: 'center'
             }}>
               <div style={{ fontSize: '14px', color: COLORS.text, fontWeight: '500' }}>
-                Diferencia: <span style={{ color: COLORS.primary, fontWeight: 'bold' }}>
-                  {(analisis.pctAdverso - analisis.pctComparacion).toFixed(1)} puntos porcentuales
+                {t('mlDifference')} <span style={{ color: COLORS.primary, fontWeight: 'bold' }}>
+                  {(analisis.pctAdverso - analisis.pctComparacion).toFixed(1)} {t('mlPercentagePoints')}
                 </span>
               </div>
               <div style={{ fontSize: '12px', color: COLORS.textSecondary, marginTop: '5px' }}>
                 {analisis.pctAdverso > analisis.pctComparacion
-                  ? 'El grupo de análisis presenta un mayor porcentaje que el grupo de comparación'
-                  : 'El grupo de análisis presenta un menor porcentaje que el grupo de comparación'}
+                  ? t('mlAnalysisHigher')
+                  : t('mlAnalysisLower')}
               </div>
             </div>
 
@@ -464,12 +465,12 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo }) {
               borderLeft: `4px solid ${analisis.pctAdverso > analisis.pctComparacion ? COLORS.primary : COLORS.accent}`
             }}>
               <div style={{ fontSize: '14px', color: COLORS.text, fontWeight: '500', marginBottom: '8px' }}>
-                Conclusión:
+                {t('mlConclusion')}
               </div>
               <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>
                 {analisis.pctAdverso > analisis.pctComparacion
-                  ? '❌ Los datos no respaldan completamente la hipótesis planteada. No se observa una diferencia significativa entre los grupos analizados.'
-                  : '✅ La hipótesis se sustenta en los datos analizados según los grupos comparados.'}
+                  ? '❌ ' + t('mlConclusionNotSupported')
+                  : '✅ ' + t('mlConclusionSupported')}
               </div>
             </div>
           </div>
@@ -517,10 +518,11 @@ function AnimatedModelCard({ children, delay = 0 }) {
 }
 
 // Hipótesis 3: Modelo de Crecimiento
-function ModeloCrecimiento({ data }) {
+function ModeloCrecimiento({ data, language = 'es' }) {
   const [expanded, setExpanded] = useState(false);
   const [showCharts, setShowCharts] = useState(false);
-  
+  const t = (key) => getTranslation(language, key);
+
   if (!data || !data.metricas || !data.feature_importance) {
     return null;
   }
@@ -556,7 +558,7 @@ function ModeloCrecimiento({ data }) {
               CURIOSIDAD 1
             </div>
             <div style={{ fontSize: '18px', color: COLORS.text, fontWeight: '500' }}>
-              ¿Qué comercios tienen intención de expandirse?
+              {t('mlCuriosity1Question')}
             </div>
           </div>
           <div style={{ fontSize: '20px', color: COLORS.primary }}>
@@ -615,7 +617,7 @@ function ModeloCrecimiento({ data }) {
               letterSpacing: '0.05em',
               textTransform: 'uppercase'
             }}>
-              Variables más importantes
+              {t('mlTopVariables')}
             </div>
             {data.feature_importance.slice(0, 3).map((f, idx) => (
               <div key={idx} style={{ marginBottom: '12px' }}>
@@ -670,7 +672,7 @@ function ModeloCrecimiento({ data }) {
             onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
             onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
           >
-            {showCharts ? 'Ocultar gráficos' : 'Ver gráficos del modelo'}
+            {showCharts ? t('mlHideCharts') : t('mlViewCharts')}
           </button>
 
           {showCharts && (
@@ -710,7 +712,7 @@ function ModeloCrecimiento({ data }) {
               color: COLORS.text,
               marginBottom: '12px'
             }}>
-              Explicación Académica
+              {t('mlAcademicExplanation')}
             </div>
             <p style={{
               fontSize: '13px',
@@ -718,10 +720,7 @@ function ModeloCrecimiento({ data }) {
               lineHeight: '1.7',
               marginBottom: '20px'
             }}>
-              Este modelo de clasificación binaria utiliza <strong style={{ color: COLORS.text }}>Random Forest</strong> para 
-              predecir la probabilidad de que un comercio desee expandirse. Con un accuracy de {(data.metricas.accuracy * 100).toFixed(1)}% 
-              y un recall de {(data.metricas.recall * 100).toFixed(1)}%, el modelo identifica correctamente la mayoría de los comercios 
-              con intención de crecimiento.
+              {t('mlModelGrowthAcademic')}
             </p>
 
             <div style={{
@@ -730,16 +729,14 @@ function ModeloCrecimiento({ data }) {
               color: COLORS.text,
               marginBottom: '12px'
             }}>
-              En Términos Simples
+              {t('mlSimpleTerms')}
             </div>
             <p style={{
               fontSize: '13px',
               color: COLORS.textSecondary,
               lineHeight: '1.7'
             }}>
-              <strong style={{ color: COLORS.text }}>¿Qué significa esto para tu comercio?</strong><br/>
-              Si tu negocio tiene varios años funcionando y un equipo de trabajo estable, es más probable que estés pensando 
-              en crecer. Las claves son: <strong style={{ color: COLORS.primary }}>experiencia en el rubro, equipo consolidado y expectativas positivas de ventas</strong>.
+              {t('mlModelGrowthSimple')}
             </p>
           </div>
         </div>
@@ -749,10 +746,11 @@ function ModeloCrecimiento({ data }) {
 }
 
 // Hipótesis 4: Modelo de Factores Externos
-function ModeloFactoresExternos({ data }) {
+function ModeloFactoresExternos({ data, language = 'es' }) {
   const [expanded, setExpanded] = useState(false);
   const [showCharts, setShowCharts] = useState(false);
-  
+  const t = (key) => getTranslation(language, key);
+
   if (!data || !data.metricas || !data.feature_importance || !data.confusion_matrix) {
     return null;
   }
@@ -788,7 +786,7 @@ function ModeloFactoresExternos({ data }) {
             CURIOSIDAD 2
           </div>
           <div style={{ fontSize: '18px', color: COLORS.text, fontWeight: '500' }}>
-            ¿Qué afecta más las ventas: crimen, precios, competencia o crédito?
+            {t('mlCuriosity2Question')}
           </div>
         </div>
         <div style={{ fontSize: '20px', color: COLORS.primary }}>
@@ -836,7 +834,7 @@ function ModeloFactoresExternos({ data }) {
               letterSpacing: '0.05em',
               textTransform: 'uppercase'
             }}>
-              Factores de impacto (por importancia)
+              {t('mlImpactFactors')}
             </div>
             {data.feature_importance.slice(0, 4).filter(f => f.feature.includes('afect')).map((f, idx) => {
               const labelMap = {
@@ -899,7 +897,7 @@ function ModeloFactoresExternos({ data }) {
             onMouseEnter={(e) => e.target.style.backgroundColor = COLORS.surfaceHover}
             onMouseLeave={(e) => e.target.style.backgroundColor = COLORS.surface}
           >
-            {showCharts ? 'Ocultar gráficos' : 'Ver gráficos del modelo'}
+            {showCharts ? t('mlHideCharts') : t('mlViewCharts')}
           </button>
 
           {showCharts && (
@@ -950,7 +948,7 @@ function ModeloFactoresExternos({ data }) {
               color: COLORS.text,
               marginBottom: '12px'
             }}>
-              Explicación Académica
+              {t('mlAcademicExplanation')}
             </div>
             <p style={{
               fontSize: '13px',
@@ -958,9 +956,7 @@ function ModeloFactoresExternos({ data }) {
               lineHeight: '1.7',
               marginBottom: '20px'
             }}>
-              Clasificador multiclase <strong style={{ color: COLORS.text }}>Random Forest</strong> que predice si las ventas 
-              empeorarán, se mantendrán o mejorarán según factores externos. Con {(data.metricas.accuracy * 100).toFixed(1)}% de accuracy, 
-              el modelo identifica que <strong style={{ color: COLORS.text }}>los precios</strong> son el factor más determinante.
+              {t('mlModelFactorsAcademic')}
             </p>
 
             <div style={{
@@ -969,16 +965,14 @@ function ModeloFactoresExternos({ data }) {
               color: COLORS.text,
               marginBottom: '12px'
             }}>
-              En Términos Simples
+              {t('mlSimpleTerms')}
             </div>
             <p style={{
               fontSize: '13px',
               color: COLORS.textSecondary,
               lineHeight: '1.7'
             }}>
-              <strong style={{ color: COLORS.text }}>¿Qué está afectando tus ventas?</strong><br/>
-              El factor #1 que impacta las ventas son <strong style={{ color: COLORS.primary }}>los precios y la inflación</strong>. 
-              Luego viene la competencia en tu zona. El crimen y el acceso a crédito también importan, pero menos.
+              {t('mlModelFactorsSimple')}
             </p>
           </div>
         </div>
