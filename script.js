@@ -856,7 +856,7 @@ function Hero({ scrollY, language = 'es' }) {
           justifyContent: 'center',
           gap: '20px'
         }}>
-          <span>{getTranslation(language, 'heroTeam')} {TEAM_DATA.name}</span>
+          <span>{getTranslation(language, 'heroTeam')}</span>
           <span style={{ color: COLORS.primary }}>•</span>
           <span>{getTranslation(language, 'heroYear')}</span>
         </div>

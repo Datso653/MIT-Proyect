@@ -70,7 +70,7 @@ function SobrePlataforma({ language = 'es' }) {
             onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-8px)'}
             onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
               <img loading="lazy"
-                src="img/QRREPO.png"
+                src="img/CodigoQRPAG.png"
                 alt="QR Dashboard"
                 style={{
                   width: '220px',

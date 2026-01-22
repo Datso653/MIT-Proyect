@@ -1,4 +1,4 @@
-// === HIPÓTESIS GEOESPACIALES ===
+// === HIPÓTESIS ===
 function ResumenEjecutivo({ indicadores, language = 'es' }) {
   if (!indicadores) return null;
   
@@ -20,11 +20,11 @@ function ResumenEjecutivo({ indicadores, language = 'es' }) {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundImage: 'url(https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1600&q=85&auto=format&fit=crop)',
+        backgroundImage: 'url(https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?w=1600&q=85&auto=format&fit=crop)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        opacity: 0.4,
-        filter: 'grayscale(0%) brightness(1.2)',
+        opacity: 0.5,
+        filter: 'grayscale(0%) brightness(1.15)',
         zIndex: 0
       }} />
 

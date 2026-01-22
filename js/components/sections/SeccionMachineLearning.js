@@ -1,4 +1,4 @@
-// === SECCIÓN ANÁLISIS DE HIPÓTESIS GEOESPACIALES ===
+// === SECCIÓN ANÁLISIS DE HIPÓTESIS ===
 // Incluye: SeccionMachineLearning, HipotesisConGraficos, AnimatedModelCard, ModeloCrecimiento,
 // ModeloFactoresExternos, MetricaCard, ConfusionMatrix, FeatureImportanceChart,
 // ROCCurve, ScatterPlot, DistribucionPredicciones, AfectacionesChart
@@ -293,14 +293,32 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo, language = 'es' }) 
       return !(crimenBajo && conCredito);
     });
 
-    const adversoInvierteTecnologia = grupoAdverso.filter(c => {
+    // Calcular niveles de tecnología para grupo de análisis
+    const adversoTechAlta = grupoAdverso.filter(c => {
       const tech = c.tecnologia || '';
       return tech.toLowerCase().includes('alto') || tech.toLowerCase().includes('avanzado');
     }).length;
+    const adversoTechModerada = grupoAdverso.filter(c => {
+      const tech = c.tecnologia || '';
+      return tech.toLowerCase().includes('moderado') || tech.toLowerCase().includes('medio');
+    }).length;
+    const adversoTechBaja = grupoAdverso.filter(c => {
+      const tech = c.tecnologia || '';
+      return tech.toLowerCase().includes('bajo') || tech.toLowerCase().includes('básico') || tech.toLowerCase().includes('basico');
+    }).length;
 
-    const comparacionInvierteTecnologia = grupoComparacion.filter(c => {
+    // Calcular niveles de tecnología para grupo de comparación
+    const comparacionTechAlta = grupoComparacion.filter(c => {
       const tech = c.tecnologia || '';
       return tech.toLowerCase().includes('alto') || tech.toLowerCase().includes('avanzado');
+    }).length;
+    const comparacionTechModerada = grupoComparacion.filter(c => {
+      const tech = c.tecnologia || '';
+      return tech.toLowerCase().includes('moderado') || tech.toLowerCase().includes('medio');
+    }).length;
+    const comparacionTechBaja = grupoComparacion.filter(c => {
+      const tech = c.tecnologia || '';
+      return tech.toLowerCase().includes('bajo') || tech.toLowerCase().includes('básico') || tech.toLowerCase().includes('basico');
     }).length;
 
     const totalAdverso = grupoAdverso.length;
@@ -309,10 +327,23 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo, language = 'es' }) 
     return {
       grupoAdverso: totalAdverso,
       grupoComparacion: totalComparacion,
-      adversoInvierteTecnologia,
-      comparacionInvierteTecnologia,
-      pctAdverso: totalAdverso > 0 ? (adversoInvierteTecnologia / totalAdverso) * 100 : 0,
-      pctComparacion: totalComparacion > 0 ? (comparacionInvierteTecnologia / totalComparacion) * 100 : 0,
+      adversoInvierteTecnologia: adversoTechAlta,
+      comparacionInvierteTecnologia: comparacionTechAlta,
+      pctAdverso: totalAdverso > 0 ? (adversoTechAlta / totalAdverso) * 100 : 0,
+      pctComparacion: totalComparacion > 0 ? (comparacionTechAlta / totalComparacion) * 100 : 0,
+      // Agregar desglose de niveles
+      adversoTechAlta,
+      adversoTechModerada,
+      adversoTechBaja,
+      comparacionTechAlta,
+      comparacionTechModerada,
+      comparacionTechBaja,
+      pctAdversoAlta: totalAdverso > 0 ? (adversoTechAlta / totalAdverso) * 100 : 0,
+      pctAdversoModerada: totalAdverso > 0 ? (adversoTechModerada / totalAdverso) * 100 : 0,
+      pctAdversoBaja: totalAdverso > 0 ? (adversoTechBaja / totalAdverso) * 100 : 0,
+      pctComparacionAlta: totalComparacion > 0 ? (comparacionTechAlta / totalComparacion) * 100 : 0,
+      pctComparacionModerada: totalComparacion > 0 ? (comparacionTechModerada / totalComparacion) * 100 : 0,
+      pctComparacionBaja: totalComparacion > 0 ? (comparacionTechBaja / totalComparacion) * 100 : 0,
       datosGrupoAdverso: grupoAdverso,
       datosGrupoComparacion: grupoComparacion
     };
@@ -457,20 +488,832 @@ function HipotesisConGraficos({ numero, titulo, datos, tipo, language = 'es' }) 
               </div>
             </div>
 
-            {/* Conclusión */}
+            {/* Gráficos de comparación visual */}
+            <div style={{ marginBottom: '30px' }}>
+              <h5 style={{ color: COLORS.text, marginBottom: '20px', fontSize: '15px', fontWeight: '600' }}>
+                {language === 'es' ? 'Comparación Visual' : 'Visual Comparison'}
+              </h5>
+
+              {/* Gráfico de barras comparativo */}
+              <div style={{
+                backgroundColor: COLORS.surface,
+                borderRadius: '8px',
+                padding: '25px',
+                border: `1px solid ${COLORS.border}`
+              }}>
+                <div style={{ marginBottom: '25px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                    <span style={{ fontSize: '13px', color: COLORS.textSecondary }}>
+                      {t('mlAnalysisGroup')}
+                    </span>
+                    <span style={{ fontSize: '14px', color: COLORS.primary, fontWeight: '600' }}>
+                      {analisis.pctAdverso.toFixed(1)}%
+                    </span>
+                  </div>
+                  <div style={{
+                    width: '100%',
+                    height: '30px',
+                    backgroundColor: `${COLORS.primary}20`,
+                    borderRadius: '4px',
+                    overflow: 'hidden',
+                    position: 'relative'
+                  }}>
+                    <div style={{
+                      width: `${analisis.pctAdverso}%`,
+                      height: '100%',
+                      backgroundColor: COLORS.primary,
+                      transition: 'width 1s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                      paddingRight: '10px'
+                    }}>
+                      <span style={{ fontSize: '12px', color: COLORS.background, fontWeight: '600' }}>
+                        {analisis[tipo === 'crecimiento' ? 'adversoQuiereCrecer' : 'adversoInvierteTecnologia']}/{analisis.grupoAdverso}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                    <span style={{ fontSize: '13px', color: COLORS.textSecondary }}>
+                      {t('mlComparisonGroup')}
+                    </span>
+                    <span style={{ fontSize: '14px', color: COLORS.accent, fontWeight: '600' }}>
+                      {analisis.pctComparacion.toFixed(1)}%
+                    </span>
+                  </div>
+                  <div style={{
+                    width: '100%',
+                    height: '30px',
+                    backgroundColor: `${COLORS.accent}20`,
+                    borderRadius: '4px',
+                    overflow: 'hidden',
+                    position: 'relative'
+                  }}>
+                    <div style={{
+                      width: `${analisis.pctComparacion}%`,
+                      height: '100%',
+                      backgroundColor: COLORS.accent,
+                      transition: 'width 1s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'flex-end',
+                      paddingRight: '10px'
+                    }}>
+                      <span style={{ fontSize: '12px', color: COLORS.background, fontWeight: '600' }}>
+                        {analisis[tipo === 'crecimiento' ? 'comparacionQuiereCrecer' : 'comparacionInvierteTecnologia']}/{analisis.grupoComparacion}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Gráfico de distribución por condiciones */}
+              <div style={{
+                backgroundColor: COLORS.surface,
+                borderRadius: '8px',
+                padding: '25px',
+                border: `1px solid ${COLORS.border}`,
+                marginTop: '20px'
+              }}>
+                <h6 style={{
+                  fontSize: '13px',
+                  color: COLORS.text,
+                  marginBottom: '20px',
+                  fontWeight: '600',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
+                  {tipo === 'crecimiento'
+                    ? (language === 'es' ? 'Distribución: Expectativas de Crecimiento' : 'Distribution: Growth Expectations')
+                    : (language === 'es' ? 'Distribución por Nivel de Tecnología' : 'Distribution by Technology Level')}
+                </h6>
+
+                {tipo === 'crecimiento' ? (
+                  // Para Hipótesis 1: Mostrar Sí/No
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                    {/* Grupo de análisis */}
+                    <div>
+                      <div style={{ fontSize: '12px', color: COLORS.primary, fontWeight: '600', marginBottom: '10px' }}>
+                        {language === 'es' ? 'Crimen Alto + Sin Crédito' : 'High Crime + No Credit'}
+                      </div>
+                      <div style={{ display: 'flex', gap: '5px', marginBottom: '8px' }}>
+                        <div style={{
+                          flex: analisis.pctAdverso,
+                          height: '40px',
+                          backgroundColor: COLORS.primary,
+                          borderRadius: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '11px',
+                          color: COLORS.background,
+                          fontWeight: '600'
+                        }}>
+                          {language === 'es' ? 'Sí' : 'Yes'}
+                        </div>
+                        <div style={{
+                          flex: 100 - analisis.pctAdverso,
+                          height: '40px',
+                          backgroundColor: `${COLORS.primary}30`,
+                          borderRadius: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '11px',
+                          color: COLORS.text,
+                          fontWeight: '600'
+                        }}>
+                          {language === 'es' ? 'No' : 'No'}
+                        </div>
+                      </div>
+                      <div style={{ fontSize: '11px', color: COLORS.textSecondary, textAlign: 'center' }}>
+                        {analisis.pctAdverso.toFixed(1)}% vs {(100 - analisis.pctAdverso).toFixed(1)}%
+                      </div>
+                    </div>
+
+                    {/* Grupo de comparación */}
+                    <div>
+                      <div style={{ fontSize: '12px', color: COLORS.accent, fontWeight: '600', marginBottom: '10px' }}>
+                        {language === 'es' ? 'Otras Condiciones' : 'Other Conditions'}
+                      </div>
+                      <div style={{ display: 'flex', gap: '5px', marginBottom: '8px' }}>
+                        <div style={{
+                          flex: analisis.pctComparacion,
+                          height: '40px',
+                          backgroundColor: COLORS.accent,
+                          borderRadius: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '11px',
+                          color: COLORS.background,
+                          fontWeight: '600'
+                        }}>
+                          {language === 'es' ? 'Sí' : 'Yes'}
+                        </div>
+                        <div style={{
+                          flex: 100 - analisis.pctComparacion,
+                          height: '40px',
+                          backgroundColor: `${COLORS.accent}30`,
+                          borderRadius: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '11px',
+                          color: COLORS.text,
+                          fontWeight: '600'
+                        }}>
+                          {language === 'es' ? 'No' : 'No'}
+                        </div>
+                      </div>
+                      <div style={{ fontSize: '11px', color: COLORS.textSecondary, textAlign: 'center' }}>
+                        {analisis.pctComparacion.toFixed(1)}% vs {(100 - analisis.pctComparacion).toFixed(1)}%
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  // Para Hipótesis 2: Mostrar niveles de tecnología
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                    {/* Grupo de análisis */}
+                    <div>
+                      <div style={{ fontSize: '12px', color: COLORS.primary, fontWeight: '600', marginBottom: '10px' }}>
+                        {language === 'es' ? 'Crimen Bajo + Con Crédito' : 'Low Crime + With Credit'}
+                      </div>
+                      <div style={{ display: 'flex', gap: '3px', marginBottom: '8px', flexDirection: 'column' }}>
+                        {/* Alta */}
+                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                          <div style={{
+                            flex: analisis.pctAdversoAlta || 0,
+                            minWidth: analisis.pctAdversoAlta > 0 ? '30px' : '0',
+                            height: '25px',
+                            backgroundColor: '#00d084',
+                            borderRadius: '4px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '10px',
+                            color: COLORS.background,
+                            fontWeight: '600'
+                          }}>
+                            {analisis.pctAdversoAlta > 5 ? `${analisis.pctAdversoAlta.toFixed(1)}%` : ''}
+                          </div>
+                          <span style={{ fontSize: '10px', color: COLORS.textSecondary, minWidth: '80px' }}>
+                            {language === 'es' ? 'Alta' : 'High'}: {analisis.adversoTechAlta || 0} ({(analisis.pctAdversoAlta || 0).toFixed(1)}%)
+                          </span>
+                        </div>
+                        {/* Moderada */}
+                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                          <div style={{
+                            flex: analisis.pctAdversoModerada || 0,
+                            minWidth: analisis.pctAdversoModerada > 0 ? '30px' : '0',
+                            height: '25px',
+                            backgroundColor: '#ffa500',
+                            borderRadius: '4px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '10px',
+                            color: COLORS.background,
+                            fontWeight: '600'
+                          }}>
+                            {analisis.pctAdversoModerada > 5 ? `${analisis.pctAdversoModerada.toFixed(1)}%` : ''}
+                          </div>
+                          <span style={{ fontSize: '10px', color: COLORS.textSecondary, minWidth: '80px' }}>
+                            {language === 'es' ? 'Moderada' : 'Moderate'}: {analisis.adversoTechModerada || 0} ({(analisis.pctAdversoModerada || 0).toFixed(1)}%)
+                          </span>
+                        </div>
+                        {/* Baja */}
+                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                          <div style={{
+                            flex: analisis.pctAdversoBaja || 0,
+                            minWidth: analisis.pctAdversoBaja > 0 ? '30px' : '0',
+                            height: '25px',
+                            backgroundColor: `${COLORS.primary}50`,
+                            borderRadius: '4px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '10px',
+                            color: COLORS.text,
+                            fontWeight: '600'
+                          }}>
+                            {analisis.pctAdversoBaja > 5 ? `${analisis.pctAdversoBaja.toFixed(1)}%` : ''}
+                          </div>
+                          <span style={{ fontSize: '10px', color: COLORS.textSecondary, minWidth: '80px' }}>
+                            {language === 'es' ? 'Baja' : 'Low'}: {analisis.adversoTechBaja || 0} ({(analisis.pctAdversoBaja || 0).toFixed(1)}%)
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Grupo de comparación */}
+                    <div>
+                      <div style={{ fontSize: '12px', color: COLORS.accent, fontWeight: '600', marginBottom: '10px' }}>
+                        {language === 'es' ? 'Otras Condiciones' : 'Other Conditions'}
+                      </div>
+                      <div style={{ display: 'flex', gap: '3px', marginBottom: '8px', flexDirection: 'column' }}>
+                        {/* Alta */}
+                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                          <div style={{
+                            flex: analisis.pctComparacionAlta || 0,
+                            minWidth: analisis.pctComparacionAlta > 0 ? '30px' : '0',
+                            height: '25px',
+                            backgroundColor: '#00d084',
+                            borderRadius: '4px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '10px',
+                            color: COLORS.background,
+                            fontWeight: '600'
+                          }}>
+                            {analisis.pctComparacionAlta > 5 ? `${analisis.pctComparacionAlta.toFixed(1)}%` : ''}
+                          </div>
+                          <span style={{ fontSize: '10px', color: COLORS.textSecondary, minWidth: '80px' }}>
+                            {language === 'es' ? 'Alta' : 'High'}: {analisis.comparacionTechAlta || 0} ({(analisis.pctComparacionAlta || 0).toFixed(1)}%)
+                          </span>
+                        </div>
+                        {/* Moderada */}
+                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                          <div style={{
+                            flex: analisis.pctComparacionModerada || 0,
+                            minWidth: analisis.pctComparacionModerada > 0 ? '30px' : '0',
+                            height: '25px',
+                            backgroundColor: '#ffa500',
+                            borderRadius: '4px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '10px',
+                            color: COLORS.background,
+                            fontWeight: '600'
+                          }}>
+                            {analisis.pctComparacionModerada > 5 ? `${analisis.pctComparacionModerada.toFixed(1)}%` : ''}
+                          </div>
+                          <span style={{ fontSize: '10px', color: COLORS.textSecondary, minWidth: '80px' }}>
+                            {language === 'es' ? 'Moderada' : 'Moderate'}: {analisis.comparacionTechModerada || 0} ({(analisis.pctComparacionModerada || 0).toFixed(1)}%)
+                          </span>
+                        </div>
+                        {/* Baja */}
+                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                          <div style={{
+                            flex: analisis.pctComparacionBaja || 0,
+                            minWidth: analisis.pctComparacionBaja > 0 ? '30px' : '0',
+                            height: '25px',
+                            backgroundColor: `${COLORS.accent}50`,
+                            borderRadius: '4px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '10px',
+                            color: COLORS.text,
+                            fontWeight: '600'
+                          }}>
+                            {analisis.pctComparacionBaja > 5 ? `${analisis.pctComparacionBaja.toFixed(1)}%` : ''}
+                          </div>
+                          <span style={{ fontSize: '10px', color: COLORS.textSecondary, minWidth: '80px' }}>
+                            {language === 'es' ? 'Baja' : 'Low'}: {analisis.comparacionTechBaja || 0} ({(analisis.pctComparacionBaja || 0).toFixed(1)}%)
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Nuevo gráfico analítico: Matriz de cruce de datos */}
+            <div style={{ marginTop: '30px' }}>
+              <h5 style={{ color: COLORS.text, marginBottom: '20px', fontSize: '15px', fontWeight: '600' }}>
+                {language === 'es' ? 'Análisis Cruzado de Variables' : 'Cross-Variable Analysis'}
+              </h5>
+
+              {tipo === 'crecimiento' ? (
+                // Hipótesis 1: Matriz Crimen x Crédito → Expectativas
+                <div style={{
+                  backgroundColor: COLORS.surface,
+                  borderRadius: '8px',
+                  padding: '25px',
+                  border: `1px solid ${COLORS.border}`
+                }}>
+                  <div style={{ marginBottom: '15px' }}>
+                    <h6 style={{ fontSize: '13px', color: COLORS.textSecondary, marginBottom: '20px' }}>
+                      {language === 'es'
+                        ? 'Expectativas de crecimiento según nivel de crimen y acceso a crédito'
+                        : 'Growth expectations by crime level and credit access'}
+                    </h6>
+                  </div>
+
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '120px 1fr 1fr',
+                    gap: '10px',
+                    fontSize: '12px'
+                  }}>
+                    {/* Encabezado */}
+                    <div></div>
+                    <div style={{
+                      textAlign: 'center',
+                      fontWeight: '600',
+                      color: COLORS.accent,
+                      padding: '10px'
+                    }}>
+                      {language === 'es' ? 'Con Crédito' : 'With Credit'}
+                    </div>
+                    <div style={{
+                      textAlign: 'center',
+                      fontWeight: '600',
+                      color: COLORS.primary,
+                      padding: '10px'
+                    }}>
+                      {language === 'es' ? 'Sin Crédito' : 'No Credit'}
+                    </div>
+
+                    {/* Crimen Alto */}
+                    <div style={{
+                      fontWeight: '600',
+                      color: COLORS.text,
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '10px'
+                    }}>
+                      {language === 'es' ? 'Crimen Alto' : 'High Crime'}
+                    </div>
+                    <div style={{
+                      backgroundColor: `${COLORS.accent}15`,
+                      padding: '15px',
+                      borderRadius: '6px',
+                      textAlign: 'center',
+                      border: `1px solid ${COLORS.accent}30`
+                    }}>
+                      {(() => {
+                        const grupo = datos.filter(c => {
+                          const crimenAlto = c.afect_crimen === 'Mucho';
+                          const conCredito = parseFloat(c.credits_bancos) > 0 || parseFloat(c.credits_proveedor) > 0 ||
+                                           parseFloat(c.credits_familia) > 0 || parseFloat(c.credits_gobierno) > 0 ||
+                                           parseFloat(c.credits_privado) > 0;
+                          return crimenAlto && conCredito;
+                        });
+                        const quierenCrecer = grupo.filter(c => parseFloat(c.quiere_crezca) === 1.0).length;
+                        const pct = grupo.length > 0 ? (quierenCrecer / grupo.length * 100).toFixed(1) : 0;
+                        return (
+                          <>
+                            <div style={{ fontSize: '18px', fontWeight: '700', color: COLORS.accent }}>{pct}%</div>
+                            <div style={{ fontSize: '11px', color: COLORS.textSecondary, marginTop: '5px' }}>
+                              {quierenCrecer}/{grupo.length} {language === 'es' ? 'comercios' : 'businesses'}
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                    <div style={{
+                      backgroundColor: `${COLORS.primary}15`,
+                      padding: '15px',
+                      borderRadius: '6px',
+                      textAlign: 'center',
+                      border: `2px solid ${COLORS.primary}`
+                    }}>
+                      {(() => {
+                        const grupo = datos.filter(c => {
+                          const crimenAlto = c.afect_crimen === 'Mucho';
+                          const sinCredito = !(parseFloat(c.credits_bancos) > 0 || parseFloat(c.credits_proveedor) > 0 ||
+                                             parseFloat(c.credits_familia) > 0 || parseFloat(c.credits_gobierno) > 0 ||
+                                             parseFloat(c.credits_privado) > 0);
+                          return crimenAlto && sinCredito;
+                        });
+                        const quierenCrecer = grupo.filter(c => parseFloat(c.quiere_crezca) === 1.0).length;
+                        const pct = grupo.length > 0 ? (quierenCrecer / grupo.length * 100).toFixed(1) : 0;
+                        return (
+                          <>
+                            <div style={{ fontSize: '18px', fontWeight: '700', color: COLORS.primary }}>{pct}%</div>
+                            <div style={{ fontSize: '11px', color: COLORS.textSecondary, marginTop: '5px' }}>
+                              {quierenCrecer}/{grupo.length} {language === 'es' ? 'comercios' : 'businesses'}
+                            </div>
+                            <div style={{
+                              fontSize: '10px',
+                              color: COLORS.primary,
+                              marginTop: '8px',
+                              fontWeight: '600',
+                              padding: '4px 8px',
+                              backgroundColor: COLORS.background,
+                              borderRadius: '4px'
+                            }}>
+                              {language === 'es' ? 'Grupo Análisis' : 'Analysis Group'}
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+
+                    {/* Crimen Bajo */}
+                    <div style={{
+                      fontWeight: '600',
+                      color: COLORS.text,
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '10px'
+                    }}>
+                      {language === 'es' ? 'Crimen Bajo' : 'Low Crime'}
+                    </div>
+                    <div style={{
+                      backgroundColor: `${COLORS.accent}15`,
+                      padding: '15px',
+                      borderRadius: '6px',
+                      textAlign: 'center',
+                      border: `1px solid ${COLORS.accent}30`
+                    }}>
+                      {(() => {
+                        const grupo = datos.filter(c => {
+                          const crimenBajo = c.afect_crimen === 'Poco' || c.afect_crimen === 'Nada';
+                          const conCredito = parseFloat(c.credits_bancos) > 0 || parseFloat(c.credits_proveedor) > 0 ||
+                                           parseFloat(c.credits_familia) > 0 || parseFloat(c.credits_gobierno) > 0 ||
+                                           parseFloat(c.credits_privado) > 0;
+                          return crimenBajo && conCredito;
+                        });
+                        const quierenCrecer = grupo.filter(c => parseFloat(c.quiere_crezca) === 1.0).length;
+                        const pct = grupo.length > 0 ? (quierenCrecer / grupo.length * 100).toFixed(1) : 0;
+                        return (
+                          <>
+                            <div style={{ fontSize: '18px', fontWeight: '700', color: COLORS.accent }}>{pct}%</div>
+                            <div style={{ fontSize: '11px', color: COLORS.textSecondary, marginTop: '5px' }}>
+                              {quierenCrecer}/{grupo.length} {language === 'es' ? 'comercios' : 'businesses'}
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                    <div style={{
+                      backgroundColor: `${COLORS.primary}08`,
+                      padding: '15px',
+                      borderRadius: '6px',
+                      textAlign: 'center',
+                      border: `1px solid ${COLORS.border}`
+                    }}>
+                      {(() => {
+                        const grupo = datos.filter(c => {
+                          const crimenBajo = c.afect_crimen === 'Poco' || c.afect_crimen === 'Nada';
+                          const sinCredito = !(parseFloat(c.credits_bancos) > 0 || parseFloat(c.credits_proveedor) > 0 ||
+                                             parseFloat(c.credits_familia) > 0 || parseFloat(c.credits_gobierno) > 0 ||
+                                             parseFloat(c.credits_privado) > 0);
+                          return crimenBajo && sinCredito;
+                        });
+                        const quierenCrecer = grupo.filter(c => parseFloat(c.quiere_crezca) === 1.0).length;
+                        const pct = grupo.length > 0 ? (quierenCrecer / grupo.length * 100).toFixed(1) : 0;
+                        return (
+                          <>
+                            <div style={{ fontSize: '18px', fontWeight: '700', color: COLORS.text }}>{pct}%</div>
+                            <div style={{ fontSize: '11px', color: COLORS.textSecondary, marginTop: '5px' }}>
+                              {quierenCrecer}/{grupo.length} {language === 'es' ? 'comercios' : 'businesses'}
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </div>
+
+                  <div style={{
+                    marginTop: '20px',
+                    padding: '12px',
+                    backgroundColor: `${COLORS.primary}08`,
+                    borderRadius: '6px',
+                    fontSize: '11px',
+                    color: COLORS.textSecondary,
+                    lineHeight: '1.6'
+                  }}>
+                    <strong style={{ color: COLORS.text }}>
+                      {language === 'es' ? 'Observación:' : 'Observation:'}
+                    </strong>{' '}
+                    {language === 'es'
+                      ? 'La celda resaltada representa el grupo de análisis principal (Crimen Alto + Sin Crédito). Compárela con las demás celdas para identificar patrones.'
+                      : 'The highlighted cell represents the main analysis group (High Crime + No Credit). Compare it with other cells to identify patterns.'}
+                  </div>
+                </div>
+              ) : (
+                // Hipótesis 2: Matriz Crimen x Crédito → Nivel Tecnología
+                <div style={{
+                  backgroundColor: COLORS.surface,
+                  borderRadius: '8px',
+                  padding: '25px',
+                  border: `1px solid ${COLORS.border}`
+                }}>
+                  <div style={{ marginBottom: '15px' }}>
+                    <h6 style={{ fontSize: '13px', color: COLORS.textSecondary, marginBottom: '20px' }}>
+                      {language === 'es'
+                        ? 'Porcentaje con tecnología alta según crimen y acceso a crédito'
+                        : 'High technology percentage by crime and credit access'}
+                    </h6>
+                  </div>
+
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '120px 1fr 1fr',
+                    gap: '10px',
+                    fontSize: '12px'
+                  }}>
+                    {/* Encabezado */}
+                    <div></div>
+                    <div style={{
+                      textAlign: 'center',
+                      fontWeight: '600',
+                      color: COLORS.accent,
+                      padding: '10px'
+                    }}>
+                      {language === 'es' ? 'Con Crédito' : 'With Credit'}
+                    </div>
+                    <div style={{
+                      textAlign: 'center',
+                      fontWeight: '600',
+                      color: COLORS.text,
+                      padding: '10px'
+                    }}>
+                      {language === 'es' ? 'Sin Crédito' : 'No Credit'}
+                    </div>
+
+                    {/* Crimen Bajo */}
+                    <div style={{
+                      fontWeight: '600',
+                      color: COLORS.text,
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '10px'
+                    }}>
+                      {language === 'es' ? 'Crimen Bajo' : 'Low Crime'}
+                    </div>
+                    <div style={{
+                      backgroundColor: `${COLORS.accent}15`,
+                      padding: '15px',
+                      borderRadius: '6px',
+                      textAlign: 'center',
+                      border: `2px solid ${COLORS.accent}`
+                    }}>
+                      {(() => {
+                        const grupo = datos.filter(c => {
+                          const crimenBajo = c.afect_crimen === 'Poco' || c.afect_crimen === 'Nada';
+                          const conCredito = parseFloat(c.credits_bancos) > 0 || parseFloat(c.credits_proveedor) > 0 ||
+                                           parseFloat(c.credits_familia) > 0 || parseFloat(c.credits_gobierno) > 0 ||
+                                           parseFloat(c.credits_privado) > 0;
+                          return crimenBajo && conCredito;
+                        });
+                        const techAlta = grupo.filter(c => {
+                          const tech = c.tecnologia || '';
+                          return tech.toLowerCase().includes('alto') || tech.toLowerCase().includes('avanzado');
+                        }).length;
+                        const pct = grupo.length > 0 ? (techAlta / grupo.length * 100).toFixed(1) : 0;
+                        return (
+                          <>
+                            <div style={{ fontSize: '18px', fontWeight: '700', color: COLORS.accent }}>{pct}%</div>
+                            <div style={{ fontSize: '11px', color: COLORS.textSecondary, marginTop: '5px' }}>
+                              {techAlta}/{grupo.length} {language === 'es' ? 'alta tech' : 'high tech'}
+                            </div>
+                            <div style={{
+                              fontSize: '10px',
+                              color: COLORS.accent,
+                              marginTop: '8px',
+                              fontWeight: '600',
+                              padding: '4px 8px',
+                              backgroundColor: COLORS.background,
+                              borderRadius: '4px'
+                            }}>
+                              {language === 'es' ? 'Grupo Análisis' : 'Analysis Group'}
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                    <div style={{
+                      backgroundColor: `${COLORS.primary}08`,
+                      padding: '15px',
+                      borderRadius: '6px',
+                      textAlign: 'center',
+                      border: `1px solid ${COLORS.border}`
+                    }}>
+                      {(() => {
+                        const grupo = datos.filter(c => {
+                          const crimenBajo = c.afect_crimen === 'Poco' || c.afect_crimen === 'Nada';
+                          const sinCredito = !(parseFloat(c.credits_bancos) > 0 || parseFloat(c.credits_proveedor) > 0 ||
+                                             parseFloat(c.credits_familia) > 0 || parseFloat(c.credits_gobierno) > 0 ||
+                                             parseFloat(c.credits_privado) > 0);
+                          return crimenBajo && sinCredito;
+                        });
+                        const techAlta = grupo.filter(c => {
+                          const tech = c.tecnologia || '';
+                          return tech.toLowerCase().includes('alto') || tech.toLowerCase().includes('avanzado');
+                        }).length;
+                        const pct = grupo.length > 0 ? (techAlta / grupo.length * 100).toFixed(1) : 0;
+                        return (
+                          <>
+                            <div style={{ fontSize: '18px', fontWeight: '700', color: COLORS.text }}>{pct}%</div>
+                            <div style={{ fontSize: '11px', color: COLORS.textSecondary, marginTop: '5px' }}>
+                              {techAlta}/{grupo.length} {language === 'es' ? 'alta tech' : 'high tech'}
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+
+                    {/* Crimen Alto */}
+                    <div style={{
+                      fontWeight: '600',
+                      color: COLORS.text,
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '10px'
+                    }}>
+                      {language === 'es' ? 'Crimen Alto' : 'High Crime'}
+                    </div>
+                    <div style={{
+                      backgroundColor: `${COLORS.accent}08`,
+                      padding: '15px',
+                      borderRadius: '6px',
+                      textAlign: 'center',
+                      border: `1px solid ${COLORS.border}`
+                    }}>
+                      {(() => {
+                        const grupo = datos.filter(c => {
+                          const crimenAlto = c.afect_crimen === 'Mucho';
+                          const conCredito = parseFloat(c.credits_bancos) > 0 || parseFloat(c.credits_proveedor) > 0 ||
+                                           parseFloat(c.credits_familia) > 0 || parseFloat(c.credits_gobierno) > 0 ||
+                                           parseFloat(c.credits_privado) > 0;
+                          return crimenAlto && conCredito;
+                        });
+                        const techAlta = grupo.filter(c => {
+                          const tech = c.tecnologia || '';
+                          return tech.toLowerCase().includes('alto') || tech.toLowerCase().includes('avanzado');
+                        }).length;
+                        const pct = grupo.length > 0 ? (techAlta / grupo.length * 100).toFixed(1) : 0;
+                        return (
+                          <>
+                            <div style={{ fontSize: '18px', fontWeight: '700', color: COLORS.text }}>{pct}%</div>
+                            <div style={{ fontSize: '11px', color: COLORS.textSecondary, marginTop: '5px' }}>
+                              {techAlta}/{grupo.length} {language === 'es' ? 'alta tech' : 'high tech'}
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                    <div style={{
+                      backgroundColor: `${COLORS.primary}08`,
+                      padding: '15px',
+                      borderRadius: '6px',
+                      textAlign: 'center',
+                      border: `1px solid ${COLORS.border}`
+                    }}>
+                      {(() => {
+                        const grupo = datos.filter(c => {
+                          const crimenAlto = c.afect_crimen === 'Mucho';
+                          const sinCredito = !(parseFloat(c.credits_bancos) > 0 || parseFloat(c.credits_proveedor) > 0 ||
+                                             parseFloat(c.credits_familia) > 0 || parseFloat(c.credits_gobierno) > 0 ||
+                                             parseFloat(c.credits_privado) > 0);
+                          return crimenAlto && sinCredito;
+                        });
+                        const techAlta = grupo.filter(c => {
+                          const tech = c.tecnologia || '';
+                          return tech.toLowerCase().includes('alto') || tech.toLowerCase().includes('avanzado');
+                        }).length;
+                        const pct = grupo.length > 0 ? (techAlta / grupo.length * 100).toFixed(1) : 0;
+                        return (
+                          <>
+                            <div style={{ fontSize: '18px', fontWeight: '700', color: COLORS.text }}>{pct}%</div>
+                            <div style={{ fontSize: '11px', color: COLORS.textSecondary, marginTop: '5px' }}>
+                              {techAlta}/{grupo.length} {language === 'es' ? 'alta tech' : 'high tech'}
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </div>
+
+                  <div style={{
+                    marginTop: '20px',
+                    padding: '12px',
+                    backgroundColor: `${COLORS.accent}08`,
+                    borderRadius: '6px',
+                    fontSize: '11px',
+                    color: COLORS.textSecondary,
+                    lineHeight: '1.6'
+                  }}>
+                    <strong style={{ color: COLORS.text }}>
+                      {language === 'es' ? 'Observación:' : 'Observation:'}
+                    </strong>{' '}
+                    {language === 'es'
+                      ? 'La celda resaltada representa el grupo de análisis (Crimen Bajo + Con Crédito). Los porcentajes muestran qué proporción tiene inversión tecnológica alta en cada cuadrante.'
+                      : 'The highlighted cell represents the analysis group (Low Crime + With Credit). Percentages show what proportion has high technology investment in each quadrant.'}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Interpretación de Resultados */}
             <div style={{
               padding: '20px',
-              backgroundColor: `${analisis.pctAdverso > analisis.pctComparacion ? COLORS.primary : COLORS.accent}15`,
+              backgroundColor: `${COLORS.primary}08`,
               borderRadius: '8px',
-              borderLeft: `4px solid ${analisis.pctAdverso > analisis.pctComparacion ? COLORS.primary : COLORS.accent}`
+              borderLeft: `4px solid ${COLORS.primary}`
             }}>
-              <div style={{ fontSize: '14px', color: COLORS.text, fontWeight: '500', marginBottom: '8px' }}>
-                {t('mlConclusion')}
+              <div style={{ fontSize: '14px', color: COLORS.text, fontWeight: '600', marginBottom: '12px' }}>
+                {t('mlInterpretationTitle')}
               </div>
-              <div style={{ fontSize: '13px', color: COLORS.textSecondary }}>
-                {analisis.pctAdverso > analisis.pctComparacion
-                  ? '❌ ' + t('mlConclusionNotSupported')
-                  : '✅ ' + t('mlConclusionSupported')}
+
+              {/* Fuente de datos */}
+              <div style={{
+                fontSize: '12px',
+                color: COLORS.accent,
+                marginBottom: '12px',
+                padding: '8px 12px',
+                backgroundColor: `${COLORS.accent}10`,
+                borderRadius: '4px',
+                fontWeight: '500'
+              }}>
+                {tipo === 'crecimiento' ? t('mlH1DataSource') : t('mlH2DataSource')}
+              </div>
+
+              {/* Interpretación básica */}
+              <div style={{
+                fontSize: '13px',
+                color: COLORS.textSecondary,
+                lineHeight: '1.7',
+                marginBottom: '16px'
+              }}>
+                {tipo === 'crecimiento' ? (
+                  language === 'es'
+                    ? `Los datos muestran que el ${analisis.pctAdverso.toFixed(1)}% de los comercios en condiciones adversas (crimen alto + sin crédito) tienen expectativas de crecimiento, comparado con el ${analisis.pctComparacion.toFixed(1)}% en otras condiciones. La diferencia de ${Math.abs(analisis.pctAdverso - analisis.pctComparacion).toFixed(1)} puntos porcentuales ${analisis.pctAdverso > analisis.pctComparacion ? 'sugiere que las condiciones adversas no están asociadas con menores expectativas de crecimiento' : 'indica una relación entre las condiciones adversas y menores expectativas'}.`
+                    : `The data shows that ${analisis.pctAdverso.toFixed(1)}% of businesses in adverse conditions (high crime + no credit) have growth expectations, compared to ${analisis.pctComparacion.toFixed(1)}% in other conditions. The ${Math.abs(analisis.pctAdverso - analisis.pctComparacion).toFixed(1)} percentage point difference ${analisis.pctAdverso > analisis.pctComparacion ? 'suggests that adverse conditions are not associated with lower growth expectations' : 'indicates a relationship between adverse conditions and lower expectations'}.`
+                ) : (
+                  language === 'es'
+                    ? `El ${analisis.pctAdverso.toFixed(1)}% de los comercios en condiciones favorables (crimen bajo + con crédito) tiene inversión tecnológica alta, en comparación con el ${analisis.pctComparacion.toFixed(1)}% en otras condiciones. Esta diferencia de ${Math.abs(analisis.pctAdverso - analisis.pctComparacion).toFixed(1)} puntos porcentuales ${analisis.pctAdverso > analisis.pctComparacion ? 'sugiere una asociación positiva entre condiciones favorables e inversión en tecnología' : 'no confirma que las condiciones favorables resulten en mayor inversión tecnológica'}.`
+                    : `${analisis.pctAdverso.toFixed(1)}% of businesses in favorable conditions (low crime + with credit) have high technology investment, compared to ${analisis.pctComparacion.toFixed(1)}% in other conditions. This ${Math.abs(analisis.pctAdverso - analisis.pctComparacion).toFixed(1)} percentage point difference ${analisis.pctAdverso > analisis.pctComparacion ? 'suggests a positive association between favorable conditions and technology investment' : 'does not confirm that favorable conditions result in higher technology investment'}.`
+                )}
+              </div>
+
+              {/* Explicaciones alternativas */}
+              <div style={{
+                fontSize: '12px',
+                color: COLORS.textSecondary,
+                lineHeight: '1.6',
+                padding: '12px',
+                backgroundColor: `${COLORS.background}80`,
+                borderRadius: '6px',
+                borderLeft: `3px solid ${COLORS.accent}`,
+                marginBottom: '12px'
+              }}>
+                <strong style={{ color: COLORS.text }}>
+                  {language === 'es' ? '💡 Explicaciones alternativas:' : '💡 Alternative explanations:'}
+                </strong>
+                <br />
+                {tipo === 'crecimiento' ? t('mlH1AlternativeExplanation') : t('mlH2AlternativeExplanation')}
+              </div>
+
+              {/* Nota sobre complejidad */}
+              <div style={{
+                fontSize: '11px',
+                color: COLORS.textSecondary,
+                fontStyle: 'italic',
+                lineHeight: '1.5'
+              }}>
+                {t('mlComplexityNote')}
               </div>
             </div>
           </div>

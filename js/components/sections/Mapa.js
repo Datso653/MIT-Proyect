@@ -149,6 +149,38 @@ function Mapa({ datos, language = 'es' }) {
     }
   }, [viewMode, datos]);
 
+  // Calcular conteos para las leyendas
+  const comerciosConCoords = datos.filter(c =>
+    c.lat && c.long &&
+    !isNaN(c.lat) && !isNaN(c.long) &&
+    c.lat !== 0 && c.long !== 0
+  );
+
+  const crimenCounts = {
+    'Mucho': comerciosConCoords.filter(c => c.afect_crimen === 'Mucho').length,
+    'Moderado': comerciosConCoords.filter(c => c.afect_crimen === 'Moderado').length,
+    'Algo': comerciosConCoords.filter(c => c.afect_crimen === 'Algo').length,
+    'Poco': comerciosConCoords.filter(c => c.afect_crimen === 'Poco').length,
+    'Nada': comerciosConCoords.filter(c => c.afect_crimen === 'Nada').length
+  };
+
+  const creditoCounts = {
+    'Con crédito': comerciosConCoords.filter(c =>
+      parseFloat(c.credits_bancos) > 0 ||
+      parseFloat(c.credits_proveedor) > 0 ||
+      parseFloat(c.credits_familia) > 0 ||
+      parseFloat(c.credits_gobierno) > 0 ||
+      parseFloat(c.credits_privado) > 0
+    ).length,
+    'Sin crédito': comerciosConCoords.filter(c =>
+      !(parseFloat(c.credits_bancos) > 0 ||
+        parseFloat(c.credits_proveedor) > 0 ||
+        parseFloat(c.credits_familia) > 0 ||
+        parseFloat(c.credits_gobierno) > 0 ||
+        parseFloat(c.credits_privado) > 0)
+    ).length
+  };
+
   return (
     <section id="mapa" className="fade-up" style={{
       padding: '120px 60px',
@@ -241,6 +273,114 @@ function Mapa({ datos, language = 'es' }) {
           boxShadow: '0 10px 40px rgba(0,0,0,0.3)'
         }}
       />
+
+      {/* Leyenda de colores */}
+      {viewMode === 'crimen' && (
+        <div style={{
+          marginTop: '30px',
+          padding: '20px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '8px',
+          border: '1px solid ' + COLORS.border
+        }}>
+          <div style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            color: COLORS.text,
+            marginBottom: '15px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em'
+          }}>
+            {language === 'es' ? 'Percepción de Afectación por Crimen' : 'Crime Impact Perception'}
+          </div>
+          <div style={{
+            display: 'flex',
+            gap: '20px',
+            flexWrap: 'wrap'
+          }}>
+            {[
+              { label: language === 'es' ? 'Mucho' : 'High', key: 'Mucho', color: '#ff0000' },
+              { label: language === 'es' ? 'Moderado' : 'Moderate', key: 'Moderado', color: '#ff9900' },
+              { label: language === 'es' ? 'Algo' : 'Some', key: 'Algo', color: '#ffff00' },
+              { label: language === 'es' ? 'Poco' : 'Low', key: 'Poco', color: '#90EE90' },
+              { label: language === 'es' ? 'Nada' : 'None', key: 'Nada', color: '#00ff00' }
+            ].map(({ label, key, color }) => (
+              <div key={label} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <div style={{
+                  width: '20px',
+                  height: '20px',
+                  backgroundColor: color,
+                  borderRadius: '50%',
+                  border: '2px solid ' + COLORS.background,
+                  boxShadow: '0 0 8px ' + color + '80'
+                }} />
+                <span style={{
+                  fontSize: '13px',
+                  color: COLORS.textSecondary
+                }}>
+                  {label} <strong style={{ color: COLORS.text }}>({crimenCounts[key]})</strong>
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {viewMode === 'credito' && (
+        <div style={{
+          marginTop: '30px',
+          padding: '20px',
+          backgroundColor: COLORS.surface,
+          borderRadius: '8px',
+          border: '1px solid ' + COLORS.border
+        }}>
+          <div style={{
+            fontSize: '14px',
+            fontWeight: '600',
+            color: COLORS.text,
+            marginBottom: '15px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em'
+          }}>
+            {language === 'es' ? 'Acceso a Crédito' : 'Credit Access'}
+          </div>
+          <div style={{
+            display: 'flex',
+            gap: '20px',
+            flexWrap: 'wrap'
+          }}>
+            {[
+              { label: language === 'es' ? 'Con crédito' : 'With credit', key: 'Con crédito', color: COLORS.accent },
+              { label: language === 'es' ? 'Sin crédito' : 'Without credit', key: 'Sin crédito', color: COLORS.primaryLight }
+            ].map(({ label, key, color }) => (
+              <div key={label} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <div style={{
+                  width: '20px',
+                  height: '20px',
+                  backgroundColor: color,
+                  borderRadius: '50%',
+                  border: '2px solid ' + COLORS.background,
+                  boxShadow: '0 0 8px ' + color + '80'
+                }} />
+                <span style={{
+                  fontSize: '13px',
+                  color: COLORS.textSecondary
+                }}>
+                  {label} <strong style={{ color: COLORS.text }}>({creditoCounts[key]})</strong>
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

@@ -620,7 +620,3 @@ Este proyecto se proporciona con fines educativos y de investigación. El uso co
 
 </div>
 ```
-
-**Nombre del commit:**
-```
-docs: enhance README with complete project documentation, new structure, and technical details
