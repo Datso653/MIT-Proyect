@@ -29,6 +29,7 @@ const TEAM_DATA = {
     { name: "MIT", full: "Massachusetts Institute of Technology", role: "LIFT Lab Principal" },
     { name: "UBA", full: "Universidad de Buenos Aires", role: "Partner Principal" },
     { name: "UNSAM", full: "Universidad Nacional de San Martín", role: "Research Partner" },
+    { name: "UNLZ", full: "Universidad Nacional de Lomas de Zamora", role: "Research Partner" },
     { name: "UP", full: "Universidad de Palermo", role: "Research Partner" },
     { name: "ITBA", full: "Instituto Tecnológico de Buenos Aires", role: "Research Partner" },
     { name: "UNICEN", full: "Universidad Nacional del Centro", role: "Research Partner" }

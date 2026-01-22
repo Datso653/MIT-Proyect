@@ -543,6 +543,7 @@ function App() {
       {datosGraficos && indicadores && <AnalisisVisual data={datosGraficos} indicadores={indicadores} datos={datos} language={language} />}
       {indicadores && <HallazgosPrincipales indicadores={indicadores} language={language} />}
       <SeccionMachineLearning datos={datos} language={language} />
+      <ConclusionesPreliminares language={language} />
       <ProximosPasos language={language} />
       <Team language={language} />
       <Footer language={language} />
@@ -576,7 +577,7 @@ function Navbar({ language = 'es' }) {
     { id: 'analisis-visual', label: t('navAnalysis') },
     { id: 'hallazgos', label: t('navFindings') },
     { id: 'machine-learning', label: t('navML') },
-    { id: 'analisis', label: t('navConclusions') },
+    { id: 'conclusiones-preliminares', label: t('navPrelimConclusions') },
     { id: 'proximos-pasos', label: t('navNextSteps') },
     { id: 'equipo', label: t('navTeam') }
   ];
@@ -955,33 +956,38 @@ function ProjectIntro({ language = 'es' }) {
 // === UNIVERSIDADES PARTICIPANTES ===
 function UniversidadesParticipantes({ language = 'es' }) {
   const universidades = [
-    { 
-      nombre: 'MIT', 
+    {
+      nombre: 'MIT',
       fullName: 'Massachusetts Institute of Technology',
       logo: './img/mit.png'
     },
-    { 
-      nombre: 'UBA', 
+    {
+      nombre: 'UBA',
       fullName: 'Universidad de Buenos Aires',
       logo: './img/uba.jpg'
     },
-    { 
-      nombre: 'UNSAM', 
+    {
+      nombre: 'UNSAM',
       fullName: 'Universidad Nacional de San Martín',
       logo: './img/unsam.jpg'
     },
-    { 
-      nombre: 'UP', 
+    {
+      nombre: 'UNLZ',
+      fullName: 'Universidad Nacional de Lomas de Zamora',
+      logo: './img/UNLZ.png'
+    },
+    {
+      nombre: 'UP',
       fullName: 'Universidad de Palermo',
       logo: './img/up.png'
     },
-    { 
-      nombre: 'ITBA', 
+    {
+      nombre: 'ITBA',
       fullName: 'Instituto Tecnológico de Buenos Aires',
       logo: './img/itba.jpg'
     },
-    { 
-      nombre: 'UNICEN', 
+    {
+      nombre: 'UNICEN',
       fullName: 'Universidad Nacional del Centro',
       logo: './img/tandil.jpg'
     }
@@ -1553,6 +1559,184 @@ function SeccionAnalisis() {
         </div>
       </div>
       </AnimatedModelCard>
+      </div>
+    </section>
+  );
+}
+
+// === CONCLUSIONES PRELIMINARES ===
+function ConclusionesPreliminares({ language = 'es' }) {
+  const t = (key) => getTranslation(language, key);
+
+  const conclusions = [
+    {
+      number: '01',
+      title: t('prelimConclusion1Title'),
+      text: t('prelimConclusion1Text')
+    },
+    {
+      number: '02',
+      title: t('prelimConclusion2Title'),
+      text: t('prelimConclusion2Text')
+    },
+    {
+      number: '03',
+      title: t('prelimConclusion3Title'),
+      text: t('prelimConclusion3Text')
+    },
+    {
+      number: '04',
+      title: t('prelimConclusion4Title'),
+      text: t('prelimConclusion4Text')
+    }
+  ];
+
+  return (
+    <section id="conclusiones-preliminares" className="fade-up" style={{
+      padding: '120px 60px',
+      position: 'relative',
+      overflow: 'hidden',
+      backgroundColor: COLORS.background
+    }}>
+      {/* Imagen de fondo */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundImage: 'url(https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1600&q=85&auto=format&fit=crop)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: 0.5,
+        filter: 'grayscale(0%) brightness(1.15)',
+        zIndex: 0
+      }} />
+
+      {/* Overlay gradient */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `linear-gradient(135deg, ${COLORS.background}b0 0%, ${COLORS.background}70 50%, ${COLORS.background}b0 100%)`,
+        zIndex: 1
+      }} />
+
+      <div style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        position: 'relative',
+        zIndex: 2
+      }}>
+        <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+          <div style={{
+            fontSize: '12px',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: COLORS.primary,
+            marginBottom: '20px',
+            fontWeight: '500'
+          }}>
+            {t('prelimConclusionsSubtitle')}
+          </div>
+          <h2 style={{
+            fontFamily: '"Crimson Pro", serif',
+            fontSize: 'clamp(36px, 4vw, 52px)',
+            fontWeight: '400',
+            color: COLORS.text,
+            marginBottom: '24px',
+            lineHeight: '1.2'
+          }}>
+            {t('prelimConclusionsTitle')}
+          </h2>
+          <p style={{
+            fontSize: '16px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7',
+            maxWidth: '800px',
+            margin: '0 auto'
+          }}>
+            {t('prelimConclusionsIntro')}
+          </p>
+        </div>
+
+        {/* Grid de conclusiones */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '30px',
+          marginBottom: '50px'
+        }}>
+          {conclusions.map((conclusion, index) => (
+            <div key={index} style={{
+              padding: '30px',
+              backgroundColor: COLORS.surface,
+              border: `1px solid ${COLORS.border}`,
+              borderRadius: '8px',
+              borderLeft: `4px solid ${index % 2 === 0 ? COLORS.primary : COLORS.accent}`,
+              transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}>
+              <div style={{
+                fontSize: '32px',
+                fontWeight: '200',
+                color: index % 2 === 0 ? COLORS.primary : COLORS.accent,
+                marginBottom: '16px',
+                fontFamily: '"Crimson Pro", serif'
+              }}>
+                {conclusion.number}
+              </div>
+              <h4 style={{
+                fontSize: '18px',
+                fontWeight: '600',
+                color: COLORS.text,
+                marginBottom: '12px',
+                lineHeight: '1.4'
+              }}>
+                {conclusion.title}
+              </h4>
+              <p style={{
+                fontSize: '14px',
+                color: COLORS.textSecondary,
+                lineHeight: '1.7',
+                margin: 0
+              }}>
+                {conclusion.text}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Nota final */}
+        <div style={{
+          padding: '24px 30px',
+          backgroundColor: `${COLORS.primary}10`,
+          border: `1px solid ${COLORS.primary}30`,
+          borderRadius: '8px',
+          borderLeft: `4px solid ${COLORS.primary}`
+        }}>
+          <p style={{
+            fontSize: '14px',
+            color: COLORS.textSecondary,
+            lineHeight: '1.7',
+            margin: 0,
+            fontStyle: 'italic'
+          }}>
+            <strong style={{ color: COLORS.text, fontStyle: 'normal' }}>
+              {language === 'es' ? 'Nota importante: ' : 'Important note: '}
+            </strong>
+            {t('prelimConclusionsNote')}
+          </p>
+        </div>
       </div>
     </section>
   );

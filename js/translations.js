@@ -101,7 +101,7 @@ const TRANSLATIONS = {
     analysisTechIntermediateTitle: 'Digitalización Intermedia',
     analysisTechBasicTitle: 'Digitalización Inicial',
     analysisSalary: 'Salario mínimo a percibir',
-    analysisSalaryDescription: 'Rango salarial que los comerciantes están dispuestos a ofrecer (100k - 5M ARS)',
+    analysisSalaryDescription: 'Salario mínimo dispuesto a percibir (100k - 5M ARS)',
     analysisSalaryNoteTitle: 'Nota sobre los datos',
     analysisSalaryNoteText: 'Esta pregunta tuvo {count} respuestas válidas. Se detectaron outliers extremos y datos inconsistentes que fueron filtrados (rango: $100k-$1.3M). Los valores presentados deben interpretarse con cautela debido al tamaño limitado de la muestra.',
     analysisSalaryGeneral: 'GENERAL',
@@ -156,6 +156,20 @@ const TRANSLATIONS = {
     nextStep3Title: 'Continuidad del relevamiento',
     nextStep3Text: 'Continuar con el relevamiento mensual de los datos para poder generar una base de datos longitudinal valiosa.',
 
+    // Preliminary Conclusions
+    prelimConclusionsSubtitle: 'SÍNTESIS DE HALLAZGOS',
+    prelimConclusionsTitle: 'Conclusiones preliminares',
+    prelimConclusionsIntro: 'Basándonos en el análisis de más de 900 comercios en el Área Metropolitana de Buenos Aires, presentamos las principales conclusiones derivadas de nuestro estudio del ecosistema comercial local.',
+    prelimConclusion1Title: 'Expectativas de crecimiento vs. condiciones adversas',
+    prelimConclusion1Text: 'Los resultados del análisis estadístico muestran que las expectativas de crecimiento de los comerciantes no están fuertemente determinadas por las condiciones adversas (crimen alto + sin acceso a crédito). Esto sugiere que factores como la resiliencia personal, la experiencia empresarial y las redes de apoyo informal pueden ser más determinantes que las condiciones del entorno inmediato.',
+    prelimConclusion2Title: 'Inversión tecnológica y condiciones favorables',
+    prelimConclusion2Text: 'Si bien existe una relación entre condiciones favorables (bajo crimen + acceso a crédito) e inversión tecnológica, esta no es tan clara como se planteó inicialmente. El análisis sugiere que otros factores, particularmente el nivel de competencia en la zona, pueden ser drivers más importantes de la adopción tecnológica que las condiciones de seguridad o acceso a financiamiento.',
+    prelimConclusion3Title: 'Factores de impacto en ventas',
+    prelimConclusion3Text: 'El análisis de factores externos revela que los precios y la inflación son el principal determinante del desempeño en ventas, superando ampliamente el impacto de la competencia, el acceso a crédito y la percepción de inseguridad. Esto destaca la vulnerabilidad de los pequeños comercios frente a variables macroeconómicas fuera de su control.',
+    prelimConclusion4Title: 'Perfil de comercios con intención de expansión',
+    prelimConclusion4Text: 'Los comercios que aspiran a crecer se caracterizan principalmente por tener mayor antigüedad en el mercado, equipos de trabajo más estables y expectativas positivas sobre la evolución de sus ventas. La experiencia acumulada y la estabilidad organizacional parecen ser más relevantes que el acceso a recursos financieros formales.',
+    prelimConclusionsNote: 'Estas conclusiones son preliminares y están basadas en un análisis transversal de los datos. Estudios longitudinales futuros permitirán validar estos hallazgos y captar dinámicas temporales del ecosistema comercial.',
+
     // Team
     teamSubtitle: 'SOBRE NOSOTROS',
     teamTitle: '¿Quiénes somos?',
@@ -181,7 +195,7 @@ const TRANSLATIONS = {
     navAnalysis: 'Análisis Visual',
     navFindings: 'Hallazgos Principales',
     navML: 'Análisis de Hipótesis & Hallazgos Adicionales',
-    navConclusions: 'Conclusiones',
+    navPrelimConclusions: 'Conclusiones Preliminares',
     navNextSteps: 'Próximos pasos',
     navTeam: 'Equipo',
 
@@ -371,7 +385,7 @@ const TRANSLATIONS = {
     analysisTechIntermediateTitle: 'Intermediate Digitalization',
     analysisTechBasicTitle: 'Initial Digitalization',
     analysisSalary: 'Minimum salary to receive',
-    analysisSalaryDescription: 'Salary range that merchants are willing to offer (100k - 5M ARS)',
+    analysisSalaryDescription: 'Minimum salary willing to receive (100k - 5M ARS)',
     analysisSalaryNoteTitle: 'Note on data',
     analysisSalaryNoteText: 'This question had {count} valid responses. Extreme outliers and inconsistent data were detected and filtered (range: $100k-$1.3M). The presented values should be interpreted with caution due to the limited sample size.',
     analysisSalaryGeneral: 'GENERAL',
@@ -426,6 +440,20 @@ const TRANSLATIONS = {
     nextStep3Title: 'Survey continuity',
     nextStep3Text: 'Continue with the monthly data collection to generate a valuable longitudinal database.',
 
+    // Preliminary Conclusions
+    prelimConclusionsSubtitle: 'FINDINGS SYNTHESIS',
+    prelimConclusionsTitle: 'Preliminary conclusions',
+    prelimConclusionsIntro: 'Based on the analysis of over 900 businesses in the Buenos Aires Metropolitan Area, we present the main conclusions derived from our study of the local commercial ecosystem.',
+    prelimConclusion1Title: 'Growth expectations vs. adverse conditions',
+    prelimConclusion1Text: 'Statistical analysis results show that merchants\' growth expectations are not strongly determined by adverse conditions (high crime + no credit access). This suggests that factors such as personal resilience, business experience, and informal support networks may be more determinant than immediate environmental conditions.',
+    prelimConclusion2Title: 'Technology investment and favorable conditions',
+    prelimConclusion2Text: 'While there is a relationship between favorable conditions (low crime + credit access) and technology investment, it is not as clear as initially proposed. The analysis suggests that other factors, particularly the level of competition in the area, may be more important drivers of technology adoption than security conditions or access to financing.',
+    prelimConclusion3Title: 'Factors impacting sales',
+    prelimConclusion3Text: 'The analysis of external factors reveals that prices and inflation are the main determinant of sales performance, far surpassing the impact of competition, credit access, and crime perception. This highlights the vulnerability of small businesses to macroeconomic variables beyond their control.',
+    prelimConclusion4Title: 'Profile of businesses with expansion intentions',
+    prelimConclusion4Text: 'Businesses aspiring to grow are mainly characterized by greater market longevity, more stable work teams, and positive expectations about their sales evolution. Accumulated experience and organizational stability appear to be more relevant than access to formal financial resources.',
+    prelimConclusionsNote: 'These conclusions are preliminary and based on cross-sectional data analysis. Future longitudinal studies will allow validation of these findings and capture temporal dynamics of the commercial ecosystem.',
+
     // Team
     teamSubtitle: 'ABOUT US',
     teamTitle: 'Who we are?',
@@ -451,7 +479,7 @@ const TRANSLATIONS = {
     navAnalysis: 'Visual Analysis',
     navFindings: 'Key Findings',
     navML: 'Hypothesis Analysis & Additional Findings',
-    navConclusions: 'Conclusions',
+    navPrelimConclusions: 'Preliminary Conclusions',
     navNextSteps: 'Next steps',
     navTeam: 'Team',
 
@@ -559,7 +587,7 @@ const additionalES = {
   chartTech: 'Adopción tecnológica',
   chartTechSub: 'Clasificación de comercios según nivel de digitalización • Click para ver detalles',
   chartSalary: 'Salario mínimo a percibir',
-  chartSalarySub: 'Rango salarial que los comerciantes están dispuestos a ofrecer (100k - 5M ARS)',
+  chartSalarySub: 'Salario mínimo dispuesto a percibir (100k - 5M ARS)',
   chartCredit: 'Fuentes de financiamiento',
   chartCreditSub: 'Del {pct}% de comercios que acceden a crédito, estas son sus fuentes de financiamiento',
   
@@ -598,7 +626,7 @@ const additionalEN = {
   chartTech: 'Technology adoption',
   chartTechSub: 'Business classification by digitalization level • Click for details',
   chartSalary: 'Minimum salary to receive',
-  chartSalarySub: 'Salary range that merchants are willing to offer (100k - 5M ARS)',
+  chartSalarySub: 'Minimum salary willing to receive (100k - 5M ARS)',
   chartCredit: 'Financing sources',
   chartCreditSub: 'Of the {pct}% of businesses that access credit, these are their financing sources',
   
