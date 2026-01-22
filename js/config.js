@@ -1,4 +1,5 @@
 // === CONFIGURACIÓN DEL PROYECTO ===
+// Última actualización: 2025-01-22 - UNLZ agregada
 const TEAM_DATA = {
   name: "GreenThunder",
   tagline: "Análisis basado en datos para la transformación de negocios locales",
