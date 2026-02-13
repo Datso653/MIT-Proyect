@@ -6,7 +6,7 @@ const TRANSLATIONS = {
     error: 'Error al cargar datos',
     
     // Hero
-    heroSubtitle: 'MIT LIFT LAB — BUENOS AIRES',
+    heroSubtitle: 'MIT LIFT Lab – ITBA – BUENOS AIRES',
     heroTitle: 'Análisis de Comercios',
     heroLocation: 'Buenos Aires',
     heroDescription: 'Análisis basado en datos para la transformación de negocios locales',
@@ -18,7 +18,7 @@ const TRANSLATIONS = {
     projectIntroTitle: 'Mapeo integral del',
     projectIntroTitleItalic: 'ecosistema comercial',
     projectIntroP1: 'Análisis de pequeños comercios locales en Buenos Aires, utilizando herramientas de análisis de datos y machine learning para comprender los factores que impactan el crecimiento económico y la supervivencia de los pequeños comercios.',
-    projectIntroP2: 'Este proyecto parte de una iniciativa amplia para comprender el funcionamiento de los nano-stores en mercados emergentes, en la cual colaboran múltiples instituciones académicas argentinas con el MIT.',
+    projectIntroP2: 'Proyecto de Investigación coordinado por MIT LIFT Lab e ITBA, en colaboración interinstitucional con UNSAM, UBA, UP, UNICEN y UNLZ, para comprender el funcionamiento de los nano-stores en mercados emergentes.',
     
     // Indicadores
     indicatorsSubtitle: 'INDICADORES CLAVE',
@@ -43,7 +43,8 @@ const TRANSLATIONS = {
     // Universidades
     universitiesSubtitle: 'INSTITUCIONES PARTICIPANTES',
     universitiesTitle: 'Colaboración Interinstitucional',
-    
+    universitiesLegend: 'Proyecto de Investigación coordinado por MIT LIFT Lab e ITBA, en colaboración interinstitucional con UNSAM, UBA, UP, UNICEN y UNLZ.',
+
     // Mapa
     mapSubtitle: 'DISTRIBUCIÓN GEOGRÁFICA',
     mapTitle: 'Mapa interactivo',
@@ -290,7 +291,7 @@ const TRANSLATIONS = {
     error: 'Error loading data',
     
     // Hero
-    heroSubtitle: 'MIT LIFT LAB — BUENOS AIRES',
+    heroSubtitle: 'MIT LIFT Lab – ITBA – BUENOS AIRES',
     heroTitle: 'Business Analysis',
     heroLocation: 'Buenos Aires',
     heroDescription: 'Data-driven analysis for local business transformation',
@@ -302,7 +303,7 @@ const TRANSLATIONS = {
     projectIntroTitle: 'Comprehensive mapping of the',
     projectIntroTitleItalic: 'commercial ecosystem',
     projectIntroP1: 'Analysis of small local businesses in Buenos Aires, using data analysis and machine learning tools to understand the factors that impact economic growth and the survival of small businesses.',
-    projectIntroP2: 'This project is part of a broad initiative to understand the functioning of nano-stores in emerging markets, in which multiple Argentine academic institutions collaborate with MIT.',
+    projectIntroP2: 'Research Project coordinated by MIT LIFT Lab and ITBA, in interinstitutional collaboration with UNSAM, UBA, UP, UNICEN and UNLZ, to understand the functioning of nano-stores in emerging markets.',
     
     // Indicators
     indicatorsSubtitle: 'KEY INDICATORS',
@@ -327,7 +328,8 @@ const TRANSLATIONS = {
     // Universities
     universitiesSubtitle: 'PARTICIPATING INSTITUTIONS',
     universitiesTitle: 'Interinstitutional Collaboration',
-    
+    universitiesLegend: 'Research Project coordinated by MIT LIFT Lab and ITBA, in interinstitutional collaboration with UNSAM, UBA, UP, UNICEN and UNLZ.',
+
     // Map
     mapSubtitle: 'GEOGRAPHIC DISTRIBUTION',
     mapTitle: 'Interactive map',

@@ -157,14 +157,14 @@ function Footer({ language = 'es' }) {
         color: COLORS.textSecondary
       }}>
         <div>
-          © 2025-2026 MIT LIFT Lab · {t('footerTeam')} {TEAM_DATA.name}
+          © 2025-2026 MIT LIFT Lab – ITBA · {t('footerTeam')} {TEAM_DATA.name}
         </div>
         <div style={{
           display: 'flex',
           gap: '30px'
         }}>
           <span>{t('footerAcademicProject')}</span>
-          <span>Universidad de Buenos Aires</span>
+          <span>MIT LIFT Lab – ITBA</span>
         </div>
       </div>
       </div>

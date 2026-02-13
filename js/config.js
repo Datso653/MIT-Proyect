@@ -27,13 +27,13 @@ const TEAM_DATA = {
     }
   ],
   universities: [
-    { name: "MIT", full: "Massachusetts Institute of Technology", role: "LIFT Lab Principal" },
-    { name: "UBA", full: "Universidad de Buenos Aires", role: "Partner Principal" },
-    { name: "UNSAM", full: "Universidad Nacional de San Martín", role: "Research Partner" },
-    { name: "UNLZ", full: "Universidad Nacional de Lomas de Zamora", role: "Research Partner" },
-    { name: "UP", full: "Universidad de Palermo", role: "Research Partner" },
-    { name: "ITBA", full: "Instituto Tecnológico de Buenos Aires", role: "Research Partner" },
-    { name: "UNICEN", full: "Universidad Nacional del Centro", role: "Research Partner" }
+    { name: "MIT", full: "Massachusetts Institute of Technology", role: "LIFT Lab – Coordinador" },
+    { name: "ITBA", full: "Instituto Tecnológico de Buenos Aires", role: "Coordinador" },
+    { name: "UBA", full: "Universidad de Buenos Aires", role: "Colaborador" },
+    { name: "UNSAM", full: "Universidad Nacional de San Martín", role: "Colaborador" },
+    { name: "UNLZ", full: "Universidad Nacional de Lomas de Zamora", role: "Colaborador" },
+    { name: "UP", full: "Universidad de Palermo", role: "Colaborador" },
+    { name: "UNICEN", full: "Universidad Nacional del Centro", role: "Colaborador" }
   ]
 };
 

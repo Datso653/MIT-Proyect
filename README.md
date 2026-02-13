@@ -1,11 +1,16 @@
-# 🏢 Análisis de Comercios AMBA - MIT LIFT Lab
+# 🏢 Análisis de Comercios AMBA - MIT LIFT Lab – ITBA
 
 <div align="center">
 
 ![MIT LIFT Lab](https://img.shields.io/badge/MIT-LIFT%20Lab-A31F34?style=for-the-badge&logo=mit)
-![UBA](https://img.shields.io/badge/UBA-Partner-0033A0?style=for-the-badge)
-![UNSAM](https://img.shields.io/badge/UNSAM-Research-00A859?style=for-the-badge)
-![UNLZ](https://img.shields.io/badge/UNLZ-Research-006837?style=for-the-badge)
+![ITBA](https://img.shields.io/badge/ITBA-Coordinador-003366?style=for-the-badge)
+![UBA](https://img.shields.io/badge/UBA-Colaborador-0033A0?style=for-the-badge)
+![UNSAM](https://img.shields.io/badge/UNSAM-Colaborador-00A859?style=for-the-badge)
+![UNLZ](https://img.shields.io/badge/UNLZ-Colaborador-006837?style=for-the-badge)
+![UP](https://img.shields.io/badge/UP-Colaborador-8B0000?style=for-the-badge)
+![UNICEN](https://img.shields.io/badge/UNICEN-Colaborador-FF6600?style=for-the-badge)
+
+**Proyecto de Investigación coordinado por MIT LIFT Lab e ITBA, en colaboración interinstitucional con UNSAM, UBA, UP, UNICEN y UNLZ.**
 
 Dashboard interactivo académico para análisis profundo del ecosistema comercial del Área Metropolitana de Buenos Aires con Machine Learning y validación estadística.
 
@@ -32,17 +37,20 @@ Dashboard interactivo académico para análisis profundo del ecosistema comercia
 
 ## 🎓 Sobre el Proyecto
 
-**Colaboración Académica Multinstitucional**
+**Proyecto de Investigación Interinstitucional**
 
-Este proyecto representa una colaboración entre instituciones líderes en investigación y educación superior:
+Proyecto de Investigación coordinado por MIT LIFT Lab e ITBA, desarrollado en colaboración interinstitucional:
 
+**Coordinadores:**
 - **MIT LIFT Lab** - Laboratory for Innovation Science and Policy
-- **Universidad de Buenos Aires (UBA)** - Partner Principal
-- **Universidad Nacional de San Martín (UNSAM)** - Research Partner
-- **Universidad Nacional de Lomas de Zamora (UNLZ)** - Research Partner
-- **Universidad de Palermo (UP)** - Research Partner
-- **Instituto Tecnológico de Buenos Aires (ITBA)** - Research Partner
-- **Universidad Nacional del Centro (UNICEN)** - Research Partner
+- **Instituto Tecnológico de Buenos Aires (ITBA)** - Coordinador
+
+**Instituciones colaboradoras:**
+- **Universidad de Buenos Aires (UBA)**
+- **Universidad Nacional de San Martín (UNSAM)**
+- **Universidad Nacional de Lomas de Zamora (UNLZ)**
+- **Universidad de Palermo (UP)**
+- **Universidad Nacional del Centro (UNICEN)**
 
 **Objetivo:** Análisis de pequeños comercios locales en Buenos Aires, utilizando herramientas de análisis de datos y machine learning para comprender los factores que impactan el crecimiento económico y la supervivencia de los pequeños comercios. Este proyecto parte de una iniciativa amplia para comprender el funcionamiento de los nano-stores en mercados emergentes.
 
@@ -785,8 +793,10 @@ ipykernel==6.25.0
          Un Enfoque de Machine Learning y Validación Estadística},
   author={da Torre, Juan Ignacio and Gálvez, Sofía and Marrazzo, Gina},
   year={2025-2026},
-  institution={MIT LIFT Lab, Universidad de Buenos Aires, Universidad Nacional de San Martín,
-               Universidad Nacional de Lomas de Zamora},
+  institution={MIT LIFT Lab, Instituto Tecnológico de Buenos Aires (ITBA),
+               Universidad de Buenos Aires, Universidad Nacional de San Martín,
+               Universidad Nacional de Lomas de Zamora, Universidad de Palermo,
+               Universidad Nacional del Centro},
   url={https://mit-proyect.vercel.app},
   note={Dashboard interactivo disponible en: https://github.com/Datso653/MIT-PROYECT}
 }
@@ -796,13 +806,15 @@ ipykernel==6.25.0
 
 ## 📄 Licencia
 
-Proyecto académico bajo colaboración:
+Proyecto de Investigación coordinado por:
 - **MIT LIFT Lab** (Laboratory for Innovation Science and Policy)
+- **Instituto Tecnológico de Buenos Aires (ITBA)**
+
+En colaboración interinstitucional con:
 - **Universidad de Buenos Aires (UBA)**
 - **Universidad Nacional de San Martín (UNSAM)**
 - **Universidad Nacional de Lomas de Zamora (UNLZ)**
 - **Universidad de Palermo (UP)**
-- **Instituto Tecnológico de Buenos Aires (ITBA)**
 - **Universidad Nacional del Centro (UNICEN)**
 
 © 2025-2026 Equipo GreenThunder. Todos los derechos reservados.
@@ -818,6 +830,7 @@ Este proyecto se proporciona con fines educativos y de investigación. El uso co
 [Dashboard en Vivo](https://mit-proyect.vercel.app) ·
 [Repositorio GitHub](https://github.com/Datso653/MIT-PROYECT) ·
 [MIT LIFT Lab](https://lift.mit.edu) ·
+[ITBA](https://www.itba.edu.ar) ·
 [UBA](https://www.uba.ar) ·
 [UNSAM](https://www.unsam.edu.ar) ·
 [UNLZ](https://www.unlz.edu.ar)

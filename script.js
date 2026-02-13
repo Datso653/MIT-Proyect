@@ -962,6 +962,11 @@ function UniversidadesParticipantes({ language = 'es' }) {
       logo: './img/mit.png'
     },
     {
+      nombre: 'ITBA',
+      fullName: 'Instituto Tecnológico de Buenos Aires',
+      logo: './img/itba.jpg'
+    },
+    {
       nombre: 'UBA',
       fullName: 'Universidad de Buenos Aires',
       logo: './img/uba.jpg'
@@ -980,11 +985,6 @@ function UniversidadesParticipantes({ language = 'es' }) {
       nombre: 'UP',
       fullName: 'Universidad de Palermo',
       logo: './img/up.png'
-    },
-    {
-      nombre: 'ITBA',
-      fullName: 'Instituto Tecnológico de Buenos Aires',
-      logo: './img/itba.jpg'
     },
     {
       nombre: 'UNICEN',
@@ -1022,10 +1022,21 @@ function UniversidadesParticipantes({ language = 'es' }) {
           fontFamily: '"Crimson Pro", serif',
           fontSize: '32px',
           fontWeight: '400',
-          color: COLORS.text
+          color: COLORS.text,
+          marginBottom: '20px'
         }}>
             {getTranslation(language, 'universitiesTitle')}
         </h3>
+        <p style={{
+          fontSize: '15px',
+          color: COLORS.textSecondary,
+          lineHeight: '1.7',
+          maxWidth: '800px',
+          margin: '0 auto',
+          fontWeight: '400'
+        }}>
+          {getTranslation(language, 'universitiesLegend')}
+        </p>
       </div>
 
       <style>{`
